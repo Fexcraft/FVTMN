@@ -1,0 +1,19 @@
+group 'net.fexcraft.mod.fvtm'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+version = "CORE-1"
+
+repositories {}
+
+sourceSets {
+    main {
+        java {
+            srcDirs "src"
+        }
+        resources {
+        	srcDirs 'resources'
+        }
+    }
+}
