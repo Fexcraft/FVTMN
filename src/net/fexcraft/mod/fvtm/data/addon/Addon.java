@@ -21,7 +21,6 @@ import java.util.zip.ZipInputStream;
 import javax.imageio.ImageIO;
 
 import net.fexcraft.app.json.JsonArray;
-import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonObject;
 import net.fexcraft.lib.common.Static;
@@ -40,6 +39,8 @@ import net.fexcraft.mod.fvtm.data.root.DataType;
 import net.fexcraft.mod.fvtm.data.root.Registrable;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
+import net.fexcraft.mod.fvtm.sys.condition.Condition;
+import net.fexcraft.mod.fvtm.sys.condition.ConditionRegistry;
 import net.fexcraft.mod.fvtm.util.DataUtil;
 import net.fexcraft.mod.fvtm.util.Resources;
 import net.fexcraft.mod.uni.client.uCreativeTab;
@@ -100,43 +101,45 @@ public class Addon extends Registrable<Addon> {
 		if(map.has("ClothMaterials")){
 			map.get("ClothMaterials").asMap().entries().forEach(entry -> {
 				JsonMap data = entry.getValue().asMap();
-				int durr = JsonUtil.getIfExists(data, "durability", 1f).intValue();
-				int[] ams = data.has("damage_reduction") ? JsonUtil.getIntegerArray(data.get("damage_reduction").getAsJsonArray()) : new int[]{ 0, 0, 0, 0 };
-				float tgh = JsonUtil.getIfExists(obj, "toughness", 0f).floatValue();
-				armats.put(entry.getKey(), EnumHelper.addArmorMaterial(entry.getKey(), Resources.NULL_TEXTURE.toString(), durr, ams, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, tgh));
+				int durr = data.getInteger("durability", 1);
+				int[] ams = new int[4];
+				if(data.has("damage_reduction")){
+					JsonArray arr = data.getArray("damage_reduction");
+					for(int i = 0; i < 4; i++) ams[i] = arr.get(i).integer_value();
+				}
+				float tgh = data.getFloat("toughness", 0);
+				//TODO cloth materials | armats.put(entry.getKey(), EnumHelper.addArmorMaterial(entry.getKey(), Resources.NULL_TEXTURE.toString(), durr, ams, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, tgh));
 			});
 		}
 		if(map.has("SupplyTextures")){
-			JsonObject supp = map.get("SupplyTextures").getAsJsonObject();
-			supp.entrySet().forEach(entry -> {
-				supp_tex.put(entry.getKey(), new TextureSupply(entry.getKey(), entry.getValue().getAsJsonObject()));
+			map.getMap("SupplyTextures").entries().forEach(entry -> {
+				supp_tex.put(entry.getKey(), new TextureSupply(entry.getKey(), entry.getValue().asMap()));
 			});
 		}
 		if(map.has("WireDecos")){
-			Resources.WIRE_DECO_CACHE.put(this.getRegistryName().getPath(), map.get("WireDecos").getAsJsonObject());
+			Resources.WIRE_DECO_CACHE.put(id.id(), map.get("WireDecos").asMap());
 		}
 		if(map.has("Particles") && Static.isClient()){
-			JsonObject par = map.get("Particles").getAsJsonObject();
-			for(Entry<String, JsonElement> entry : par.entrySet()){
-				new net.fexcraft.mod.fvtm.sys.particle.Particle(registryname.getPath() + ":" + entry.getKey(), JsonHandler.parse(entry.getValue().toString(), true).asMap());
+			JsonMap par = map.get("Particles").asMap();
+			for(Entry<String, JsonObject<?>> entry : par.entries()){
+				//TODO particle system | new net.fexcraft.mod.fvtm.sys.particle.Particle(registryname.getPath() + ":" + entry.getKey(), JsonHandler.parse(entry.getValue().toString(), true).asMap());
 			}
 		}
 		if(map.has("Conditions")){
-			JsonObject par = map.get("Conditions").getAsJsonObject();
-			for(Entry<String, JsonElement> entry : par.entrySet()){
-				net.fexcraft.app.json.JsonObject<?> jsn = JsonHandler.parse(entry.getValue().toString(), true);
+			JsonMap conds = map.getMap("Conditions");
+			for(Entry<String, JsonObject<?>> entry : conds.entries()){
 				Condition cond = null;
-				if(jsn.isArray()){
-					cond = new Condition(registryname.getPath() + ":" + entry.getKey(), jsn.asArray());
+				if(entry.getValue().isArray()){
+					cond = new Condition(id.id() + ":" + entry.getKey(), entry.getValue().asArray());
 				}
 				else{
-					cond = new Condition(registryname.getPath() + ":" + entry.getKey(), jsn.asMap());
+					cond = new Condition(id.id() + ":" + entry.getKey(), entry.getValue().asMap());
 				}
 				ConditionRegistry.register(cond);
 			}
 		}
 		if(map.has("TrafficSigns")){
-			JsonObject tsn = map.get("TrafficSigns").getAsJsonObject();
+			/**JsonObject tsn = map.get("TrafficSigns").getAsJsonObject();
 			TrafficSignLibrary.AddonLib lib = new TrafficSignLibrary.AddonLib(registryname.getPath());
 			if(tsn.has("backgrounds")){
 				for(Entry<String, JsonElement> elm : tsn.get("backgrounds").getAsJsonObject().entrySet()){
@@ -159,15 +162,16 @@ public class Addon extends Registrable<Addon> {
 				}
 			}
 			TrafficSignLibrary.LIBRARIES.put(lib.id, lib);
-			lib.load();
+			lib.load();*/
+			//TODO traffic signs
 		}
 		if(map.has("Decorations")){
-			JsonObject cats = map.get("Decorations").getAsJsonObject();
-			for(Entry<String, JsonElement> entry : cats.entrySet()){
+			JsonMap cats = map.get("Decorations").asMap();
+			for(Entry<String, JsonObject<?>> entry : cats.entries()){
 				String category = entry.getKey();
-				JsonObject decos = entry.getValue().getAsJsonObject();
-				for(Entry<String, JsonElement> entr : decos.entrySet()){
-					String key = getRegistryName().getPath() + ":" + entr.getKey();
+				JsonMap decos = entry.getValue().asMap();
+				for(Entry<String, JsonObject<?>> entr : decos.entries()){
+					String key = id.id() + ":" + entr.getKey();
 					Resources.DECORATIONS.put(key, new DecorationData(key, category, entr.getValue()));
 				}
 				if(decos.size() > 0 && !Resources.DECORATION_CATEGORIES.contains(category)){
@@ -176,11 +180,11 @@ public class Addon extends Registrable<Addon> {
 			}
 		}
 		if(map.has("DirectPipes")){
-			JsonObject pipes = map.get("DirectPipes").getAsJsonObject();
-			for(Entry<String, JsonElement> entry : pipes.entrySet()){
+			JsonMap pipes = map.getMap("DirectPipes");
+			for(Entry<String, JsonObject<?>> entry : pipes.entries()){
 				try{
-					String id = registryname.getPath() + ":" +  entry.getKey();
-					Resources.DIRPIPES.put(id, new DirectPipe(id, entry.getValue()));
+					String pid = id.id() + ":" +  entry.getKey();
+					Resources.DIRPIPES.put(pid, new DirectPipe(pid, entry.getValue()));
 				}
 				catch(Exception e){
 					e.printStackTrace();
