@@ -30,7 +30,6 @@ import net.fexcraft.lib.mc.crafting.RecipeRegistry;
 import net.fexcraft.lib.mc.network.PacketHandler;
 import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
 import net.fexcraft.lib.mc.registry.FCLRegistry;
-import net.fexcraft.lib.mc.registry.NamedResourceLocation;
 import net.fexcraft.lib.mc.render.FCLBlockModel;
 import net.fexcraft.lib.mc.render.FCLBlockModelLoader;
 import net.fexcraft.lib.mc.utils.Print;
@@ -59,6 +58,8 @@ import net.fexcraft.mod.fvtm.data.root.Textureable;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleEntity;
+import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.IDLManager;
 
 public class Resources {
 	
@@ -81,10 +82,10 @@ public class Resources {
 	private static TreeMap<String, Boolean> LOADED_MODS = new TreeMap<>();
 	public static TreeMap<String, Class<? extends AddonSteeringOverlay>> OVERLAYS = new TreeMap<>();
 	public static final HashMap<String, Model> MODELS = new HashMap<>();
-	public static final NamedResourceLocation NULL_TEXTURE = new NamedResourceLocation("No Texture;fvtm:textures/entity/null.png");
-	public static final NamedResourceLocation WHITE_TEXTURE = new NamedResourceLocation("No Texture;fvtm:textures/entity/white.png");
+	public static final IDL NULL_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/null.png");
+	public static final IDL WHITE_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/white.png");
 	public static final String UTIL_LISTENER = "fvtm:utils";
-	public static final ArmorMaterial NONE_MAT = EnumHelper.addArmorMaterial("fvtm:none", Resources.NULL_TEXTURE.toString(), 1024, new int[]{ 0, 0, 0, 0 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0f);
+	//TODO cloth materials | public static final ArmorMaterial NONE_MAT = EnumHelper.addArmorMaterial("fvtm:none", Resources.NULL_TEXTURE.toString(), 1024, new int[]{ 0, 0, 0, 0 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0f);
 	public static final ArrayList<String> WIRE_DECOS = new ArrayList<>();
 	public static final HashMap<String, JsonObject> WIRE_DECO_CACHE = new HashMap<>();
 	public static final HashMap<String, DecorationData> DECORATIONS = new HashMap<>();
