@@ -1,22 +1,23 @@
 package net.fexcraft.mod.fvtm.data;
 
+import static net.fexcraft.mod.uni.IDLManager.getIDLNamed;
+
 import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
+import net.fexcraft.app.json.JsonArray;
+import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.app.json.JsonObject;
 import net.fexcraft.lib.common.math.RGB;
-import net.fexcraft.lib.mc.registry.NamedResourceLocation;
 import net.fexcraft.lib.mc.utils.Pos;
 import net.fexcraft.mod.fvtm.data.root.Colorable;
 import net.fexcraft.mod.fvtm.data.root.Model;
 import net.fexcraft.mod.fvtm.data.root.Model.ModelData;
 import net.fexcraft.mod.fvtm.util.DataUtil;
 import net.fexcraft.mod.fvtm.util.Resources;
-import net.minecraft.nbt.NBTTagCompound;
+import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.tag.uTagMap;
 
 public class DecorationData implements Colorable {
 	
@@ -24,7 +25,7 @@ public class DecorationData implements Colorable {
 	public /*final*/ String modelid;
 	public Model model;
 	public ModelData modeldata = new ModelData();
-	public ArrayList<NamedResourceLocation> textures = new ArrayList<>();
+	public ArrayList<IDL> textures = new ArrayList<>();
 	private TreeMap<String, RGB> channels = new TreeMap<>();
 	public Pos offset = new Pos(0, 0, 0);
 	public float rotx, roty, rotz;
@@ -36,71 +37,71 @@ public class DecorationData implements Colorable {
 		this.category = category;
 	}
 	
-	public DecorationData(String key, String category, JsonElement value){
+	public DecorationData(String key, String category, JsonObject<?> value){
 		this(key, category);
-		if(value.isJsonPrimitive()){
-			modelid = value.getAsString();
+		if(value.isObject()){
+			modelid = value.string_value();
 		}
 		else{
-			if(value.isJsonArray()){
-				JsonArray array = value.getAsJsonArray();
-				modelid = array.get(0).getAsString();
-				if(array.get(1).isJsonArray()){
-					array.get(1).getAsJsonArray().forEach(elm -> textures.add(new NamedResourceLocation(elm.getAsString())));
+			if(value.isArray()){
+				JsonArray array = value.asArray();
+				modelid = array.get(0).string_value();
+				if(array.get(1).isArray()){
+					array.get(1).asArray().elements().forEach(elm -> textures.add(getIDLNamed(elm.string_value())));
 				}
 				else{
-					textures.add(new NamedResourceLocation(array.get(1).getAsString()));
+					textures.add(getIDLNamed(array.get(1).string_value()));
 				}
-				if(array.size() > 2) size = array.get(2).getAsInt();
+				if(array.size() > 2) size = array.get(2).integer_value();
 				if(array.size() > 3){
-					JsonArray chnnls = array.get(3).getAsJsonArray();
-					for(JsonElement elm : chnnls){
-						channels.put(elm.getAsString(), RGB.WHITE.copy());
+					JsonArray chnnls = array.get(3).asArray();
+					for(JsonObject<?> elm : chnnls.elements()){
+						channels.put(elm.string_value(), RGB.WHITE.copy());
 					}
 				}
 			}
 			else{
-				JsonObject obj = value.getAsJsonObject();
-				modelid = obj.get("model").getAsString();
-				if(obj.has("size")) size = obj.get("size").getAsInt();
-				if(obj.has("channels")){
-					for(Entry<String, JsonElement> entry : obj.get("channels").getAsJsonObject().entrySet()){
-						channels.put(entry.getKey(), new RGB(entry.getValue().getAsString()));
+				JsonMap map = value.asMap();
+				modelid = map.get("model").string_value();
+				size = map.getInteger("size", size);
+				if(map.has("channels")){
+					for(Entry<String, JsonObject<?>> entry : map.get("channels").asMap().entries()){
+						channels.put(entry.getKey(), new RGB(entry.getValue().string_value()));
 					}
 				}
-				if(obj.has("texture")){
-					if(obj.get("texture").isJsonArray()){
-						obj.get("texture").getAsJsonArray().forEach(elm -> textures.add(new NamedResourceLocation(elm.getAsString())));
+				if(map.has("texture")){
+					if(map.get("texture").isArray()){
+						map.get("texture").asArray().elements().forEach(elm -> textures.add(getIDLNamed(elm.string_value())));
 					}
 					else{
-						textures.add(new NamedResourceLocation(obj.get("texture").getAsString()));
+						textures.add(getIDLNamed(map.get("texture").string_value()));
 					}
 				}
-				if(obj.has("modeldata")){
-					modeldata = DataUtil.getModelData(obj, "modeldata", modeldata);
+				if(map.has("modeldata")){
+					modeldata = DataUtil.getModelData(map, "modeldata", modeldata);
 				}
 			}
 		}
 		if(textures.isEmpty()) textures.add(Resources.WHITE_TEXTURE);
 	}
 	
-	public DecorationData(NBTTagCompound compound, boolean client){
+	public DecorationData(uTagMap compound, boolean client){
 		key = compound.getString("key");
 		category = compound.getString("category");
 		offset = new Pos(compound.getFloat("offx"), compound.getFloat("offy"), compound.getFloat("offz"));
-		if(compound.hasKey("rotx")) rotx = compound.getFloat("rotx");
-		if(compound.hasKey("roty")) roty = compound.getFloat("roty");
-		if(compound.hasKey("rotz")) rotz = compound.getFloat("rotz");
-		if(compound.hasKey("sclx")) sclx = compound.getFloat("sclx");
-		if(compound.hasKey("scly")) scly = compound.getFloat("scly");
-		if(compound.hasKey("sclz")) sclz = compound.getFloat("sclz");
-		if(compound.hasKey("seltex")) seltex = compound.getInteger("seltex");
+		if(compound.has("rotx")) rotx = compound.getFloat("rotx");
+		if(compound.has("roty")) roty = compound.getFloat("roty");
+		if(compound.has("rotz")) rotz = compound.getFloat("rotz");
+		if(compound.has("sclx")) sclx = compound.getFloat("sclx");
+		if(compound.has("scly")) scly = compound.getFloat("scly");
+		if(compound.has("sclz")) sclz = compound.getFloat("sclz");
+		if(compound.has("seltex")) seltex = compound.getInteger("seltex");
 		DecorationData data = Resources.DECORATIONS.get(key);
 		if(data != null) copy(data);
 		if(seltex >= textures.size()) seltex = textures.size() - 1;
 		if(seltex < 0) seltex = 0;
 		for(Entry<String, RGB> entry : channels.entrySet()){
-			if(compound.hasKey("color_" + entry.getKey())) entry.getValue().packed = compound.getInteger("color_" + entry.getKey()); 
+			if(compound.has("color_" + entry.getKey())) entry.getValue().packed = compound.getInteger("color_" + entry.getKey()); 
 		}
 	}
 
@@ -155,22 +156,22 @@ public class DecorationData implements Colorable {
 		return data;
 	}
 
-	public NBTTagCompound write(){
-		NBTTagCompound compound = new NBTTagCompound();
-		compound.setString("key", key);
-		compound.setString("category", category);
-		compound.setFloat("offx", offset.x);
-		compound.setFloat("offy", offset.y);
-		compound.setFloat("offz", offset.z);
-		if(rotx != 0f) compound.setFloat("rotx", rotx);
-		if(roty != 0f) compound.setFloat("roty", roty);
-		if(rotz != 0f) compound.setFloat("rotz", rotz);
-		if(sclx != 1f) compound.setFloat("sclx", sclx);
-		if(scly != 1f) compound.setFloat("scly", scly);
-		if(sclz != 1f) compound.setFloat("sclz", sclz);
-		if(seltex != 0) compound.setInteger("seltex", seltex);
+	public uTagMap write(){
+		uTagMap compound = new uTagMap();
+		compound.set("key", key);
+		compound.set("category", category);
+		compound.set("offx", offset.x);
+		compound.set("offy", offset.y);
+		compound.set("offz", offset.z);
+		if(rotx != 0f) compound.set("rotx", rotx);
+		if(roty != 0f) compound.set("roty", roty);
+		if(rotz != 0f) compound.set("rotz", rotz);
+		if(sclx != 1f) compound.set("sclx", sclx);
+		if(scly != 1f) compound.set("scly", scly);
+		if(sclz != 1f) compound.set("sclz", sclz);
+		if(seltex != 0) compound.set("seltex", seltex);
 		for(Entry<String, RGB> entry : channels.entrySet()){
-			compound.setInteger("color_" + entry.getKey(), entry.getValue().packed);
+			compound.set("color_" + entry.getKey(), entry.getValue().packed);
 		}
 		return compound;
 	}
