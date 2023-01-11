@@ -21,6 +21,7 @@ import java.util.zip.ZipInputStream;
 import javax.imageio.ImageIO;
 
 import net.fexcraft.app.json.JsonArray;
+import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonObject;
 import net.fexcraft.lib.common.Static;
@@ -42,6 +43,7 @@ import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.sys.condition.Condition;
 import net.fexcraft.mod.fvtm.sys.condition.ConditionRegistry;
 import net.fexcraft.mod.fvtm.util.DataUtil;
+import net.fexcraft.mod.fvtm.util.Log;
 import net.fexcraft.mod.fvtm.util.Resources;
 import net.fexcraft.mod.uni.client.uCreativeTab;
 
@@ -258,26 +260,26 @@ public class Addon extends Registrable<Addon> {
 
 	public void searchFor(DataType data) throws InstantiationException, IllegalAccessException {
 		if(data == DataType.ADDON) return;
-		if(!this.isEnabled()){
-			Print.log("Skipping " + data.name() + " search for Addon '" + registryname.toString() + "' since it's marked as not enabled!");
+		if(!enabled){
+			Log.print("Skipping " + data.name() + " search for Addon '" + id + "' since it's marked as not enabled!");
 			return;
 		}
-		if(contype == ContainerType.DIR){
+		if(contype == PackContainerType.FOLDER){
 			if(!file.isDirectory()) return;
 			//
-			File folder = new File(file, "assets/" + registryname.getPath() + "/config/" + data.cfg_folder + "/");
+			File folder = new File(file, "assets/" + id.path() + "/config/" + data.cfg_folder + "/");
 			if(!folder.exists()){ folder.mkdirs(); }
 			ArrayList<File> candidates = findFiles(folder, data.suffix);
 			for(File file : candidates){
 				try{
-					JsonObject obj = JsonUtil.get(file);
-					TypeCore<?> core = (TypeCore<?>)data.core.newInstance().parse(obj);
+					JsonMap map = JsonHandler.parse(file);
+					Registrable<?> core = (Registrable<?>)data.core.getConstructor().newInstance().parse(map);
 					if(core == null){
-						if(obj.has("RegistryName")) Print.log("Skipping " + data.name() + " '" + obj.get("RegistryName").getAsString() + "' due to errors.");
+						if(map.has("RegistryName")) Log.print("Skipping " + data.name() + " '" + map.get("RegistryName").string_value() + "' due to errors.");
 						continue;
 					}
-					data.register(core); //Print.log("Registered "+ data.name() +  " with ID '" + core.getRegistryName() + "' into FVTM.");
-					if(Static.side().isClient()){
+					data.register(core);
+					if(!Static.isServer()){
 						checkIfHasCustomModel(data, core);
 					}
 					if(Static.dev()){
