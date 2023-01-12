@@ -5,7 +5,8 @@ import java.util.List;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.uni.IDL;
-import net.fexcraft.mod.uni.item.uItem;
+import net.fexcraft.mod.uni.item.ItemWrapper;
+import net.fexcraft.mod.uni.item.StackWrapper;
 
 public abstract class Registrable<SELF> {
 	
@@ -13,7 +14,7 @@ public abstract class Registrable<SELF> {
 		return id;
 	}
 	
-	public abstract SELF parse(JsonMap obj);
+	public abstract SELF parse(JsonMap map);
 	
 	public abstract DataType getDataType();
 	
@@ -24,7 +25,9 @@ public abstract class Registrable<SELF> {
 
 	public String getName(){ return name; }
 
-	public uItem getItem(){ return item; }
+	public ItemWrapper getItem(){ return item; }
+
+	public StackWrapper getStack(){ return StackWrapper.EMPTY; }
 	
 	public List<String> getDescription(){ return description; }
 	
@@ -35,6 +38,6 @@ public abstract class Registrable<SELF> {
 	protected List<String> description;
 	protected String name;
 	protected Addon pack;
-	protected uItem item;
+	protected ItemWrapper item;
 	
 }
