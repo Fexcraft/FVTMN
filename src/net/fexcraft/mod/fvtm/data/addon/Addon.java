@@ -4,10 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputFilter.Config;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -18,34 +14,24 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
-import javax.imageio.ImageIO;
-
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonObject;
 import net.fexcraft.lib.common.Static;
-import net.fexcraft.lib.common.json.JsonUtil;
-import net.fexcraft.lib.common.utils.ZipUtil;
-import net.fexcraft.lib.mc.registry.FCLRegistry.AutoRegisterer;
 import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.fvtm.data.DirectPipe;
 import net.fexcraft.mod.fvtm.data.TextureSupply;
-import net.fexcraft.mod.fvtm.data.block.Block;
 import net.fexcraft.mod.fvtm.data.block.CraftBlockScript;
-import net.fexcraft.mod.fvtm.data.container.Container;
-import net.fexcraft.mod.fvtm.data.container.ContainerType;
-import net.fexcraft.mod.fvtm.data.part.Part;
+import net.fexcraft.mod.fvtm.data.cloth.ClothMaterial;
 import net.fexcraft.mod.fvtm.data.root.DataType;
 import net.fexcraft.mod.fvtm.data.root.Registrable;
-import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
-import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.sys.condition.Condition;
 import net.fexcraft.mod.fvtm.sys.condition.ConditionRegistry;
 import net.fexcraft.mod.fvtm.util.DataUtil;
 import net.fexcraft.mod.fvtm.util.Log;
 import net.fexcraft.mod.fvtm.util.Resources;
-import net.fexcraft.mod.uni.client.uCreativeTab;
+import net.fexcraft.mod.uni.client.CreativeTab;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -56,12 +42,12 @@ public class Addon extends Registrable<Addon> {
 	protected String version, url, license, update_id;
 	protected boolean enabled = true, generatelang, generatejson, generateicon;
 	protected File file, lang;
-	//protected HashMap<String, ArmorMaterial> armats = new HashMap<>();
+	protected HashMap<String, ClothMaterial> clothmats = new HashMap<>();
 	protected LinkedHashMap<String, TextureSupply> supp_tex = new LinkedHashMap<>();
 	protected PackContainerType contype;
 	protected Location loc;
 	//
-	protected HashMap<String, uCreativeTab> creativetabs;
+	protected HashMap<String, CreativeTab> creativetabs;
 	
 	public Addon(PackContainerType type, Location loc, File file){
 		this.contype = type;
@@ -110,7 +96,7 @@ public class Addon extends Registrable<Addon> {
 					for(int i = 0; i < 4; i++) ams[i] = arr.get(i).integer_value();
 				}
 				float tgh = data.getFloat("toughness", 0);
-				//TODO cloth materials | armats.put(entry.getKey(), EnumHelper.addArmorMaterial(entry.getKey(), Resources.NULL_TEXTURE.toString(), durr, ams, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, tgh));
+				clothmats.put(entry.getKey(), new ClothMaterial(entry.getKey(), durr, ams, tgh));
 			});
 		}
 		if(map.has("SupplyTextures")){
@@ -268,7 +254,7 @@ public class Addon extends Registrable<Addon> {
 			if(!file.isDirectory()) return;
 			//
 			File folder = new File(file, "assets/" + id.path() + "/config/" + data.cfg_folder + "/");
-			if(!folder.exists()){ folder.mkdirs(); }
+			if(!folder.exists()) folder.mkdirs();
 			ArrayList<File> candidates = findFiles(folder, data.suffix);
 			for(File file : candidates){
 				try{
@@ -290,31 +276,29 @@ public class Addon extends Registrable<Addon> {
 				}
 				catch(Throwable t){
 					t.printStackTrace();
-					Print.log("Failed to load config from file '" + file + "'!"); Static.stop();
+					Log.print("Failed to load config from file '" + file + "'!"); Static.stop();
 				}
 			}
 		}
 		else{ //assume it's a jar.
 			String lastentryname = null;
 			try{
-				String path = "assets/" + registryname.getPath() + "/config/" + data.cfg_folder + "/";
+				String path = "assets/" + id.path() + "/config/" + data.cfg_folder + "/";
 				ZipFile zip = new ZipFile(file);
 				ZipInputStream stream = new ZipInputStream(new FileInputStream(file));
 				while(true){
 					ZipEntry entry = stream.getNextEntry();
-					if(entry == null){
-						break;
-					}
+					if(entry == null) break;
 					lastentryname = entry.getName();
 					if(entry.getName().startsWith(path) && entry.getName().endsWith(data.suffix)){
-						JsonObject obj = JsonUtil.getObjectFromInputStream(zip.getInputStream(entry));
-						TypeCore<?> core = (TypeCore<?>)data.core.newInstance().parse(obj);
+						JsonMap map = JsonHandler.parse(zip.getInputStream(entry));
+						Registrable<?> core = (Registrable<?>)data.core.getConstructor().newInstance().parse(map);
 						if(core == null){
-							if(obj.has("RegistryName")) Print.log("Skipping " + data.name() + " '" + obj.get("RegistryName").getAsString() + "' due to errors.");
+							if(map.has("RegistryName")) Log.print("Skipping " + data.name() + " '" + map.get("RegistryName").string_value() + "' due to errors.");
 							continue;
 						}
-						data.register(core); //Print.log("Registered " + data.name() + " with ID '" + core.getRegistryName() + "' into FVTM.");
-						if(Static.side().isClient()){
+						data.register(core);
+						if(!Static.isServer()){
 							checkIfHasCustomModel(data, core);
 						}
 					}
@@ -324,13 +308,13 @@ public class Addon extends Registrable<Addon> {
 			}
 			catch(Throwable e){
 				e.printStackTrace();
-				if(lastentryname != null) Print.log("Failed to load config from zip entry '" + lastentryname + "'!"); Static.stop();
+				if(lastentryname != null) Log.print("Failed to load config from zip entry '" + lastentryname + "'!"); Static.stop();
 			}
 		}
 	}
 
-	private void checkIfHasCustomModel(DataType data, TypeCore<?> core){
-		switch(data){
+	private void checkIfHasCustomModel(DataType data, Registrable<?> core){
+		/*switch(data){
 			case BLOCK:{
 				Block block = (Block)core;
 				if(!block.hasPlainModel() && Config.RENDER_BLOCK_MODELS_AS_ITEMS && !block.no3DItemModel()){
@@ -367,22 +351,23 @@ public class Addon extends Registrable<Addon> {
 		}
 		if(loc.isFullLite() || isItemModelMissing(core)){
 			net.fexcraft.lib.mc.render.FCLItemModelLoader.addItemModel(core.getRegistryName(), ItemPlaceholderModel.INSTANCE);
-		}
+		}*/
 	}
 
-	private boolean isItemModelMissing(TypeCore<?> type){
-		try{
+	private boolean isItemModelMissing(Registrable<?> type){
+		/*try{
 			net.minecraft.client.resources.IResource res = net.minecraft.client.Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(type.getRegistryName().getNamespace(), "textures/items/" + type.getRegistryName().getPath() + ".png"));
 			return res == null;
 		}
 		catch(IOException e){
 			//e.printStackTrace();
 			return true;
-		}
+		}*/
+		return false;
 	}
 
-	private void checkLangFile(TypeCore<?> core){
-		if(lang == null) lang = new File((loc.isLitePack() ? file : file.getParentFile()), (loc.isLitePack() ? "" : "/src/main/resources") + "/assets/" + registryname.getPath() + "/lang/en_us.lang");
+	private void checkLangFile(Registrable<?> core){
+		/*if(lang == null) lang = new File((loc.isLitePack() ? file : file.getParentFile()), (loc.isLitePack() ? "" : "/src/main/resources") + "/assets/" + registryname.getPath() + "/lang/en_us.lang");
 		String regname = (core instanceof Block ? "tile." : "item.") + core.getRegistryName().toString() + ".name=";
 		if(!containsLangEntry(regname)){
 			try{
@@ -391,12 +376,12 @@ public class Addon extends Registrable<Addon> {
 			catch(IOException e){
 				e.printStackTrace();
 			}
-			Print.log("Added lang entry '" + regname.replace("=", "") + "'!");
-		}
+			Log.print("Added lang entry '" + regname.replace("=", "") + "'!");
+		}*/
 	}
 
-	private void checkItemJson(TypeCore<?> core, DataType data){
-		File json = new File((loc.isLitePack() ? file : file.getParentFile()), (loc.isLitePack() ? "" : "/src/main/resources") + "/assets/" + core.getRegistryName().getNamespace() + "/models/item/" + core.getRegistryName().getPath() + ".json");
+	private void checkItemJson(Registrable<?> core, DataType data){
+		/*File json = new File((loc.isLitePack() ? file : file.getParentFile()), (loc.isLitePack() ? "" : "/src/main/resources") + "/assets/" + core.getRegistryName().getNamespace() + "/models/item/" + core.getRegistryName().getPath() + ".json");
 		if(!json.exists()){
 			if(!json.getParentFile().exists()) json.getParentFile().mkdirs();
 			JsonObject obj = new JsonObject();
@@ -406,16 +391,16 @@ public class Addon extends Registrable<Addon> {
 			obj.add("textures", textures);
 			obj.addProperty("__comment", "Autogenerated Item JSON via FVTM.");
 			JsonUtil.write(json, obj);
-			Print.log("Generated item json for '" + core.getRegistryName().toString() + "'!");
-		}
+			Log.print("Generated item json for '" + core.getRegistryName().toString() + "'!");
+		}*/
 		//TODO eventually an alternative model for blocks?
 	}
 	
 	private static final String gitph = "https://raw.githubusercontent.com/Fexcraft/FVTM/1.12.2/placeholders/ph_%s.png";
 	private static BufferedImage img, img_veh, img_part;
 
-	private void checkItemIcon(TypeCore<?> core, DataType data){
-		File icon = new File((loc.isLitePack() ? file : file.getParentFile()), (loc.isLitePack() ? "" : "/src/main/resources") + "/assets/" + core.getRegistryName().getNamespace() + "/textures/items/" + core.getRegistryName().getPath() + ".png");;
+	private void checkItemIcon(Registrable<?> core, DataType data){
+		/*File icon = new File((loc.isLitePack() ? file : file.getParentFile()), (loc.isLitePack() ? "" : "/src/main/resources") + "/assets/" + core.getRegistryName().getNamespace() + "/textures/items/" + core.getRegistryName().getPath() + ".png");;
 		if(!icon.exists()){
 			if(!icon.getParentFile().exists()) icon.getParentFile().mkdirs();
 			BufferedImage image = null;
@@ -443,8 +428,8 @@ public class Addon extends Registrable<Addon> {
 			catch(IOException e){
 				e.printStackTrace();
 			}
-			Print.log("Generated item icon for '" + core.getRegistryName().toString() + "'!");
-		}
+			Log.print("Generated item icon for '" + core.getRegistryName().toString() + "'!");
+		}*/
 	}
 
 	private boolean containsLangEntry(String regname){
@@ -473,81 +458,28 @@ public class Addon extends Registrable<Addon> {
 		return result;
 	}
 
-	public AutoRegisterer getFCLRegisterer(){
-		return registerer;
-	}
-
-	@SideOnly(Side.CLIENT)
-	public CreativeTabs getDefaultCreativeTab(){
+	public CreativeTab getDefaultCreativeTab(){
 		if(creativetabs.size() == 0) return null;
 		if(creativetabs.containsKey("default"))
 			return creativetabs.get("default");
-		else return creativetabs.values().toArray(new CreativeTabs[0])[0];
+		else return creativetabs.values().toArray(new CreativeTab[0])[0];
 	}
 
-	@SideOnly(Side.CLIENT)
-	public CreativeTabs getCreativeTab(String id){
+	public CreativeTab getCreativeTab(String id){
 		if(creativetabs.containsKey(id))
 			return creativetabs.get(id);
 		else return getDefaultCreativeTab();
 	}
 
-	public void loadPresets(){
-		if(!this.isEnabled()){
-			Print.log("Skipping PRESET search for Addon '" + registryname.toString() + "' since it's marked as not enabled!");
-			return;
-		}
-		if(contype == ContainerType.DIR){
-			if(!file.isDirectory()) return;
-			//
-			File folder = new File(file, "assets/" + registryname.getPath() + "/config/presets/");
-			if(!folder.exists()){
-				folder.mkdirs();
-			}
-			ArrayList<File> candidates = findFiles(folder, ".json");
-			for(File file : candidates){
-				try{
-					JsonObject obj = JsonUtil.get(file);
-					if(obj.entrySet().isEmpty()) continue;
-					Vehicle vehicle = Resources.VEHICLES.get(new ResourceLocation(obj.get("Vehicle").getAsString()));
-					VehicleData data = (VehicleData)vehicle.getDataClass().getConstructor(Vehicle.class).newInstance(vehicle);
-					data.read(JsonToNBT.getTagFromJson(obj.toString()));
-					data.setPreset(JsonUtil.getIfExists(obj, "Preset", "Nameless"));
-					PresetTab.INSTANCE.add(data.newItemStack());
-				}
-				catch(Exception e){
-					e.printStackTrace();
-				}
-			}
-		}
-		else{ // assume it's a jar.
-			JsonArray array = ZipUtil.getJsonObjectsAt(file, "assets/" + registryname.getPath() + "/config/presets/", ".json");
-			for(JsonElement elm : array){
-				try{
-					JsonObject obj = elm.getAsJsonObject();
-					if(obj.entrySet().isEmpty()) continue;
-					Vehicle vehicle = Resources.VEHICLES.get(obj.get("Vehicle").getAsString());
-					VehicleData data = (VehicleData)vehicle.getDataClass().getConstructor(Vehicle.class).newInstance(vehicle);
-					data.read(JsonToNBT.getTagFromJson(obj.toString()));
-					data.setPreset(JsonUtil.getIfExists(obj, "Preset", "Nameless"));
-					PresetTab.INSTANCE.add(data.newItemStack());
-				}
-				catch(Exception e){
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
 	public void loadRecipes(){
 		if(!this.isEnabled()){
-			Print.log("Skipping RECIPE search for Addon '" + registryname.toString() + "' since it's marked as not enabled!");
+			Log.print("Skipping RECIPE search for Addon '" + id + "' since it's marked as not enabled!");
 			return;
 		}
-		if(contype == ContainerType.DIR){
+		if(contype == PackContainerType.FOLDER){
 			if(!file.isDirectory()) return;
 			//
-			File folder = new File(file, "assets/" + registryname.getPath() + "/config/recipes/");
+			File folder = new File(file, "assets/" + id.path() + "/config/recipes/");
 			if(!folder.exists()){
 				folder.mkdirs();
 			}
@@ -563,7 +495,7 @@ public class Addon extends Registrable<Addon> {
 		}
 		else{ // assume it's a jar.
 			try{
-				String path = "assets/" + registryname.getPath() + "/config/presets/", ext = ".recipe";
+				String path = "assets/" + id.path() + "/config/presets/", ext = ".recipe";
 				ZipFile zip = new ZipFile(file);
 				ZipInputStream stream = new ZipInputStream(new FileInputStream(file));
 				while(true){
@@ -584,8 +516,8 @@ public class Addon extends Registrable<Addon> {
 		}
 	}
 	
-	public HashMap<String, ArmorMaterial> getClothMaterials(){
-		return armats;
+	public HashMap<String, ClothMaterial> getClothMaterials(){
+		return clothmats;
 	}
 	
 	public Location getLocation(){
