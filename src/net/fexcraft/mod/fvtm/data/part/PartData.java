@@ -3,8 +3,7 @@ package net.fexcraft.mod.fvtm.data.part;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.google.gson.JsonObject;
-
+import net.fexcraft.app.json.JsonObject;
 import net.fexcraft.lib.mc.utils.Pos;
 import net.fexcraft.mod.fvtm.data.root.DataCore;
 import net.fexcraft.mod.fvtm.data.root.Textureable;
@@ -26,7 +25,6 @@ public class PartData extends DataCore<Part, PartData> implements TextureUser {
 	protected Textureable texture;
 	protected Pos currentpos = new Pos(0, 0, 0);
 	protected Rot currentrot = new Rot();
-	//protected Vec3f currentrot = new Vec3f();//TODO add this?
 	protected String rotpoint;
 
 	public PartData(Part type){
