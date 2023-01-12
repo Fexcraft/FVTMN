@@ -17,7 +17,7 @@ import net.fexcraft.mod.fvtm.data.root.Model.ModelData;
 import net.fexcraft.mod.fvtm.util.DataUtil;
 import net.fexcraft.mod.fvtm.util.Resources;
 import net.fexcraft.mod.uni.IDL;
-import net.fexcraft.mod.uni.tag.uTagMap;
+import net.fexcraft.mod.uni.tag.TagMap;
 
 public class DecorationData implements Colorable {
 	
@@ -85,7 +85,7 @@ public class DecorationData implements Colorable {
 		if(textures.isEmpty()) textures.add(Resources.WHITE_TEXTURE);
 	}
 	
-	public DecorationData(uTagMap compound, boolean client){
+	public DecorationData(TagMap compound, boolean client){
 		key = compound.getString("key");
 		category = compound.getString("category");
 		offset = new Pos(compound.getFloat("offx"), compound.getFloat("offy"), compound.getFloat("offz"));
@@ -156,8 +156,8 @@ public class DecorationData implements Colorable {
 		return data;
 	}
 
-	public uTagMap write(){
-		uTagMap compound = new uTagMap();
+	public TagMap write(){
+		TagMap compound = new TagMap();
 		compound.set("key", key);
 		compound.set("category", category);
 		compound.set("offx", offset.x);
