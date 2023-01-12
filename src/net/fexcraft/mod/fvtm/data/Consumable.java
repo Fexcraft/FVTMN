@@ -1,73 +1,55 @@
 package net.fexcraft.mod.fvtm.data;
 
-import com.google.gson.JsonObject;
-
-import net.fexcraft.lib.common.json.JsonUtil;
+import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.fvtm.data.root.DataType;
 import net.fexcraft.mod.fvtm.data.root.ItemTextureable;
+import net.fexcraft.mod.fvtm.data.root.Registrable;
 import net.fexcraft.mod.fvtm.data.root.Tabbed;
-import net.fexcraft.mod.fvtm.data.root.TypeCore;
-import net.fexcraft.mod.fvtm.item.ConsumableItem;
 import net.fexcraft.mod.fvtm.util.DataUtil;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.oredict.OreDictionary;
+import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.item.ItemWrapper;
+import net.fexcraft.mod.uni.item.StackWrapper;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class Consumable extends TypeCore<Consumable> implements Tabbed, ItemTextureable {
+public class Consumable extends Registrable<Consumable> implements Tabbed, ItemTextureable {
 	
 	protected byte maxStackSize;
-	protected ConsumableItem item;
+	protected ItemWrapper item;
 	protected String oreDict, container, ctab;
 	//
     private int healamount, useduration;
     private float saturation;
     private boolean wolffood, drinkable, alwaysedible;
-	protected ResourceLocation itemloc;
+	protected IDL itemloc;
 	
 	public Consumable(){}
 
 	@Override
-	public Consumable setRegistryName(ResourceLocation name){
-		this.registryname = name; return this;
-	}
-
-	@Override
-	public ResourceLocation getRegistryName(){
-		return this.registryname;
-	}
-
-	@Override
-	public Class<Consumable> getRegistryType(){
-		return Consumable.class;
-	}
-
-	@Override
-	public Consumable parse(JsonObject obj){
-		this.registryname = DataUtil.getRegistryName(obj);
-		if(registryname == null) return null;
-		this.pack = DataUtil.getAddon(obj);
+	public Consumable parse(JsonMap map){
+		id = DataUtil.getID(map);
+		if(id == null) return null;
+		pack = DataUtil.getAddon(map);
 		if(pack == null) return null;
 		//
-		this.name = JsonUtil.getIfExists(obj, "Name", "Unnamed Material");
-		this.description = DataUtil.getStringArray(obj, "Description", true, true);
-		this.maxStackSize = JsonUtil.getIfExists(obj, "MaxItemStackSize", 64).byteValue();
-		this.oreDict = obj.has("OreDictionary") ? obj.get("OreDictionary").getAsString() : null;
-		this.container = obj.has("ContainerItem") ? obj.get("ContainerItem").getAsString() : null;
+		name = map.getString("Name", "Unnamed Material");
+		description = DataUtil.getStringArray(map, "Description", true);
+		maxStackSize = (byte)map.getInteger("MaxItemStackSize", 64);
+		oreDict = map.getString("OreDictionary", null);
+		container = map.getString("ContainerItem", null);
 		//
-        this.healamount = JsonUtil.getIfExists(obj, "HealAmount", 1).intValue();
-        this.saturation = JsonUtil.getIfExists(obj, "Saturation", 0.6f).floatValue();
-        this.useduration = JsonUtil.getIfExists(obj, "UseDuration", 32).intValue();
-        this.wolffood = JsonUtil.getIfExists(obj, "WolfFood", false);
-        this.drinkable = JsonUtil.getIfExists(obj, "Drinkable", false);
-        this.alwaysedible = JsonUtil.getIfExists(obj, "AlwaysEdible", false);
+        healamount = map.getInteger("HealAmount", 1);
+        saturation = map.getFloat("Saturation", 0.6f);
+        useduration = map.getInteger("UseDuration", 32);
+        wolffood = map.getBoolean("WolfFood", false);
+        drinkable = map.getBoolean("Drinkable", false);
+        alwaysedible = map.getBoolean("AlwaysEdible", false);
 		//
-        this.ctab = JsonUtil.getIfExists(obj, "CreativeTab", "default");
-        this.itemloc = DataUtil.getItemTexture(registryname, getDataType(), obj);
-		this.item = new ConsumableItem(this); return this;
+        ctab = map.getString("CreativeTab", "default");
+        itemloc = DataUtil.getItemTexture(id, getDataType(), map);
+		//TODO consumable item
+		return this;
 	}
 
 	@Override
@@ -84,17 +66,15 @@ public class Consumable extends TypeCore<Consumable> implements Tabbed, ItemText
 		return this.maxStackSize;
 	}
 	
-	public ConsumableItem getConsumableItem(){
-		return item;
-	}
-	
 	@Override
-	public Item getItem(){
+	public ItemWrapper getItem(){
 		return item;
 	}
 
-	public ItemStack newItemStack(){
-		return new ItemStack(item, 1);
+	@Override
+	public StackWrapper getStack(){
+		//TODO stacks
+		return null;
 	}
 	
 	public String getOreDictionaryId(){
@@ -107,11 +87,11 @@ public class Consumable extends TypeCore<Consumable> implements Tabbed, ItemText
 
 	public void linkContainerItem(){
 		if(this.container == null) return;
-		this.item.setContainerItem(Item.getByNameOrId(this.container));
+		//TODO consumable container link
 	}
 
 	public void registerIntoOreDictionary(){
-        if(getOreDictionaryId() != null) OreDictionary.registerOre(getOreDictionaryId(), item); else return;
+        //TODO consumable oredict
 	}
 	
 	//
@@ -146,7 +126,7 @@ public class Consumable extends TypeCore<Consumable> implements Tabbed, ItemText
 	}
 
 	@Override
-	public ResourceLocation getItemTexture(){
+	public IDL getItemTexture(){
 		return itemloc;
 	}
 
