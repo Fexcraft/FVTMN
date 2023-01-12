@@ -1,8 +1,8 @@
 package net.fexcraft.mod.fvtm.data.root;
 
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.mod.uni.item.uItemStack;
-import net.fexcraft.mod.uni.tag.uTagMap;
+import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.tag.TagMap;
 
 public abstract class RegistrableData<TYPE extends Registrable<TYPE>, SELF> {
 	
@@ -12,9 +12,9 @@ public abstract class RegistrableData<TYPE extends Registrable<TYPE>, SELF> {
 		this.type = type;
 	}
 	
-	public abstract uTagMap write(uTagMap compound);
+	public abstract TagMap write(TagMap compound);
 	
-	public abstract SELF read(uTagMap compound);
+	public abstract SELF read(TagMap compound);
 	
 	public abstract SELF parse(JsonMap obj);
 	
@@ -28,9 +28,9 @@ public abstract class RegistrableData<TYPE extends Registrable<TYPE>, SELF> {
 	
 	public static interface DataCoreItem<SELF> {
 		
-		public SELF getData(uItemStack stack);
+		public SELF getData(StackWrapper stack);
 		
-		public SELF getData(uTagMap compound);
+		public SELF getData(TagMap compound);
 		
 	}
 	
