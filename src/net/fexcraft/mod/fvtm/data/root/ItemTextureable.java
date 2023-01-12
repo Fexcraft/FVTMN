@@ -1,10 +1,10 @@
 package net.fexcraft.mod.fvtm.data.root;
 
-import net.minecraft.util.ResourceLocation;
+import net.fexcraft.mod.uni.IDL;
 
 public interface ItemTextureable {
 	
-	public ResourceLocation getItemTexture();
+	public IDL getItemTexture();
 	
 	public default boolean no3DItemModel(){
 		return false;
@@ -12,7 +12,7 @@ public interface ItemTextureable {
 	
 	public static interface ItemTex<TYCO> {
 		
-		public TypeCore<TYCO> getDataType();
+		public Registrable<TYCO> getDataType();
 		
 	}
 
