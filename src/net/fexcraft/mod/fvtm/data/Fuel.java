@@ -1,17 +1,14 @@
 package net.fexcraft.mod.fvtm.data;
 
-import com.google.gson.JsonObject;
-
-import net.fexcraft.lib.common.json.JsonUtil;
+import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.fvtm.data.root.DataType;
-import net.fexcraft.mod.fvtm.data.root.TypeCore;
+import net.fexcraft.mod.fvtm.data.root.Registrable;
 import net.fexcraft.mod.fvtm.util.DataUtil;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class Fuel extends TypeCore<Fuel> {
+public class Fuel extends Registrable<Fuel> {
 	
 	public String primary, secondary;
 	public float quality;
@@ -19,32 +16,17 @@ public class Fuel extends TypeCore<Fuel> {
 	public Fuel(){}
 
 	@Override
-	public Fuel setRegistryName(ResourceLocation name){
-		this.registryname = name; return this;
-	}
-
-	@Override
-	public ResourceLocation getRegistryName(){
-		return this.registryname;
-	}
-
-	@Override
-	public Class<Fuel> getRegistryType(){
-		return Fuel.class;
-	}
-
-	@Override
-	public Fuel parse(JsonObject obj){
-		this.registryname = DataUtil.getRegistryName(obj);
-		if(registryname == null) return null;
-		this.pack = DataUtil.getAddon(obj);
+	public Fuel parse(JsonMap map){
+		id = DataUtil.getID(map);
+		if(id == null) return null;
+		pack = DataUtil.getAddon(map);
 		if(pack == null) return null;
 		//
-		this.name = JsonUtil.getIfExists(obj, "Name", "Unnamed Material");
-		this.description = DataUtil.getStringArray(obj, "Description", true, true);
-		this.primary = JsonUtil.getIfExists(obj, "PrimaryGroup", "petrol");
-		this.secondary = JsonUtil.getIfExists(obj, "SecondaryGroup", "super95");
-		this.quality = JsonUtil.getIfExists(obj, "Quality", 0.95f).floatValue();
+		name = map.getString("Name", "Unnamed Material");
+		description = DataUtil.getStringArray(map, "Description", true);
+		primary = map.getString("PrimaryGroup", "petrol");
+		secondary = map.getString("SecondaryGroup", "super95");
+		quality = map.getFloat("Quality", 0.95f);
 		//
 		return this;
 	}
