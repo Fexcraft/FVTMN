@@ -34,14 +34,21 @@ import net.fexcraft.lib.mc.render.FCLBlockModel;
 import net.fexcraft.lib.mc.render.FCLBlockModelLoader;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
-import net.fexcraft.mod.fvtm.data.*;
+import net.fexcraft.mod.fvtm.data.Consumable;
+import net.fexcraft.mod.fvtm.data.DecorationData;
+import net.fexcraft.mod.fvtm.data.DirectPipe;
+import net.fexcraft.mod.fvtm.data.Fuel;
+import net.fexcraft.mod.fvtm.data.Material;
+import net.fexcraft.mod.fvtm.data.RailGauge;
+import net.fexcraft.mod.fvtm.data.TextureSupply;
+import net.fexcraft.mod.fvtm.data.WireType;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.addon.AddonClass;
-import net.fexcraft.mod.fvtm.data.addon.AddonLocation;
-import net.fexcraft.mod.fvtm.data.addon.AddonSteeringOverlay;
 import net.fexcraft.mod.fvtm.data.attribute.*;
 import net.fexcraft.mod.fvtm.data.block.Block;
 import net.fexcraft.mod.fvtm.data.block.BlockData;
+import net.fexcraft.mod.fvtm.data.cloth.Cloth;
+import net.fexcraft.mod.fvtm.data.cloth.ClothMaterial;
 import net.fexcraft.mod.fvtm.data.container.Container;
 import net.fexcraft.mod.fvtm.data.container.ContainerData;
 import net.fexcraft.mod.fvtm.data.container.ContainerHolder.ContainerHolderWrapper;
@@ -61,8 +68,9 @@ import net.fexcraft.mod.fvtm.data.vehicle.VehicleEntity;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 
-public class Resources {
-	
+public abstract class Resources {
+
+	public static Resources INSTANCE = null;
 	public static Registry<Addon> ADDONS = new Registry<>();
 	public static Registry<Part> PARTS = new Registry<>();
 	public static Registry<Vehicle> VEHICLES = new Registry<>();
@@ -85,7 +93,7 @@ public class Resources {
 	public static final IDL NULL_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/null.png");
 	public static final IDL WHITE_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/white.png");
 	public static final String UTIL_LISTENER = "fvtm:utils";
-	//TODO cloth materials | public static final ArmorMaterial NONE_MAT = EnumHelper.addArmorMaterial("fvtm:none", Resources.NULL_TEXTURE.toString(), 1024, new int[]{ 0, 0, 0, 0 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0f);
+	public static final ClothMaterial NONE_MAT = new ClothMaterial("fvtm:none", 0, new int[4], 0);
 	public static final ArrayList<String> WIRE_DECOS = new ArrayList<>();
 	public static final HashMap<String, JsonObject> WIRE_DECO_CACHE = new HashMap<>();
 	public static final HashMap<String, DecorationData> DECORATIONS = new HashMap<>();
@@ -942,16 +950,25 @@ public class Resources {
 		return OVERLAYS.containsKey(event.getOverlay()) ? OVERLAYS.get(event.getOverlay()) : OVERLAYS.get("default");
 	}
 
-	public static ArmorMaterial getClothMaterial(String matid){
+	public static ClothMaterial getClothMaterial(String matid){
 		String[] split = matid.split(":");
 		for(Addon addon : ADDONS){
-			if(addon.getRegistryName().getPath().equals(split[0])){
-				ArmorMaterial mat = addon.getClothMaterials().get(split[1]);
+			if(addon.regname().path().equals(split[0])){
+				ClothMaterial mat = addon.getClothMaterials().get(split[1]);
 				if(mat != null) return mat;
 				else break;
 			}
 		}
 		return NONE_MAT;
+	}
+	
+	protected abstract ClothMaterial getVanillaClothMaterial0(String matid){
+		//TODO 
+		return NONE_MAT;
+	}
+	
+	public static ClothMaterial getVanillaClothMaterial(String matid){
+		return INSTANCE.getVanillaClothMaterial(matid);
 	}
 
 	public static void linkTextureSuppliers(){
