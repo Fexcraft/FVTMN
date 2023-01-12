@@ -4,12 +4,12 @@ import java.util.Collection;
 import java.util.TreeMap;
 
 import net.fexcraft.lib.common.math.Time;
-import net.fexcraft.mod.uni.client.uCreativeTab;
+import net.fexcraft.mod.uni.client.CreativeTab;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class AddonTab extends uCreativeTab {
+public class AddonTab extends CreativeTab {
 	
     private static TreeMap<ResourceLocation, AddonTab> TABS = new TreeMap<>();
     public static final String DEFAULT = "default";
