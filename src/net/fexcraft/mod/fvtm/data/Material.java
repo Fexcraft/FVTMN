@@ -1,63 +1,43 @@
 package net.fexcraft.mod.fvtm.data;
 
-import com.google.gson.JsonObject;
-
+import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.json.JsonUtil;
 import net.fexcraft.mod.fvtm.data.root.DataType;
 import net.fexcraft.mod.fvtm.data.root.ItemTextureable;
+import net.fexcraft.mod.fvtm.data.root.Registrable;
 import net.fexcraft.mod.fvtm.data.root.Tabbed;
-import net.fexcraft.mod.fvtm.data.root.TypeCore;
-import net.fexcraft.mod.fvtm.event.TypeEvents;
-import net.fexcraft.mod.fvtm.item.MaterialItem;
 import net.fexcraft.mod.fvtm.util.DataUtil;
 import net.fexcraft.mod.fvtm.util.Resources;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.oredict.OreDictionary;
+import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.item.ItemWrapper;
+import net.fexcraft.mod.uni.item.StackWrapper;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class Material extends TypeCore<Material> implements Tabbed, ItemTextureable {
+public class Material extends Registrable<Material> implements Tabbed, ItemTextureable {
 	
 	protected byte maxStackSize;
 	protected short maxHealth;
-	protected MaterialItem item;
+	protected ItemWrapper item;
 	protected String oreDict, container, fuelgroup, ctab;
 	protected int burntime, fuel_capacity;
 	protected boolean isVehicleKey, isFuelContainer;
-	protected ResourceLocation itemloc;
+	protected IDL itemloc;
 	protected Fuel fuel;
 	
 	public Material(){}
 
 	@Override
-	public Material setRegistryName(ResourceLocation name){
-		this.registryname = name; return this;
-	}
-
-	@Override
-	public ResourceLocation getRegistryName(){
-		return this.registryname;
-	}
-
-	@Override
-	public Class<Material> getRegistryType(){
-		return Material.class;
-	}
-
-	@Override
-	public Material parse(JsonObject obj){
-		this.registryname = DataUtil.getRegistryName(obj);
-		if(registryname == null) return null;
-		this.pack = DataUtil.getAddon(obj);
+	public Material parse(JsonMap map){
+		id = DataUtil.getID(map);
+		if(id == null) return null;
+		pack = DataUtil.getAddon(map);
 		if(pack == null) return null;
 		//
-		this.name = JsonUtil.getIfExists(obj, "Name", "Unnamed Material");
-		this.description = DataUtil.getStringArray(obj, "Description", true, true);
-		this.maxStackSize = JsonUtil.getIfExists(obj, "MaxItemStackSize", 64).byteValue();
+		this.name = map.getString("Name", "Unnamed Material");
+		this.description = DataUtil.getStringArray(map, "Description", true);
+		this.maxStackSize = (byte)map.getInteger("MaxItemStackSize", 64);
 		this.maxHealth = JsonUtil.getIfExists(obj, "MaxItemDamage", 0).shortValue();
 		this.oreDict = obj.has("OreDictionary") ? obj.get("OreDictionary").getAsString() : null;
 		this.container = obj.has("ContainerItem") ? obj.get("ContainerItem").getAsString() : null;
@@ -89,17 +69,15 @@ public class Material extends TypeCore<Material> implements Tabbed, ItemTexturea
 		return this.maxStackSize;
 	}
 	
-	public MaterialItem getMaterialItem(){
-		return item;
-	}
-	
 	@Override
-	public Item getItem(){
+	public ItemWrapper getItem(){
 		return item;
 	}
 
-	public ItemStack newItemStack(){
-		return new ItemStack(item, 1);
+	@Override
+	public StackWrapper getStack(){
+		//TODO stacks
+		return null;
 	}
 
 	public int getMaxDamage(){
@@ -116,7 +94,7 @@ public class Material extends TypeCore<Material> implements Tabbed, ItemTexturea
 
 	public void linkContainerItem(){
 		if(this.container == null) return;
-		this.item.setContainerItem(Item.getByNameOrId(this.container));
+		//TODO material container link
 	}
 
 	public int getItemBurnTime(){
@@ -157,7 +135,7 @@ public class Material extends TypeCore<Material> implements Tabbed, ItemTexturea
 	}
 
 	public void registerIntoOreDictionary(){
-        if(getOreDictionaryId() != null) OreDictionary.registerOre(getOreDictionaryId(), item); else return;
+        //TODO material oredict
 	}
 
 	@Override
@@ -166,7 +144,7 @@ public class Material extends TypeCore<Material> implements Tabbed, ItemTexturea
 	}
 
 	@Override
-	public ResourceLocation getItemTexture(){
+	public IDL getItemTexture(){
 		return itemloc;
 	}
 
