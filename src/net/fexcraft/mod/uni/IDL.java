@@ -8,7 +8,7 @@ package net.fexcraft.mod.uni;
  */
 public interface IDL {
 	
-	public String domain();
+	public String space();
 	
 	public String id();
 	
