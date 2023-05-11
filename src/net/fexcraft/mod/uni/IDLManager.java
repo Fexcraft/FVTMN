@@ -7,8 +7,8 @@ package net.fexcraft.mod.uni;
  */
 public interface IDLManager {
 	
-	public static IDLManager[] INSTANCE = null;
-	
+	public static IDLManager[] INSTANCE = { null };
+
 	public IDL get(String idl, boolean cache, boolean named);
 	
 	public static IDL getIDL(String idl, boolean cache, boolean named){
