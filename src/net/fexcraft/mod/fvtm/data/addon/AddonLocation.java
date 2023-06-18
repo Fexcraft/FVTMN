@@ -1,5 +1,8 @@
 package net.fexcraft.mod.fvtm.data.addon;
 
+/**
+ * @author Ferdinand Calo' (FEX___96)
+ */
 public enum AddonLocation {
 	
 	MODJAR, RESOURCEPACK, CONFIGPACK, INTERNAL;
