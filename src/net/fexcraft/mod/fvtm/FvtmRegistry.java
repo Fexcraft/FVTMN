@@ -9,6 +9,7 @@ import java.io.File;
  */
 public class FvtmRegistry {
 
+	public static final String CORE_VER = "1.0.0";
 	public static String LOADER_VER;
 	public static File CONFIG_DIR;
 
