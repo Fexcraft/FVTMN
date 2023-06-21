@@ -2,6 +2,8 @@ package net.fexcraft.mod.fvtm;
 
 import java.io.File;
 
+import net.fexcraft.mod.uni.IDL;
+
 /**
  * FVTM Registry
  *
@@ -12,6 +14,8 @@ public class FvtmRegistry {
 	public static final String CORE_VER = "1.0.0";
 	public static String LOADER_VER;
 	public static File CONFIG_DIR;
+	//
+	public static IDL NONE_CLOTH_MAT;
 
 	public static final void init(String loadver, File conf){
 		LOADER_VER = loadver;
