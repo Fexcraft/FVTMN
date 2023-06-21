@@ -20,4 +20,7 @@ public interface IDL {
 		return null;
 	}
 
+	public default String colon(){
+		return space() + ":" + id();
+	}
 }
