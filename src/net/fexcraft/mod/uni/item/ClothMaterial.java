@@ -3,7 +3,6 @@ package net.fexcraft.mod.uni.item;
 import java.util.TreeMap;
 
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.mod.fvtm.data.addon.AddonNew;
 import net.fexcraft.mod.uni.IDL;
 
 /**
@@ -11,13 +10,31 @@ import net.fexcraft.mod.uni.IDL;
  */
 public interface ClothMaterial {
 
-	public static TreeMap<IDL, ClothMaterial> TABS = new TreeMap<>();
-	public static ClothMaterial.Manager MANAGER = null;
+	public static TreeMap<IDL, ClothMaterial> MATERIALS = new TreeMap<>();
+	public static Manager[] MANAGER = new Manager[1];
+
+	public static ClothMaterial create(IDL id, JsonMap map){
+		return MANAGER[0].create(id, map);
+	}
+
+	public static ClothMaterial get(String str){
+		return MANAGER[0].get(str);
+	}
+
+	public static ClothMaterial get(IDL id){
+		return MANAGER[0].get(id);
+	}
 
 	public static interface Manager {
 
-		public ClothMaterial create(AddonNew addon, JsonMap map);
+		public ClothMaterial create(IDL id, JsonMap map);
+
+		public ClothMaterial get(String str);
+
+		public ClothMaterial get(IDL id);
 
 	}
+
+	public Object getLocalMaterial();
 
 }
