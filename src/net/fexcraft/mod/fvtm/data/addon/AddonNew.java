@@ -11,6 +11,8 @@ import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.TextureSupply;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
+import net.fexcraft.mod.uni.EnvInfo;
+import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.client.CTab;
 import net.fexcraft.mod.uni.item.ClothMaterial;
 
@@ -48,17 +50,19 @@ public class AddonNew extends Content<AddonNew> {
 		if(map.has("Author")) authors.add(map.get("Author").string_value());
 		website = map.getString("Website", "http://fexcraft.net/minecraft/content");
 		license = map.getString("License", "All Rights Reserved");
-		if(!map.has("CreativeTabs")){
-			creativetabs.put(CTab.DEFAULT, CTab.MANAGER.create(this, CTab.DEFAULT));
-		}
-		else{
-			map.getArray("CreativeTabs").value.forEach(jsn -> {
-				creativetabs.put(jsn.string_value(), CTab.MANAGER.create(this, jsn.string_value()));
-			});
+		if(EnvInfo.CLIENT){
+			if(!map.has("CreativeTabs")){
+				creativetabs.put(CTab.DEFAULT, CTab.create(this, CTab.DEFAULT));
+			}
+			else{
+				map.getArray("CreativeTabs").value.forEach(jsn -> {
+					creativetabs.put(jsn.string_value(), CTab.create(this, jsn.string_value()));
+				});
+			}
 		}
 		if(map.has("ClothMaterials")){
 			map.getMap("ClothMaterials").entries().forEach(entry -> {
-				clothmats.put(entry.getKey(), ClothMaterial.MANAGER.create(this, entry.getValue().asMap()));
+				clothmats.put(entry.getKey(), ClothMaterial.create(IDLManager.getIDLCached(id.id() + ":" + entry.getKey()), entry.getValue().asMap()));
 			});
 		}
 		if(map.has("SupplyTextures")){
