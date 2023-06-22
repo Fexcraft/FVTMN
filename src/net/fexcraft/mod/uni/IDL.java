@@ -7,7 +7,7 @@ package net.fexcraft.mod.uni;
  *
  */
 public interface IDL {
-	
+
 	public String space();
 	
 	public String id();
@@ -23,4 +23,9 @@ public interface IDL {
 	public default String colon(){
 		return space() + ":" + id();
 	}
+
+	static String conid(IDL id, String key){
+		return id.id() + ":" + key;
+	}
+
 }
