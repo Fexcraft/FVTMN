@@ -3,7 +3,7 @@ package net.fexcraft.mod.fvtm.data;
 import java.util.ArrayList;
 
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.app.json.JsonObject;
+import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 
@@ -22,14 +22,14 @@ public class TextureSupply {
 	
 	public TextureSupply(String key, JsonMap map){
 		this(key);
-		JsonObject tar = map.get("target");
+		JsonValue tar = map.get("target");
 		if(tar.isArray()){
-			for(JsonObject jsn : tar.asArray().value) targets.add(jsn.string_value());
+			for(JsonValue jsn : tar.asArray().value) targets.add(jsn.string_value());
 		}
 		else targets.add(tar.string_value());
-		JsonObject tex = map.get("texture");
+		JsonValue tex = map.get("texture");
 		if(tex.isArray()){
-			for(JsonObject jsn : tex.asArray().value) locs.add(IDLManager.getIDLNamed(jsn.string_value()));
+			for(JsonValue jsn : tex.asArray().value) locs.add(IDLManager.getIDLNamed(jsn.string_value()));
 		}
 		else locs.add(IDLManager.getIDLNamed(tex.string_value()));
 	}
