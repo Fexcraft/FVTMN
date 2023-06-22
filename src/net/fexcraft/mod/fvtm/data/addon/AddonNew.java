@@ -1,5 +1,7 @@
 package net.fexcraft.mod.fvtm.data.addon;
 
+import static net.fexcraft.mod.fvtm.FvtmRegistry.DECORATIONS;
+import static net.fexcraft.mod.fvtm.FvtmRegistry.DECORATION_CATEGORIES;
 import static net.fexcraft.mod.uni.IDL.conid;
 
 import java.io.File;
@@ -11,12 +13,15 @@ import java.util.Map.Entry;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
+import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
+import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.fvtm.data.TextureSupply;
+import net.fexcraft.mod.fvtm.sys.condition.Condition;
+import net.fexcraft.mod.fvtm.sys.condition.ConditionRegistry;
 import net.fexcraft.mod.fvtm.sys.particle.Particle;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
-import net.fexcraft.mod.fvtm.util.Resources;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.client.CTab;
@@ -77,11 +82,39 @@ public class AddonNew extends Content<AddonNew> {
 			});
 		}
 		if(map.has("WireDecos")){
-			Resources.WIRE_DECO_CACHE.put(getID().id(), map.getMap("WireDecos"));
+			FvtmRegistry.WIRE_DECO_CACHE.put(getID().id(), map.getMap("WireDecos"));
 		}
 		if(map.has("Particles") && EnvInfo.CLIENT){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("Particles").entries()){
 				new Particle(conid(id, entry.getKey()), entry.getValue().asMap());
+			}
+		}
+		if(map.has("Conditions")){
+			for(Entry<String, JsonValue<?>> entry : map.getMap("Conditions").entries()){
+				Condition cond = null;
+				if(entry.getValue().isArray()){
+					cond = new Condition(conid(id, entry.getKey()), entry.getValue().asArray());
+				}
+				else{
+					cond = new Condition(conid(id, entry.getKey()), entry.getValue().asMap());
+				}
+				if(cond != null) ConditionRegistry.register(cond);
+			}
+		}
+		if(map.has("TrafficSigns")){
+			//
+		}
+		if(map.has("Decorations")){
+			for(Entry<String, JsonValue<?>> entry : map.getMap("Decorations").entries()){
+				String cat = entry.getKey();
+				JsonMap decos = entry.getValue().asMap();
+				decos.entries().forEach(deco -> {
+					String key = conid(id, deco.getKey());
+					DECORATIONS.put(key, new DecorationData(key, cat, deco.getValue()));
+				});
+				if(decos.size() > 0 && !DECORATION_CATEGORIES.contains(cat)){
+					DECORATION_CATEGORIES.add(cat);
+				}
 			}
 		}
 		//
