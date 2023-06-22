@@ -11,6 +11,7 @@ import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.TextureSupply;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
+import net.fexcraft.mod.fvtm.util.Resources;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.client.CTab;
@@ -69,6 +70,9 @@ public class AddonNew extends Content<AddonNew> {
 			map.getMap("SupplyTextures").entries().forEach(entry -> {
 				supp_tex.put(entry.getKey(), new TextureSupply(entry.getKey(), entry.getValue().asMap()));
 			});
+		}
+		if(map.has("WireDecos")){
+			Resources.WIRE_DECO_CACHE.put(getID().id(), map.getMap("WireDecos"));
 		}
 		//
 		return this;
