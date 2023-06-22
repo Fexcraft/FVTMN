@@ -1,7 +1,9 @@
 package net.fexcraft.mod.fvtm;
 
 import java.io.File;
+import java.util.HashMap;
 
+import net.fexcraft.mod.fvtm.sys.particle.Particle;
 import net.fexcraft.mod.uni.IDL;
 
 /**
@@ -16,6 +18,8 @@ public class FvtmRegistry {
 	public static File CONFIG_DIR;
 	//
 	public static IDL NONE_CLOTH_MAT;
+	//
+	public static HashMap<String, Particle> PARTICLES = new HashMap<>();
 
 	public static final void init(String loadver, File conf){
 		LOADER_VER = loadver;
