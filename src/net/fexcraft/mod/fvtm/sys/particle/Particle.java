@@ -9,6 +9,9 @@ import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
 
+/**
+ * @author Ferdinand Calo' (FEX___96)
+ */
 public class Particle {
 	
 	public ParticleType type;
@@ -19,7 +22,7 @@ public class Particle {
 	public final String id;
 	public String next;
 	//
-	protected Polyhedron model;
+	public Polyhedron model;
 	public static Polyhedron cubemodel = new Polyhedron();
 	static{
 		cubemodel.newGen()
