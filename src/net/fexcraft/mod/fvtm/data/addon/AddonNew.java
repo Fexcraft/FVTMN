@@ -1,15 +1,20 @@
 package net.fexcraft.mod.fvtm.data.addon;
 
+import static net.fexcraft.mod.uni.IDL.conid;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.TextureSupply;
+import net.fexcraft.mod.fvtm.sys.particle.Particle;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.fvtm.util.Resources;
 import net.fexcraft.mod.uni.EnvInfo;
@@ -63,7 +68,7 @@ public class AddonNew extends Content<AddonNew> {
 		}
 		if(map.has("ClothMaterials")){
 			map.getMap("ClothMaterials").entries().forEach(entry -> {
-				clothmats.put(entry.getKey(), ClothMaterial.create(IDLManager.getIDLCached(id.id() + ":" + entry.getKey()), entry.getValue().asMap()));
+				clothmats.put(entry.getKey(), ClothMaterial.create(IDLManager.getIDLCached(conid(id, entry.getKey())), entry.getValue().asMap()));
 			});
 		}
 		if(map.has("SupplyTextures")){
@@ -73,6 +78,11 @@ public class AddonNew extends Content<AddonNew> {
 		}
 		if(map.has("WireDecos")){
 			Resources.WIRE_DECO_CACHE.put(getID().id(), map.getMap("WireDecos"));
+		}
+		if(map.has("Particles") && EnvInfo.CLIENT){
+			for(Entry<String, JsonValue<?>> entry : map.getMap("Particles").entries()){
+				new Particle(conid(id, entry.getKey()), entry.getValue().asMap());
+			}
 		}
 		//
 		return this;
