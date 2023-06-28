@@ -21,6 +21,7 @@ import net.fexcraft.mod.fvtm.data.TextureSupply;
 import net.fexcraft.mod.fvtm.sys.condition.Condition;
 import net.fexcraft.mod.fvtm.sys.condition.ConditionRegistry;
 import net.fexcraft.mod.fvtm.sys.particle.Particle;
+import net.fexcraft.mod.fvtm.sys.tsign.TrafficSignLibrary;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDLManager;
@@ -102,7 +103,30 @@ public class AddonNew extends Content<AddonNew> {
 			}
 		}
 		if(map.has("TrafficSigns")){
-			//
+			JsonMap tsn = map.getMap("TrafficSigns");
+			TrafficSignLibrary.AddonLib lib = new TrafficSignLibrary.AddonLib(id.id());
+			if(tsn.has("backgrounds")){
+				for(Entry<String, JsonValue<?>> entry : tsn.getMap("backgrounds").entries()){
+					lib.backgrounds.put(entry.getKey(), entry.getValue().string_value());
+				}
+			}
+			if(tsn.has("components")){
+				for(Entry<String, JsonValue<?>> entry : tsn.getMap("components").entries()){
+					lib.components.put(entry.getKey(), entry.getValue().string_value());
+				}
+			}
+			if(tsn.has("fonts")){
+				for(Entry<String, JsonValue<?>> entry : tsn.getMap("fonts").entries()){
+					lib.fonts.put(entry.getKey(), entry.getValue().string_value());
+				}
+			}
+			if(tsn.has("presets")){
+				for(Entry<String, JsonValue<?>> entry : tsn.getMap("presets").entries()){
+					lib.presets.put(entry.getKey(), entry.getValue().asMap());
+				}
+			}
+			TrafficSignLibrary.LIBRARIES.put(lib.id, lib);
+			lib.load();
 		}
 		if(map.has("Decorations")){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("Decorations").entries()){
@@ -117,7 +141,6 @@ public class AddonNew extends Content<AddonNew> {
 				}
 			}
 		}
-		//
 		return this;
 	}
 
