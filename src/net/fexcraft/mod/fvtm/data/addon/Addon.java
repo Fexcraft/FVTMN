@@ -31,7 +31,7 @@ import net.fexcraft.mod.uni.item.ClothMaterial;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class AddonNew extends Content<AddonNew> {
+public class Addon extends Content<Addon> {
 
 	private HashMap<String, CTab> creativetabs = new HashMap<>();
 	protected HashMap<String, ClothMaterial> clothmats = new HashMap<>();
@@ -44,14 +44,14 @@ public class AddonNew extends Content<AddonNew> {
 	private String website;
 	private String license;
 
-	public AddonNew(File file, AddonLocation loc){
+	public Addon(File file, AddonLocation loc){
 		isJar = !file.isDirectory();
 		this.file = file;
 		this.loc = loc;
 	}
 
 	@Override
-	public AddonNew parse(JsonMap map){
+	public Addon parse(JsonMap map){
 		id = ContentConfigUtil.getID(map);
 		pack = this;
 		name = map.getString("Name", "Unnamed Addon");
@@ -157,4 +157,15 @@ public class AddonNew extends Content<AddonNew> {
 	@Override
 	public void loadModel(){}
 
+	public File getFile(){
+		return file;
+	}
+
+	public AddonLocation getLocation(){
+		return loc;
+	}
+
+	public boolean isJar(){
+		return isJar;
+	}
 }
