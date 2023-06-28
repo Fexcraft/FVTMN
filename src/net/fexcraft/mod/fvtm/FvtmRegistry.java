@@ -6,7 +6,9 @@ import java.util.HashMap;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.fvtm.data.DecorationData;
+import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.sys.particle.Particle;
+import net.fexcraft.mod.fvtm.util.Registry;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 
@@ -25,6 +27,7 @@ public class FvtmRegistry {
 	public static final IDL NULL_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/null.png");
 	public static final IDL WHITE_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/white.png");
 	//
+	public static final Registry<Addon> ADDONS = new Registry<>();
 	public static final HashMap<String, Particle> PARTICLES = new HashMap<>();
 	public static final HashMap<String, JsonMap> WIRE_DECO_CACHE = new HashMap<>();
 	public static final HashMap<String, DecorationData> DECORATIONS = new HashMap<>();
@@ -33,7 +36,8 @@ public class FvtmRegistry {
 	public static final void init(String loadver, File conf){
 		LOADER_VER = loadver;
 		CONFIG_DIR = conf;
-		Config.init(new File(conf, "fvtm.json"));
+		if(!CONFIG_DIR.exists()) CONFIG_DIR.mkdirs();
+		Config.init(new File(conf.getParentFile(), "fvtm.json"));
 	}
 
 }
