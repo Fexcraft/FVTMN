@@ -168,4 +168,9 @@ public class Addon extends Content<Addon> {
 	public boolean isJar(){
 		return isJar;
 	}
+
+	public String getVersion(){
+		return version;
+	}
+
 }
