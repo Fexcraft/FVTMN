@@ -1,11 +1,16 @@
 package net.fexcraft.mod.fvtm.util;
 
+import static net.fexcraft.mod.fvtm.FvtmRegistry.ADDONS;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
+import net.fexcraft.mod.fvtm.FvtmRegistry;
+import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.root.Model;
 import net.fexcraft.mod.fvtm.data.root.Model.ModelData;
 import net.fexcraft.mod.uni.IDL;
@@ -19,6 +24,14 @@ public class ContentConfigUtil {
 	public static IDL getID(JsonMap map){
 		if(map.has("ID")) return IDLManager.getIDLCached(map.get("ID").string_value());
 		else return IDLManager.getIDLCached(map.get("RegistryName").string_value());
+	}
+
+	public static IDL getID(Addon pack, JsonMap map){
+		String id = map.getString("ID", null);
+		if(id == null) map.get("RegistryName", null);
+		if(id == null) return null;
+		if(id.contains(":")) return IDLManager.getIDLCached(id);
+		else return IDLManager.getIDLCached((pack == null ? "fvtm" : pack.getID().id()) + ":" + id);
 	}
 
 	public static ModelData getModelData(JsonMap map, String key, ModelData data){
@@ -66,6 +79,29 @@ public class ContentConfigUtil {
 				data.set(key, value.float_value());
 			}
 			else data.set(key, value.string_value());
+		}
+	}
+
+	public static Addon getAddon(JsonMap map){
+		if(map.has("Addon")){
+			String id = map.get("Addon").string_value();
+			if(id.contains(":")) id = id.split(":")[1];
+			for(Addon addon : ADDONS){
+				if(addon.getID().id().equals(id)) return addon;
+			}
+		}
+		return ADDONS.get(FvtmRegistry.INTERNAL_ADDON_ID);
+	}
+
+	public static List<String> getStringList(JsonMap map, String key){
+		if(!map.has(key)) return new ArrayList<>();
+		if(map.get(key).isArray()){
+			return map.getArray(key).toStringList();
+		}
+		else{
+			ArrayList list = new ArrayList();
+			list.add(map.get(key).string_value());
+			return list;
 		}
 	}
 
