@@ -1,5 +1,7 @@
 package net.fexcraft.mod.fvtm.data;
 
+import static net.fexcraft.mod.fvtm.FvtmRegistry.FUELS;
+
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
@@ -11,7 +13,7 @@ public enum ContentType {
 	MATERIAL(".material", "materials"),
 	CONTAINER(".container", "containers"),
 	CONSUMABLE(".consumable", "consumables"),
-	FUEL(".fuel", "fuels"),
+	FUEL(".fuel", "fuels", Fuel.class),
 	BLOCK(".block", "blocks"),
 	MULTIBLOCK(".multiblock", "blocks"),
 	RAILGAUGE(".gauge", "railgauges"),
@@ -40,7 +42,7 @@ public enum ContentType {
 			case MATERIAL: break;
 			case CONTAINER: break;
 			case CONSUMABLE: break;
-			case FUEL: break;
+			case FUEL: FUELS.register(content); break;
 			case BLOCK: break;
 			case MULTIBLOCK: break;
 			case RAILGAUGE: break;
