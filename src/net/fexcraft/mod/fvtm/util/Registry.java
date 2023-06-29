@@ -14,6 +14,10 @@ public class Registry<Type extends Content<Type>> extends ArrayList<Type> {
 		add(type);
 	}
 
+	public void register(Object o){
+		add((Type)o);
+	}
+
 	public Type get(IDL idl){
 		for(Type type : this) if(type.getID().equals(idl)) return type;
 		return null;
