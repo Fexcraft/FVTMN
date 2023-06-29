@@ -38,6 +38,6 @@ public abstract class Content<SELF> {
 		return description;
 	}
 
-	public abstract void loadModel();
+	public void loadModel(){}
 
 }
