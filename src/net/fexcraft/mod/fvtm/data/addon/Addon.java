@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.common.collect.ImmutableList;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
@@ -171,6 +173,33 @@ public class Addon extends Content<Addon> {
 
 	public String getVersion(){
 		return version;
+	}
+
+	public Map<String, TextureSupply> getTextureSuppliers(){
+		return supp_tex;
+	}
+
+	public CTab getDefaultCreativeTab(){
+		if(creativetabs.size() == 0) return null;
+		if(creativetabs.containsKey("default")) return creativetabs.get("default");
+		else return creativetabs.values().toArray(new CTab[0])[0];
+	}
+
+	public CTab getCreativeTab(String id){
+		if(creativetabs.containsKey(id)) return creativetabs.get(id);
+		else return getDefaultCreativeTab();
+	}
+
+	public List<String> getAuthors(){
+		return ImmutableList.copyOf(authors);
+	}
+
+	public String getWebsite(){
+		return website;
+	}
+
+	public String getLicense(){
+		return license;
 	}
 
 }
