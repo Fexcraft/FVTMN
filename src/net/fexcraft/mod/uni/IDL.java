@@ -24,8 +24,12 @@ public interface IDL {
 		return space() + ":" + id();
 	}
 
-	static String conid(IDL id, String key){
+	public static String conid(IDL id, String key){
 		return id.id() + ":" + key;
+	}
+
+	public default <Q> Q local(){
+		return (Q)this;
 	}
 
 }
