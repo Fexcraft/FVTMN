@@ -10,9 +10,11 @@ import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
+import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.root.Model;
 import net.fexcraft.mod.fvtm.data.root.Model.ModelData;
+import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 
@@ -28,7 +30,7 @@ public class ContentConfigUtil {
 
 	public static IDL getID(Addon pack, JsonMap map){
 		String id = map.getString("ID", null);
-		if(id == null) map.get("RegistryName", null);
+		if(id == null) id = map.get("RegistryName", null);
 		if(id == null) return null;
 		if(id.contains(":")) return IDLManager.getIDLCached(id);
 		else return IDLManager.getIDLCached((pack == null ? "fvtm" : pack.getID().id()) + ":" + id);
@@ -105,4 +107,21 @@ public class ContentConfigUtil {
 		}
 	}
 
+	public static final IDL ITL_GENERAL = IDLManager.getIDLCached("fvtm:textures/items/ph_general.png");
+	public static final IDL ITL_VEHICLE = IDLManager.getIDLCached("fvtm:textures/items/ph_vehicle.png");
+	public static final IDL ITL_MBLOCK = IDLManager.getIDLCached("fvtm:textures/items/ph_multiblock.png");
+	public static final IDL ITL_PART = IDLManager.getIDLCached("fvtm:textures/items/ph_part.png");
+
+	public static IDL getItemTexture(IDL id, ContentType contype, JsonMap map){
+		if(map.has("ItemTexture")){
+			return IDLManager.getIDLCached(map.get("ItemTexture").string_value());
+		}
+		else{
+			IDL idl = IDLManager.getIDLCached(id.space() + ":textures/items/" + id.path() + ".png");
+			if(EnvInfo.CLIENT){
+				//TODO check if missing and return placeholder instead
+			}
+			return idl;
+		}
+	}
 }
