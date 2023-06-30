@@ -35,6 +35,7 @@ public abstract class FvtmResources {
 	public void init(){
 		FVTM_CONFIG_DIR = new File(FvtmRegistry.CONFIG_DIR, "/fvtm/");
 		if(!FVTM_CONFIG_DIR.exists()) FVTM_CONFIG_DIR.mkdirs();
+		INSTANCE.searchASMPacks();
 		boolean failed = searchPacksInResourcePacks();
 		if(!EnvInfo.CLIENT || failed){
 			searchPacksInFolder(new File(FvtmRegistry.CONFIG_DIR.getParentFile(), "/resourcepacks/"), AddonLocation.RESOURCEPACK, false);
@@ -45,6 +46,8 @@ public abstract class FvtmResources {
 		}
 		if(EnvInfo.CLIENT) loadPackTextures();
 	}
+
+	public abstract void searchASMPacks();
 
 	public abstract boolean searchPacksInResourcePacks();
 
@@ -105,13 +108,14 @@ public abstract class FvtmResources {
 						Content<?> content = (Content<?>)contype.impl.newInstance().parse(map);
 						if(content == null){
 							IDL idl = ContentConfigUtil.getID(map);
-							Print.log("Errors while loading config file: " + file + " for " + idl.colon()); Static.stop();
+							Print.log("Errors while loading config file: " + file + " for " + idl.colon());
 						}
 						contype.register(content);
 						if(EnvInfo.CLIENT) checkForCustomModel(addon.getLocation(), contype, content);
 					}
 					catch(Exception e){
-						Print.log("Errors while loading config file: " + file); Static.stop();
+						if(Static.dev()) e.printStackTrace();
+						Print.log("Errors while loading config file: " + file); //Static.stop();
 					}
 				}
 			}
@@ -131,7 +135,7 @@ public abstract class FvtmResources {
 							Content<?> content = (Content<?>)contype.impl.newInstance().parse(map);
 							if(content == null){
 								IDL idl = ContentConfigUtil.getID(map);
-								Print.log("Errors while loading config from zip: " + addon.getFile() + " for " + idl.colon()); Static.stop();
+								Print.log("Errors while loading config from zip: " + addon.getFile() + " for " + idl.colon());
 							}
 							contype.register(content);
 							if(EnvInfo.CLIENT) checkForCustomModel(addon.getLocation(), contype, content);
@@ -139,7 +143,8 @@ public abstract class FvtmResources {
 					}
 				}
 				catch (Exception e){
-					Print.log("Errors while loading config from zip: " + addon.getFile() + " - " + lastentry); Static.stop();
+					if(Static.dev()) e.printStackTrace();
+					Print.log("Errors while loading config from zip: " + addon.getFile() + " - " + lastentry); //Static.stop();
 				}
 			}
 		}
