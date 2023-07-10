@@ -1,9 +1,11 @@
 package net.fexcraft.mod.uni.item;
 
-public interface ItemWrapper {
+public abstract class ItemWrapper {
 
-	public void linkContainer();
+	public abstract void linkContainer();
 
-	public <LI> LI local();
+	public abstract <LI> LI local();
+
+	public abstract Object direct();
 
 }
