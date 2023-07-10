@@ -7,6 +7,8 @@ import net.fexcraft.mod.uni.item.StackWrapper;
  * @author Ferdinand Calo' (FEX___96)
  */
 public interface WithItem {
+
+	public void setItemWrapper(ItemWrapper item);
 	
 	public ItemWrapper getItemWrapper();
 
