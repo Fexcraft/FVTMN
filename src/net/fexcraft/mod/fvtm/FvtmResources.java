@@ -1,6 +1,8 @@
 package net.fexcraft.mod.fvtm;
 
+import static net.fexcraft.mod.fvtm.FvtmLogger.LOGGER;
 import static net.fexcraft.mod.fvtm.FvtmRegistry.ADDONS;
+import static net.fexcraft.mod.fvtm.FvtmRegistry.getAddon;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,16 +15,18 @@ import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
-import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.addon.AddonLocation;
+import net.fexcraft.mod.fvtm.data.root.WithItem;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.fvtm.util.ZipUtils;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.client.CTab;
+import net.fexcraft.mod.uni.item.ItemWrapper;
+import net.fexcraft.mod.uni.item.StackWrapper;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -44,6 +48,10 @@ public abstract class FvtmResources {
 		if(Config.LOAD_PACKS_FROM_MODS){
 			searchPacksInFolder(new File(FvtmRegistry.CONFIG_DIR.getParentFile(), "/mods/"), AddonLocation.CONFIGPACK, false);
 		}
+		for(File file : Config.PACK_FOLDERS){
+			searchPacksInFolder(file, AddonLocation.CONFIGPACK, true);
+		}
+		searchPacksInFolder(new File(FVTM_CONFIG_DIR, "packs/"), AddonLocation.CONFIGPACK, true);
 		if(EnvInfo.CLIENT) loadPackTextures();
 	}
 
@@ -95,6 +103,20 @@ public abstract class FvtmResources {
 
 	public abstract void loadPackTextures();
 
+	public void searchContent(){
+		FvtmResources.INSTANCE.searchInPacksFor(ContentType.FUEL);
+		FvtmResources.INSTANCE.searchInPacksFor(ContentType.MATERIAL);
+		FvtmResources.INSTANCE.searchInPacksFor(ContentType.CONSUMABLE);
+		FvtmResources.INSTANCE.searchInPacksFor(ContentType.CLOTH);
+		FvtmResources.INSTANCE.searchInPacksFor(ContentType.RAILGAUGE);
+		FvtmResources.INSTANCE.searchInPacksFor(ContentType.WIRE);
+		FvtmResources.INSTANCE.searchInPacksFor(ContentType.CONTAINER);
+		FvtmResources.INSTANCE.searchInPacksFor(ContentType.BLOCK);
+		FvtmResources.INSTANCE.searchInPacksFor(ContentType.MULTIBLOCK);
+		FvtmResources.INSTANCE.searchInPacksFor(ContentType.PART);
+		FvtmResources.INSTANCE.searchInPacksFor(ContentType.VEHICLE);
+	}
+
 	public void searchInPacksFor(ContentType contype){
 		if(contype == ContentType.ADDON) return;
 		for(Addon addon : ADDONS){
@@ -108,14 +130,14 @@ public abstract class FvtmResources {
 						Content<?> content = (Content<?>)contype.impl.newInstance().parse(map);
 						if(content == null){
 							IDL idl = ContentConfigUtil.getID(map);
-							Print.log("Errors while loading config file: " + file + " for " + idl.colon());
+							LOGGER.log("Errors while loading config file: " + file + " for " + idl.colon());
 						}
 						contype.register(content);
 						if(EnvInfo.CLIENT) checkForCustomModel(addon.getLocation(), contype, content);
 					}
 					catch(Exception e){
-						if(Static.dev()) e.printStackTrace();
-						Print.log("Errors while loading config file: " + file); //Static.stop();
+						if(EnvInfo.DEV) e.printStackTrace();
+						LOGGER.log("Errors while loading config file: " + file); //Static.stop();
 					}
 				}
 			}
@@ -135,7 +157,7 @@ public abstract class FvtmResources {
 							Content<?> content = (Content<?>)contype.impl.newInstance().parse(map);
 							if(content == null){
 								IDL idl = ContentConfigUtil.getID(map);
-								Print.log("Errors while loading config from zip: " + addon.getFile() + " for " + idl.colon());
+								LOGGER.log("Errors while loading config from zip: " + addon.getFile() + " for " + idl.colon());
 							}
 							contype.register(content);
 							if(EnvInfo.CLIENT) checkForCustomModel(addon.getLocation(), contype, content);
@@ -143,8 +165,8 @@ public abstract class FvtmResources {
 					}
 				}
 				catch (Exception e){
-					if(Static.dev()) e.printStackTrace();
-					Print.log("Errors while loading config from zip: " + addon.getFile() + " - " + lastentry); //Static.stop();
+					if(EnvInfo.DEV) e.printStackTrace();
+					LOGGER.log("Errors while loading config from zip: " + addon.getFile() + " - " + lastentry); //Static.stop();
 				}
 			}
 		}
@@ -164,8 +186,36 @@ public abstract class FvtmResources {
 
 	public abstract void checkForCustomModel(AddonLocation loc, ContentType contype, Content<?> content);
 
+	public abstract void createContentItems();
+
 	public static void loadRecipes(){
 
 	}
+
+	public abstract ItemWrapper getItemWrapper(String id);
+
+	public CTab getCreativeTab(WithItem type){
+		String tab = type.getCreativeTab();
+		Addon addon = null;
+		if(tab.contains(":")){
+			String[] split = tab.split(":");
+			addon = getAddon(split[0]);
+			if(addon == null) return null;
+			return addon.getCreativeTab(split[1]);
+		}
+		addon = ((Content<?>)type).getAddon();
+		return addon.getCreativeTab(tab);
+	}
+
+	public CTab getCreativeTab(String tabid){
+		if(tabid.contains(":")){
+			String[] split = tabid.split(":");
+			Addon addon = getAddon(split[0]);
+			if(addon != null) return addon.getCreativeTab(split[1]);
+		}
+		return ADDONS.get("fvtm:fvtm").getCreativeTab(tabid);
+	}
+
+	public abstract StackWrapper newStack(ItemWrapper item);
 
 }
