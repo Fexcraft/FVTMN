@@ -1,15 +1,16 @@
 package net.fexcraft.mod.uni.item;
 
-public class StackWrapper {
+public abstract class StackWrapper {
 
 	public static StackWrapper EMPTY = null;
+	protected ItemWrapper item;
 
 	public StackWrapper(ItemWrapper item){
-
+		this.item = item;
 	}
 
-	public <IS> IS local(){
-		return null;
-	}
+	public abstract <IS> IS local();
+
+	public abstract Object direct();
 
 }
