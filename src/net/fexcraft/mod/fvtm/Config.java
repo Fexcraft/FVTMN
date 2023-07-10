@@ -23,6 +23,7 @@ public class Config {
 	private static ArrayList<Runnable> listeners = new ArrayList<>();
 	private static boolean changes = false;
 	//general
+	public static ArrayList<File> PACK_FOLDERS = new ArrayList<>();
 	public static boolean VEHICLES_NEED_FUEL;
 	public static boolean VEHICLES_DROP_CONTENTS;
 	public static boolean UNBREAKABLE_CONTAINERS;
@@ -70,6 +71,7 @@ public class Config {
 			map.add("format", 1);
 			map.add("info", "FVTM Main Configuration File");
 			map.add("wiki", "https://fexcraft.net/wiki/mod/fvtm");
+			map.addArray("pack_folders");
 			JsonHandler.print(file, map, PrintOption.SPACED);
 		}
 
@@ -237,6 +239,9 @@ public class Config {
 	private static void reload(){
 		changes = false;
 		JsonMap map = JsonHandler.parse(FILE);
+		if(map.has("pack_folders")){
+			map.getArray("pack_folders").value.forEach(val -> PACK_FOLDERS.add(new File(val.string_value())));
+		}
 		for(ConfigEntry entry : entries) entry.consumer.accept(entry, map);
 		if(changes) JsonHandler.print(FILE, map, PrintOption.SPACED);
 		for(Runnable run : listeners) run.run();
