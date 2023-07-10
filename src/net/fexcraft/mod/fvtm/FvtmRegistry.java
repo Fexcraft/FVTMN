@@ -14,6 +14,7 @@ import net.fexcraft.mod.fvtm.sys.particle.Particle;
 import net.fexcraft.mod.fvtm.util.Registry;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
+import net.fexcraft.mod.uni.item.ItemWrapper;
 
 /**
  * FVTM Registry
@@ -39,12 +40,15 @@ public class FvtmRegistry {
 	public static final HashMap<String, JsonMap> WIRE_DECO_CACHE = new HashMap<>();
 	public static final HashMap<String, DecorationData> DECORATIONS = new HashMap<>();
 	public static final ArrayList<String> DECORATION_CATEGORIES = new ArrayList<>();
+	//
+	public static final HashMap<IDL, ItemWrapper> CONTENT_ITEMS = new HashMap<>();
+	public static final HashMap<String, ItemWrapper> ITEMS = new HashMap<>();
 
 	public static final void init(String loadver, File conf){
 		LOADER_VER = loadver;
 		CONFIG_DIR = conf;
 		if(!CONFIG_DIR.exists()) CONFIG_DIR.mkdirs();
-		Config.init(new File(conf.getParentFile(), "fvtm.json"));
+		Config.init(new File(conf, "fvtm.json"));
 	}
 
 	public static Addon getAddon(String id){
@@ -60,6 +64,14 @@ public class FvtmRegistry {
 
 	public static Fuel getFuel(IDL idl){
 		return FUELS.get(idl);
+	}
+
+	public static ItemWrapper getItem(String id){
+		ItemWrapper wrapper = ITEMS.get(id);
+		if(wrapper == null){
+			wrapper = FvtmResources.INSTANCE.getItemWrapper(id);
+		}
+		return wrapper;
 	}
 
 }
