@@ -10,7 +10,7 @@ public interface ContentItem<TYPE extends Content<TYPE>> {
 
 	public TYPE getContent();
 
-	public ContentType getType();
+	public ContentType getConsumable();
 
 	public interface ContentDataItem<TYPE extends Content<TYPE>, DATA extends ContentData<TYPE, DATA>> extends ContentItem<TYPE> {
 
