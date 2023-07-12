@@ -3,8 +3,11 @@ package net.fexcraft.mod.fvtm.data;
 import java.util.List;
 
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.item.ItemWrapper;
+import net.fexcraft.mod.uni.item.StackWrapper;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -12,6 +15,7 @@ import net.fexcraft.mod.uni.IDL;
 public abstract class Content<SELF> {
 
 	protected IDL id;
+	protected ItemWrapper item;
 	protected List<String> description;
 	protected String name;
 	protected Addon pack;
@@ -39,5 +43,17 @@ public abstract class Content<SELF> {
 	}
 
 	public void loadModel(){}
+
+	public void setItemWrapper(ItemWrapper item){
+		this.item = item;
+	}
+
+	public ItemWrapper getItemWrapper(){
+		return item;
+	}
+
+	public StackWrapper getNewStack(){
+		return FvtmResources.INSTANCE.newStack(item);
+	}
 
 }
