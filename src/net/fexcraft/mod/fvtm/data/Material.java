@@ -3,13 +3,11 @@ package net.fexcraft.mod.fvtm.data;
 import static net.fexcraft.mod.fvtm.FvtmRegistry.getFuel;
 
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.root.ItemTextureable;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.item.ItemWrapper;
-import net.fexcraft.mod.uni.item.StackWrapper;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -118,21 +116,6 @@ public class Material extends Content<Material> implements WithItem, ItemTexture
 	@Override
 	public IDL getItemTexture(){
 		return itemtexloc;
-	}
-
-	@Override
-	public void setItemWrapper(ItemWrapper item){
-		this.item = item;
-	}
-
-	@Override
-	public ItemWrapper getItemWrapper(){
-		return item;
-	}
-
-	@Override
-	public StackWrapper getNewStack(){
-		return FvtmResources.INSTANCE.newStack(item);
 	}
 
 	@Override
