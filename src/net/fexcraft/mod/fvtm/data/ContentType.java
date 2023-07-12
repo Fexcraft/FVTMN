@@ -14,7 +14,7 @@ public enum ContentType {
 	VEHICLE(".vehicle", "vehicles"),
 	MATERIAL(".material", "materials", Material.class),
 	CONTAINER(".container", "containers"),
-	CONSUMABLE(".consumable", "consumables"),
+	CONSUMABLE(".consumable", "consumables", Consumable.class),
 	FUEL(".fuel", "fuels", Fuel.class),
 	BLOCK(".block", "blocks"),
 	MULTIBLOCK(".multiblock", "blocks"),
