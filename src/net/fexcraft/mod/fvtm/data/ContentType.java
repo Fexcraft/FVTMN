@@ -1,5 +1,6 @@
 package net.fexcraft.mod.fvtm.data;
 
+import static net.fexcraft.mod.fvtm.FvtmRegistry.CONSUMABLES;
 import static net.fexcraft.mod.fvtm.FvtmRegistry.FUELS;
 import static net.fexcraft.mod.fvtm.FvtmRegistry.MATERIALS;
 
@@ -42,7 +43,7 @@ public enum ContentType {
 			case VEHICLE: break;
 			case MATERIAL: MATERIALS.register(content); break;
 			case CONTAINER: break;
-			case CONSUMABLE: break;
+			case CONSUMABLE: CONSUMABLES.register(content);
 			case FUEL: FUELS.register(content); break;
 			case BLOCK: break;
 			case MULTIBLOCK: break;
