@@ -24,7 +24,7 @@ public class Consumable extends Content<Consumable> implements WithItem, ItemTex
 
 	@Override
 	public Consumable parse(JsonMap map){
-		if((pack = ContentConfigUtil.getAddon(map)) == null) return null;
+		if((pack = ContentConfigUtil.getAddon(map)) == null)return null;
 		if((id = ContentConfigUtil.getID(pack, map)) == null) return null;
 		//
 		name = map.getString("Name", "Unnamed Material");
@@ -47,7 +47,7 @@ public class Consumable extends Content<Consumable> implements WithItem, ItemTex
 
 	@Override
 	public ContentType getContentType(){
-		return ContentType.MATERIAL;
+		return ContentType.CONSUMABLE;
 	}
 
 	@Override
