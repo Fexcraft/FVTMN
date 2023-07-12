@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.TreeMap;
 
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.mod.fvtm.data.Consumable;
 import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.fvtm.data.Fuel;
 import net.fexcraft.mod.fvtm.data.Material;
@@ -35,6 +36,7 @@ public class FvtmRegistry {
 	public static final Registry<Addon> ADDONS = new Registry<>();
 	public static final Registry<Fuel> FUELS = new Registry<>();
 	public static final Registry<Material> MATERIALS = new Registry<>();
+	public static final Registry<Consumable> CONSUMABLES = new Registry<>();
 	public static TreeMap<String, TreeMap<String, ArrayList<Fuel>>> SORTED_FUELS = new TreeMap<>();
 	public static final HashMap<String, Particle> PARTICLES = new HashMap<>();
 	public static final HashMap<String, JsonMap> WIRE_DECO_CACHE = new HashMap<>();
