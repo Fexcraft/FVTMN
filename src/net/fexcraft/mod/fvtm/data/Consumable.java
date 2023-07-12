@@ -55,7 +55,7 @@ public class Consumable extends Content<Consumable> implements WithItem, ItemTex
 		return null;
 	}
 
-	public int getMaxStackSize(){
+	public int getMaxStack(){
 		return max_stack;
 	}
 	
