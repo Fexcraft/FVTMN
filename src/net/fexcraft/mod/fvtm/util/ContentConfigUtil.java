@@ -107,17 +107,17 @@ public class ContentConfigUtil {
 		}
 	}
 
-	public static final IDL ITL_GENERAL = IDLManager.getIDLCached("fvtm:textures/items/ph_general.png");
-	public static final IDL ITL_VEHICLE = IDLManager.getIDLCached("fvtm:textures/items/ph_vehicle.png");
-	public static final IDL ITL_MBLOCK = IDLManager.getIDLCached("fvtm:textures/items/ph_multiblock.png");
-	public static final IDL ITL_PART = IDLManager.getIDLCached("fvtm:textures/items/ph_part.png");
+	public static final IDL ITL_GENERAL = IDLManager.getIDLCached("fvtm:textures/item/ph_general.png");
+	public static final IDL ITL_VEHICLE = IDLManager.getIDLCached("fvtm:textures/item/ph_vehicle.png");
+	public static final IDL ITL_MBLOCK = IDLManager.getIDLCached("fvtm:textures/item/ph_multiblock.png");
+	public static final IDL ITL_PART = IDLManager.getIDLCached("fvtm:textures/item/ph_part.png");
 
 	public static IDL getItemTexture(IDL id, ContentType contype, JsonMap map){
 		if(map.has("ItemTexture")){
 			return IDLManager.getIDLCached(map.get("ItemTexture").string_value());
 		}
 		else{
-			IDL idl = IDLManager.getIDLCached(id.space() + ":textures/items/" + id.path() + ".png");
+			IDL idl = IDLManager.getIDLCached(id.space() + ":textures/item/" + id.path() + ".png");
 			if(EnvInfo.CLIENT){
 				//TODO check if missing and return placeholder instead
 			}
