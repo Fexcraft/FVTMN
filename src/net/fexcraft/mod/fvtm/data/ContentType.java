@@ -39,17 +39,17 @@ public enum ContentType {
 
 	public void register(Content<?> content){
 		switch(this){
-			case PART: break;
-			case VEHICLE: break;
-			case MATERIAL: MATERIALS.register(content); break;
-			case CONTAINER: break;
-			case CONSUMABLE: CONSUMABLES.register(content);
-			case FUEL: FUELS.register(content); break;
-			case BLOCK: break;
-			case MULTIBLOCK: break;
-			case RAILGAUGE: break;
-			case CLOTH: break;
-			case WIRE: break;
+			case PART: return;
+			case VEHICLE: return;
+			case MATERIAL: MATERIALS.register(content); return;
+			case CONTAINER: return;
+			case CONSUMABLE: CONSUMABLES.register(content); return;
+			case FUEL: FUELS.register(content); return;
+			case BLOCK: return;
+			case MULTIBLOCK: return;
+			case RAILGAUGE: return;
+			case CLOTH: return;
+			case WIRE: return;
 			default: return;
 		}
 	}
