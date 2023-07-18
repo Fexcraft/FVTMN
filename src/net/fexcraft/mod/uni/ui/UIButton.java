@@ -6,44 +6,43 @@ import net.fexcraft.app.json.JsonMap;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public abstract class UIButton {
+public abstract class UIButton extends UIElement {
 
-	public static Class<UIButton> IMPLEMENTATION;
+	public static Class<? extends UIButton> IMPLEMENTATION;
 	//
-	protected UserInterface ui;
 	protected UIText text;
-	public int ox, oy;
-	public int x, y;
-	public int otx, oty;
-	public int tx, ty;
-	public int owidth, width;
-	public int oheight, height;
-	public boolean absolute;
-	public boolean visible;
-	public boolean enabled;
-	public boolean hovered;
 	public String action;
 	public String target;
 	public String texture;
+	public boolean colorbased;
+	public int htx, hty;
+	public int dtx, dty;
+	public int hcolor = 0xf5da42;
+	public int ecolor = 0xffffff;
+	public int dcolor = 0xa3a3a3;
 
 	public UIButton(UserInterface ui, JsonMap map) throws Exception {
-		this.ui = ui;
-		absolute = map.getBoolean("absolute", false);
-		JsonArray arr = map.getArray("pos");
-		ox = x = arr.get(0).integer_value();
-		oy = y = arr.get(1).integer_value();
-		arr = map.getArray("uv");
-		otx = tx = arr.get(0).integer_value();
-		oty = ty = arr.get(1).integer_value();
-		arr = map.getArray("size");
-		owidth = width = arr.get(0).integer_value();
-		oheight = height = arr.get(1).integer_value();
-		visible = map.getBoolean("visible", true);
-		enabled = map.getBoolean("enabled", true);
+		super(ui, map);
 		action = map.getString("action", null);
 		target = map.getString("target", null);
 		if(map.has("text")){
 			text = UIText.IMPLEMENTATION.getConstructor(UserInterface.class, JsonMap.class).newInstance(ui, map.getMap("text"));
+		}
+		if(map.getBoolean("colorbased", true)){
+			ecolor = map.getInteger("e_color", ecolor);
+			dcolor = map.getInteger("d_color", dcolor);
+			hcolor = map.getInteger("h_color", hcolor);
+		}
+		else{
+			JsonArray arr = map.getArray("uv");
+			if(arr.size() > 2){
+				htx = arr.get(2).integer_value();
+				hty = arr.get(3).integer_value();
+			}
+			if(arr.size() > 4){
+				dtx = arr.get(4).integer_value();
+				dty = arr.get(5).integer_value();
+			}
 		}
 	}
 
