@@ -11,7 +11,7 @@ import net.fexcraft.app.json.JsonValue;
  */
 public abstract class UserInterface {
 
-	public static Class<UserInterface> IMPLEMENTATION;
+	public static Class<? extends UserInterface> IMPLEMENTATION;
 	//
 	public InterfaceContainer container;
 	public LinkedHashMap<String, UIText> texts = new LinkedHashMap<>();
