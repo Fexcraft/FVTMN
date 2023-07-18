@@ -7,9 +7,10 @@ import net.fexcraft.app.json.JsonMap;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public abstract class UITab extends UIButton{
+public abstract class UITab extends UIButton {
 
-	public static Class<UITab> IMPLEMENTATION;
+	public static Class<? extends UITab> IMPLEMENTATION;
+	//
 	public ArrayList<UIText> texts = new ArrayList<>();
 	public ArrayList<UIButton> buttons = new ArrayList<>();
 	public ArrayList<UIField> fields = new ArrayList<>();
