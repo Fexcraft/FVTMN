@@ -2,6 +2,8 @@ package net.fexcraft.mod.uni.ui;
 
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.IDLManager;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -13,7 +15,7 @@ public abstract class UIButton extends UIElement {
 	protected UIText text;
 	public String action;
 	public String target;
-	public String texture;
+	public IDL texture;
 	public boolean colorbased;
 	public int htx, hty;
 	public int dtx, dty;
@@ -39,11 +41,20 @@ public abstract class UIButton extends UIElement {
 				htx = arr.get(2).integer_value();
 				hty = arr.get(3).integer_value();
 			}
+			else{
+				htx = tx;
+				hty = ty;
+			}
 			if(arr.size() > 4){
 				dtx = arr.get(4).integer_value();
 				dty = arr.get(5).integer_value();
 			}
+			else{
+				dtx = tx;
+				dty = ty;
+			}
 		}
+		texture = map.has("texture") ? IDLManager.getIDLCached(map.get("texture").string_value()) : null;
 	}
 
 	public boolean hovered(int mx, int my){
