@@ -40,4 +40,6 @@ public abstract class UIElement {
 		return hovered = mx >= x && mx <= x + width && my >= y && my <= y + height;
 	}
 
+	public void draw(Object ui, float ticks, int mx, int my){}
+
 }
