@@ -62,9 +62,15 @@ public abstract class UserInterface {
 		for(Entry<String, UIButton> entry : buttons.entrySet()){
 			button = entry.getValue();
 			if(!button.visible || !button.enabled) continue;
-			if(button.hovered(mx, my)){
+			if(button.hovered(mx, my) && !button.onclick(mx, my, mb)){
 				return processAction(button, entry.getKey(), mx, my, mb);
 			}
+		}
+		UIField field = null;
+		for(Entry<String, UIField> entry : fields.entrySet()){
+			field = entry.getValue();
+			if(!field.visible /*|| !field.enabled*/) continue;
+			if(field.hovered(mx, my) && field.onclick(mx, my, mb)) return true;
 		}
 		return false;
 	}
