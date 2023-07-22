@@ -26,4 +26,8 @@ public class UIField extends UIElement {
 		if(map.has("numberfield")) regex = "[^\\d\\-\\.\\,]";
 	}
 
+	public boolean onclick(int mx, int my, int mb){
+		return false;
+	}
+
 }
