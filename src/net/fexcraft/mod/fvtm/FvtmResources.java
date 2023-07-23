@@ -6,6 +6,7 @@ import static net.fexcraft.mod.fvtm.FvtmRegistry.getAddon;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -217,5 +218,18 @@ public abstract class FvtmResources {
 	}
 
 	public abstract StackWrapper newStack(ItemWrapper item);
+
+	public static JsonMap getJson(String loc){
+		try{
+			return JsonHandler.parse(FvtmResources.class.getClassLoader().getResourceAsStream(loc));
+		}
+		catch(IOException e){
+			e.printStackTrace();
+			if(EnvInfo.DEV) throw new RuntimeException(e);
+		}
+		return new JsonMap();
+	}
+
+	public abstract JsonMap getJsonC(String loc);
 
 }
