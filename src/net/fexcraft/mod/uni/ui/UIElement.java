@@ -26,9 +26,11 @@ public abstract class UIElement {
 		JsonArray arr = map.getArray("pos");
 		ox = x = arr.get(0).integer_value();
 		oy = y = arr.get(1).integer_value();
-		arr = map.getArray("uv");
-		otx = tx = arr.get(0).integer_value();
-		oty = ty = arr.get(1).integer_value();
+		if(map.has("uv")){
+			arr = map.getArray("uv");
+			otx = tx = arr.get(0).integer_value();
+			oty = ty = arr.get(1).integer_value();
+		}
 		arr = map.getArray("size");
 		owidth = width = arr.get(0).integer_value();
 		oheight = height = arr.get(1).integer_value();
