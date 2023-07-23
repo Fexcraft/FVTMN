@@ -36,4 +36,8 @@ public class UIText extends UIElement {
 
 	public void translate(Object... objects){}
 
+	public boolean onscroll(int am, int x, int y){
+		return false;
+	}
+
 }
