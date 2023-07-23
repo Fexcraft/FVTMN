@@ -79,4 +79,8 @@ public abstract class UIButton extends UIElement {
 		return false;
 	}
 
+	public boolean onscroll(int am, int x, int y){
+		return false;
+	}
+
 }
