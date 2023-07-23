@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
+import net.fexcraft.mod.uni.IDL;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -41,11 +42,11 @@ public abstract class UserInterface {
 		}
 		if(map.has("tabs")){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("tabs").entries()){
-				tabs.put(entry.getKey(), UITab.IMPLEMENTATION.getConstructor(UserInterface.class, JsonMap.class).newInstance(entry.getValue()));
+				tabs.put(entry.getKey(), UITab.IMPLEMENTATION.getConstructor(UserInterface.class, JsonMap.class).newInstance(this, entry.getValue()));
 			}
 		}
 		else{
-			UITab main = UITab.IMPLEMENTATION.getConstructor(UserInterface.class, JsonMap.class).newInstance(map);
+			UITab main = UITab.IMPLEMENTATION.getConstructor(UserInterface.class, JsonMap.class).newInstance(this, map);
 			main.texts.addAll(texts.values());
 			main.buttons.addAll(buttons.values());
 			main.fields.addAll(fields.values());
@@ -77,6 +78,6 @@ public abstract class UserInterface {
 
 	public abstract boolean processAction(UIButton button, String id, int x, int y, int b);
 
-	public abstract void bindTexture(String texture);
+	public abstract void bindTexture(IDL texture);
 
 }
