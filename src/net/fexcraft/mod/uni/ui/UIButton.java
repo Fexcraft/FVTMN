@@ -45,34 +45,24 @@ public abstract class UIButton extends UIElement {
 			hcolor.alpha = map.getFloat("h_alpha", hcolor.alpha);
 			dcolor.alpha = map.getFloat("d_alpha", dcolor.alpha);
 		}
-		else{
+		dtx = htx = tx;
+		dty = hty = ty;
+		if(map.has("uv")){
 			JsonArray arr = map.getArray("uv");
 			if(arr.size() > 2){
 				htx = arr.get(2).integer_value();
 				hty = arr.get(3).integer_value();
 			}
-			else{
-				htx = tx;
-				hty = ty;
-			}
 			if(arr.size() > 4){
 				dtx = arr.get(4).integer_value();
 				dty = arr.get(5).integer_value();
-			}
-			else{
-				dtx = tx;
-				dty = ty;
 			}
 		}
 		texture = map.has("texture") ? IDLManager.getIDLCached(map.get("texture").string_value()) : null;
 	}
 
-	public boolean hovered(int mx, int my){
-		return hovered = mx >= x && mx <= x + width && my >= y && my <= y + height;
-	}
-
-	public boolean clicked(int mx, int my){
-		return enabled && visible && mx >= x && mx <= x + width && my >= y && my <= y + height;
+	public boolean clicked(int l, int t, int mx, int my){
+		return enabled && visible && hovered(l, t, x, y);
 	}
 
 	public boolean onclick(int mx, int my, int mb){
