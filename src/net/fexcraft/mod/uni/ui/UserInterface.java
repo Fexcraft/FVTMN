@@ -58,12 +58,12 @@ public abstract class UserInterface {
 		height = arr.get(1).integer_value();
 	}
 
-	public boolean onClick(int mx, int my, int mb){
+	public boolean onClick(int gl, int gt, int mx, int my, int mb){
 		UIButton button = null;
 		for(Entry<String, UIButton> entry : buttons.entrySet()){
 			button = entry.getValue();
 			if(!button.visible || !button.enabled) continue;
-			if(button.hovered(mx, my) && !button.onclick(mx, my, mb)){
+			if(button.hovered(gl, gt, mx, my) && !button.onclick(mx, my, mb)){
 				return processAction(button, entry.getKey(), mx, my, mb);
 			}
 		}
@@ -71,7 +71,7 @@ public abstract class UserInterface {
 		for(Entry<String, UIField> entry : fields.entrySet()){
 			field = entry.getValue();
 			if(!field.visible /*|| !field.enabled*/) continue;
-			if(field.hovered(mx, my) && field.onclick(mx, my, mb)) return true;
+			if(field.hovered(gl, gt, mx, my) && field.onclick(mx, my, mb)) return true;
 		}
 		return false;
 	}
