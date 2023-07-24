@@ -27,17 +27,17 @@ public abstract class UserInterface {
 		this.container = container;
 		if(map.has("texts")){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("texts").entries()){
-				texts.put(entry.getKey(), UIText.IMPLEMENTATION.getConstructor(UserInterface.class, JsonMap.class).newInstance(entry.getValue()));
+				texts.put(entry.getKey(), UIText.IMPLEMENTATION.getConstructor(UserInterface.class, JsonMap.class).newInstance(this, entry.getValue()));
 			}
 		}
 		if(map.has("buttons")){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("buttons").entries()){
-				buttons.put(entry.getKey(), UIButton.IMPLEMENTATION.getConstructor(UserInterface.class, JsonMap.class).newInstance(entry.getValue()));
+				buttons.put(entry.getKey(), UIButton.IMPLEMENTATION.getConstructor(UserInterface.class, JsonMap.class).newInstance(this, entry.getValue()));
 			}
 		}
 		if(map.has("fields")){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("fields").entries()){
-				fields.put(entry.getKey(), UIField.IMPLEMENTATION.getConstructor(UserInterface.class, JsonMap.class).newInstance(entry.getValue()));
+				fields.put(entry.getKey(), UIField.IMPLEMENTATION.getConstructor(UserInterface.class, JsonMap.class).newInstance(this, entry.getValue()));
 			}
 		}
 		if(map.has("tabs")){
