@@ -16,6 +16,7 @@ public abstract class UIButton extends UIElement {
 	protected UIText text;
 	public String action;
 	public String target;
+	public String tooltip;
 	public IDL texture;
 	public boolean colorbased;
 	public int htx, hty;
@@ -28,6 +29,7 @@ public abstract class UIButton extends UIElement {
 		super(ui, map);
 		action = map.getString("action", null);
 		target = map.getString("target", null);
+		tooltip = map.getString("tooltip", null);
 		if(map.has("text")){
 			text = UIText.IMPLEMENTATION.getConstructor(UserInterface.class, JsonMap.class).newInstance(ui, map.getMap("text"));
 		}
@@ -65,11 +67,11 @@ public abstract class UIButton extends UIElement {
 		return enabled && visible && hovered(l, t, x, y);
 	}
 
-	public boolean onclick(int mx, int my, int mb){
+	public boolean onclick(int l, int t, int mx, int my, int mb){
 		return false;
 	}
 
-	public boolean onscroll(int am, int x, int y){
+	public boolean onscroll(int l, int t, int x, int y, int am){
 		return false;
 	}
 
