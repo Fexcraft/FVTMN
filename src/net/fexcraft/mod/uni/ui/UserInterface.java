@@ -63,9 +63,8 @@ public abstract class UserInterface {
 		for(Entry<String, UIButton> entry : buttons.entrySet()){
 			button = entry.getValue();
 			if(!button.visible || !button.enabled) continue;
-			if(button.hovered(gl, gt, mx, my) && !button.onclick(mx, my, mb)){
-				return processAction(button, entry.getKey(), mx, my, mb);
-			}
+			if(!button.hovered(gl, gt, mx, my)) continue;
+			return button.onclick(gl, gt, mx, my, mb) || onAction(button, entry.getKey(), gl, gt, mx, my, mb);
 		}
 		UIField field = null;
 		for(Entry<String, UIField> entry : fields.entrySet()){
@@ -76,7 +75,9 @@ public abstract class UserInterface {
 		return false;
 	}
 
-	public abstract boolean processAction(UIButton button, String id, int x, int y, int b);
+	public abstract boolean onAction(UIButton button, String id, int l, int t, int x, int y, int b);
+
+	public abstract boolean onScroll(UIButton button, String id, int gl, int gt, int mx, int my, int am);
 
 	public abstract void bindTexture(IDL texture);
 
