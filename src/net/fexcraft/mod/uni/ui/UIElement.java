@@ -24,8 +24,8 @@ public abstract class UIElement {
 		this.ui = ui;
 		absolute = map.getBoolean("absolute", false);
 		JsonArray arr = map.getArray("pos");
-		ox = x = arr.get(0).integer_value();
-		oy = y = arr.get(1).integer_value();
+		otx = tx = ox = x = arr.get(0).integer_value();
+		oty = ty = oy = y = arr.get(1).integer_value();
 		if(map.has("uv")){
 			arr = map.getArray("uv");
 			otx = tx = arr.get(0).integer_value();
@@ -38,10 +38,13 @@ public abstract class UIElement {
 		enabled = map.getBoolean("enabled", true);
 	}
 
-	public boolean hovered(int mx, int my){
-		return hovered = mx >= x && mx <= x + width && my >= y && my <= y + height;
+	public boolean hovered(int l, int t, int mx, int my){
+		if(absolute){
+			return hovered = mx >= x && mx <= x + width && my >= y && my <= y + height;
+		}
+		else return hovered = mx >= l + x && mx <= l + x + width && my >= t + y && my <= t + y + height;
 	}
 
-	public void draw(Object ui, float ticks, int mx, int my){}
+	public void draw(Object ui, float ticks, int gl, int gt, int mx, int my){}
 
 }
