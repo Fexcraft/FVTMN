@@ -1,6 +1,6 @@
 package net.fexcraft.mod.fvtm.sys.condition;
 
-import net.fexcraft.mod.fvtm.data.root.Model.ModelRenderData;
+import net.fexcraft.mod.fvtm.model.ModelRenderData;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
