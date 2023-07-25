@@ -6,15 +6,12 @@ import java.util.Map.Entry;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
-import net.fexcraft.mod.uni.IDL;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
 public abstract class UserInterface {
 
-	public static Class<? extends UserInterface> IMPLEMENTATION;
-	//
 	public ContainerInterface container;
 	public LinkedHashMap<String, UIText> texts = new LinkedHashMap<>();
 	public LinkedHashMap<String, UIButton> buttons = new LinkedHashMap<>();
@@ -78,7 +75,5 @@ public abstract class UserInterface {
 	public abstract boolean onAction(UIButton button, String id, int l, int t, int x, int y, int b);
 
 	public abstract boolean onScroll(UIButton button, String id, int gl, int gt, int mx, int my, int am);
-
-	public abstract void bindTexture(IDL texture);
 
 }
