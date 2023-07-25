@@ -7,10 +7,6 @@ import net.fexcraft.app.json.JsonMap;
  */
 public class ContainerInterface {
 
-	public static Class<? extends ContainerInterface> IMPLEMENTATION;
-	//
-
-
 	public ContainerInterface(JsonMap map){
 
 	}
