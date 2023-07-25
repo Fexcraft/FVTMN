@@ -16,9 +16,9 @@ public abstract class UIElement {
 	public int owidth, width;
 	public int oheight, height;
 	public boolean absolute;
-	public boolean visible;
-	public boolean enabled;
-	public boolean hovered;
+	protected boolean visible;
+	protected boolean enabled;
+	protected boolean hovered;
 
 	public UIElement(UserInterface ui, JsonMap map) throws Exception {
 		this.ui = ui;
@@ -46,5 +46,25 @@ public abstract class UIElement {
 	}
 
 	public void draw(Object ui, float ticks, int gl, int gt, int mx, int my){}
+
+	public boolean visible(){
+		return visible;
+	}
+
+	public void visible(boolean bool){
+		visible = bool;
+	}
+
+	public boolean enabled(){
+		return visible;
+	}
+
+	public void enabled(boolean bool){
+		enabled = bool;
+	}
+
+	public boolean hovered(){
+		return hovered;
+	}
 
 }
