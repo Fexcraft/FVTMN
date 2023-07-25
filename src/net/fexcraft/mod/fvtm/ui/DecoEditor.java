@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.fvtm.data.DecorationData;
+import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UIButton;
 import net.fexcraft.mod.uni.ui.UserInterface;
 import net.minecraft.client.resources.I18n;
@@ -25,8 +26,8 @@ public class DecoEditor extends UserInterface {
 	private int category = 0;
 	private String searchstr = "";
 
-	public DecoEditor(JsonMap map, int entid) throws Exception {
-		super(map, new CIImpl(map));
+	public DecoEditor(JsonMap map, ContainerInterface con) throws Exception {
+		super(map, con);
 	}
 
 	@Override
