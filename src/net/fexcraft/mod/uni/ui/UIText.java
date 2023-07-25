@@ -11,7 +11,7 @@ public class UIText extends UIElement {
 	public static Class<? extends UIText> IMPLEMENTATION;
 	//
 	public String initial_value;
-	public String value;
+	protected String value;
 	public boolean shadow;
 	public boolean translate;
 	public float scale;
@@ -38,6 +38,10 @@ public class UIText extends UIElement {
 
 	public boolean onscroll(int l, int t, int x, int y, int am){
 		return false;
+	}
+
+	public void value(String newval){
+		value = newval;
 	}
 
 }
