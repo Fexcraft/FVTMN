@@ -12,4 +12,9 @@ public class CIImpl extends ContainerInterface {
 		super(map);
 	}
 
+	@Override
+	public Object get(String key, Object... objs) {
+		return null;
+	}
+
 }
