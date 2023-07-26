@@ -6,6 +6,7 @@ import static net.fexcraft.mod.fvtm.FvtmRegistry.DECORATION_CATEGORIES;
 import java.util.ArrayList;
 
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UIButton;
@@ -22,16 +23,20 @@ public class DecoEditor extends UserInterface {
 	private static ArrayList<String> colors = new ArrayList<>();
 	private static boolean listmode = true, search;
 	private int scroll0, scroll1;
-	protected int selected = -1, selcol;
+	protected int selected = -1;
+	protected int selcol;
 	private int category = 0;
 	private String searchstr = "";
 
 	public DecoEditor(JsonMap map, ContainerInterface con) throws Exception {
 		super(map, con);
+		updateCategorySearch();
+		select(-1, -1);
 	}
 
 	@Override
 	public boolean onAction(UIButton button, String id, int l, int t, int x, int y, int b){
+		boolean found = true;
 		switch(id){
 			case "cat_prev":{
 				category--;
@@ -45,15 +50,87 @@ public class DecoEditor extends UserInterface {
 				updateCategorySearch();
 				break;
 			}
-			default: return false;
+			case "search":{
+				search = !search;
+				updateCategorySearch();
+				break;
+			}
+			case "mode_add":{
+				listmode = false;
+				updateResults();
+				break;
+			}
+			case "mode_list":{
+				listmode = true;
+				updateEntries();
+				break;
+			}
+			case "list_up":{
+				if(listmode) scroll0--;
+				else scroll1--;
+				if(scroll0 < 0) scroll0 = 0;
+				if(scroll1 < 1) scroll1 = 0;
+				updateEntries();
+				break;
+			}
+			case "list_down":{
+				if(listmode) scroll0++;
+				else scroll1++;
+				updateEntries();
+				break;
+			}
+			default:{
+				found = false;
+				break;
+			}
 		}
-		return true;
+		if(!found){
+			if(id.startsWith("entry_")){
+				int idx = Integer.parseInt(id.substring(6));
+				select(selected = scroll0 + idx, selcol);
+				updateEntries();
+				return true;
+			}
+			else if(id.startsWith("add_")){
+				int idx = Integer.parseInt(id.substring(4));
+				//
+				return true;
+			}
+			else if(id.startsWith("rem_")){
+				int idx = Integer.parseInt(id.substring(4));
+				//
+				return true;
+			}
+		}
+		return found;
+	}
+
+	protected void select(int idx, int colidx){
+		selected = idx;
+		colors.clear();
+		int decos = (int)container.get("decos.size");
+		DecorationData data = idx < 0 || idx >= decos ? null : (DecorationData)container.get("decos.at", idx);
+		boolean miss = data == null;
+		for(int i = 0; i < 3; i++){
+			//TODO fields.get("pos" + i).setText(miss ? "0" : (i == 0 ? data.offset.x : i == 1 ? data.offset.y : data.offset.z) + "");
+			//TODO fields.get("rot" + i).setText(miss ? "0" : (i == 0 ? data.rotx : i == 1 ? data.roty : data.rotz) + "");
+			//TODO fields.get("scl" + i).setText(miss ? "0" : (i == 0 ? data.sclx : i == 1 ? data.scly : data.sclz) + "");
+		}
+		//TODO texts.get("texc").value(miss ? "" : data.textures.get(data.seltex).name());
+		selcol = colidx;
+		if(!miss) colors.addAll(data.getColorChannels().keySet());
+		if(selcol >= colors.size() || selcol < 0) selcol = 0;
+		//TODO texts.get("channel").value(miss ? "" : colors.isEmpty() ? I18n.format("gui.fvtm.decoration_editor.no_color_channels") : colors.get(selcol));
+		RGB color = miss || colors.isEmpty() ? RGB.WHITE : data.getColorChannel(colors.get(selcol));
+		byte[] ar = color.toByteArray();
+		//TODO fields.get("rgb").setText((ar[0] + 128) + ", " + (ar[1] + 128) + ", " + (ar[2] + 128));
+		//TODO fields.get("hex").setText("#" + Integer.toHexString(color.packed));
 	}
 
 	protected void updateCategorySearch(){
 		texts.get("cat").value(DECORATION_CATEGORIES.get(category));
 		texts.get("cat").visible(!search);
-		fields.get("search").visible(search);
+		//TODO fields.get("search").visible(search);
 		updateResults();
 	}
 
@@ -80,20 +157,20 @@ public class DecoEditor extends UserInterface {
 			for(int i = 0; i < rows; i++){
 				j = scroll0 + i;
 				over = j >= (int)container.get("decos.size");
-				texts.get("entry" + i).value(over ? "" : format((String)container.get("decos.key", j)));
-				buttons.get("l_entry_rem" + i).visible(true);
-				buttons.get("l_entry_add" + i).visible(false);
-				buttons.get("l_entry" + i).enabled(selected != j);
+				buttons.get("entry_" + i).text.value(over ? "" : format((String)container.get("decos.key", j)));
+				buttons.get("rem_" + i).visible(true);
+				buttons.get("add_" + i).visible(false);
+				buttons.get("entry_" + i).enabled(selected != j);
 			}
 		}
 		else{
 			for(int i = 0; i < rows; i++){
 				j = scroll1 + i;
 				over = j >= results.size();
-				texts.get("entry" + i).value(over ? "" : format(results.get(j).key()));
-				buttons.get("l_entry_rem" + i).visible(false);
-				buttons.get("l_entry_add" + i).visible(true);
-				buttons.get("l_entry" + i).enabled(true);
+				buttons.get("entry_" + i).text.value(over ? "" : format(results.get(j).key()));
+				buttons.get("rem_" + i).visible(false);
+				buttons.get("add_" + i).visible(true);
+				buttons.get("entry_" + i).enabled(true);
 			}
 		}
 	}
