@@ -14,6 +14,7 @@ public class UIText extends UIElement {
 	protected String value;
 	public boolean shadow;
 	public boolean translate;
+	public boolean centered;
 	public float scale;
 	public RGB color = new RGB();
 	public RGB hover = new RGB();
@@ -24,12 +25,13 @@ public class UIText extends UIElement {
 		scale = map.getFloat("scale", 1);
 		if(map.getBoolean("autoscale", false)) scale = -1;
 		shadow = map.getBoolean("shadow", false);
-		color.packed = map.getInteger("color", 0xf0f0f0);
+		color.packed = Integer.parseInt(map.getString("color", "f0f0f0"));
 		if(map.getBoolean("hoverable", true)){
 			hover.packed = map.getInteger("hover", 0xf4d742);
 		}
 		translate = map.getBoolean("translate", false);
 		if(translate) translate();
+		centered = map.getBoolean("centered", false);
 	}
 
 	public void translate(){}
