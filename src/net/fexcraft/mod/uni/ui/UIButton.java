@@ -13,7 +13,7 @@ public abstract class UIButton extends UIElement {
 
 	public static Class<? extends UIButton> IMPLEMENTATION;
 	//
-	protected UIText text;
+	public UIText text;
 	public String action;
 	public String target;
 	public String tooltip;
@@ -37,9 +37,9 @@ public abstract class UIButton extends UIElement {
 			if(map.has("color")){
 				ecolor.packed = hcolor.packed = dcolor.packed = map.get("color").integer_value();
 			}
-			ecolor.packed = map.getInteger("e_color", ecolor.packed);
-			dcolor.packed = map.getInteger("d_color", dcolor.packed);
-			hcolor.packed = map.getInteger("h_color", hcolor.packed);
+			ecolor.packed = Integer.parseInt(map.getString("e_color", Integer.toHexString(ecolor.packed)), 16);
+			dcolor.packed = Integer.parseInt(map.getString("d_color", Integer.toHexString(dcolor.packed)), 16);
+			hcolor.packed = Integer.parseInt(map.getString("h_color", Integer.toHexString(hcolor.packed)), 16);
 			if(map.has("alpha")){
 				ecolor.alpha = hcolor.alpha = dcolor.alpha = map.get("alpha").float_value();
 			}
