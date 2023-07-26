@@ -23,9 +23,12 @@ public abstract class UIElement {
 	public UIElement(UserInterface ui, JsonMap map) throws Exception {
 		this.ui = ui;
 		absolute = map.getBoolean("absolute", false);
-		JsonArray arr = map.getArray("pos");
-		otx = tx = ox = x = arr.get(0).integer_value();
-		oty = ty = oy = y = arr.get(1).integer_value();
+		JsonArray arr = null;
+		if(map.has("pos")){
+			arr = map.getArray("pos");
+			otx = tx = ox = x = arr.get(0).integer_value();
+			oty = ty = oy = y = arr.get(1).integer_value();
+		}
 		if(map.has("uv")){
 			arr = map.getArray("uv");
 			otx = tx = arr.get(0).integer_value();
@@ -45,7 +48,7 @@ public abstract class UIElement {
 		else return hovered = mx >= l + x && mx <= l + x + width && my >= t + y && my <= t + y + height;
 	}
 
-	public void draw(Object ui, float ticks, int gl, int gt, int mx, int my){}
+	public void draw(Object ui, UIElement root, float ticks, int gl, int gt, int mx, int my){}
 
 	public boolean visible(){
 		return visible;
