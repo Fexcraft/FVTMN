@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.mod.fvtm.data.DecorationData;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UIButton;
 import net.fexcraft.mod.uni.ui.UserInterface;
@@ -93,19 +94,25 @@ public class DecoEditor extends UserInterface {
 			}
 			else if(id.startsWith("add_")){
 				int idx = Integer.parseInt(id.substring(4));
-				//
+				TagCW com = TagCW.create();
+				com.set("task", "add");
+				com.set("key", results.get(scroll1 + idx).key());
+				container.SEND_TO_SERVER.accept(com);
 				return true;
 			}
 			else if(id.startsWith("rem_")){
 				int idx = Integer.parseInt(id.substring(4));
-				//
+				TagCW com = TagCW.create();
+				com.set("task", "tem");
+				com.set("idx", scroll1 + idx);
+				container.SEND_TO_SERVER.accept(com);
 				return true;
 			}
 		}
 		return found;
 	}
 
-	protected void select(int idx, int colidx){
+	public void select(int idx, int colidx){
 		selected = idx;
 		colors.clear();
 		int decos = (int)container.get("decos.size");
@@ -150,7 +157,7 @@ public class DecoEditor extends UserInterface {
 		updateEntries();
 	}
 
-	protected void updateEntries(){
+	public void updateEntries(){
 		int j = 0;
 		boolean over;
 		if(listmode){
