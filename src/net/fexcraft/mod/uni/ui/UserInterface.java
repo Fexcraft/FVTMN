@@ -21,7 +21,7 @@ public abstract class UserInterface {
 	public int width, height;
 
 	public UserInterface(JsonMap map, ContainerInterface container) throws Exception {
-		this.container = container;
+		this.container = container.set(this);
 		if(map.has("texts")){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("texts").entries()){
 				texts.put(entry.getKey(), UIText.IMPLEMENTATION.getConstructor(UserInterface.class, JsonMap.class).newInstance(this, entry.getValue()));
