@@ -36,6 +36,8 @@ public interface TagCW {
 		}
 	}
 
-	public <C> C cast();
+	public abstract <T> T local();
+
+	public abstract Object direct();
 
 }
