@@ -12,7 +12,6 @@ import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UIButton;
 import net.fexcraft.mod.uni.ui.UserInterface;
-import net.minecraft.client.resources.I18n;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -127,7 +126,8 @@ public class DecoEditor extends UserInterface {
 		selcol = colidx;
 		if(!miss) colors.addAll(data.getColorChannels().keySet());
 		if(selcol >= colors.size() || selcol < 0) selcol = 0;
-		texts.get("channel").value(miss ? "" : colors.isEmpty() ? I18n.format("gui.fvtm.decoration_editor.no_color_channels") : colors.get(selcol));
+		texts.get("channel").value(miss ? "" : colors.isEmpty() ? "gui.fvtm.decoration_editor.no_color_channels" : colors.get(selcol));
+		texts.get("channel").translate();
 		RGB color = miss || colors.isEmpty() ? RGB.WHITE : data.getColorChannel(colors.get(selcol));
 		byte[] ar = color.toByteArray();
 		fields.get("rgb").text((ar[0] + 128) + ", " + (ar[1] + 128) + ", " + (ar[2] + 128));
@@ -145,7 +145,7 @@ public class DecoEditor extends UserInterface {
 		results.clear();
 		if(search){
 			for(DecorationData deco : DECORATIONS.values()){
-				if(deco.key().contains(searchstr) || format(deco.key()).contains(searchstr)) results.add(deco);
+				if(deco.key().contains(searchstr) || ("fvtm.decoration." + deco.key()).contains(searchstr)) results.add(deco);
 			}
 		}
 		else{
@@ -164,7 +164,8 @@ public class DecoEditor extends UserInterface {
 			for(int i = 0; i < rows; i++){
 				j = scroll0 + i;
 				over = j >= (int)container.get("decos.size");
-				buttons.get("entry_" + i).text.value(over ? "" : format((String)container.get("decos.key", j)));
+				buttons.get("entry_" + i).text.value(over ? "" : "fvtm.decoration." + (String)container.get("decos.key", j));
+				buttons.get("entry_" + i).text.translate();
 				buttons.get("rem_" + i).visible(true);
 				buttons.get("add_" + i).visible(false);
 				buttons.get("entry_" + i).enabled(selected != j);
@@ -174,7 +175,7 @@ public class DecoEditor extends UserInterface {
 			for(int i = 0; i < rows; i++){
 				j = scroll1 + i;
 				over = j >= results.size();
-				buttons.get("entry_" + i).text.value(over ? "" : format(results.get(j).key()));
+				buttons.get("entry_" + i).text.value(over ? "" : "fvtm.decoration." + results.get(j).key());
 				buttons.get("rem_" + i).visible(false);
 				buttons.get("add_" + i).visible(true);
 				buttons.get("entry_" + i).enabled(true);
@@ -182,13 +183,38 @@ public class DecoEditor extends UserInterface {
 		}
 	}
 
-	private String format(String key){
-		return I18n.format("fvtm.decoration." + key);
-	}
-
 	@Override
 	public boolean onScroll(UIButton button, String id, int gl, int gt, int mx, int my, int am) {
 		return false;
+	}
+
+	@Override
+	public void predraw(float ticks, int mx, int my){
+		if(!fields.get("search").visible()) return;
+		if(!fields.get("search").text().equals(searchstr)){
+			searchstr = fields.get("search").text();
+			updateResults();
+		}
+	}
+
+	@Override
+	public void postdraw(float ticks, int mx, int my){
+		//
+	}
+
+	@Override
+	public void scrollwheel(int a, int x, int y){
+		if(x > 1 && x < 139 && y > 20 && y < 188){
+			if(listmode){
+				scroll0 += a > 0 ? 1 : -1;
+				if(scroll0 < 0) scroll0 = 0;
+			}
+			else{
+				scroll1 += a > 0 ? 1 : -1;
+				if(scroll1 < 0) scroll1 = 0;
+			}
+			updateEntries();
+		}
 	}
 
 }
