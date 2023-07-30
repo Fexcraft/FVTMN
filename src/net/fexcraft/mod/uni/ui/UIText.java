@@ -25,7 +25,7 @@ public class UIText extends UIElement {
 		scale = map.getFloat("scale", 1);
 		if(map.getBoolean("autoscale", false)) scale = -1;
 		shadow = map.getBoolean("shadow", false);
-		color.packed = Integer.parseInt(map.getString("color", "f0f0f0"));
+		color.packed = Integer.parseInt(map.getString("color", "f0f0f0"), 16);
 		if(map.getBoolean("hoverable", true)){
 			hover.packed = map.getInteger("hover", 0xf4d742);
 		}
