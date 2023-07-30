@@ -42,4 +42,8 @@ public class UIField extends UIElement {
 		return value;
 	}
 
+	public float number(){
+		return Float.parseFloat(text());
+	}
+
 }
