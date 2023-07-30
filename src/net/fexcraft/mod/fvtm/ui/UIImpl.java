@@ -23,4 +23,19 @@ public class UIImpl extends UserInterface {
 		return false;
 	}
 
+	@Override
+	public void predraw(float ticks, int mx, int my) {
+
+	}
+
+	@Override
+	public void postdraw(float ticks, int mx, int my) {
+
+	}
+
+	@Override
+	public void scrollwheel(int am, int mx, int my) {
+
+	}
+
 }
