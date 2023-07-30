@@ -59,7 +59,7 @@ public abstract class UIElement {
 	}
 
 	public boolean enabled(){
-		return visible;
+		return enabled;
 	}
 
 	public void enabled(boolean bool){
