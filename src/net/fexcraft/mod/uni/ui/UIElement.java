@@ -43,7 +43,9 @@ public abstract class UIElement {
 
 	public boolean hovered(int l, int t, int mx, int my){
 		if(absolute){
-			return hovered = mx >= x && mx <= x + width && my >= y && my <= y + height;
+			boolean xx = x < 0 ? mx >= ui.screen_width + x && mx <= ui.screen_width + x + width : mx >= x && mx <= x + width;
+			boolean yy = y < 0 ? my >= ui.screen_height + y && my <= ui.screen_height + y + height : my >= y && my <= y + height;
+			return hovered = xx && yy;
 		}
 		else return hovered = mx >= l + x && mx <= l + x + width && my >= t + y && my <= t + y + height;
 	}
