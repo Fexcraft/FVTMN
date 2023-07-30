@@ -18,7 +18,11 @@ public abstract class UserInterface {
 	public LinkedHashMap<String, UIField> fields = new LinkedHashMap<>();
 	public LinkedHashMap<String, UITab> tabs = new LinkedHashMap<>();
 	public boolean background;
-	public int width, height;
+	public int width;
+	public int height;
+	public int _fields;
+	public int screen_width;
+	public int screen_height;
 
 	public UserInterface(JsonMap map, ContainerInterface container) throws Exception {
 		this.container = container.set(this);
@@ -44,9 +48,9 @@ public abstract class UserInterface {
 		}
 		else{
 			UITab main = UITab.IMPLEMENTATION.getConstructor(UserInterface.class, JsonMap.class).newInstance(this, map);
-			main.texts.addAll(texts.values());
-			main.buttons.addAll(buttons.values());
-			main.fields.addAll(fields.values());
+			main.texts.putAll(texts);
+			main.buttons.putAll(buttons);
+			main.fields.putAll(fields);
 			tabs.put("main", main);
 		}
 		background = map.getBoolean("background", true);
@@ -63,10 +67,8 @@ public abstract class UserInterface {
 			if(!button.hovered(gl, gt, mx, my)) continue;
 			return button.onclick(gl, gt, mx, my, mb) || onAction(button, entry.getKey(), gl, gt, mx, my, mb);
 		}
-		UIField field = null;
-		for(Entry<String, UIField> entry : fields.entrySet()){
-			field = entry.getValue();
-			if(!field.visible /*|| !field.enabled*/) continue;
+		for(UIField field : fields.values()){
+			if(!field.visible() /*|| !field.enabled()*/) continue;
 			if(field.hovered(gl, gt, mx, my) && field.onclick(mx, my, mb)) return true;
 		}
 		return false;
@@ -75,5 +77,11 @@ public abstract class UserInterface {
 	public abstract boolean onAction(UIButton button, String id, int l, int t, int x, int y, int b);
 
 	public abstract boolean onScroll(UIButton button, String id, int gl, int gt, int mx, int my, int am);
+
+	public abstract void predraw(float ticks, int mx, int my);
+
+	public abstract void postdraw(float ticks, int mx, int my);
+
+	public abstract void scrollwheel(int am, int mx, int my);
 
 }
