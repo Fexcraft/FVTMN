@@ -86,6 +86,7 @@ public class DecoEditor extends UserInterface {
 		}
 		if(!found){
 			if(id.startsWith("entry_")){
+				if(fields.get("search").visible()) return true;
 				int idx = Integer.parseInt(id.substring(6));
 				select(selected = scroll0 + idx, selcol);
 				updateEntries();
@@ -102,13 +103,72 @@ public class DecoEditor extends UserInterface {
 			else if(id.startsWith("rem_")){
 				int idx = Integer.parseInt(id.substring(4));
 				TagCW com = TagCW.create();
-				com.set("task", "tem");
+				com.set("task", "rem");
 				com.set("idx", scroll1 + idx);
+				container.SEND_TO_SERVER.accept(com);
+				return true;
+			}
+			else if(id.startsWith("pos")){
+				int ax = Integer.parseInt(id.substring(3));
+				TagCW com = TagCW.create();
+				com.set("task", "pos");
+				com.set("axis", ax);
+				com.set("idx", selected);
+				com.set("value", fields.get(id).number());
+				container.SEND_TO_SERVER.accept(com);
+				return true;
+			}
+			else if(id.startsWith("rot")){
+				int ax = Integer.parseInt(id.substring(3));
+				TagCW com = TagCW.create();
+				com.set("task", "rot");
+				com.set("axis", ax);
+				com.set("idx", selected);
+				com.set("value", fields.get(id).number());
+				container.SEND_TO_SERVER.accept(com);
+				return true;
+			}
+			else if(id.startsWith("scl")){
+				int ax = Integer.parseInt(id.substring(3));
+				TagCW com = TagCW.create();
+				com.set("task", "scale");
+				com.set("axis", ax);
+				com.set("idx", selected);
+				com.set("value", fields.get(id).number());
 				container.SEND_TO_SERVER.accept(com);
 				return true;
 			}
 		}
 		return found;
+	}
+
+	@Override
+	public boolean onScroll(UIButton button, String id, int gl, int gt, int mx, int my, int am) {
+		if(id.startsWith("pos")){
+			int ax = Integer.parseInt(id.substring(3));
+			float val = fields.get(id).number();
+			val += am > 0 ? -1 : 1;
+			fields.get("pos" + ax).text(val + "");
+			onAction(button, id, gl, gt, mx, my, 0);
+			return true;
+		}
+		else if(id.startsWith("rot")){
+			int ax = Integer.parseInt(id.substring(3));
+			float val = fields.get(id).number();
+			val += am > 0 ? -1 : 1;
+			fields.get("rot" + ax).text(val + "");
+			onAction(button, id, gl, gt, mx, my, 0);
+			return true;
+		}
+		else if(id.startsWith("scl")){
+			int ax = Integer.parseInt(id.substring(3));
+			float val = fields.get(id).number();
+			val += am > 0 ? -1 : 1;
+			fields.get("scl" + ax).text(val + "");
+			onAction(button, id, gl, gt, mx, my, 0);
+			return true;
+		}
+		return false;
 	}
 
 	public void select(int idx, int colidx){
@@ -176,16 +236,12 @@ public class DecoEditor extends UserInterface {
 				j = scroll1 + i;
 				over = j >= results.size();
 				buttons.get("entry_" + i).text.value(over ? "" : "fvtm.decoration." + results.get(j).key());
+				buttons.get("entry_" + i).text.translate();
 				buttons.get("rem_" + i).visible(false);
 				buttons.get("add_" + i).visible(true);
 				buttons.get("entry_" + i).enabled(true);
 			}
 		}
-	}
-
-	@Override
-	public boolean onScroll(UIButton button, String id, int gl, int gt, int mx, int my, int am) {
-		return false;
 	}
 
 	@Override
