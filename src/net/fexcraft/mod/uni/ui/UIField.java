@@ -33,4 +33,9 @@ public class UIField extends UIElement {
 	public boolean keytyped(char c, int code){
 		return false;
 	}
+
+	public void text(String text){
+		//
+	}
+
 }
