@@ -119,25 +119,25 @@ public class DecoEditor extends UserInterface {
 		DecorationData data = idx < 0 || idx >= decos ? null : (DecorationData)container.get("decos.at", idx);
 		boolean miss = data == null;
 		for(int i = 0; i < 3; i++){
-			//TODO fields.get("pos" + i).setText(miss ? "0" : (i == 0 ? data.offset.x : i == 1 ? data.offset.y : data.offset.z) + "");
-			//TODO fields.get("rot" + i).setText(miss ? "0" : (i == 0 ? data.rotx : i == 1 ? data.roty : data.rotz) + "");
-			//TODO fields.get("scl" + i).setText(miss ? "0" : (i == 0 ? data.sclx : i == 1 ? data.scly : data.sclz) + "");
+			fields.get("pos" + i).text(miss ? "0" : (i == 0 ? data.offset.x : i == 1 ? data.offset.y : data.offset.z) + "");
+			fields.get("rot" + i).text(miss ? "0" : (i == 0 ? data.rotx : i == 1 ? data.roty : data.rotz) + "");
+			fields.get("scl" + i).text(miss ? "0" : (i == 0 ? data.sclx : i == 1 ? data.scly : data.sclz) + "");
 		}
-		//TODO texts.get("texc").value(miss ? "" : data.textures.get(data.seltex).name());
+		texts.get("texc").value(miss ? "" : data.textures.get(data.seltex).name());
 		selcol = colidx;
 		if(!miss) colors.addAll(data.getColorChannels().keySet());
 		if(selcol >= colors.size() || selcol < 0) selcol = 0;
-		//TODO texts.get("channel").value(miss ? "" : colors.isEmpty() ? I18n.format("gui.fvtm.decoration_editor.no_color_channels") : colors.get(selcol));
+		texts.get("channel").value(miss ? "" : colors.isEmpty() ? I18n.format("gui.fvtm.decoration_editor.no_color_channels") : colors.get(selcol));
 		RGB color = miss || colors.isEmpty() ? RGB.WHITE : data.getColorChannel(colors.get(selcol));
 		byte[] ar = color.toByteArray();
-		//TODO fields.get("rgb").setText((ar[0] + 128) + ", " + (ar[1] + 128) + ", " + (ar[2] + 128));
-		//TODO fields.get("hex").setText("#" + Integer.toHexString(color.packed));
+		fields.get("rgb").text((ar[0] + 128) + ", " + (ar[1] + 128) + ", " + (ar[2] + 128));
+		fields.get("hex").text("#" + Integer.toHexString(color.packed));
 	}
 
 	protected void updateCategorySearch(){
 		texts.get("cat").value(DECORATION_CATEGORIES.get(category));
 		texts.get("cat").visible(!search);
-		//TODO fields.get("search").visible(search);
+		fields.get("search").visible(search);
 		updateResults();
 	}
 
