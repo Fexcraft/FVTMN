@@ -13,16 +13,16 @@ public class UIField extends UIElement {
 	public String value;
 	public String regex;
 	public boolean background;
-	public float scale;
+	//public float scale;
 	public int color;
 
 	public UIField(UserInterface ui, JsonMap map) throws Exception {
 		super(ui, map);
 		initial_value = value = map.getString("value", "");
-		scale = map.getFloat("scale", 1);
-		if(map.getBoolean("autoscale", false)) scale = -1;
+		//scale = map.getFloat("scale", 1);
+		//if(map.getBoolean("autoscale", false)) scale = -1;
 		background = map.getBoolean("background", false);
-		color = map.getInteger("color", 0xf0f0f0);
+		color = Integer.parseInt(map.getString("color", "f0f0f0"), 16);
 		if(map.has("numberfield")) regex = "[^\\d\\-\\.\\,]";
 	}
 
@@ -36,6 +36,10 @@ public class UIField extends UIElement {
 
 	public void text(String text){
 		//
+	}
+
+	public String text(){
+		return value;
 	}
 
 }
