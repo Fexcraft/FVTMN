@@ -27,4 +27,6 @@ public abstract class ContainerInterface {
 		return this;
 	}
 
+	public abstract void onClosed();
+
 }
