@@ -23,4 +23,9 @@ public class CIImpl extends ContainerInterface {
 
 	}
 
+	@Override
+	public void onClosed() {
+
+	}
+
 }
