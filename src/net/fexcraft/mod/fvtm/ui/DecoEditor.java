@@ -3,7 +3,10 @@ package net.fexcraft.mod.fvtm.ui;
 import static net.fexcraft.mod.fvtm.FvtmRegistry.DECORATIONS;
 import static net.fexcraft.mod.fvtm.FvtmRegistry.DECORATION_CATEGORIES;
 
+import java.awt.*;
 import java.util.ArrayList;
+
+import javax.swing.*;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.RGB;
@@ -23,8 +26,8 @@ public class DecoEditor extends UserInterface {
 	private static ArrayList<String> colors = new ArrayList<>();
 	private static boolean listmode = true, search;
 	private int scroll0, scroll1;
-	protected int selected = -1;
-	protected int selcol;
+	public int selected = -1;
+	public int selcol;
 	private int category = 0;
 	private String searchstr = "";
 
@@ -35,7 +38,7 @@ public class DecoEditor extends UserInterface {
 	}
 
 	@Override
-	public boolean onAction(UIButton button, String id, int l, int t, int x, int y, int b){
+	public boolean onAction(UIButton button, String id, int l, int t, int x, int y, int mb){
 		boolean found = true;
 		switch(id){
 			case "cat_prev":{
@@ -77,6 +80,97 @@ public class DecoEditor extends UserInterface {
 				if(listmode) scroll0++;
 				else scroll1++;
 				updateEntries();
+				break;
+			}
+			case "tex_prev":{
+				if(selected < 0 || selected >= (int)container.get("decos.size")) return true;
+				TagCW com = TagCW.create();
+				com.set("task", "tex");
+				com.set("idx", selected);
+				DecorationData data = (DecorationData)container.get("decos.at", selected);
+				com.set("sel", data.seltex - 1 < 0 ? data.textures.size() - 1 : data.seltex - 1);
+				container.SEND_TO_SERVER.accept(com);
+				break;
+			}
+			case "tex_next":{
+				if(selected < 0 || selected >= (int)container.get("decos.size")) return true;
+				TagCW com = TagCW.create();
+				com.set("task", "tex");
+				com.set("idx", selected);
+				DecorationData data = (DecorationData)container.get("decos.at", selected);
+				com.set("sel", data.seltex + 1 < data.textures.size() ? data.seltex + 1 : 0);
+				container.SEND_TO_SERVER.accept(com);
+				break;
+			}
+			case "ch_prev":{
+				if(colors.isEmpty()) return true;
+				selcol--;
+				if(selcol < 0) selcol = colors.size() - 1;
+				select(selected, selcol);
+				break;
+			}
+			case "ch_next":{
+				if(colors.isEmpty()) return true;
+				selcol++;
+				if(selcol >= colors.size()) selcol = 0;
+				select(selected, selcol);
+				break;
+			}
+			case "rgb":{
+				if(selected < 0 || selected >= (int)container.get("decos.size") || colors.isEmpty()) return true;
+				TagCW com = TagCW.create();
+				com.set("task", "color");
+				com.set("idx", selected);
+				com.set("channel", colors.get(selcol));
+				RGB rgb = RGB.WHITE;
+				try{
+					String[] arr = fields.get("rgb").text().split("\\,");
+					int r = Integer.parseInt(arr[0].trim());
+					int g = Integer.parseInt(arr[1].trim());
+					int b = Integer.parseInt(arr[2].trim());
+					rgb = new RGB(r, g, b);
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
+				com.set("rgb", rgb.packed);
+				container.SEND_TO_SERVER.accept(com);
+				break;
+			}
+			case "hex":{
+				if(selected < 0 || selected >= (int)container.get("decos.size") || colors.isEmpty()) return true;
+				TagCW com = TagCW.create();
+				com.set("task", "color");
+				com.set("idx", selected);
+				com.set("channel", colors.get(selcol));
+				RGB rgb = RGB.WHITE;
+				try{
+					rgb = new RGB(fields.get("hex").text());
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
+				com.set("rgb", rgb.packed);
+				container.SEND_TO_SERVER.accept(com);
+				break;
+			}
+			case "colorpicker":{
+				if(selected < 0 || selected >= (int)container.get("decos.size") || colors.isEmpty()) return true;
+				try{
+					new Thread(){
+						@Override
+						public void run(){
+							Color color = JColorChooser.showDialog(null, "select color", new Color(((DecorationData)container.get("decos.at", selected)).getColorChannel(colors.get(selcol)).packed));
+							RGB rgb = new RGB(color.getRGB());
+							byte[] ar = rgb.toByteArray();
+							fields.get("rgb").text((ar[0] + 128) + ", " + (ar[1] + 128) + ", " + (ar[2] + 128));
+							fields.get("hex").text("#" + Integer.toHexString(rgb.packed).substring(2));
+						}
+					}.start();
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
 				break;
 			}
 			default:{
