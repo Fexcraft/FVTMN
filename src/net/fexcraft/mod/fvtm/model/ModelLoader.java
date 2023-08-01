@@ -11,10 +11,9 @@ public interface ModelLoader {
 
 	/**
 	 * @param name     the model address/resourcelocation
-	 * @param confdata existing model data from config
-	 * @param model    new model instance if necessary (usually only unused by the class model loader)
+	 * @param data existing model data from config
 	 * @return the model, with optionally a (updated or overridden) ModelData object on 2nd index
 	 */
-	public Object[] load(String name, ModelData confdata, Supplier<Model> model) throws Exception;
+	public Object[] load(String name, ModelData data, Supplier<Model> supplier) throws Exception;
 
 }
