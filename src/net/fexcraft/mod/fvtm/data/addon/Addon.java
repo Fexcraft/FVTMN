@@ -88,7 +88,12 @@ public class Addon extends Content<Addon> {
 		}
 		if(map.has("Particles") && EnvInfo.CLIENT){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("Particles").entries()){
-				new Particle(conid(id, entry.getKey()), entry.getValue().asMap());
+				try{
+					new Particle(conid(id, entry.getKey()), entry.getValue().asMap());
+				}
+				catch(Throwable e){
+					e.printStackTrace();
+				}
 			}
 		}
 		if(map.has("Conditions")){
