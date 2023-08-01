@@ -38,4 +38,5 @@ public interface Model {
 	/** Sorts all groups based on render order. */
 	public void sort();
 
+	public void clearGLData();
 }
