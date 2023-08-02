@@ -1,5 +1,7 @@
 package net.fexcraft.mod.fvtm.model.loaders;
 
+import static net.fexcraft.mod.fvtm.FvtmLogger.LOGGER;
+
 import java.io.Closeable;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -10,7 +12,6 @@ import java.util.regex.Pattern;
 
 import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.frl.Polyhedron;
-import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.tmt.BoxBuilder;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
 import net.fexcraft.mod.fvtm.FvtmResources;
@@ -153,8 +154,8 @@ public class SMPTBJavaModelLoader implements ModelLoader {
             	}
         	}
         	catch(Exception e){
-        		Print.log("Failed to load SMP TB Model.");
-            	Print.log("Parsing error at line [" + linenumber + "]: " + line);
+        		LOGGER.log("Failed to load SMP TB Model.");
+            	LOGGER.log("Parsing error at line [" + linenumber + "]: " + line);
             	continue;
         	}
         }
