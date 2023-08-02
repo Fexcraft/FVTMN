@@ -13,13 +13,12 @@ import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.tmt.BoxBuilder;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
+import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.model.DefaultModel;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
 import net.fexcraft.mod.fvtm.model.ModelGroup;
 import net.fexcraft.mod.fvtm.model.ModelLoader;
-import net.fexcraft.mod.fvtm.util.Resources;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * For loading uncompiled java models exported from SMP Toolbox v2.
@@ -37,7 +36,7 @@ public class SMPTBJavaModelLoader implements ModelLoader {
 
 	@Override
 	public Object[] load(String name, ModelData confdata, Supplier<Model> supplier) throws Exception {
-		Object[] stream = Resources.getModelInputStreamWithFallback(new ResourceLocation(name));
+		Object[] stream = FvtmResources.getModelInputStreamWithFallback(name);
 		DefaultModel model = (DefaultModel)supplier.get();
 		//
         String line = null;
