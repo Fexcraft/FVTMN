@@ -12,13 +12,12 @@ import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.lib.tmt.JsonToTMT;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
+import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.model.DefaultModel;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
 import net.fexcraft.mod.fvtm.model.ModelGroup;
 import net.fexcraft.mod.fvtm.model.ModelLoader;
-import net.fexcraft.mod.fvtm.util.Resources;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -33,7 +32,7 @@ public class JTMTModelLoader implements ModelLoader {
 	@Override
 	public Object[] load(String name, ModelData confdata, Supplier<Model> supplier) throws Exception {
 		DefaultModel model = (DefaultModel)supplier.get();
-		JsonObject obj = JsonUtil.getObjectFromInputStream(Resources.getModelInputStream(new ResourceLocation(name), true));
+		JsonObject obj = JsonUtil.getObjectFromInputStream(FvtmResources.INSTANCE.getModelInputStream(name, true));
 		if(obj.has("creators")){
 			obj.get("creators").getAsJsonArray().forEach(elm -> {
 				confdata.creators().add(elm.getAsString());
