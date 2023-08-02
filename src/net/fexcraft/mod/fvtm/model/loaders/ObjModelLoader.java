@@ -14,21 +14,22 @@ import net.fexcraft.lib.common.utils.ObjParser.ObjModel;
 import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
+import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.model.DefaultModel;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
 import net.fexcraft.mod.fvtm.model.ModelGroup;
 import net.fexcraft.mod.fvtm.model.ModelLoader;
-import net.fexcraft.mod.fvtm.util.Resources;
-import net.minecraft.util.ResourceLocation;
+import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.IDLManager;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
 public class ObjModelLoader implements ModelLoader {
 	
-	private static TreeMap<String, ObjModel> INFO_CACHE = new TreeMap<>();
-	private static TreeMap<ResourceLocation, ObjModel> DATA_CACHE = new TreeMap<>();
+	private static TreeMap<IDL, ObjModel> INFO_CACHE = new TreeMap<>();
+	private static TreeMap<IDL, ObjModel> DATA_CACHE = new TreeMap<>();
 	public static ArrayList<String> keys = new ArrayList<>();
 	static {
 		keys.add("Creator:");
@@ -61,7 +62,7 @@ public class ObjModelLoader implements ModelLoader {
 		//if(Static.dev()) start = Time.getDate();
 		String[] filter = name.split(";");
 		String id = filter.length > 1 ? filter[filter.length - 1] : name;
-		ResourceLocation loc = new ResourceLocation(id);
+		IDL loc = IDLManager.getIDLCached(id);
 		ObjModel objdata = loadObjData(loc);
 		DefaultModel model = (DefaultModel)supplier.get();
 		ArrayList<String> groups = new ArrayList<>();
@@ -95,7 +96,7 @@ public class ObjModelLoader implements ModelLoader {
 		include.addAll(ObjParser.getCommentValues(objdata, new String[]{ keys.get(11) }, null));
 		for(String str : include){
 			filter = str.split(";");
-			loc = new ResourceLocation(filter.length > 1 ? filter[filter.length - 1] : str);
+			loc = IDLManager.getIDL(filter.length > 1 ? filter[filter.length - 1] : str);
 			exclude = false;
 			groups.clear();
 			if(filter.length > 1){
@@ -133,7 +134,7 @@ public class ObjModelLoader implements ModelLoader {
 		return new Object[]{ model, confdata };
 	}
 
-	private void addObjGroups(DefaultModel model, ResourceLocation loc, ArrayList<String> groups, boolean exclude, boolean flip_x, boolean flip_f, boolean flip_u, boolean flip_v, boolean norm){
+	private void addObjGroups(DefaultModel model, IDL loc, ArrayList<String> groups, boolean exclude, boolean flip_x, boolean flip_f, boolean flip_u, boolean flip_v, boolean norm){
 		ObjModel objmod = getObjModelFromCache(loc, flip_x, flip_f, flip_u, flip_v, norm);
 		if(groups.isEmpty()){
 			for(String str : objmod.polygons.keySet()) addGroup(model, str, objmod);
@@ -160,15 +161,15 @@ public class ObjModelLoader implements ModelLoader {
 		model.groups.add(group);
 	}
 
-	private ObjModel loadObjData(ResourceLocation loc) throws IOException {
+	private ObjModel loadObjData(IDL loc) throws IOException {
 		ObjModel objdata = null;
-		if(INFO_CACHE.containsKey(loc.toString())){
-			objdata = INFO_CACHE.get(loc.toString());
+		if(INFO_CACHE.containsKey(loc)){
+			objdata = INFO_CACHE.get(loc);
 		}
 		else{
-			Object[] stream = Resources.getModelInputStreamWithFallback(loc);
+			Object[] stream = FvtmResources.getModelInputStreamWithFallback(loc);
 			objdata = new ObjParser((InputStream)stream[0]).readComments(true).readModel(false).parse();
-			INFO_CACHE.put(loc.toString(), objdata);
+			INFO_CACHE.put(loc, objdata);
 			if(stream.length > 1) for(Closeable c : (Closeable[])stream[1]) c.close();
 			if(objdata.errors){
 				Print.log("Error while loading OBJ model '" + loc + "'!");
@@ -177,11 +178,11 @@ public class ObjModelLoader implements ModelLoader {
 		return objdata;
 	}
 	
-	public static ObjModel getObjModelFromCache(ResourceLocation loc, boolean flip_x, boolean flip_f, boolean flip_u, boolean flip_v, boolean norm){
+	public static ObjModel getObjModelFromCache(IDL loc, boolean flip_x, boolean flip_f, boolean flip_u, boolean flip_v, boolean norm){
 		if(DATA_CACHE.containsKey(loc)){
 			return DATA_CACHE.get(loc);
 		}
-		Object[] stream = Resources.getModelInputStreamWithFallback(loc);
+		Object[] stream = FvtmResources.getModelInputStreamWithFallback(loc);
 		ObjModel objmod = new ObjParser((InputStream)stream[0]).flipAxes(flip_x).flipFaces(flip_f).flipUV(flip_u, flip_v).readComments(false).noNormals(norm).parse();
 		if(stream.length > 1) for(Closeable c : (Closeable[])stream[1]) try{ c.close(); } catch(IOException e){ e.printStackTrace();}
 		DATA_CACHE.put(loc, objmod);
