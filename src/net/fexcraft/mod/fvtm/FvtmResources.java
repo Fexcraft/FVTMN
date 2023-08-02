@@ -1,12 +1,13 @@
 package net.fexcraft.mod.fvtm;
 
 import static net.fexcraft.mod.fvtm.FvtmLogger.LOGGER;
-import static net.fexcraft.mod.fvtm.FvtmRegistry.ADDONS;
-import static net.fexcraft.mod.fvtm.FvtmRegistry.getAddon;
+import static net.fexcraft.mod.fvtm.FvtmRegistry.*;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -18,16 +19,25 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
+import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.addon.AddonLocation;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
+import net.fexcraft.mod.fvtm.model.*;
+import net.fexcraft.mod.fvtm.model.loaders.ClassModelLoader;
+import net.fexcraft.mod.fvtm.model.loaders.FMFModelLoader;
+import net.fexcraft.mod.fvtm.model.loaders.JTMTModelLoader;
+import net.fexcraft.mod.fvtm.model.loaders.ObjModelLoader;
+import net.fexcraft.mod.fvtm.model.loaders.SMPTBJavaModelLoader;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.fvtm.util.ZipUtils;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.client.CTab;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -231,5 +241,135 @@ public abstract class FvtmResources {
 	}
 
 	public abstract JsonMap getJsonC(String loc);
+	
+	//-V-// Model Loading //-V-//
+
+	public void initModelLoaders(){
+		MODEL_LOADERS.add(new ClassModelLoader());
+		MODEL_LOADERS.add(new JTMTModelLoader());
+		MODEL_LOADERS.add(new FMFModelLoader());
+		MODEL_LOADERS.add(new ObjModelLoader());
+		MODEL_LOADERS.add(new SMPTBJavaModelLoader());
+	}
+
+	public abstract void initModelPrograms();
+	
+	public void initModels(){
+		//other data types
+		for(DecorationData deco : DECORATIONS.values()){
+			Model model = getModel(deco.modelid, deco.modeldata, DefaultModel.class);
+			if(model != null && model != DefaultModel.EMPTY) MODELS.put(deco.modelid, deco.model = model);
+		}
+	}
+
+	public void initModelsClear(){
+		ObjModelLoader.clearCache();
+	}
+
+	public static Model getModel(String location, ModelData data, Class<? extends Model> clazz){
+		if(location == null || location.equals("") || location.equals("null")) return getEmptyModelForClass(clazz);
+		boolean bake = location.startsWith("baked|");
+		if(bake) location = location.substring(6);
+		Model model = null;
+		if(MODELS.containsKey(location)){
+			if(bake && getEmptyModelForClass(clazz) instanceof BlockModel){
+				return getEmptyModelForClass(clazz);
+			}
+			return MODELS.get(location);
+		}
+		ModelLoader loader = getModelLoader(location, FilenameUtils.getExtension(location));
+		if(loader == null) return getEmptyModelForClass(clazz);
+		try{
+			Object[] ret = loader.load(location, data, () -> {
+				try{
+					return clazz.getConstructor().newInstance();
+				}
+				catch(Exception e){
+					e.printStackTrace();
+					return getEmptyModelForClass(clazz);
+				}
+				catch(NoClassDefFoundError e){
+					e.printStackTrace();
+					return getEmptyModelForClass(clazz);
+				}
+			});
+			if(ret.length == 0 || ret[0] == null) return getEmptyModelForClass(clazz);
+			model = (Model)ret[0];
+			if(ret.length > 1) data = (ModelData)ret[1];
+			data.convert();
+			model.parse(data).lock();
+		}
+		catch(Exception e){
+			e.printStackTrace(); //Static.stop();
+		}
+		MODELS.put(location, model);
+		if(bake && model instanceof BlockModel){
+			//TODO FCLBlockModelLoader.addBlockModel(new ResourceLocation(location), (FCLBlockModel)model);
+			return getEmptyModelForClass(clazz);
+		}
+		return model;
+	}
+
+	public static Model getEmptyModelForClass(Class<? extends Model> clazz){
+		if(clazz == ContainerModel.class) return ContainerModel.EMPTY;
+		if(clazz == PartModel.class) return PartModel.EMPTY;
+		if(clazz == VehicleModel.class) return VehicleModel.EMPTY;
+		if(clazz == TrafficSignModel.class) return TrafficSignModel.EMPTY;
+		if(clazz == BlockModel.class) return BlockModel.EMPTY;
+		if(clazz == RailGaugeModel.class) return RailGaugeModel.EMPTY;
+		if(clazz == ClothModel.class) return ClothModel.EMPTY;
+		if(clazz == WireModel.class) return WireModel.EMPTY;
+		return DefaultModel.EMPTY;
+	}
+
+	public static ModelLoader getModelLoader(String name, String extension){
+		for(ModelLoader loader : MODEL_LOADERS){
+			if(loader.accepts(name, extension)) return loader;
+		}
+		return null;
+	}
+
+	public InputStream getModelInputStream(String loc, boolean log){
+		return getModelInputStream(IDLManager.getIDLCached(loc), log);
+	}
+
+	public abstract InputStream getModelInputStream(IDL loc, boolean log);
+
+	public static Object[] getModelInputStreamWithFallback(String loc){
+		return getModelInputStreamWithFallback(IDLManager.getIDLCached(loc));
+	}
+
+	public static Object[] getModelInputStreamWithFallback(IDL loc){
+		Closeable[] close = null;
+		InputStream stream = INSTANCE.getModelInputStream(loc, false);
+		if(stream != null) return new Object[]{ stream };
+		try{
+			Addon addon = getAddon(loc.space());
+			if(addon != null && addon.getLocation().isConfigPack()){
+				if(addon.getFile().isDirectory()){
+					File file = new File(addon.getFile(), "assets/" + loc.space() + "/" + loc.path());
+					if(file.exists()) stream = new FileInputStream(file);
+				}
+				else{
+					String filename = "assets/" + loc.space() + "/" + loc.path();
+					ZipFile zip = new ZipFile(addon.getFile());
+					ZipInputStream zipstream = new ZipInputStream(new FileInputStream(addon.getFile()));
+					close = new Closeable[]{ zip, zipstream };
+					while(true){
+						ZipEntry entry = zipstream.getNextEntry();
+						if(entry == null) break;
+						if(entry.getName().equals(filename)){
+							stream = zip.getInputStream(entry);
+							break;
+						}
+					}
+				}
+			}
+		}
+		catch(Throwable e){
+			//e.printStackTrace();
+		}
+		return close == null ? new Object[]{ stream } : new Object[]{ stream, close };
+	}
 
 }
