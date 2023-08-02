@@ -1,5 +1,7 @@
 package net.fexcraft.mod.fvtm.model.loaders;
 
+import static net.fexcraft.mod.fvtm.FvtmLogger.LOGGER;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +14,6 @@ import java.util.function.Supplier;
 import net.fexcraft.lib.common.utils.ObjParser;
 import net.fexcraft.lib.common.utils.ObjParser.ObjModel;
 import net.fexcraft.lib.frl.Polyhedron;
-import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.model.DefaultModel;
@@ -172,7 +173,7 @@ public class ObjModelLoader implements ModelLoader {
 			INFO_CACHE.put(loc, objdata);
 			if(stream.length > 1) for(Closeable c : (Closeable[])stream[1]) c.close();
 			if(objdata.errors){
-				Print.log("Error while loading OBJ model '" + loc + "'!");
+				LOGGER.log("Error while loading OBJ model '" + loc + "'!");
 			}
 		}
 		return objdata;
