@@ -3,6 +3,7 @@ package net.fexcraft.mod.fvtm;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.TreeMap;
 
 import net.fexcraft.app.json.JsonMap;
@@ -11,6 +12,8 @@ import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.fvtm.data.Fuel;
 import net.fexcraft.mod.fvtm.data.Material;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
+import net.fexcraft.mod.fvtm.model.Model;
+import net.fexcraft.mod.fvtm.model.ModelLoader;
 import net.fexcraft.mod.fvtm.sys.particle.Particle;
 import net.fexcraft.mod.fvtm.util.Registry;
 import net.fexcraft.mod.uni.IDL;
@@ -42,6 +45,9 @@ public class FvtmRegistry {
 	public static final HashMap<String, JsonMap> WIRE_DECO_CACHE = new HashMap<>();
 	public static final HashMap<String, DecorationData> DECORATIONS = new HashMap<>();
 	public static final ArrayList<String> DECORATION_CATEGORIES = new ArrayList<>();
+	//
+	public static final LinkedHashMap<String, Model> MODELS = new LinkedHashMap<>();
+	public static final ArrayList<ModelLoader> MODEL_LOADERS = new ArrayList<>();
 	//
 	public static final HashMap<IDL, ItemWrapper> CONTENT_ITEMS = new HashMap<>();
 	public static final HashMap<String, ItemWrapper> ITEMS = new HashMap<>();
