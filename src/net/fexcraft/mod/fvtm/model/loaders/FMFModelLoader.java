@@ -4,13 +4,12 @@ import java.io.Closeable;
 import java.io.InputStream;
 import java.util.function.Supplier;
 
+import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.model.DefaultModel;
 import net.fexcraft.mod.fvtm.model.FMFParser;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
 import net.fexcraft.mod.fvtm.model.ModelLoader;
-import net.fexcraft.mod.fvtm.util.Resources;
-import net.minecraft.util.ResourceLocation;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -24,7 +23,7 @@ public class FMFModelLoader implements ModelLoader {
 
 	@Override
 	public Object[] load(String name, ModelData confdata, Supplier<Model> supplier) throws Exception {
-		Object[] stream = Resources.getModelInputStreamWithFallback(new ResourceLocation(name));
+		Object[] stream = FvtmResources.getModelInputStreamWithFallback(name);
 		Model model = supplier.get();
 		confdata.putAll(FMFParser.parse((DefaultModel)model, (InputStream)stream[0]));
 		if(stream.length > 1) for(Closeable c : (Closeable[])stream[1]) c.close();
