@@ -2,6 +2,7 @@ package net.fexcraft.mod.uni.ui;
 
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+import java.util.function.Consumer;
 
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
@@ -12,6 +13,7 @@ import net.fexcraft.app.json.JsonValue;
  */
 public abstract class UserInterface {
 
+	public static Consumer<UserInterface> OI = null;
 	public ContainerInterface container;
 	public LinkedHashMap<String, UIText> texts = new LinkedHashMap<>();
 	public LinkedHashMap<String, UIButton> buttons = new LinkedHashMap<>();
@@ -57,6 +59,7 @@ public abstract class UserInterface {
 		JsonArray arr = map.getArray("size");
 		width = arr.get(0).integer_value();
 		height = arr.get(1).integer_value();
+		if(OI != null) OI.accept(this);
 	}
 
 	public boolean onClick(int gl, int gt, int mx, int my, int mb){
