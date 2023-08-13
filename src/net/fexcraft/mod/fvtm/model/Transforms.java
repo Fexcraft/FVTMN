@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fvtm.model;
 
 import java.util.ArrayList;
+import java.util.function.Function;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -13,6 +14,7 @@ import org.lwjgl.opengl.GL12;
 public class Transforms {
 
 	public static final Transformer TF_RESCALE_NORMAL = new TF_RescaleNormal();
+	public static Function<String[], Transformer> GET_TRANSFORM;
 	private ArrayList<Transformer> transformers = new ArrayList<>();
 	
 	public void apply(){
@@ -33,32 +35,11 @@ public class Transforms {
 	}
 	
 	public void parse(String[] args){
-		switch(args[0]){
-			case "translation":
-			case "translate":
-			case "trans":
-			case "tra":
-			case "tr":
-				transformers.add(new TF_Translate(Float.parseFloat(args[1]), Float.parseFloat(args[2]), Float.parseFloat(args[3])));
-				return;
-			case "rotation":
-			case "rotate":
-			case "rot":
-				transformers.add(new TF_Rotate(Float.parseFloat(args[1]), Float.parseFloat(args[2]), Float.parseFloat(args[3]), Float.parseFloat(args[4])));
-				return;
-			case "scale":
-				if(args.length < 3){
-					float scale = Float.parseFloat(args[1]);
-					transformers.add(new TF_Scale(scale, scale, scale));
-				}
-				else transformers.add(new TF_Scale(Float.parseFloat(args[1]), Float.parseFloat(args[2]), Float.parseFloat(args[3])));
-				return;
-			case "gl_rescale_normal":
-			case "rescale_normal":
-				transformers.add(TF_RESCALE_NORMAL);
-				return;
-		}
+		Transformer form = GET_TRANSFORM.apply(args);
+		if(form != null) transformers.add(form);
 	}
+
+	// GL11 implementation below //
 	
 	public static class TF_Translate implements Transformer {
 		
