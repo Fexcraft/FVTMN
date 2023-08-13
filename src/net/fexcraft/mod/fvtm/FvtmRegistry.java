@@ -30,6 +30,8 @@ public class FvtmRegistry {
 	public static final String CORE_VER = "1.0.0";
 	public static String LOADER_VER;
 	public static File CONFIG_DIR;
+	public static boolean is112;
+	public static boolean is120;
 	//
 	public static IDL INTERNAL_ADDON_ID = IDLManager.getIDLCached("fvtm:fvtm");
 	public static IDL NONE_CLOTH_MAT;
@@ -54,6 +56,8 @@ public class FvtmRegistry {
 
 	public static final void init(String loadver, File conf){
 		LOADER_VER = loadver;
+		is112 = loadver.equals("1.12");
+		is120 = !is112;
 		CONFIG_DIR = conf;
 		if(!CONFIG_DIR.exists()) CONFIG_DIR.mkdirs();
 		Config.init(new File(conf, "fvtm.json"));
