@@ -13,9 +13,10 @@ public abstract class ContainerInterface {
 	public Consumer<TagCW> SEND_TO_CLIENT;
 	public Consumer<TagCW> SEND_TO_SERVER;
 	protected UserInterface ui;//client side only
+	public JsonMap ui_map;
 
 	public ContainerInterface(JsonMap map){
-
+		ui_map = map;
 	}
 
 	public abstract Object get(String key, Object... objs);
