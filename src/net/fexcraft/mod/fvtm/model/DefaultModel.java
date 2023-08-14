@@ -17,6 +17,7 @@ import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.frl.Polygon;
 import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.lib.frl.Vertex;
+import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.model.ConditionalPrograms.ConditionBased;
 import net.fexcraft.mod.fvtm.model.ModelGroupList.DefaultModelGroupList;
 import net.fexcraft.mod.fvtm.model.Program.ConditionalProgram;
@@ -42,7 +43,7 @@ public class DefaultModel implements Model {
 	@Override
 	public void render(ModelRenderData data){
 		transforms.apply();
-		GL11.glShadeModel(smooth_shading ? GL11.GL_FLAT : GL11.GL_SMOOTH);
+		if(FvtmRegistry.is112) GL11.glShadeModel(smooth_shading ? GL11.GL_FLAT : GL11.GL_SMOOTH);
 		for(ModelGroupList list : sorted.values()) list.render(data);
 		transforms.deapply();
 	}
