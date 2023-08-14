@@ -110,16 +110,16 @@ public class SMPTBJavaModelLoader implements ModelLoader {
             			builder.setCorner(6, newVec3f(array[25], array[26], array[27]));
             			builder.setCorner(7, newVec3f(array[28], array[29], array[30]));
             		}
-            		model.groups.get(poly.group).add(new Polyhedron().importMRT(builder.build(), false, 1));
+            		model.groups.get(poly.group).add(new Polyhedron().importMRT(builder.build(), false, 0.0625f));
             		continue;
             	}
             	matcher = rotpoint.matcher(line);
             	if(matcher.matches()){
             		TemporaryPolygon poly = get(matcher.group(1), matcher.group(2), polis);
             		String[] array = matcher.group(3).split(", ");
-            		poly.mrt.rotationPointX = parseF(array[0]);
-            		poly.mrt.rotationPointY = parseF(array[1]);
-            		poly.mrt.rotationPointZ = parseF(array[2]);
+            		poly.mrt.rotationAngleX = parseF(array[0]);
+            		poly.mrt.rotationAngleY = parseF(array[1]);
+            		poly.mrt.rotationAngleZ = parseF(array[2]);
             		continue;
             	}
             	matcher = pospoint.matcher(line);
