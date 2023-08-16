@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
+import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.mod.fvtm.sys.uni.KeyPress;
 import net.fexcraft.mod.uni.IDL;
@@ -72,6 +73,10 @@ public abstract class Attribute6<V> {
 	}
 
 	public abstract String type();
+
+	public boolean hasPerm(){
+		return perm != null;
+	}
 
 	// Returns //
 
@@ -178,6 +183,46 @@ public abstract class Attribute6<V> {
 		return keys == null ? null : keys.get(key);
 	}
 
+	// Icons //
+
+	public boolean hasIcons(){
+		return icons.size() > 0;
+	}
+
+	public void copyIconsFrom(Attribute6<?> other, boolean override){
+		if(override){
+			icons.putAll(other.icons);
+			return;
+		}
+		for(String key : other.icons.keySet()){
+			if(!icons.containsKey(key)) icons.put(key, other.icons.get(key));
+		}
+	}
+
+	public void addIcons(String... strings){
+		for(String str : strings){
+			icons.put(str, IDLManager.getIDLCached(str));
+		}
+	}
+
+	public IDL getCurrentIcon(){
+		if(icons.size() == 0) return DEF_ICON;
+		if(icons.containsKey(asString())) return icons.get(asString());
+		return icons.containsKey("default") ? icons.get("default") : DEF_ICON;
+	}
+
+	public void genDefaultIcons(){
+		if(valuetype.isBoolean()){
+			if(!icons.containsKey("true")) icons.put("true", IDLManager.getIDLCached("fvtm:textures/gui/icons/attr_bool_true.png"));
+			if(!icons.containsKey("false")) icons.put("false", IDLManager.getIDLCached("fvtm:textures/gui/icons/attr_bool_false.png"));
+		}
+		if(valuetype == AttrValueType.TRISTATE){
+			if(!icons.containsKey("true")) icons.put("true", IDLManager.getIDLCached("fvtm:textures/gui/icons/attr_tristate_true.png"));
+			if(!icons.containsKey("false")) icons.put("false", IDLManager.getIDLCached("fvtm:textures/gui/icons/attr_tristate_false.png"));
+			if(!icons.containsKey("null")) icons.put("null", IDLManager.getIDLCached("fvtm:textures/gui/icons/attr_tristate_null.png"));
+		}
+	}
+
 	// Saving/Loading //
 
 	public TagCW save(TagCW com){
@@ -198,6 +243,32 @@ public abstract class Attribute6<V> {
 
 	public abstract void loadValue(TagCW com);
 
+	// new Instaces //
+
+	public abstract Attribute6<V> newInstance();
+
+	public Attribute6<V> createCopy(String origin){
+		Attribute6<V> attr = newInstance();
+		attr.limit(min, max);
+		attr.initial = initial;
+		attr.value = value;
+		attr.group = group;
+		attr.origin = origin;
+		attr.editable = editable;
+		attr.autosync = autosync;
+		attr.perm = perm;
+		attr.copyIconsFrom(this, true);
+		attr.copyAccessFrom(this);
+		attr.copyBoxesFrom(this);
+		attr.copyKeysFrom(this);
+		return attr;
+	}
+
 	// Parsing //
+
+	public static Attribute6<?> parse(JsonMap map){
+		//
+		return null;
+	}
 
 }
