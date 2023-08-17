@@ -5,8 +5,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
+import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.Vec3f;
+import net.fexcraft.mod.fvtm.FvtmLogger;
+import net.fexcraft.mod.fvtm.FvtmRegistry;
+import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.sys.uni.KeyPress;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
@@ -16,7 +21,7 @@ import net.fexcraft.mod.uni.tag.TagCW;
  * 6th prototype.
  * @author Ferdinand Calo' (FEX___96)
  */
-public abstract class Attribute6<V> {
+public abstract class Attribute<V> {
 
 	public static final IDL DEF_ICON = IDLManager.getIDLCached("fvtm:textures/gui/icons/attr_other.png");
 	public ArrayList<String> access = new ArrayList<>();
@@ -25,8 +30,10 @@ public abstract class Attribute6<V> {
 	public HashMap<KeyPress, Float> keys;
 	public final AttrValueType valuetype;
 	public boolean editable;
-	public boolean autosync;
+	public boolean external;
+	public boolean sync;
 	public String origin;
+	public String target;
 	public String group;
 	public String perm;
 	public float min = Integer.MIN_VALUE;
@@ -35,7 +42,7 @@ public abstract class Attribute6<V> {
 	public V value;
 	public final String id;
 
-	public Attribute6(String aid, AttrValueType type, V val){
+	public Attribute(String aid, AttrValueType type, V val){
 		initial = value = val;
 		valuetype = type;
 		id = aid;
@@ -47,6 +54,10 @@ public abstract class Attribute6<V> {
 
 	public <T> T value(){
 		return (T)value;
+	}
+
+	public void setI(Object val){
+		initial = validate(val);
 	}
 
 	public void set(Object val){
@@ -67,9 +78,30 @@ public abstract class Attribute6<V> {
 
 	public abstract void decrease(float by);
 
-	public void limit(float min, float max){
+	public Attribute<?> limit(float min, float max){
 		this.min = min;
 		this.max = max;
+		return this;
+	}
+
+	public Attribute<?> editable(boolean bool){
+		editable = bool;
+		return this;
+	}
+
+	public Attribute<?> group(String string){
+		group = string;
+		return this;
+	}
+
+	public Attribute<?> perm(String string){
+		perm = string;
+		return this;
+	}
+
+	public Attribute<?> sync(boolean bool){
+		sync = bool;
+		return this;
 	}
 
 	public abstract String type();
@@ -80,40 +112,25 @@ public abstract class Attribute6<V> {
 
 	// Returns //
 
-	public int asInteger(){
-		return (int)value;
-	}
+	public abstract int asInteger();
 
-	public long asLong(){
-		return (long)value;
-	}
+	public abstract long asLong();
 
-	public float asFloat(){
-		return (float)value;
-	}
+	public abstract float asFloat();
 
-	public String asString(){
-		return value + "";
-	}
+	public abstract String asString();
 
-	public Vec3f asVector(){
-		return new Vec3f(asFloat(), 0, 0);
-	}
-
-	public boolean asBoolean(){
-		if(valuetype.isBoolean()) return value();
-		if(valuetype.isNumber()) return asFloat() > 0;
-		if(valuetype.isTristate()) return value != null || asBoolean();
-		if(valuetype.isString()) return Boolean.parseBoolean(value + "");
-		if(valuetype.isVector()) return asVector().x > 0;
-		return value != null;
-	}
+	public abstract boolean asBoolean();
 
 	public Boolean asTristate(){
 		if(valuetype.isNumber()){
 			return asFloat() == 0f ? null : asFloat() > 0;
 		}
 		else return asBoolean();
+	}
+
+	public Vec3f asVector(){
+		return new Vec3f(asFloat(), 0, 0);
 	}
 
 	public <R> R tristate(R n, R t, R f){
@@ -124,17 +141,30 @@ public abstract class Attribute6<V> {
 		return asBoolean() ? t : f;
 	}
 
+	public boolean toggle(){
+		if(valuetype.isBoolean()){
+			set(!asBoolean());
+			return asBoolean();
+		}
+		return false;
+	}
+
 	// Access //
 
-	public void addAccess(String str){
+	public Attribute<?> addAccess(String str){
 		if(!access.contains(str)) access.add(str);
+		external = false;
+		for(String acc : access){
+			if(acc.contains("external")) external = true;
+		}
+		return this;
 	}
 
 	public void remAccess(String str){
 		if(access.contains(str)) access.remove(str);
 	}
 
-	public void copyAccessFrom(Attribute6<?> other){
+	public void copyAccessFrom(Attribute<?> other){
 		for(String acc : other.access) addAccess(acc);
 	}
 
@@ -158,7 +188,7 @@ public abstract class Attribute6<V> {
 		actboxes.put(id, new AttrBox(id, point, data));
 	}
 
-	public void copyBoxesFrom(Attribute6<?> other){
+	public void copyBoxesFrom(Attribute<?> other){
 		if(!other.hasBoxes()) return;
 		if(actboxes == null) actboxes = new LinkedHashMap<>();
 		for(Entry<String, AttrBox> box : other.actboxes.entrySet()){
@@ -173,7 +203,7 @@ public abstract class Attribute6<V> {
 		return keys != null && keys.size() > 0;
 	}
 
-	public void copyKeysFrom(Attribute6<?> other){
+	public void copyKeysFrom(Attribute<?> other){
 		if(!other.hasKeyPress()) return;
 		if(keys == null) keys = new HashMap<>();
 		keys.putAll(other.keys);
@@ -189,7 +219,7 @@ public abstract class Attribute6<V> {
 		return icons.size() > 0;
 	}
 
-	public void copyIconsFrom(Attribute6<?> other, boolean override){
+	public void copyIconsFrom(Attribute<?> other, boolean override){
 		if(override){
 			icons.putAll(other.icons);
 			return;
@@ -199,10 +229,11 @@ public abstract class Attribute6<V> {
 		}
 	}
 
-	public void addIcons(String... strings){
-		for(String str : strings){
-			icons.put(str, IDLManager.getIDLCached(str));
+	public Attribute<?> addIcons(String... strings){
+		for(int i = 0; i < strings.length; i += 2){
+			icons.put(strings[i], IDLManager.getIDLCached(strings[i + 1]));
 		}
+		return this;
 	}
 
 	public IDL getCurrentIcon(){
@@ -235,7 +266,7 @@ public abstract class Attribute6<V> {
 
 	public abstract void saveValue(TagCW com);
 
-	public Attribute6<V> load(TagCW com){
+	public Attribute<V> load(TagCW com){
 		if(com.has("origin")) origin = com.getString("origin");
 		loadValue(com);
 		return this;
@@ -245,18 +276,20 @@ public abstract class Attribute6<V> {
 
 	// new Instaces //
 
-	public abstract Attribute6<V> newInstance();
+	public abstract Attribute<V> newInstance();
 
-	public Attribute6<V> createCopy(String origin){
-		Attribute6<V> attr = newInstance();
+	public Attribute<V> createCopy(String origin){
+		Attribute<V> attr = newInstance();
 		attr.limit(min, max);
 		attr.initial = initial;
 		attr.value = value;
 		attr.group = group;
 		attr.origin = origin;
+		attr.target = target;
 		attr.editable = editable;
-		attr.autosync = autosync;
+		attr.external = external;
 		attr.perm = perm;
+		attr.sync = sync;
 		attr.copyIconsFrom(this, true);
 		attr.copyAccessFrom(this);
 		attr.copyBoxesFrom(this);
@@ -266,9 +299,93 @@ public abstract class Attribute6<V> {
 
 	// Parsing //
 
-	public static Attribute6<?> parse(JsonMap map){
-		//
-		return null;
+	public static Attribute<?> parse(TagCW com){
+		Class<? extends Attribute<?>> clazz = FvtmRegistry.ATTRIBUTES.get(com.getString("type"));
+		if(clazz == null){
+			FvtmLogger.LOGGER.log("Attribute of type '" + com.getString("type") + "' not found.");
+			FvtmLogger.LOGGER.log("AttrInfo: " + com.getString("id") + " " + com.toString());
+			return null;
+		}
+		Attribute attr = null;
+		try{
+			attr = clazz.getConstructor(String.class, JsonMap.class).newInstance(com.getString("id"), new JsonMap());
+		}
+		catch(Throwable e){
+			e.printStackTrace();
+			return null;
+		}
+		return attr.load(com);
 	}
 
+	public static Attribute<?> parse(String id, JsonMap map){
+		if(map.has("mod-dep")){
+			JsonValue<?> value =  map.get("mod-dep");
+			if(value.isArray()){
+				for(JsonValue<?> val : value.asArray().value){
+					if(!FvtmResources.INSTANCE.isModPresent(val.string_value())) return null;
+				}
+			}
+			else if(!FvtmResources.INSTANCE.isModPresent(value.string_value())) return null;
+		}
+		String type = map.getString("type", "float");
+		Class<? extends Attribute<?>> clazz = FvtmRegistry.ATTRIBUTES.get(type);
+		if(type == null){
+			FvtmLogger.LOGGER.log("Attribute of type '" + type + "' not found.");
+			FvtmLogger.LOGGER.log("AttrInfo: " + id + " " + map.toString());
+			return null;
+		}
+		Attribute attr = null;
+		try{
+			attr = clazz.getConstructor(String.class, JsonMap.class).newInstance(id, map);
+		}
+		catch(Throwable e){
+			e.printStackTrace();
+			return null;
+		}
+		if(map.has("min") || map.has("max")){
+			attr.limit(map.getFloat("min", attr.min), map.getFloat("max", attr.max));
+		}
+		attr.editable = map.getBoolean("editable", true);
+		if(map.has("interact")){
+			JsonMap ine = map.getMap("interact");
+			for(Entry<String, JsonValue<?>> entry : ine.entries()){
+				JsonArray array = entry.getValue().asArray();
+				float[] arr = new float[attr.valuetype.isNumber() ? 7 : 4];
+				String point = array.size() >= arr.length ? array.get(arr.length).string_value() : null;
+				for(int i = 0; i < arr.length; i++) arr[i] = array.get(i).float_value();
+				attr.addBox(entry.getKey(), point, arr);
+			}
+		}
+		if(map.has("access")){
+			if(map.get("access").isArray()){
+				for(JsonValue<?> val : map.get("access").asArray().value){
+					attr.addAccess(val.string_value());
+				}
+			}
+			else attr.addAccess(map.get("access").string_value());
+		}
+		attr.target = map.getString("target", null);
+		attr.group = map.getString("group", null);
+		attr.perm = map.getString("perm", null);
+		attr.sync = map.getBoolean("sync", false);
+		if(map.has("icons")){
+			for(Entry<String, JsonValue<?>> entry : map.getMap("icons").entries()){
+				attr.addIcons(entry.getKey(), entry.getValue().string_value());
+			}
+		}
+		if(map.has("keys")){
+			if(attr.keys == null) attr.keys = new HashMap<>();
+			for(Entry<String, JsonValue<?>> entry : map.getMap("keys").entries()){
+				try{
+					KeyPress press = KeyPress.valueOf(entry.getKey().toUpperCase());
+					float val = entry.getValue().string_value().equals("toggle") ? 0 : entry.getValue().float_value();
+					attr.keys.put(press, val);
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+		}
+		return attr;
+	}
 }

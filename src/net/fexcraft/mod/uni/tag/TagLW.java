@@ -1,44 +1,40 @@
 package net.fexcraft.mod.uni.tag;
 
-import javax.swing.text.html.HTML.Tag;
+import java.util.function.Supplier;
 
 /**
- * 
  * @author Ferdinand Calo' (FEX___96)
- *
  */
-public class TagLW extends Tag {
+public interface TagLW {
 
-	public String getString(String string){
-		//
-		return null;
+	public String getString(int idx);
+
+	public float getFloat(int idx);
+
+	public int getInteger(int idx);
+
+	public TagCW getCompound(int idx);
+
+	public void add(String value);
+
+	public void add(float value);
+
+	public void add(int value);
+
+	public void add(TagCW value);
+
+	public int size();
+
+	//
+
+	public static Supplier<TagLW>[] SUPPLIER = new Supplier[1];
+
+	public static TagLW create(){
+		return SUPPLIER[0].get();
 	}
 
-	public float getFloat(String string){
-		//
-		return 0;
-	}
+	public abstract <T> T local();
 
-	public boolean has(String string){
-		//
-		return false;
-	}
-
-	public int getInteger(String string){
-		//
-		return 0;
-	}
-
-	public void set(String key, String value){
-		//
-	}
-
-	public void set(String key, float value){
-		//
-	}
-
-	public void set(String key, int value){
-		//
-	}
+	public abstract Object direct();
 
 }

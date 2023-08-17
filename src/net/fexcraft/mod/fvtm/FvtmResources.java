@@ -22,6 +22,12 @@ import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.addon.AddonLocation;
+import net.fexcraft.mod.fvtm.data.attribute.AttrBoolean;
+import net.fexcraft.mod.fvtm.data.attribute.AttrFloat;
+import net.fexcraft.mod.fvtm.data.attribute.AttrInteger;
+import net.fexcraft.mod.fvtm.data.attribute.AttrString;
+import net.fexcraft.mod.fvtm.data.attribute.AttrTristate;
+import net.fexcraft.mod.fvtm.data.attribute.AttrVector;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
 import net.fexcraft.mod.fvtm.model.*;
 import net.fexcraft.mod.fvtm.model.loaders.ClassModelLoader;
@@ -113,6 +119,23 @@ public abstract class FvtmResources {
 	}
 
 	public abstract void loadPackTextures();
+
+	public void registerAttributes(){
+		ATTRIBUTES.put("boolean", AttrBoolean.class);
+		ATTRIBUTES.put("bool", AttrBoolean.class);
+		ATTRIBUTES.put("bln", AttrBoolean.class);
+		ATTRIBUTES.put("float", AttrFloat.class);
+		ATTRIBUTES.put("flt", AttrFloat.class);
+		ATTRIBUTES.put("integer", AttrInteger.class);
+		ATTRIBUTES.put("int", AttrInteger.class);
+		ATTRIBUTES.put("tristate", AttrTristate.class);
+		ATTRIBUTES.put("tri", AttrTristate.class);
+		ATTRIBUTES.put("string", AttrString.class);
+		ATTRIBUTES.put("str", AttrString.class);
+		ATTRIBUTES.put("vector3", AttrVector.class);
+		ATTRIBUTES.put("vector", AttrVector.class);
+		ATTRIBUTES.put("vec", AttrVector.class);
+	}
 
 	public void searchContent(){
 		FvtmResources.INSTANCE.searchInPacksFor(ContentType.FUEL);
@@ -372,4 +395,5 @@ public abstract class FvtmResources {
 		return close == null ? new Object[]{ stream } : new Object[]{ stream, close };
 	}
 
+	public abstract boolean isModPresent(String s);
 }

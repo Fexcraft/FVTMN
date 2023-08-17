@@ -35,6 +35,7 @@ public class DefaultModel implements Model {
 	private List<String> authors = new ArrayList<>();
 	public Transforms transforms = new Transforms();
 	public boolean smooth_shading;
+	public int textureX, textureY;
 	public int tex_width;
 	public int tex_height;
 	public boolean locked;
