@@ -4,6 +4,7 @@ import net.fexcraft.app.json.FJson;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.Static;
+import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.Vec3f;
 import org.lwjgl.opengl.GL11;
 
@@ -26,6 +27,10 @@ public class Pos {
     public Pos(float[] pos){
     	this(pos.length >= 1 ? pos[0] : 0, pos.length >= 2 ? pos[1] : 0, pos.length >= 3 ? pos[2] : 0);
     }
+
+	public Pos(V3D vec){
+		this((float)vec.x / 16f, (float)vec.y / 16f, (float)vec.z / 16f);
+	}
 
     public Pos copy(){
         return new Pos(x, y, z);
@@ -127,6 +132,10 @@ public class Pos {
 
 	public Pos sub(Pos pos){
 		return new Pos(x - pos.x, y - pos.y, z - pos.z);
+	}
+
+	public V3D toV3D(){
+		return new V3D(x16, y16, z16);
 	}
 
 }
