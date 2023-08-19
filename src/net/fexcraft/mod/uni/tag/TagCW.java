@@ -11,6 +11,8 @@ public interface TagCW {
 
 	public float getFloat(String key);
 
+	public double getDouble(String key);
+
 	public int getInteger(String key);
 
 	public boolean getBoolean(String key);
@@ -24,6 +26,8 @@ public interface TagCW {
 	public void set(String key, String val);
 
 	public void set(String key, float val);
+
+	public void set(String key, double val);
 
 	public void set(String key, int val);
 
