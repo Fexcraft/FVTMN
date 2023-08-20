@@ -34,7 +34,7 @@ import net.fexcraft.mod.uni.IDLManager;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class Vehicle2 extends Content<Vehicle2> implements TextureHolder, ColorHolder, SoundHolder, WithItem, ItemTextureable {//texture, color, sound
+public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHolder, SoundHolder, WithItem, ItemTextureable {//texture, color, sound
 
 	protected Map<String, Attribute<?>> attributes = new LinkedHashMap<>();
 	protected Map<String, WheelSlot> wheelpos = new LinkedHashMap<>();
@@ -61,10 +61,10 @@ public class Vehicle2 extends Content<Vehicle2> implements TextureHolder, ColorH
 	protected boolean no3ditem;
 	protected VehicleType type;
 
-	public Vehicle2(){}
+	public Vehicle(){}
 
 	@Override
-	public Vehicle2 parse(JsonMap map){
+	public Vehicle parse(JsonMap map){
 		if((pack = ContentConfigUtil.getAddon(map)) == null) return null;
 		if((id = ContentConfigUtil.getID(pack, map)) == null) return null;
 		//
@@ -284,4 +284,8 @@ public class Vehicle2 extends Content<Vehicle2> implements TextureHolder, ColorH
 		return partslots;
 	}
 
+	public int getMaxKeys(){
+		return maxkeys;
+	}
+	
 }
