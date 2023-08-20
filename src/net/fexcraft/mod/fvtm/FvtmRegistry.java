@@ -13,6 +13,7 @@ import net.fexcraft.mod.fvtm.data.Fuel;
 import net.fexcraft.mod.fvtm.data.Material;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
+import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelLoader;
 import net.fexcraft.mod.fvtm.sys.particle.Particle;
@@ -43,6 +44,7 @@ public class FvtmRegistry {
 	public static final Registry<Fuel> FUELS = new Registry<>();
 	public static final Registry<Material> MATERIALS = new Registry<>();
 	public static final Registry<Consumable> CONSUMABLES = new Registry<>();
+	public static final Registry<Vehicle> VEHICLES = new Registry<>();
 	public static TreeMap<String, TreeMap<String, ArrayList<Fuel>>> SORTED_FUELS = new TreeMap<>();
 	public static final HashMap<String, Particle> PARTICLES = new HashMap<>();
 	public static final HashMap<String, JsonMap> WIRE_DECO_CACHE = new HashMap<>();
