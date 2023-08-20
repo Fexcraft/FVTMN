@@ -396,4 +396,8 @@ public abstract class FvtmResources {
 	}
 
 	public abstract boolean isModPresent(String s);
+
+
+	public abstract IDL getExternalTexture(String custom);
+
 }
