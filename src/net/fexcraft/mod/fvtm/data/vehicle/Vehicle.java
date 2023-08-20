@@ -201,6 +201,11 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 	}
 
 	@Override
+	public Model getModel(){
+		return model;
+	}
+
+	@Override
 	public List<IDL> getDefaultTextures(){
 		return textures;
 	}
@@ -287,5 +292,9 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 	public int getMaxKeys(){
 		return maxkeys;
 	}
-	
+
+	public VehicleType getVehicleType(){
+		return type;
+	}
+
 }
