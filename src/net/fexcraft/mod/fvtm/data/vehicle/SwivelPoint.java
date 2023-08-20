@@ -96,8 +96,8 @@ public class SwivelPoint {
 		prevpos = new V3D();
 	}
 
-	public SwivelPoint(VehicleData data, TagCW com){
-		id = com.getString("id");
+	public SwivelPoint(VehicleData data, String id, TagCW com){
+		this.id = id;
 		rid = com.has("parent") ? com.getString("parent") : null;
 		read(this, data, com);
 	}
@@ -124,7 +124,7 @@ public class SwivelPoint {
 	}
 
 	public TagCW write(TagCW compound){
-		compound.set("id", id);
+		//compound.set("id", id);
 		compound.set("parent", parent == null ? rid : parent.id);
 		if(origin != null) compound.set("origin", origin);
 		cpivot.save(compound);
