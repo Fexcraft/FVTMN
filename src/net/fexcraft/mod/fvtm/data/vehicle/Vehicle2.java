@@ -14,10 +14,10 @@ import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
-import net.fexcraft.mod.fvtm.data.SwivelPoint;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
 import net.fexcraft.mod.fvtm.data.part.PartSlot.PartSlots;
 import net.fexcraft.mod.fvtm.data.root.ItemTextureable;
+import net.fexcraft.mod.fvtm.data.root.Sound;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
@@ -46,7 +46,7 @@ public class Vehicle2 extends Content<Vehicle2> implements WithItem, ItemTexture
 	protected V3D conn_front;
 	protected V3D conn_rear;
 	protected Map<String, IDL> installed;
-	protected Map<String, Object> sounds = new LinkedHashMap<>();
+	protected Map<String, Sound> sounds = new LinkedHashMap<>();
 	protected Map<String, SwivelPoint> swivelpoints = new LinkedHashMap<>();
 	protected float coupler_range = 1f;
 	protected Map<String, LiftingPoint> liftingpoints = new HashMap<>();
@@ -131,13 +131,25 @@ public class Vehicle2 extends Content<Vehicle2> implements WithItem, ItemTexture
 			}
 		}
 		if(map.has("SwivelPoints")){
-			//
+			for(Entry<String, JsonValue<?>> entry : map.getMap("SwivelPoints").entries()){
+				SwivelPoint point = new SwivelPoint(entry.getKey(), entry.getValue().asMap());
+				swivelpoints.put(entry.getKey(), point);
+			}
 		}
 		if(map.has("Sounds")){
-			//
+			for(Entry<String, JsonValue<?>> entry : map.getMap("Sounds").entries()){
+				JsonMap val = entry.getValue().asMap();
+				sounds.put(entry.getKey(), new Sound(IDLManager.getIDLCached(entry.getKey()), val.getFloat("volume", 1f), val.getFloat("pitch", 1f)));
+			}
 		}
 		if(map.has("LiftingPoints")){
-			//
+			for(Entry<String, JsonValue<?>> entry : map.getMap("LiftingPoints").entries()){
+				liftingpoints.put(entry.getKey(), new LiftingPoint(entry.getKey(), entry.getValue().asArray()));
+			}
+		}
+		else{
+			liftingpoints.put("ph0", new LiftingPoint("ph0", new V3D(0, 0, -20), null, 0));
+			liftingpoints.put("ph1", new LiftingPoint("ph1", new V3D(0, 0, 20), null, 0));
 		}
 		partslots = new PartSlots("vehicle", map.has("PartSlots") ? map.getArray("PartSlots") : new JsonArray());
 		if(EnvInfo.CLIENT){
