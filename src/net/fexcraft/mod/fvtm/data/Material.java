@@ -7,7 +7,6 @@ import net.fexcraft.mod.fvtm.data.root.ItemTextureable;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.uni.IDL;
-import net.fexcraft.mod.uni.item.ItemWrapper;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -19,7 +18,6 @@ public class Material extends Content<Material> implements WithItem, ItemTexture
 	protected String ore_dict, container, fuelgroup, ctab;
 	protected int burntime, fuel_capacity;
 	protected boolean vehicle_key, fuel_container;
-	protected ItemWrapper item;
 	protected IDL itemtexloc;
 	protected Fuel fuel;
 	
