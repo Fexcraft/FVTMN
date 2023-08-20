@@ -1,6 +1,9 @@
 package net.fexcraft.mod.uni.tag;
 
+import java.util.Collection;
 import java.util.function.Supplier;
+
+import net.fexcraft.lib.common.math.V3D;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -21,6 +24,12 @@ public interface TagCW {
 
 	public TagLW getList(String key);
 
+	public default V3D getV3D(String key){
+		if(!has(key)) return new V3D();
+		TagLW list = getList(key);
+		return new V3D(list.getDouble(0), list.getDouble(1), list.getDouble(2));
+	}
+
 	public boolean has(String key);
 
 	public void set(String key, String val);
@@ -37,6 +46,14 @@ public interface TagCW {
 
 	public void set(String key, TagLW val);
 
+	public default void set(String key, V3D vec){
+		TagLW list = TagLW.create();
+		list.add(vec.x);
+		list.add(vec.y);
+		list.add(vec.z);
+		set(key, list);
+	}
+
 	public int size();
 
 	//
@@ -50,5 +67,9 @@ public interface TagCW {
 	public abstract <T> T local();
 
 	public abstract Object direct();
+
+	public boolean empty();
+
+	public Collection<String> keys();
 
 }
