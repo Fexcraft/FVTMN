@@ -1,6 +1,6 @@
 package net.fexcraft.mod.fvtm.data.root;
 
-import java.util.TreeMap;
+import java.util.Map;
 
 import net.fexcraft.lib.common.math.RGB;
 
@@ -20,13 +20,13 @@ public interface Colorable {
 	
 	public void setColorChannel(String channel, RGB color);
 	
-	public TreeMap<String, RGB> getColorChannels();
+	public Map<String, RGB> getColorChannels();
 	
 	public static interface ColorHolder {
 		
 		public RGB getDefaultColorChannel(String channel);
 		
-		public TreeMap<String, RGB> getDefaultColorChannels();
+		public Map<String, RGB> getDefaultColorChannels();
 		
 	}
 
