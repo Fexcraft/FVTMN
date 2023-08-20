@@ -5,6 +5,8 @@ import java.util.List;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
+import net.fexcraft.mod.fvtm.model.DefaultModel;
+import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
@@ -30,6 +32,10 @@ public abstract class Content<SELF> {
 		return id;
 	}
 
+	public String getIDS(){
+		return id.colon();
+	}
+
 	public String getName(){
 		return name;
 	}
@@ -43,6 +49,10 @@ public abstract class Content<SELF> {
 	}
 
 	public void loadModel(){}
+
+	public Model getModel(){
+		return DefaultModel.EMPTY;
+	}
 
 	public void setItemWrapper(ItemWrapper item){
 		this.item = item;
