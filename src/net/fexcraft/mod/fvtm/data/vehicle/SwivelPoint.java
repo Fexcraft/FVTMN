@@ -1,7 +1,7 @@
 package net.fexcraft.mod.fvtm.data.vehicle;
 
 import java.util.ArrayList;
-import java.util.TreeMap;
+import java.util.Map;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
@@ -153,7 +153,7 @@ public class SwivelPoint {
 		return point;
 	}
 
-	private void cloneMovers(TreeMap<String, SwivelPoint> points){
+	private void cloneMovers(Map<String, SwivelPoint> points){
 		SwivelPoint orig = points.get(id);
 		if(orig != null){
 			movers = orig.movers == null ? null : new ArrayList<>();
