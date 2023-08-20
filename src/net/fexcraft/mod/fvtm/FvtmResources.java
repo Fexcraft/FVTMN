@@ -278,6 +278,7 @@ public abstract class FvtmResources {
 	public abstract void initModelPrograms();
 	
 	public void initModels(){
+		VEHICLES.forEach(vehicle -> vehicle.loadModel());
 		//other data types
 		for(DecorationData deco : DECORATIONS.values()){
 			Model model = getModel(deco.modelid, deco.modeldata, DefaultModel.class);
