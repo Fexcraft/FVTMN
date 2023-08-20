@@ -12,25 +12,29 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.V3D;
+import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
 import net.fexcraft.mod.fvtm.data.part.PartSlot.PartSlots;
+import net.fexcraft.mod.fvtm.data.root.Colorable.ColorHolder;
 import net.fexcraft.mod.fvtm.data.root.ItemTextureable;
 import net.fexcraft.mod.fvtm.data.root.Sound;
+import net.fexcraft.mod.fvtm.data.root.Soundable.SoundHolder;
+import net.fexcraft.mod.fvtm.data.root.Textureable.TextureHolder;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
+import net.fexcraft.mod.fvtm.model.VehicleModel;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
-import net.fexcraft.mod.uni.item.ItemWrapper;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class Vehicle2 extends Content<Vehicle2> implements WithItem, ItemTextureable {//texture, color, sound
+public class Vehicle2 extends Content<Vehicle2> implements TextureHolder, ColorHolder, SoundHolder, WithItem, ItemTextureable {//texture, color, sound
 
 	protected Map<String, Attribute<?>> attributes = new LinkedHashMap<>();
 	protected Map<String, WheelSlot> wheelpos = new LinkedHashMap<>();
@@ -53,7 +57,6 @@ public class Vehicle2 extends Content<Vehicle2> implements WithItem, ItemTexture
 	protected IDL keytype;
 	protected int maxkeys;
 	protected PartSlots partslots;
-	protected ItemWrapper item;
 	protected IDL itemtexloc;
 	protected boolean no3ditem;
 	protected VehicleType type;
@@ -186,4 +189,99 @@ public class Vehicle2 extends Content<Vehicle2> implements WithItem, ItemTexture
 	public IDL getItemTexture(){
 		return itemtexloc;
 	}
+
+	@Override
+	public boolean noCustomItemModel(){
+		return no3ditem;
+	}
+
+	@Override
+	public void loadModel(){
+		model = FvtmResources.getModel(modelid, modeldata, VehicleModel.class);
+	}
+
+	@Override
+	public List<IDL> getDefaultTextures(){
+		return textures;
+	}
+
+	@Override
+	public RGB getDefaultColorChannel(String channel){
+		return channels.get(channel);
+	}
+
+	@Override
+	public Map<String, RGB> getDefaultColorChannels(){
+		return channels;
+	}
+
+	@Override
+	public Map<String, Sound> getSounds(){
+		return sounds;
+	}
+
+	public <A extends Attribute<?>> A getDefaultAttribute(String id){
+		return (A)attributes.get(id);
+	}
+
+	public <C, A extends Attribute<C>> A getDefaultAttributeCasted(String id){
+		return (A)attributes.get(id);
+	}
+
+	public Map<String, Attribute<?>> getDefaultAttributes(){
+		return attributes;
+	}
+
+	public Map<String, WheelSlot> getWheelPositions(){
+		return wheelpos;
+	}
+
+	public SimplePhysData getSphData(){
+		return sphdata;
+	}
+
+	public boolean isTrailer(){
+		return trailer;
+	}
+
+	public boolean isWagon(){
+		return trailer;
+	}
+
+	public V3D getDefaultConnectorFront(){
+		return conn_front;
+	}
+
+	public V3D getDefaultConnectorRear(){
+		return conn_rear;
+	}
+
+	public Map<String, IDL> getInstalled(){
+		return installed;
+	}
+
+	public float getCouplerRange(){
+		return coupler_range;
+	}
+
+	public Map<String, SwivelPoint> getDefaultSwivelPoints(){
+		return swivelpoints;
+	}
+
+	public Map<String, LiftingPoint> getLiftingPoints(){
+		return liftingpoints;
+	}
+
+	public List<String> getCategories(){
+		return categories;
+	}
+
+	public IDL getKeyType(){
+		return keytype;
+	}
+
+	public PartSlots getPartSlots(){
+		return partslots;
+	}
+
 }
