@@ -257,7 +257,7 @@ public abstract class Attribute<V> {
 	// Saving/Loading //
 
 	public TagCW save(TagCW com){
-		com.set("id", id);
+		//com.set("id", id);
 		com.set("type", type());
 		if(origin != null) com.set("origin", origin);
 		saveValue(com);
@@ -299,16 +299,16 @@ public abstract class Attribute<V> {
 
 	// Parsing //
 
-	public static Attribute<?> parse(TagCW com){
+	public static Attribute<?> parse(String id, TagCW com){
 		Class<? extends Attribute<?>> clazz = FvtmRegistry.ATTRIBUTES.get(com.getString("type"));
 		if(clazz == null){
 			FvtmLogger.LOGGER.log("Attribute of type '" + com.getString("type") + "' not found.");
-			FvtmLogger.LOGGER.log("AttrInfo: " + com.getString("id") + " " + com.toString());
+			FvtmLogger.LOGGER.log("AttrInfo: " + id + " " + com.toString());
 			return null;
 		}
 		Attribute attr = null;
 		try{
-			attr = clazz.getConstructor(String.class, JsonMap.class).newInstance(com.getString("id"), new JsonMap());
+			attr = clazz.getConstructor(String.class, JsonMap.class).newInstance(id, new JsonMap());
 		}
 		catch(Throwable e){
 			e.printStackTrace();
