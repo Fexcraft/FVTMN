@@ -45,7 +45,7 @@ public class Pivot {
 		tag.set("roll", rroll);
 	}
 
-	public static Pivot read(TagCW tag){
+	public static Pivot load(TagCW tag){
 		Pivot piv = new Pivot();
 		piv.ryaw = tag.getFloat("yaw");
 		piv.rpitch = tag.getFloat("pitch");
