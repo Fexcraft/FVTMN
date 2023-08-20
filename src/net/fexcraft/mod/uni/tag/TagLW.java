@@ -11,6 +11,8 @@ public interface TagLW {
 
 	public float getFloat(int idx);
 
+	public double getDouble(int idx);
+
 	public int getInteger(int idx);
 
 	public TagCW getCompound(int idx);
@@ -18,6 +20,8 @@ public interface TagLW {
 	public void add(String value);
 
 	public void add(float value);
+
+	public void add(double value);
 
 	public void add(int value);
 
