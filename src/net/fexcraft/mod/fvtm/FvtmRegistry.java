@@ -13,6 +13,7 @@ import net.fexcraft.mod.fvtm.data.Fuel;
 import net.fexcraft.mod.fvtm.data.Material;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
+import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelLoader;
@@ -52,6 +53,7 @@ public class FvtmRegistry {
 	public static final ArrayList<String> DECORATION_CATEGORIES = new ArrayList<>();
 	//
 	public static final LinkedHashMap<String, Class<? extends Attribute<?>>> ATTRIBUTES = new LinkedHashMap<>();
+	public static final LinkedHashMap<String, Class<? extends PartFunction>> PART_FUNCTIONS = new LinkedHashMap<>();
 	//
 	public static final LinkedHashMap<String, Model> MODELS = new LinkedHashMap<>();
 	public static final ArrayList<ModelLoader> MODEL_LOADERS = new ArrayList<>();
