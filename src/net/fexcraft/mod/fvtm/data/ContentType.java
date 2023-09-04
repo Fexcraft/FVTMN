@@ -4,6 +4,7 @@ import static net.fexcraft.mod.fvtm.FvtmRegistry.CONSUMABLES;
 import static net.fexcraft.mod.fvtm.FvtmRegistry.FUELS;
 import static net.fexcraft.mod.fvtm.FvtmRegistry.MATERIALS;
 
+import net.fexcraft.mod.fvtm.data.part.Part2;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 
 /**
@@ -12,7 +13,7 @@ import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 public enum ContentType {
 
 	ADDON(".fvtm", null),
-	PART(".part", "parts"),
+	PART(".part", "parts", Part2.class),
 	VEHICLE(".vehicle", "vehicles", Vehicle.class),
 	MATERIAL(".material", "materials", Material.class),
 	CONTAINER(".container", "containers"),
