@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
+import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
@@ -22,6 +23,7 @@ public class Part2 extends Content<Part2> implements TextureHolder {
 
 	protected List<IDL> textures;
 	protected ArrayList<String> categories;
+	protected ArrayList<PartFunction> functions = new ArrayList<>();
 	protected Map<String, Attribute<?>> attributes = new LinkedHashMap<>();
 	protected Map<String, String> attr_mods = new LinkedHashMap<>();
 
@@ -58,7 +60,11 @@ public class Part2 extends Content<Part2> implements TextureHolder {
 			}
 		}
 		if(map.has("Functions")){
-
+			JsonMap funcs = map.getMap("Functions");
+			for(Entry<String, JsonValue<?>> entry : funcs.entries()){
+				PartFunction fun = FvtmResources.getFunction(entry.getKey());
+				if(fun != null) functions.add(fun.init(this, entry.getValue().asMap()));
+			}
 		}
 		return this;
 	}
