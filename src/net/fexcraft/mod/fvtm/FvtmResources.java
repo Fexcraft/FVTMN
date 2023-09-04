@@ -28,7 +28,10 @@ import net.fexcraft.mod.fvtm.data.attribute.AttrInteger;
 import net.fexcraft.mod.fvtm.data.attribute.AttrString;
 import net.fexcraft.mod.fvtm.data.attribute.AttrTristate;
 import net.fexcraft.mod.fvtm.data.attribute.AttrVector;
+import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
+import net.fexcraft.mod.fvtm.function.WheelFunction;
+import net.fexcraft.mod.fvtm.function.WheelPositionsFunction;
 import net.fexcraft.mod.fvtm.model.*;
 import net.fexcraft.mod.fvtm.model.loaders.ClassModelLoader;
 import net.fexcraft.mod.fvtm.model.loaders.FMFModelLoader;
@@ -37,6 +40,7 @@ import net.fexcraft.mod.fvtm.model.loaders.ObjModelLoader;
 import net.fexcraft.mod.fvtm.model.loaders.SMPTBJavaModelLoader;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.fvtm.util.ZipUtils;
+import net.fexcraft.mod.fvtm.util.function.*;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
@@ -135,6 +139,21 @@ public abstract class FvtmResources {
 		ATTRIBUTES.put("vector3", AttrVector.class);
 		ATTRIBUTES.put("vector", AttrVector.class);
 		ATTRIBUTES.put("vec", AttrVector.class);
+	}
+
+	public void registerFunctions(){
+		PART_FUNCTIONS.put("fvtm:wheel", WheelFunction.class);
+		PART_FUNCTIONS.put("fvtm:wheel_positions", WheelPositionsFunction.class);
+		PART_FUNCTIONS.put("fvtm:seats", SeatsFunction.class);
+		/*PART_FUNCTIONS.put("fvtm:engine", EngineFunction.class);
+		PART_FUNCTIONS.put("fvtm:inventory", InventoryFunction.class);
+		PART_FUNCTIONS.put("fvtm:container", ContainerFunction.class);
+		PART_FUNCTIONS.put("fvtm:bogie", BogieFunction.class);
+		PART_FUNCTIONS.put("fvtm:part_slots", PartSlotsFunction.class);
+		PART_FUNCTIONS.put("fvtm:color", ColorFunction.class);
+		PART_FUNCTIONS.put("fvtm:tire", TireFunction.class);
+		PART_FUNCTIONS.put("fvtm:transmission", TransmissionFunction.class);
+		PART_FUNCTIONS.put("fvtm:particle_emitter", ParticleEmitterFunction.class);*/
 	}
 
 	public void searchContent(){
@@ -401,4 +420,13 @@ public abstract class FvtmResources {
 
 	public abstract IDL getExternalTexture(String custom);
 
+	public static PartFunction getFunction(String key){
+		try{
+			return PART_FUNCTIONS.get(key).newInstance();
+		}
+		catch(InstantiationException | IllegalAccessException e){
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
