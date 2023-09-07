@@ -5,7 +5,7 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fvtm.data.container.ContainerSlot;
 import net.fexcraft.mod.fvtm.data.container.ContainerType;
-import net.fexcraft.mod.fvtm.data.part.Part2;
+import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.part.PartFunction.StaticFunction;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
@@ -20,7 +20,7 @@ public class ContainerFunction extends StaticFunction {
 	private int length;
 
 	@Override
-	public PartFunction init(Part2 part, FJson json){
+	public PartFunction init(Part part, FJson json){
 		JsonMap map = json.asMap();
 		if(map.has("Type")){
 			onlytype = ContainerType.valueOf(map.getString("type", "MEDIUM"));
