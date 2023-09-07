@@ -166,4 +166,12 @@ public class ContentConfigUtil {
 		return vec;
 	}
 
+	public static V3D getVector(JsonMap map, String prefix){
+		V3D vec = new V3D();
+		vec.x = map.getFloat(prefix + "x", 0f);
+		vec.y = map.getFloat(prefix + "y", 0f);
+		vec.z = map.getFloat(prefix + "z", 0f);
+		return vec;
+	}
+
 }
