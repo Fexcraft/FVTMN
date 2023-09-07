@@ -1,7 +1,7 @@
 package net.fexcraft.mod.fvtm.function;
 
 import net.fexcraft.app.json.FJson;
-import net.fexcraft.mod.fvtm.data.part.Part2;
+import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.uni.tag.TagCW;
 
@@ -12,7 +12,7 @@ public class BogieFunction extends PartFunction {
 	public BogieFunction(){}
 
 	@Override
-	public PartFunction init(Part2 part, FJson json){
+	public PartFunction init(Part part, FJson json){
 		return this;
 	}
 
@@ -38,7 +38,7 @@ public class BogieFunction extends PartFunction {
 	}
 
 	@Override
-	public PartFunction copy(Part2 part){
+	public PartFunction copy(Part part){
 		return new BogieFunction();
 	}
 
