@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 import net.fexcraft.app.json.FJson;
 import net.fexcraft.app.json.JsonValue;
-import net.fexcraft.mod.fvtm.data.part.Part2;
+import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.part.PartFunction.StaticFunction;
 import net.fexcraft.mod.fvtm.data.vehicle.WheelSlot;
@@ -18,7 +18,7 @@ public class WheelPositionsFunction extends StaticFunction {
 	private HashMap<String, WheelSlot> wheels = new HashMap<>();
 
 	@Override
-	public PartFunction init(Part2 part, FJson json){
+	public PartFunction init(Part part, FJson json){
 		for(Entry<String, JsonValue<?>> entry : json.asMap().entries()){
 			wheels.put(entry.getKey(), new WheelSlot(entry.getValue().asMap()));
 		}
