@@ -9,7 +9,7 @@ import net.fexcraft.app.json.FJson;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.utils.Formatter;
-import net.fexcraft.mod.fvtm.data.part.Part2;
+import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.uni.item.StackWrapper;
@@ -40,7 +40,7 @@ public class EngineFunction extends PartFunction {
 	}
 
 	@Override
-	public PartFunction init(Part2 part, FJson json){
+	public PartFunction init(Part part, FJson json){
 		JsonMap map = json.asMap();
 		engine_speed = map.getFloat("engine_speed", 0.245f);
 		idle_con = map.getInteger("idle_consumption", 1);
@@ -90,7 +90,7 @@ public class EngineFunction extends PartFunction {
 	}
 	
 	@Override
-	public PartFunction copy(Part2 part){
+	public PartFunction copy(Part part){
 		EngineFunction func = new EngineFunction(engine_speed, ison, idle_con, con, cons, fuelgroup);
 		func.min_rpm = min_rpm;
 		func.max_rpm = max_rpm;
