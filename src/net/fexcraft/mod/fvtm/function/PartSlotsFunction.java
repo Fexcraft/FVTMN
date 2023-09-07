@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.fexcraft.app.json.FJson;
 import net.fexcraft.lib.common.utils.Formatter;
-import net.fexcraft.mod.fvtm.data.part.Part2;
+import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.part.PartFunction.StaticFunction;
@@ -19,7 +19,7 @@ public class PartSlotsFunction extends StaticFunction {
 	public PartSlotsFunction(){}
 
 	@Override
-	public PartFunction init(Part2 part, FJson json){
+	public PartFunction init(Part part, FJson json){
 		partslots = new PartSlots(part.getCategory(), json.asMap());
 		return this;
 	}
