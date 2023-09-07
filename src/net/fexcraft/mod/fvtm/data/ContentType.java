@@ -1,10 +1,8 @@
 package net.fexcraft.mod.fvtm.data;
 
-import static net.fexcraft.mod.fvtm.FvtmRegistry.CONSUMABLES;
-import static net.fexcraft.mod.fvtm.FvtmRegistry.FUELS;
-import static net.fexcraft.mod.fvtm.FvtmRegistry.MATERIALS;
+import static net.fexcraft.mod.fvtm.FvtmRegistry.*;
 
-import net.fexcraft.mod.fvtm.data.part.Part2;
+import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 
 /**
@@ -13,7 +11,7 @@ import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 public enum ContentType {
 
 	ADDON(".fvtm", null),
-	PART(".part", "parts", Part2.class),
+	PART(".part", "parts", Part.class),
 	VEHICLE(".vehicle", "vehicles", Vehicle.class),
 	MATERIAL(".material", "materials", Material.class),
 	CONTAINER(".container", "containers"),
@@ -42,8 +40,8 @@ public enum ContentType {
 
 	public void register(Content<?> content){
 		switch(this){
-			case PART: return;
-			case VEHICLE: return;
+			case PART: PARTS.register(content); return;
+			case VEHICLE: VEHICLES.register(content); return;
 			case MATERIAL: MATERIALS.register(content); return;
 			case CONTAINER: return;
 			case CONSUMABLE: CONSUMABLES.register(content); return;
