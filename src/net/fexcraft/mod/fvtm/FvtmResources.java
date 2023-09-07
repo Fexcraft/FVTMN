@@ -28,9 +28,13 @@ import net.fexcraft.mod.fvtm.data.attribute.AttrInteger;
 import net.fexcraft.mod.fvtm.data.attribute.AttrString;
 import net.fexcraft.mod.fvtm.data.attribute.AttrTristate;
 import net.fexcraft.mod.fvtm.data.attribute.AttrVector;
+import net.fexcraft.mod.fvtm.data.part.Part;
+import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.part.PartInstallHandler;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
+import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
+import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.function.*;
 import net.fexcraft.mod.fvtm.model.*;
 import net.fexcraft.mod.fvtm.model.loaders.ClassModelLoader;
@@ -40,7 +44,8 @@ import net.fexcraft.mod.fvtm.model.loaders.ObjModelLoader;
 import net.fexcraft.mod.fvtm.model.loaders.SMPTBJavaModelLoader;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.fvtm.util.ZipUtils;
-import net.fexcraft.mod.fvtm.util.function.*;
+import net.fexcraft.mod.fvtm.util.function.InventoryFunction;
+import net.fexcraft.mod.fvtm.util.function.TireFunction;
 import net.fexcraft.mod.fvtm.util.handler.BogieInstallationHandler;
 import net.fexcraft.mod.fvtm.util.handler.ConnectorInstallationHandler;
 import net.fexcraft.mod.fvtm.util.handler.DefaultPartInstallHandler;
@@ -52,6 +57,7 @@ import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.client.CTab;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
+import net.fexcraft.mod.uni.tag.TagCW;
 import org.apache.commons.io.FilenameUtils;
 
 /**
@@ -310,6 +316,7 @@ public abstract class FvtmResources {
 	public abstract void initModelPrograms();
 	
 	public void initModels(){
+		PARTS.forEach(part -> part.loadModel());
 		VEHICLES.forEach(vehicle -> vehicle.loadModel());
 		//other data types
 		for(DecorationData deco : DECORATIONS.values()){
@@ -442,4 +449,17 @@ public abstract class FvtmResources {
 			return null;
 		}
 	}
+
+	public PartData getPartData(TagCW com){
+		Part part = PARTS.get(com.getString("Part"));
+		if(part == null) return null;
+		return new PartData(part).read(com);
+	}
+
+	public VehicleData getVehicleData(TagCW com){
+		Vehicle vehicle = VEHICLES.get(com.getString("Vehicle"));
+		if(vehicle == null) return null;
+		return new VehicleData(vehicle).read(com);
+	}
+
 }
