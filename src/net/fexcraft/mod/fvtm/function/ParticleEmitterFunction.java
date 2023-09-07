@@ -9,7 +9,7 @@ import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.mc.utils.Formatter;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
-import net.fexcraft.mod.fvtm.data.part.Part2;
+import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.part.PartFunction.StaticFunction;
@@ -25,7 +25,7 @@ public class ParticleEmitterFunction extends StaticFunction {
 	public ArrayList<EmitterData> emitters = new ArrayList<EmitterData>();
 
 	@Override
-	public PartFunction init(Part2 part, FJson json){
+	public PartFunction init(Part part, FJson json){
 		if(json == null) return this;
 		if(json.isArray()){
 			for(JsonValue<?> elm : json.asArray().value){
