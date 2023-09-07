@@ -12,9 +12,12 @@ import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
+import net.fexcraft.mod.fvtm.data.root.Sound;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureHolder;
+import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.uni.IDL;
+import net.fexcraft.mod.uni.IDLManager;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -25,7 +28,11 @@ public class Part2 extends Content<Part2> implements TextureHolder {
 	protected ArrayList<String> categories;
 	protected ArrayList<PartFunction> functions = new ArrayList<>();
 	protected Map<String, Attribute<?>> attributes = new LinkedHashMap<>();
+	protected Map<String, SwivelPoint> swivelpoints = new LinkedHashMap<>();
 	protected Map<String, String> attr_mods = new LinkedHashMap<>();
+	protected Map<String, Sound> sounds = new LinkedHashMap<>();
+	protected PartInstallHandler installhandler;
+	protected Object installhandler_data;
 
 	public Part2(){}
 
@@ -64,6 +71,24 @@ public class Part2 extends Content<Part2> implements TextureHolder {
 			for(Entry<String, JsonValue<?>> entry : funcs.entries()){
 				PartFunction fun = FvtmResources.getFunction(entry.getKey());
 				if(fun != null) functions.add(fun.init(this, entry.getValue().asMap()));
+			}
+		}
+		if(map.has("Installation")){
+			JsonValue json = map.get("Installation");
+			String id = json.isMap() ? json.asMap().getString("Handler", "default") : json.string_value();
+			installhandler = PartInstallHandler.getHandler(id);
+			installhandler_data = installhandler.parseData(json.isMap() ? json.asMap() : new JsonMap());
+		}
+		if(map.has("SwivelPoints")){
+			for(Entry<String, JsonValue<?>> entry : map.getMap("SwivelPoints").entries()){
+				SwivelPoint point = new SwivelPoint(entry.getKey(), entry.getValue().asMap());
+				swivelpoints.put(entry.getKey(), point);
+			}
+		}
+		if(map.has("Sounds")){
+			for(Entry<String, JsonValue<?>> entry : map.getMap("Sounds").entries()){
+				JsonMap val = entry.getValue().asMap();
+				sounds.put(entry.getKey(), new Sound(IDLManager.getIDLCached(entry.getKey()), val.getFloat("volume", 1f), val.getFloat("pitch", 1f)));
 			}
 		}
 		return this;
