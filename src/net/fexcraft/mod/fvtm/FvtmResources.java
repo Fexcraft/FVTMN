@@ -29,6 +29,7 @@ import net.fexcraft.mod.fvtm.data.attribute.AttrString;
 import net.fexcraft.mod.fvtm.data.attribute.AttrTristate;
 import net.fexcraft.mod.fvtm.data.attribute.AttrVector;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
+import net.fexcraft.mod.fvtm.data.part.PartInstallHandler;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
 import net.fexcraft.mod.fvtm.function.*;
 import net.fexcraft.mod.fvtm.model.*;
@@ -40,6 +41,11 @@ import net.fexcraft.mod.fvtm.model.loaders.SMPTBJavaModelLoader;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.fvtm.util.ZipUtils;
 import net.fexcraft.mod.fvtm.util.function.*;
+import net.fexcraft.mod.fvtm.util.handler.BogieInstallationHandler;
+import net.fexcraft.mod.fvtm.util.handler.ConnectorInstallationHandler;
+import net.fexcraft.mod.fvtm.util.handler.DefaultPartInstallHandler;
+import net.fexcraft.mod.fvtm.util.handler.TireInstallationHandler;
+import net.fexcraft.mod.fvtm.util.handler.WheelInstallationHandler;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
@@ -153,6 +159,14 @@ public abstract class FvtmResources {
 		PART_FUNCTIONS.put("fvtm:tire", TireFunction.class);
 		PART_FUNCTIONS.put("fvtm:transmission", TransmissionFunction.class);
 		PART_FUNCTIONS.put("fvtm:particle_emitter", ParticleEmitterFunction.class);
+	}
+
+	public void registerHandlers(){
+		PartInstallHandler.HANDLERS.put("default", new DefaultPartInstallHandler());
+		PartInstallHandler.HANDLERS.put("wheel", new WheelInstallationHandler());
+		PartInstallHandler.HANDLERS.put("bogie", new BogieInstallationHandler());
+		PartInstallHandler.HANDLERS.put("tire", new TireInstallationHandler());
+		PartInstallHandler.HANDLERS.put("connector", new ConnectorInstallationHandler());
 	}
 
 	public void searchContent(){
