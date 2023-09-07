@@ -84,4 +84,8 @@ public class Part2 extends Content<Part2> implements TextureHolder {
 		return textures;
 	}
 
+	public String getCategory(){
+		return categories.get(0);
+	}
+
 }
