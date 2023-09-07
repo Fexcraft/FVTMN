@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.fexcraft.app.json.FJson;
 import net.fexcraft.lib.mc.utils.Formatter;
-import net.fexcraft.mod.fvtm.data.part.Part2;
+import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
@@ -23,7 +23,7 @@ public class WheelFunction extends PartFunction {
 	private WheelSlot wheel;
 
 	@Override
-	public PartFunction init(Part2 part, FJson json){
+	public PartFunction init(Part part, FJson json){
 		return this;
 	}
 
@@ -59,13 +59,13 @@ public class WheelFunction extends PartFunction {
 	}
 
 	@Override
-	public PartFunction copy(Part2 part){
+	public PartFunction copy(Part part){
 		return new WheelFunction().init(part, null);
 	}
 
     @Override
     public void addInformation(StackWrapper stack, WorldW world, PartData data, List<String> tooltip, boolean ext){
-    	WheelData wdata = data.getType().getInstallationHandlerData();
+    	WheelData wdata = data.getType().getInstallHandlerData();
         tooltip.add(Formatter.format("&9Wheel Radius: &7" + wdata.getRadius()));
         tooltip.add(Formatter.format("&9Wheel Width: &7" + wdata.getWidth()));
     }
