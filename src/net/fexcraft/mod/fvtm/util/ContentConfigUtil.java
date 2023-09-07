@@ -145,8 +145,24 @@ public class ContentConfigUtil {
 	public static V3D getVector(JsonArray array){
 		V3D vec = new V3D();
 		if(array.size() > 0) vec.x = array.get(0).float_value();
-		if(array.size() > 1) vec.x = array.get(1).float_value();
-		if(array.size() > 2) vec.x = array.get(2).float_value();
+		if(array.size() > 1) vec.y = array.get(1).float_value();
+		if(array.size() > 2) vec.z = array.get(2).float_value();
+		return vec;
+	}
+
+	public static V3D getVector(JsonMap map){
+		V3D vec = new V3D();
+		vec.x = map.getFloat("x", 0f);
+		vec.y = map.getFloat("y", 0f);
+		vec.z = map.getFloat("z", 0f);
+		return vec;
+	}
+
+	public static V3D getVector(JsonMap map, float x, float y, float z){
+		V3D vec = new V3D();
+		vec.x = map.getFloat("x", x);
+		vec.y = map.getFloat("y", y);
+		vec.z = map.getFloat("z", z);
 		return vec;
 	}
 
