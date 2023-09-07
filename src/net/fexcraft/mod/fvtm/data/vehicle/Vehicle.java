@@ -172,7 +172,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 
 	@Override
 	public Class<?> getDataClass(){
-		return null;//TODO
+		return VehicleData.class;
 	}
 
 	@Override
