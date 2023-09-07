@@ -6,7 +6,7 @@ import java.util.Collection;
 import net.fexcraft.app.json.FJson;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.mod.fvtm.data.Seat;
-import net.fexcraft.mod.fvtm.data.part.Part2;
+import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.part.PartFunction.StaticFunction;
 
@@ -15,7 +15,7 @@ public class SeatsFunction extends StaticFunction {
 	private ArrayList<Seat> seats = new ArrayList<>();
 
 	@Override
-	public PartFunction init(Part2 part, FJson json){
+	public PartFunction init(Part part, FJson json){
 		for(JsonValue<?> entry : json.asArray().value){
 			seats.add(new Seat(entry.asMap()));
 		}
