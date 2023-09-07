@@ -30,8 +30,7 @@ import net.fexcraft.mod.fvtm.data.attribute.AttrTristate;
 import net.fexcraft.mod.fvtm.data.attribute.AttrVector;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
-import net.fexcraft.mod.fvtm.function.WheelFunction;
-import net.fexcraft.mod.fvtm.function.WheelPositionsFunction;
+import net.fexcraft.mod.fvtm.function.*;
 import net.fexcraft.mod.fvtm.model.*;
 import net.fexcraft.mod.fvtm.model.loaders.ClassModelLoader;
 import net.fexcraft.mod.fvtm.model.loaders.FMFModelLoader;
@@ -145,7 +144,7 @@ public abstract class FvtmResources {
 		PART_FUNCTIONS.put("fvtm:wheel", WheelFunction.class);
 		PART_FUNCTIONS.put("fvtm:wheel_positions", WheelPositionsFunction.class);
 		PART_FUNCTIONS.put("fvtm:seats", SeatsFunction.class);
-		/*PART_FUNCTIONS.put("fvtm:engine", EngineFunction.class);
+		PART_FUNCTIONS.put("fvtm:engine", EngineFunction.class);
 		PART_FUNCTIONS.put("fvtm:inventory", InventoryFunction.class);
 		PART_FUNCTIONS.put("fvtm:container", ContainerFunction.class);
 		PART_FUNCTIONS.put("fvtm:bogie", BogieFunction.class);
@@ -153,7 +152,7 @@ public abstract class FvtmResources {
 		PART_FUNCTIONS.put("fvtm:color", ColorFunction.class);
 		PART_FUNCTIONS.put("fvtm:tire", TireFunction.class);
 		PART_FUNCTIONS.put("fvtm:transmission", TransmissionFunction.class);
-		PART_FUNCTIONS.put("fvtm:particle_emitter", ParticleEmitterFunction.class);*/
+		PART_FUNCTIONS.put("fvtm:particle_emitter", ParticleEmitterFunction.class);
 	}
 
 	public void searchContent(){
