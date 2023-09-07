@@ -8,7 +8,7 @@ import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.mc.utils.Formatter;
-import net.fexcraft.mod.fvtm.data.part.Part2;
+import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.part.PartFunction.StaticFunction;
@@ -25,7 +25,7 @@ public class TransmissionFunction extends StaticFunction {
 	private boolean automatic;
 
 	@Override
-	public PartFunction init(Part2 part, FJson json){
+	public PartFunction init(Part part, FJson json){
 		JsonMap map = json.isMap() ? json.asMap() : new JsonMap();
 		JsonArray rats = map.has("gear_ratios") ? map.getArray("gear_ratios") : null;
 		if(rats == null){
