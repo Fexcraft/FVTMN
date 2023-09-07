@@ -14,7 +14,7 @@ import net.fexcraft.mod.uni.world.WorldW;
  */
 public abstract class PartFunction {
 
-	public abstract PartFunction init(Part2 part, FJson json);
+	public abstract PartFunction init(Part part, FJson json);
 	
 	public abstract PartFunction load(TagCW compound);
 	
@@ -23,7 +23,7 @@ public abstract class PartFunction {
 	public abstract String getId();
 	
 	/** Used to crease an use-copy from the "default" function stored in a Part. */
-	public abstract PartFunction copy(Part2 Part);
+	public abstract PartFunction copy(Part Part);
 	
 	public static abstract class StaticFunction extends PartFunction {
 
@@ -38,7 +38,7 @@ public abstract class PartFunction {
 		}
 
 		@Override
-		public PartFunction copy(Part2 part){
+		public PartFunction copy(Part part){
 			return this;
 		}
 		
