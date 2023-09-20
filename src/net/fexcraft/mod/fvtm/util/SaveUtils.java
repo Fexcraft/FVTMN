@@ -26,7 +26,7 @@ public class SaveUtils {
 	}
 
 	public static V3D loadV3D(TagLW list){
-		if(list == null || list.size() == 0) return new V3D();
+		if(list.direct() == null || list.size() == 0) return new V3D();
 		V3D vec = new V3D();
 		if(list.size() > 0) vec.x = list.getDouble(0);
 		if(list.size() > 1) vec.y = list.getDouble(1);
