@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fvtm.data;
 
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 
 /**
@@ -29,5 +30,9 @@ public abstract class ContentData<TYPE extends Content<TYPE>, SELF> {
 	public abstract SELF parse(JsonMap obj);
 
 	public abstract JsonMap toJson();
+
+	public StackWrapper getNewStack(){
+		return type.getNewStack().setTag(write(null));
+	}
 
 }
