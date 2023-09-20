@@ -290,6 +290,10 @@ public abstract class FvtmResources {
 
 	public abstract StackWrapper newStack(ItemWrapper item);
 
+	public static StackWrapper newStack(IDL id){
+		return INSTANCE.newStack(FvtmRegistry.getItem(id.colon()));
+	}
+
 	public static JsonMap getJson(String loc){
 		try{
 			return JsonHandler.parse(FvtmResources.class.getClassLoader().getResourceAsStream(loc));
@@ -461,5 +465,4 @@ public abstract class FvtmResources {
 		if(vehicle == null) return null;
 		return new VehicleData(vehicle).read(com);
 	}
-
 }
