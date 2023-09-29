@@ -7,4 +7,6 @@ public interface MessageSender {
 
 	public void send(String s);
 
+	public void bar(String s);
+
 }
