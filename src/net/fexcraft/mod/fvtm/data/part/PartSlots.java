@@ -12,7 +12,7 @@ import net.fexcraft.mod.uni.EnvInfo;
  */
 public class PartSlots extends ArrayList<PartSlot> {
 
-	public static final String VEHPARTSLOTS = "vehicle_partslots";
+	public static final String VEHPARTSLOTS = "vehicle";
 	public HashMap<String, Integer> count;
 	public boolean copy_rot;
 
