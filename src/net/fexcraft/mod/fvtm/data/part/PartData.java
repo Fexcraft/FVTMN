@@ -64,7 +64,7 @@ public class PartData extends ContentData<Part, PartData> implements TextureUser
 		currentrot = Rot.fromTag("CurrentRot", compound);
 		rotpoint = compound.has("SwivelPoint") ? compound.getString("SwivelPoint") : null;
 		//
-		texture.load(compound, type);
+		texture.load(compound);
 		//
 		if(compound.has("Functions")){
 			TagLW list = compound.getList("Functions");
