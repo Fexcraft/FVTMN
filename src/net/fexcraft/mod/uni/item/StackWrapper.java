@@ -21,4 +21,8 @@ public abstract class StackWrapper {
 
 	public abstract boolean hasTag();
 
+	public ItemWrapper getItem(){
+		return item;
+	}
+
 }
