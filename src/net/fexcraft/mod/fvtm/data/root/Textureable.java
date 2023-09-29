@@ -3,6 +3,7 @@ package net.fexcraft.mod.fvtm.data.root;
 import java.util.List;
 
 import net.fexcraft.mod.fvtm.FvtmResources;
+import net.fexcraft.mod.fvtm.data.Saveable;
 import net.fexcraft.mod.fvtm.util.ExternalTextureLoader;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
@@ -11,15 +12,16 @@ import net.fexcraft.mod.uni.tag.TagCW;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class Textureable {
+public class Textureable implements Saveable {
 	
 	private IDL current;
 	private String custom = "";
 	private boolean external;
 	private int selected;
+	private TextureHolder holder;
 	
-	public Textureable(TextureHolder holder){
-		current = holder.getDefaultTextures().get(0);
+	public Textureable(TextureHolder texholder){
+		current = (holder = texholder).getDefaultTextures().get(0);
 	}
 	
 	public IDL getTexture(){
@@ -38,7 +40,7 @@ public class Textureable {
 		return custom;
 	}
 	
-	public void setSelectedTexture(TextureHolder holder, int idx, String tex, boolean ext){
+	public void setSelectedTexture(int idx, String tex, boolean ext){
 		if(idx < 0){
 			external = ext;
 			selected = -1;
@@ -55,11 +57,11 @@ public class Textureable {
 			}
 		}
 	}
-	
+
 	public static interface TextureHolder {
-		
+
 		public List<IDL> getDefaultTextures();
-		
+
 	}
 	
 	public static interface TextureUser {
@@ -86,13 +88,15 @@ public class Textureable {
 		
 	}
 
+	@Override
 	public void save(TagCW compound){
 		compound.set("SelectedTexture", selected);
 		compound.set("ExternalTexture", external);
 		compound.set("CurrentTexture", external ? current.path() : current.toString());
 	}
 
-	public void load(TagCW compound, TextureHolder holder){
+	@Override
+	public void load(TagCW compound){
 		selected = compound.getInteger("SelectedTexture");
 		external = compound.getBoolean("ExternalTexture");
 		if(selected < 0) selected = -1;
