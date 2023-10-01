@@ -60,7 +60,6 @@ public class Config {
 	//deprecated
 	public static int VEHICLE_UPDATE_RANGE;
 	public static boolean OVERLAY_ON_BOTTOM;
-	public static boolean DISABLE_RAIL_BLOCKS;
 	public static int RAIL_PLACING_GRID;
 
 	public static void init(File file){
@@ -141,9 +140,6 @@ public class Config {
 		entries.add(new ConfigEntry(catr, "disable", new JsonValue(false))
 				.info("If FVTM rail system should be disabled.")
 				.cons((con, map) -> DISABLE_RAILS = con.getBoolean(map)));
-		entries.add(new ConfigEntry(catr, "disable_blocks", new JsonValue(false))
-				.info("If FVTM RailBlocks shouldn't be placed along FVTM rail tracks.")
-				.cons((con, map) -> DISABLE_RAIL_BLOCKS = con.getBoolean(map)));
 		entries.add(new ConfigEntry(catr, "unload_interval", new JsonValue(300000))
 				.info("Interval (milliseconds) in which it is checked for trains/rails to be unloaded.")
 				.cons((con, map) -> UNLOAD_INTERVAL = con.getInteger(map))
