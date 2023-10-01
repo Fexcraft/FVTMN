@@ -465,4 +465,9 @@ public abstract class FvtmResources {
 		if(vehicle == null) return null;
 		return new VehicleData(vehicle).read(com);
 	}
+
+	public abstract void registerFvtmBlocks();
+
+	public abstract void registerFvtmItems();
+
 }
