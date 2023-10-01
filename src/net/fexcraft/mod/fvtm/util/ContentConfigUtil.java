@@ -150,6 +150,14 @@ public class ContentConfigUtil {
 		return vec;
 	}
 
+	public static V3D getVector(JsonArray array, int offset){
+		V3D vec = new V3D();
+		if(array.size() > offset + 0) vec.x = array.get(offset + 0).float_value();
+		if(array.size() > offset + 1) vec.y = array.get(offset + 1).float_value();
+		if(array.size() > offset + 2) vec.z = array.get(offset + 2).float_value();
+		return vec;
+	}
+
 	public static V3D getVector(JsonMap map){
 		V3D vec = new V3D();
 		vec.x = map.getFloat("x", 0f);
