@@ -13,15 +13,13 @@ public abstract class PartInstallHandler {
 
 	public static HashMap<String, PartInstallHandler> HANDLERS = new HashMap<>();
 
-	public abstract boolean validInstall(MessageSender sender, PartData part, String as_category, VehicleData into);
+	public abstract boolean validInstall(MessageSender sender, PartData part, String as_category, VehicleData into, boolean swap);
 	
 	public abstract boolean processInstall(MessageSender sender, PartData part, String in_category, VehicleData into);
 
-	public abstract boolean validUninstall(MessageSender sender, PartData part, String is_category, VehicleData from);
+	public abstract boolean validUninstall(MessageSender sender, PartData part, String is_category, VehicleData from, boolean swap);
 
 	public abstract boolean processUninstall(MessageSender sender, PartData part, String in_category, VehicleData from);
-
-	public abstract boolean allowsCustomCategory(PartData part);
 	
 	public abstract String[] getValidCategories(PartData part, VehicleData vehicle);
 
@@ -31,4 +29,5 @@ public abstract class PartInstallHandler {
 		if(HANDLERS.containsKey(id)) return HANDLERS.get("default");
 		return HANDLERS.get(id);
 	}
+
 }
