@@ -48,7 +48,7 @@ import net.fexcraft.mod.fvtm.util.function.InventoryFunction;
 import net.fexcraft.mod.fvtm.util.function.TireFunction;
 import net.fexcraft.mod.fvtm.util.handler.BogieInstallationHandler;
 import net.fexcraft.mod.fvtm.util.handler.ConnectorInstallationHandler;
-import net.fexcraft.mod.fvtm.util.handler.DefaultPartInstallHandler;
+import net.fexcraft.mod.fvtm.handler.DefaultPartInstallHandler;
 import net.fexcraft.mod.fvtm.util.handler.TireInstallationHandler;
 import net.fexcraft.mod.fvtm.util.handler.WheelInstallationHandler;
 import net.fexcraft.mod.uni.EnvInfo;
