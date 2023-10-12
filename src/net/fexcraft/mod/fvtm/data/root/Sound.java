@@ -16,11 +16,11 @@ public class Sound {
 		this(idl, vol, pitch, true);
 	}
 	
-	public Sound(IDL idl, float vol, float pitch, boolean override){
+	public Sound(IDL idl, float vol, float pitch_, boolean override_){
 		soundid = idl;
 		volume = vol;
-		pitch = pitch;
-		override = override;
+		pitch = pitch_;
+		override = override_;
 	}
 
 }
