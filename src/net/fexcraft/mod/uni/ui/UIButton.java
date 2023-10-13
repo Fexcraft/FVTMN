@@ -35,7 +35,7 @@ public abstract class UIButton extends UIElement {
 		}
 		if(map.getBoolean("colorbased", true)){
 			if(map.has("color")){
-				ecolor.packed = hcolor.packed = dcolor.packed = map.get("color").integer_value();
+				ecolor.packed = hcolor.packed = dcolor.packed = Integer.parseInt(map.getString("color", "0"), 16);
 			}
 			ecolor.packed = Integer.parseInt(map.getString("e_color", Integer.toHexString(ecolor.packed)), 16);
 			dcolor.packed = Integer.parseInt(map.getString("d_color", Integer.toHexString(dcolor.packed)), 16);
