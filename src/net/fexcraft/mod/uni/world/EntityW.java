@@ -9,4 +9,6 @@ public abstract class EntityW {
 
 	public abstract int getId();
 
+	public abstract WorldW getWorld();
+
 }
