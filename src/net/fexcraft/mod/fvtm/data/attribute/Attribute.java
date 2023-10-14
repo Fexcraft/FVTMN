@@ -350,7 +350,7 @@ public abstract class Attribute<V> {
 			JsonMap ine = map.getMap("interact");
 			for(Entry<String, JsonValue<?>> entry : ine.entries()){
 				JsonArray array = entry.getValue().asArray();
-				float[] arr = new float[attr.valuetype.isNumber() ? 7 : 4];
+				float[] arr = new float[attr.valuetype.isNumber() && !attr.valuetype.isTristate() ? 7 : 4];
 				String point = array.size() >= arr.length ? array.get(arr.length).string_value() : null;
 				for(int i = 0; i < arr.length; i++) arr[i] = array.get(i).float_value();
 				attr.addBox(entry.getKey(), point, arr);
