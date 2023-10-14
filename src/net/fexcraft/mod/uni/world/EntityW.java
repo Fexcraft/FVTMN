@@ -3,7 +3,7 @@ package net.fexcraft.mod.uni.world;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public abstract class EntityW {
+public abstract class EntityW implements MessageSender {
 
 	public abstract boolean isOnClient();
 
