@@ -5,7 +5,7 @@ import java.util.UUID;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public interface PlayerW {
+public interface PlayerW extends MessageSender {
 
 	public String getName();
 
