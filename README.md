@@ -3,7 +3,7 @@ Core minecraft-independent part of FVTM
 
 ## Links
 - [FVTM 1.12.2](https://github.com/fexcraft/fvtm)
-- [FVTM 1.18.2](https://github.com/fexcraft/fvtm)
+- FVTM 1.20.x (wip)
 - [Wiki](https://fexcraft.net/wiki/mod/fvtm)
 - [Discord](https://discord.gg/AkMAzaA)
 
