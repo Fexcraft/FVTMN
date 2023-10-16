@@ -102,6 +102,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		rotpoints.values().forEach(point -> point.linkToParent(this));
 		sounds.putAll(type.getSounds());
 		partproviders.put("vehicle", type.getPartSlots());
+		lock = new Lockable();
 	}
 
 	@Override
@@ -161,7 +162,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 
 	@Override
 	public VehicleData read(TagCW compound){
-		if(!compound.has("format") || compound.getFloat("format") < 4f) return null;
+		//if(!compound.has("format") || compound.getFloat("format") < 4f) return this;
 		if(compound.has("Parts")){
 			TagCW cparts = compound.getCompound("Parts");
 			parts.clear();
