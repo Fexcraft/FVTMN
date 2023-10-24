@@ -11,4 +11,12 @@ public abstract class EntityW implements MessageSender {
 
 	public abstract WorldW getWorld();
 
+	public abstract boolean isPlayer();
+
+	public abstract boolean isAnimal();
+
+	public abstract boolean isHostile();
+
+	public abstract String getRegName();
+
 }
