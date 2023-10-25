@@ -41,7 +41,8 @@ public class Config {
 	public static int BLINKER_INTERVAL;
 	//u12/basic
 	public static float U12_MOTION_SCALE;
-	public static int U12_SYNC_RATE;
+	//uni/proto
+	public static byte VEHICLE_SYNC_RATE;
 	//rail
 	public static boolean DISABLE_RAILS;
 	public static int UNLOAD_INTERVAL;
@@ -78,6 +79,7 @@ public class Config {
 		String catg = "general";
 		String catc = "client";
 		String catu = "u12/basic";
+		String catv = "vehicle";
 		String catr = "rail";
 		String cato = "road";
 		String catw = "wire";
@@ -132,9 +134,11 @@ public class Config {
 		entries.add(new ConfigEntry(catu, "motion_scale", new JsonValue(0.2f))
 				.info("Physics Motion Scale Multiplier.").rang(0.001f, 2f)
 				.cons((con, map) -> U12_MOTION_SCALE = con.getFloat(map)));
-		entries.add(new ConfigEntry(catu, "sync_rate", new JsonValue(5))
+
+		//u12/basic
+		entries.add(new ConfigEntry(catv, "sync_rate", new JsonValue(5))
 				.info("Entity sync rate in ticks. Lesser value means higher sync AND higher bandwidth. Higher value means slower sync and less bandwidth.").rang(1, 10)
-				.cons((con, map) -> U12_SYNC_RATE = con.getInteger(map)));
+				.cons((con, map) -> VEHICLE_SYNC_RATE = (byte)con.getInteger(map)));
 
 		//rail
 		entries.add(new ConfigEntry(catr, "disable", new JsonValue(false))
