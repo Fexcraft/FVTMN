@@ -9,4 +9,5 @@ public interface MessageSender {
 
 	public void bar(String s);
 
+	public void dismount();
 }
