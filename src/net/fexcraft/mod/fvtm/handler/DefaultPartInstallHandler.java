@@ -17,6 +17,9 @@ import net.fexcraft.mod.fvtm.function.WheelPositionsFunction;
 import net.fexcraft.mod.fvtm.util.Rot;
 import net.fexcraft.mod.uni.world.MessageSender;
 
+/**
+ * @author Ferdinand Calo' (FEX___96)
+ */
 public class DefaultPartInstallHandler extends PartInstallHandler {
 
 	@Override
