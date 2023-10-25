@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fvtm.sys.uni;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
@@ -27,6 +28,7 @@ public class VehicleInstance {
 	public Pivot current;
 	public Pivot previous;
 	public ArrayList<SeatInstance> seats = new ArrayList<>();
+	public HashMap<String, WheelTireData> wheeldata = new HashMap<>();
 	//
 	public static final float GRAVITY = 9.81f;
 
