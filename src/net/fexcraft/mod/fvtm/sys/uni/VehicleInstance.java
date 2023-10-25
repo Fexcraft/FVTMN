@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+import net.fexcraft.mod.fvtm.data.Seat;
+import net.fexcraft.mod.fvtm.data.vehicle.SimplePhysData;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleType;
 import net.fexcraft.mod.fvtm.util.Pivot;
+import net.fexcraft.mod.fvtm.util.packet.PKT_VehKeyPress;
+import net.fexcraft.mod.fvtm.util.packet.Packets;
 import net.fexcraft.mod.uni.world.EntityW;
+import net.fexcraft.mod.uni.world.MessageSender;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -29,6 +34,7 @@ public class VehicleInstance {
 	public Pivot previous;
 	public ArrayList<SeatInstance> seats = new ArrayList<>();
 	public HashMap<String, WheelTireData> wheeldata = new HashMap<>();
+	public byte toggable_timer;
 	//
 	public static final float GRAVITY = 9.81f;
 
@@ -50,6 +56,106 @@ public class VehicleInstance {
 
 	public void setPlacer(UUID uuid){
 		if(placer == null) placer = uuid;
+	}
+
+	public boolean onKeyPress(KeyPress key, Seat seat, MessageSender sender) {
+		//TODO script key press event
+		if (!seat.driver && key.driver_only()) return false;
+		if (entity.isOnClient() && !key.toggables()) {
+			Packets.sendToServer(new PKT_VehKeyPress(key));
+			return true;
+		}
+		switch (key) {
+			case ACCELERATE: {
+				throttle += throttle < 0 ? 0.02 : 0.01;
+				if (throttle > 1) throttle = 1;
+				return true;
+			}
+			case DECELERATE: {
+				throttle -= throttle > 0 ? 0.02 : 0.01;
+				if (throttle < -1) {
+					throttle = -1;
+				}
+				SimplePhysData spdata = data.getType().getSphData();
+				if (spdata != null && throttle < 0 && spdata.min_throttle == 0) {
+					throttle = 0;
+				}
+				return true;
+			}
+			case TURN_LEFT: {
+				steer_yaw -= 0.5;
+				return true;
+			}
+			case TURN_RIGHT: {
+				steer_yaw += 0.5;
+				return true;
+			}
+			case BRAKE: {
+				throttle *= 0.8;
+				entity.decreaseXZMotion(0.8);
+				if (throttle < -0.0001) {
+					throttle = 0;
+				}
+				return true;
+			}
+			case ENGINE: {
+				//TODO toggle engine on
+				return true;
+			}
+			case DISMOUNT: {
+				sender.dismount();
+				return true;
+			}
+			case INVENTORY: {
+				//TODO open inventory ui
+				return true;
+			}
+			case TOGGABLES: {
+				if (toggable_timer > 0) return true;
+				//TODO toggle action
+				toggable_timer = 10;
+			}
+			case SCRIPTS: {
+				//TODO scripts ui
+				return true;
+			}
+			case LIGHTS: {
+				if (toggable_timer > 0) return true;
+				if (data.getAttribute("lights").asBoolean()) {
+					if (data.getAttribute("lights_long").asBoolean()) {
+						data.getAttribute("lights").set(false);
+						data.getAttribute("lights_long").set(true);
+					}
+					else {
+						data.getAttribute("lights_long").set(true);
+					}
+				}
+				else {
+					data.getAttribute("lights").set(true);
+				}
+				VehicleInstance trailer = rear;
+				while (trailer != null) {
+					trailer.data.getAttribute("lights").set(data.getAttribute("lights").asBoolean());
+					trailer.data.getAttribute("lights_long").set(data.getAttribute("lights_long").asBoolean());
+					trailer = trailer.rear;
+				}
+				toggable_timer = 10;
+				//TODO send lights sync packet
+				return true;
+			}
+			case COUPLER_REAR: {
+				//TODO coupling
+				return true;
+			}
+			case COUPLER_FRONT: {
+				//TODO coupling
+				return true;
+			}
+			default: {
+				sender.bar("Action '" + key + "' not found.");
+				return false;
+			}
+		}
 	}
 
 }
