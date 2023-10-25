@@ -290,6 +290,8 @@ public abstract class FvtmResources {
 
 	public abstract StackWrapper newStack(ItemWrapper item);
 
+	public abstract StackWrapper newStack(Object local);
+
 	public static StackWrapper newStack(IDL id){
 		return INSTANCE.newStack(FvtmRegistry.getItem(id.colon()));
 	}
