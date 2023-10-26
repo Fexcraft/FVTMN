@@ -35,6 +35,7 @@ public class VehicleInstance {
 	public ArrayList<SeatInstance> seats = new ArrayList<>();
 	public HashMap<String, WheelTireData> wheeldata = new HashMap<>();
 	public byte toggable_timer;
+	public double max_steering_yaw;
 	//
 	public static final float GRAVITY = 9.81f;
 
@@ -48,6 +49,7 @@ public class VehicleInstance {
 		if(data == null) return;
 		type = data.getType().getVehicleType();
 		point = data.getRotationPoint(null);
+		max_steering_yaw = data.getAttributeInteger("max_steering_angle", 30);
 	}
 
 	public UUID getPlacer(){
@@ -156,6 +158,12 @@ public class VehicleInstance {
 				return false;
 			}
 		}
+	}
+
+	public void checkSteerAngle(boolean client){
+		if(!client) steer_yaw *= 0.95;
+		if(steer_yaw > max_steering_yaw) steer_yaw = max_steering_yaw;
+		if(steer_yaw < -max_steering_yaw) steer_yaw = -max_steering_yaw;
 	}
 
 }
