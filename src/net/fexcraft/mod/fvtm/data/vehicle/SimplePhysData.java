@@ -15,7 +15,6 @@ public class SimplePhysData {
 	public float wheel_spring_strength;
 	public float bouyancy;
 	public int trailer_adjustment_axe;
-	public boolean is_tracked;
 	
 	public SimplePhysData(JsonMap map){
 		max_throttle = map.getFloat("MaxPositiveThrottle", 1f);
@@ -23,7 +22,6 @@ public class SimplePhysData {
 		turn_left_mod = map.getFloat("TurnLeftModifier", 1f);
 		turn_right_mod = map.getFloat("TurnRightModifier", 1f);
 		wheel_step_height = map.getFloat("WheelStepHeight", 1f);
-		is_tracked = map.getBoolean("Tracked", false) || map.getBoolean("Catenary", false);
 		wheel_spring_strength = map.getFloat("WheelSpringStrength", 0.5f);
 		bouyancy = map.getFloat("Bouyancy", 0.25f);
 		trailer_adjustment_axe = map.getInteger("TrailerAdjustmentAxe", 1);
