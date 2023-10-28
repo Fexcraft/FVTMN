@@ -81,7 +81,7 @@ public class EngineFunction extends PartFunction {
 		return compound;
 	}
 	
-	public float getLegacyEngineSpeed(){
+	public float getSphEngineSpeed(){
 		return engine_speed;
 	}
 
