@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fvtm.data.Seat;
 import net.fexcraft.mod.fvtm.data.vehicle.SimplePhysData;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
@@ -203,6 +204,10 @@ public class VehicleInstance {
 			fuel_consumed = 0;
 			return cons;
 		}
+	}
+
+	public V3D getV3D(){
+		return entity.getPos();
 	}
 
 }
