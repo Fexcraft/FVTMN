@@ -117,9 +117,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 				wheelpos.put(entry.getKey(), new WheelSlot(entry.getValue().asMap()));
 			}
 		}
-		if(map.has("SimplePhysics")){
-			sphdata = new SimplePhysData(map.getMap("SimplePhysics"));
-		}
+		sphdata = new SimplePhysData(map.getMap("SimplePhysics"));
 		trailer = map.getBoolean("Trailer", false) || map.getBoolean("Wagon", false);
 		tracked = map.getBoolean("Tracked", false) || map.getBoolean("Catenary", false);
 		if(map.has("ConnectorFront")){
