@@ -1,5 +1,7 @@
 package net.fexcraft.mod.uni.world;
 
+import net.fexcraft.lib.common.math.V3D;
+
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
@@ -24,5 +26,7 @@ public abstract class EntityW implements MessageSender {
 	public abstract <E> E local();
 
 	public abstract Object direct();
+
+	public abstract V3D getPos();
 
 }
