@@ -374,6 +374,11 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		Attribute<?> attr = getAttribute(id);
 		return attr == null ? def : attr.asTristate();
 	}
+
+	public void setAttribute(String id, Object val){
+		Attribute<?> attr = getAttribute(id);
+		if(attr != null) attr.set(val);
+	}
 	
 	/** @return null if installed successfully. */
 	public PartData installPart(MessageSender engineer, PartData data, String category, boolean swap){
@@ -733,6 +738,14 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 	@Override
 	public TextureHolder getTexHolder(){
 		return type;
+	}
+
+	public boolean outoffuel(){
+		return getAttribute("fuel_stored").asInteger() <= 0;
+	}
+
+	public boolean hasfuel(){
+		return getAttribute("fuel_stored").asInteger() > 0;
 	}
 
 }
