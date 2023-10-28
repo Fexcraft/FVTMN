@@ -47,6 +47,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 	protected String ctab;
 	protected SimplePhysData sphdata;
 	protected boolean trailer;
+	protected boolean tracked;
 	protected V3D conn_front;
 	protected V3D conn_rear;
 	protected Map<String, IDL> installed;
@@ -120,6 +121,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 			sphdata = new SimplePhysData(map.getMap("SimplePhysics"));
 		}
 		trailer = map.getBoolean("Trailer", false) || map.getBoolean("Wagon", false);
+		tracked = map.getBoolean("Tracked", false) || map.getBoolean("Catenary", false);
 		if(map.has("ConnectorFront")){
 			conn_front = ContentConfigUtil.getVector(map.getArray("ConnectorFront"));
 		}
@@ -297,4 +299,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 		return type;
 	}
 
+	public boolean isTracked(){
+		return tracked;
+	}
 }
