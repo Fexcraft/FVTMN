@@ -44,4 +44,8 @@ public class SeatInstance {
 		pslook.set_rotation((seat.minyaw + seat.maxyaw) / 2, 0, 0, true);
 	}
 
+	public EntityW passenger(){
+		return passenger;
+	}
+
 }
