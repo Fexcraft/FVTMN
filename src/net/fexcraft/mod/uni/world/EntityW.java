@@ -19,7 +19,10 @@ public abstract class EntityW implements MessageSender {
 
 	public abstract String getRegName();
 
+	public abstract void decreaseXZMotion(double x);
+
 	public abstract <E> E local();
 
-	public abstract void decreaseXZMotion(double x);
+	public abstract Object direct();
+
 }
