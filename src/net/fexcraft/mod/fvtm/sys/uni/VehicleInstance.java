@@ -9,6 +9,7 @@ import net.fexcraft.mod.fvtm.data.vehicle.SimplePhysData;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleType;
+import net.fexcraft.mod.fvtm.function.EngineFunction;
 import net.fexcraft.mod.fvtm.util.Pivot;
 import net.fexcraft.mod.fvtm.util.packet.PKT_VehKeyPress;
 import net.fexcraft.mod.fvtm.util.packet.Packets;
@@ -36,8 +37,11 @@ public class VehicleInstance {
 	public HashMap<String, WheelTireData> wheeldata = new HashMap<>();
 	public byte toggable_timer;
 	public double max_steering_yaw;
+	public int fuel_accumulator;
+	public int fuel_consumed;
 	//
 	public static final float GRAVITY = 9.81f;
+	public static final float GRAVITY_20th = GRAVITY / 20;
 
 	public VehicleInstance(EntityW wrapper, VehicleData vdata){
 		entity = wrapper;
@@ -58,6 +62,10 @@ public class VehicleInstance {
 
 	public void setPlacer(UUID uuid){
 		if(placer == null) placer = uuid;
+	}
+
+	public Pivot pivot(){
+		return point.getPivot();
 	}
 
 	public boolean onKeyPress(KeyPress key, Seat seat, MessageSender sender) {
@@ -164,6 +172,37 @@ public class VehicleInstance {
 		if(!client) steer_yaw *= 0.95;
 		if(steer_yaw > max_steering_yaw) steer_yaw = max_steering_yaw;
 		if(steer_yaw < -max_steering_yaw) steer_yaw = -max_steering_yaw;
+	}
+
+	public boolean consumeFuel(EngineFunction engine){
+		if(data.outoffuel()) return false;
+		if(engine.isOn()){
+			if(throttle == 0d || (throttle < .05 && throttle > -.05)){
+				fuel_consumed += engine.getIdleFuelConsumption();
+			}
+			else{
+				fuel_consumed += engine.getFuelConsumption(data.getAttribute("fuel_secondary").asString()) * throttle;
+			}
+		}
+		fuel_accumulator++;
+		if(fuel_accumulator < 20) return engine.isOn();
+		else{
+			boolean cons = false;
+			if(fuel_consumed > 0){
+				int consumed = (int)(fuel_consumed / 20f);
+				data.getAttribute("fuel_stored").decrease(consumed < 0 ? 1 : consumed);
+				cons = true;
+			}
+			if(engine.isOn() && data.outoffuel()){
+				//TODO send out of fuel packet
+				//TODO play out of fuel sound
+				throttle = 0;
+				engine.setState(false);
+			}
+			fuel_accumulator = 0;
+			fuel_consumed = 0;
+			return cons;
+		}
 	}
 
 }
