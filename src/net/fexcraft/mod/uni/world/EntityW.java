@@ -21,12 +21,14 @@ public abstract class EntityW implements MessageSender {
 
 	public abstract String getRegName();
 
-	public abstract void decreaseXZMotion(double x);
-
 	public abstract <E> E local();
 
 	public abstract Object direct();
 
 	public abstract V3D getPos();
+
+	public abstract void decreaseXZMotion(double x);
+
+	public abstract void setYawPitch(float oyaw, float opitch, float yaw, float pitch);
 
 }
