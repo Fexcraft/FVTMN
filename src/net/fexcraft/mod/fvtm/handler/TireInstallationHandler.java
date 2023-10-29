@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fvtm.handler;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3D;
@@ -9,8 +10,8 @@ import net.fexcraft.mod.fvtm.data.part.PartInstallHandler;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.data.vehicle.WheelSlot;
 import net.fexcraft.mod.fvtm.function.WheelFunction;
-import net.fexcraft.mod.fvtm.util.function.TireFunction;
 import net.fexcraft.mod.fvtm.handler.WheelInstallationHandler.WheelData;
+import net.fexcraft.mod.fvtm.util.function.TireFunction;
 import net.fexcraft.mod.uni.world.MessageSender;
 
 /**
@@ -143,7 +144,7 @@ public class TireInstallationHandler extends PartInstallHandler {
 	}
 
 	@Override
-	public String[] getValidCategories(PartData part, VehicleData vehicle){
+	public List<String> getValidCategories(PartData part, VehicleData vehicle){
 		ArrayList<String> strs = new ArrayList<>();
 		for(String str : vehicle.getWheelSlots().keySet()){
 			if(vehicle.hasPart(str)){
@@ -152,7 +153,7 @@ public class TireInstallationHandler extends PartInstallHandler {
 				strs.add(str + ":tire");
 			}
 		}
-		return strs.toArray(new String[0]);
+		return strs;
 	}
 
 	@Override
