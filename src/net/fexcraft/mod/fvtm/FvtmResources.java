@@ -237,8 +237,8 @@ public abstract class FvtmResources {
 					}
 				}
 				catch (Exception e){
-					if(EnvInfo.DEV) e.printStackTrace();
 					LOGGER.log("Errors while loading config from zip: " + addon.getFile() + " - " + lastentry); //Static.stop();
+					if(EnvInfo.DEV) e.printStackTrace();
 				}
 			}
 		}
@@ -450,8 +450,8 @@ public abstract class FvtmResources {
 		try{
 			return PART_FUNCTIONS.get(key).newInstance();
 		}
-		catch(InstantiationException | IllegalAccessException e){
-			e.printStackTrace();
+		catch(Exception e){
+			if(EnvInfo.DEV) e.printStackTrace();
 			return null;
 		}
 	}
