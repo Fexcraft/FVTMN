@@ -45,7 +45,7 @@ public class EngineFunction extends PartFunction {
 		engine_speed = map.getFloat("engine_speed", 0.245f);
 		idle_con = map.getInteger("idle_consumption", 1);
 		con = map.getInteger("active_consumption", 1);
-		fuelgroup = map.getArray("fuel_group").toStringArray();
+		fuelgroup = map.get("fuel_group").isArray() ? map.getArray("fuel_group").toStringArray() : new String[]{ map.getString("fuel_group", "diesel")};
 		if(map.has("consumptions") && map.get("consumptions").isMap()){
 			map.getMap("consumptions").entries().forEach(entry -> cons.put(entry.getKey(), entry.getValue().float_value()));
 		}
