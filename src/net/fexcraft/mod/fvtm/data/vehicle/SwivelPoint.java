@@ -7,9 +7,11 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fvtm.data.part.PartData;
+import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 import net.fexcraft.mod.fvtm.util.Pivot;
 import net.fexcraft.mod.fvtm.util.handler.SPM_DI;
 import net.fexcraft.mod.fvtm.util.packet.PKT_SPUpdate;
+import net.fexcraft.mod.fvtm.util.packet.Packets;
 import net.fexcraft.mod.uni.Pos;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
@@ -198,17 +200,12 @@ public class SwivelPoint {
 		position = new V3D(posX, posY, posZ);
 	}
 
-	public void updateClient(EntityW entity){
-		if(entity.isOnClient()) return;
-		//TODO Packets.sendToAllAround(new PKT_SPUpdate(entity, this), entity);
-	}
-
-	public void update(VehicleEntity entity){
-		if(isVehicle()) return;
-		this.updatePrevAxe();
+	public void update(VehicleInstance vehicle){
+		if(this == vehicle.point) return;
+		updatePrevAxe();
 		prevpos = position;
-		if(!entity.getEntity().world.isRemote && movers != null){
-			for(SwivelPointMover mover : movers) mover.update(entity, this);
+		if(!vehicle.entity.isOnClient() && movers != null){
+			for(SwivelPointMover mover : movers) mover.update(vehicle, this);
 		}
 		if(servticker <= 0) return;
 		double x = position.x + (servpos.x - position.x) / servticker;
@@ -265,7 +262,7 @@ public class SwivelPoint {
 		return id.equals(DEFAULT);
 	}
 
-	public void sendClientUpdate(EntityW entity){
+	public void sendUpdatePacket(EntityW entity){
     	if(movers == null) return;
     	boolean should = false;
     	for(SwivelPointMover mover : movers){
@@ -274,7 +271,8 @@ public class SwivelPoint {
 				break;
 			}
     	}
-    	if(should) updateClient(entity);
+		if(!should) return;
+    	Packets.sendToAllAround(new PKT_SPUpdate(entity, this), entity.direct());
 	}
 
 }
