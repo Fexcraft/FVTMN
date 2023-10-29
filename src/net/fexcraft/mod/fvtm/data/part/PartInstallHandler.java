@@ -26,8 +26,8 @@ public abstract class PartInstallHandler {
 	public abstract Object parseData(JsonMap map);
 
 	public static PartInstallHandler getHandler(String id){
-		if(HANDLERS.containsKey(id)) return HANDLERS.get("default");
-		return HANDLERS.get(id);
+		if(HANDLERS.containsKey(id)) return HANDLERS.get(id);
+		return HANDLERS.get("default");
 	}
 
 }
