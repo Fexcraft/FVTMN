@@ -709,16 +709,10 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		return partproviders.get(psp_id);
 	}
 
-	public ArrayList<PartSlot> getAllPartSlots(){
-		ArrayList<PartSlot> list = new ArrayList<>();
-		partproviders.values().forEach(val -> list.addAll(val));
-		return list;
-	}
-
 	public boolean hasPartSlot(String str){
 		for(PartSlots slots : partproviders.values()){
-			for(PartSlot slot : slots){
-				if(slot.category.equals(str)) return true;
+			for(Entry<String, PartSlot> entry : slots.entrySet()){
+				if(entry.getKey().equals(str)) return true;
 			}
 		}
 		return false;
