@@ -1,5 +1,6 @@
 package net.fexcraft.mod.fvtm.sys.uni;
 
+import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fvtm.data.Seat;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.util.Pivot;
@@ -46,6 +47,25 @@ public class SeatInstance {
 
 	public EntityW passenger(){
 		return passenger;
+	}
+
+	public void update(){
+		if(clicktimer > 0) clicktimer--;
+		if(interacttimer > 0) interacttimer--;
+		if(passenger == null) return;
+		peyaw = eyaw;
+		pepitch = epitch;
+		eyaw = elook.deg_yaw() + point.getPivot().deg_yaw();
+		epitch = elook.pitch() + point.getPivot().deg_pitch();
+		passenger.setYawPitch(peyaw, pepitch, eyaw, epitch);
+	}
+
+	public V3D getCurrentLocalPosition(){
+		return point.getRelativeVector(seat.pos);
+	}
+
+	public V3D getCurrentGlobalPosition(){
+		return point.getRelativeVector(seat.pos).add(root.getV3D());
 	}
 
 }
