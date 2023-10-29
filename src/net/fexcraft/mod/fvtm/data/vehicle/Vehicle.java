@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.RGB;
@@ -154,7 +153,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 			liftingpoints.put("ph0", new LiftingPoint("ph0", new V3D(0, 0, -20), null, 0));
 			liftingpoints.put("ph1", new LiftingPoint("ph1", new V3D(0, 0, 20), null, 0));
 		}
-		partslots = new PartSlots("vehicle", map.has("PartSlots") ? map.getArray("PartSlots") : new JsonArray());
+		partslots = new PartSlots(map.getMap("PartSlots"));
 		if(EnvInfo.CLIENT){
 			modelid = map.getString("Model", null);
 			modeldata = ContentConfigUtil.getModelData(map, "ModelData", new ModelData());
