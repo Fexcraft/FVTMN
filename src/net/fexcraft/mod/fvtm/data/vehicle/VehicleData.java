@@ -91,7 +91,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 				try{
 					Part part = PARTS.get(entry.getValue());
 					if(part == null) continue;
-					installPart(null, new PartData(part), entry.getKey(), false);
+					installPart(MessageSender.LOG, new PartData(part), entry.getKey(), false);
 				}
 				catch(Exception e){
 					e.printStackTrace();
