@@ -20,7 +20,7 @@ public class PartSlotsFunction extends StaticFunction {
 
 	@Override
 	public PartFunction init(Part part, FJson json){
-		partslots = new PartSlots(part.getCategory(), json.asMap());
+		partslots = new PartSlots(json.asMap());
 		return this;
 	}
 
