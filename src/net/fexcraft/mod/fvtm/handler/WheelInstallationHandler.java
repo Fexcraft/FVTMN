@@ -1,5 +1,8 @@
 package net.fexcraft.mod.fvtm.handler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fvtm.data.part.PartData;
@@ -132,8 +135,8 @@ public class WheelInstallationHandler extends PartInstallHandler {
 	}
 
 	@Override
-	public String[] getValidCategories(PartData part, VehicleData vehicle){
-		return vehicle.getWheelSlots().keySet().toArray(new String[0]);
+	public List<String> getValidCategories(PartData part, VehicleData vehicle){
+		return new ArrayList<String>(vehicle.getWheelSlots().keySet());
 	}
 
 	@Override
