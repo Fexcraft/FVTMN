@@ -10,6 +10,7 @@ import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartInstallHandler;
+import net.fexcraft.mod.fvtm.data.part.PartSlot;
 import net.fexcraft.mod.fvtm.data.part.PartSlots;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
@@ -52,7 +53,7 @@ public class DefaultPartInstallHandler extends PartInstallHandler {
 	}
 
 	private boolean compatible(DPIHData id, Vehicle veh){
-		if(id.compatible.contains(veh.getIDS())) return true;
+		if(id.compatible.isEmpty() || id.compatible.contains(veh.getIDS())) return true;
 		for(String cat : veh.getCategories()) if(id.compatible.contains(cat)) return true;
 		return false;
 	}
@@ -82,10 +83,9 @@ public class DefaultPartInstallHandler extends PartInstallHandler {
 
 	public static void setPosRotAndSwivelPoint(DPIHData idata, String cat, PartData part, VehicleData data){
 		String[] slotin = cat.split(":");
-		int idx = Integer.parseInt(slotin[2]);
 		PartSlots slots = data.getPartSlotsProvider(slotin[0]);
-		V3D result = slots.get(idx).pos.copy();
-		Rot rosult = slots.get(idx).rotation;
+		V3D result = slots.get(slotin[1]).pos.copy();
+		Rot rosult = slots.get(slotin[1]).rotation;
 		if(!slotin[0].equals("vehicle")){
 			PartData mount = data.getPart(slotin[0]);
 			result = mount.getInstalledPos();
@@ -164,24 +164,20 @@ public class DefaultPartInstallHandler extends PartInstallHandler {
 	}
 
 	@Override
-	public String[] getValidCategories(PartData part, VehicleData vehicle){
+	public ArrayList<String> getValidCategories(PartData part, VehicleData vehicle){
 		DPIHData idata = part.getType().getInstallHandlerData();
 		ArrayList<String> found = new ArrayList<>();
 		for(Entry<String, PartSlots> data : vehicle.getPartSlotProviders().entrySet()){
-			for(int i = 0; i < data.getValue().size(); i++){
-				String type = data.getValue().get(i).type;
+			for(Entry<String, PartSlot> slot : data.getValue().entrySet()){
+				String type = slot.getValue().type;
 				for(String str : part.getType().getCategories()){
 					if(str.equals(type)){
-						found.add(data.getKey() + ":" + data.getValue().get(i).category + ":" + i);
+						found.add(data.getKey() + ":" + slot.getKey());
 					}
 				}
 			}
 		}
-		String[] arr = new String[found.size()];
-		for(int i = 0; i < arr.length; i++){
-			arr[i] = "s:" + found.get(i);
-		}
-		return arr;
+		return found;
 	}
 
 	@Override
