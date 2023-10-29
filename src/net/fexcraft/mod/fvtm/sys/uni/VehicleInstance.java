@@ -12,6 +12,7 @@ import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleType;
 import net.fexcraft.mod.fvtm.function.EngineFunction;
 import net.fexcraft.mod.fvtm.util.Pivot;
+import net.fexcraft.mod.fvtm.util.packet.PKT_VehControl;
 import net.fexcraft.mod.fvtm.util.packet.PKT_VehKeyPress;
 import net.fexcraft.mod.fvtm.util.packet.Packets;
 import net.fexcraft.mod.uni.world.EntityW;
@@ -208,6 +209,19 @@ public class VehicleInstance {
 
 	public V3D getV3D(){
 		return entity.getPos();
+	}
+
+	public void updatePointsSeats(){
+		for(SwivelPoint point : data.getRotationPoints().values()) point.update(this);
+		for(SeatInstance seat : seats) seat.update();
+	}
+
+	public void sendUpdatePacket(){
+		data.getAttribute("throttle").set(throttle);
+		Packets.sendToAllAround(new PKT_VehControl(entity), entity.direct());
+		for(SwivelPoint point : data.getRotationPoints().values()){
+			point.sendUpdatePacket(entity);
+		}
 	}
 
 }
