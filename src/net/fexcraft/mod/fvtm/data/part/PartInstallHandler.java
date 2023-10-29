@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fvtm.data.part;
 
 import java.util.HashMap;
+import java.util.List;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
@@ -21,7 +22,7 @@ public abstract class PartInstallHandler {
 
 	public abstract boolean processUninstall(MessageSender sender, PartData part, String in_category, VehicleData from);
 	
-	public abstract String[] getValidCategories(PartData part, VehicleData vehicle);
+	public abstract List<String> getValidCategories(PartData part, VehicleData vehicle);
 
 	public abstract Object parseData(JsonMap map);
 
