@@ -21,6 +21,7 @@ import net.fexcraft.mod.fvtm.data.root.WithItem;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
+import net.fexcraft.mod.fvtm.model.PartModel;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
@@ -86,12 +87,12 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 				if(fun != null) functions.add(fun.init(this, entry.getValue().asMap()));
 			}
 		}
-		if(map.has("Installation")){
-			JsonValue json = map.get("Installation");
-			String id = json.isMap() ? json.asMap().getString("Handler", "default") : json.string_value();
-			installhandler = PartInstallHandler.getHandler(id);
-			installhandler_data = installhandler.parseData(json.isMap() ? json.asMap() : new JsonMap());
-		}
+		//
+		JsonValue inst = map.get("Installation");
+		String instid = inst == null ? "default": inst.isMap() ? inst.asMap().getString("Handler", "default") : inst.string_value();
+		installhandler = PartInstallHandler.getHandler(instid);
+		installhandler_data = installhandler.parseData(inst != null && inst.isMap() ? inst.asMap() : new JsonMap());
+		//
 		if(map.has("SwivelPoints")){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("SwivelPoints").entries()){
 				SwivelPoint point = new SwivelPoint(entry.getKey(), entry.getValue().asMap());
@@ -100,8 +101,14 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 		}
 		if(map.has("Sounds")){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("Sounds").entries()){
-				JsonMap val = entry.getValue().asMap();
-				sounds.put(entry.getKey(), new Sound(IDLManager.getIDLCached(entry.getKey()), val.getFloat("volume", 1f), val.getFloat("pitch", 1f)));
+				if(entry.getValue().isMap()){
+					JsonMap val = entry.getValue().asMap();
+					sounds.put(entry.getKey(), new Sound(IDLManager.getIDLCached(val.getString("sound", "minecraft:block.lever.click")), val.getFloat("volume", 1f), val.getFloat("pitch", 1f)));
+				}
+				else{
+					sounds.put(entry.getKey(), new Sound(IDLManager.getIDLCached(entry.getValue().string_value()), 1f, 1f));
+				}
+
 			}
 		}
 		//TODO load scripts
@@ -184,6 +191,11 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 
 	public Map<String, String> getStaticModifiers(){
 		return attr_mods;
+	}
+
+	@Override
+	public void loadModel(){
+		model = FvtmResources.getModel(modelid, modeldata, PartModel.class);
 	}
 
 }
