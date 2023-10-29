@@ -1,8 +1,8 @@
 package net.fexcraft.mod.fvtm.data.part;
 
 import net.fexcraft.app.json.JsonArray;
+import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.V3D;
-import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.fvtm.util.Rot;
 
@@ -13,21 +13,23 @@ public class PartSlot {
 	
 	public final String type;
 	public final V3D pos;
-	public final String category;
 	public final float radius;
 	public final Rot rotation;
-	
-	public PartSlot(String defcat, JsonArray array, int idx){
-		type = array.get(3).string_value();
-		pos = ContentConfigUtil.getVector(array);
-		category = array.size() > 4 ? array.get(4).string_value() : defcat + "_" + idx;
-		radius = array.size() > 5 ? array.get(5).integer_value() * Static.sixteenth : 0.25f;
-		rotation = array.size() > 6 && array.get(6).isArray() ? new Rot(array.get(6).asArray()) : Rot.NULL;
-	}
 
-	public String category(String provider){
-		if(category.contains("*")) return category.replace("*", provider);
-		return category;
+	public PartSlot(String key, JsonValue<?> value){
+		if(value.isArray() && value.asArray().not_empty()){
+			JsonArray array = value.asArray();
+			pos = ContentConfigUtil.getVector(array);
+			type = array.size() > 3 ? array.get(3).string_value() : key;
+			radius = array.size() > 4 ? array.get(4).float_value() : 0.25f;
+			rotation = array.size() > 5 ? new Rot(array.getArray(5)) : Rot.NULL;
+		}
+		else{
+			type = value.string_value();
+			pos = V3D.NULL;
+			radius = 0.25f;
+			rotation = Rot.NULL;
+		}
 	}
 
 }
