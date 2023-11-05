@@ -35,7 +35,6 @@ import net.fexcraft.mod.fvtm.function.EngineFunction;
 import net.fexcraft.mod.fvtm.function.PartSlotsFunction;
 import net.fexcraft.mod.fvtm.function.SeatsFunction;
 import net.fexcraft.mod.fvtm.function.WheelPositionsFunction;
-import net.fexcraft.mod.fvtm.model.VehicleModel;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.item.StackWrapper;
@@ -320,8 +319,17 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 				if(!ps.isEmpty()) partproviders.put(data.getKey(), ps);
 			}
 		}
-		if(type.getModel() != null){
-			((VehicleModel)type.getModel()).sortparts(this);
+		sortparts();
+	}
+
+	public void sortparts(){
+		sorted_parts.clear();
+		for(String str : getRotationPoints().keySet()) sorted_parts.put(str, new ArrayList<>());
+		for(Entry<String, PartData> part : parts.entrySet()){
+			if(part.getValue().isInstalledOnSwivelPoint()){
+				sorted_parts.get(part.getValue().getSwivelPointInstalledOn()).add(part);
+			}
+			else sorted_parts.get("vehicle").add(part);
 		}
 	}
 
