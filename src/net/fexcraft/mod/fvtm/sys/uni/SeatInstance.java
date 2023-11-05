@@ -68,4 +68,8 @@ public class SeatInstance {
 		return point.getRelativeVector(seat.pos).add(root.getV3D());
 	}
 
+	public boolean passengerIsPlayer(){
+		return passenger != null && passenger.isPlayer();
+	}
+
 }
