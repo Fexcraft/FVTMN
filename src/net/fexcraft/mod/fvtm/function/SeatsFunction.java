@@ -2,6 +2,7 @@ package net.fexcraft.mod.fvtm.function;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map.Entry;
 
 import net.fexcraft.app.json.FJson;
 import net.fexcraft.app.json.JsonValue;
@@ -16,8 +17,8 @@ public class SeatsFunction extends StaticFunction {
 
 	@Override
 	public PartFunction init(Part part, FJson json){
-		for(JsonValue<?> entry : json.asArray().value){
-			seats.add(new Seat(entry.asMap()));
+		for(Entry<String, JsonValue<?>> entry : json.asMap().entries()){
+			seats.add(new Seat(entry.getKey(), entry.getValue().asMap()));
 		}
 		return this;
 	}
