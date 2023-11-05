@@ -1,7 +1,6 @@
 package net.fexcraft.mod.fvtm.data;
 
 import java.util.TreeMap;
-import java.util.UUID;
 
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
@@ -27,10 +26,10 @@ public class Seat {
 	public TreeMap<String, Boolean> filter = null;
 	public Float scale;
 
-	public Seat(JsonMap map){
-		pos = ContentConfigUtil.getVector(map);
+	public Seat(String seatname, JsonMap map){
+		pos = ContentConfigUtil.getVector(map.getArray("pos"));
 		driver = map.getBoolean("driver", false);
-		name = map.has("name") ? map.get("name").string_value() : UUID.randomUUID().toString().substring(0, 8);
+		name = seatname;
 		minyaw = map.getFloat("min_yaw", -90f);
 		maxyaw = map.getFloat("max_yaw", 90f);
 		minpitch = map.getFloat("min_pitch", -80f);
