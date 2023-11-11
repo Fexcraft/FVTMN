@@ -77,7 +77,8 @@ public class WheelInstallationHandler extends PartInstallHandler {
 			if(func != null) func.setWheel(cat, data.getWheelSlots().get(cat));
 		}
 		WheelData idata = part.getType().getInstallHandlerData();
-		data.getWheelPositions().put(cat, part.getInstalledPos().add(0, -idata.radius, ((cat.contains("left") ? -idata.width : idata.width) * 0.5f)));
+		part.setInstalledPos(part.getInstalledPos().add(0, -idata.radius, ((cat.contains("left") ? -idata.width : idata.width) * 0.5f)));
+		data.getWheelPositions().put(cat, part.getInstalledPos());
 		sender.send("handler.install.fvtm.wheel.success");
 		return true;
 	}
