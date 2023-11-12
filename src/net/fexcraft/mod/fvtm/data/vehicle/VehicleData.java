@@ -213,8 +213,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 			TagCW cwp = compound.getCompound("WheelPos");
 			wheelpos.clear();
 			for(String key : cwp.keys()){
-				TagCW com = cwp.getCompound(key);
-				wheelpos.put(key, com.getV3D(key));
+				wheelpos.put(key, cwp.getV3D(key));
 			}
 		}
 		if(compound.has("Scripts")){
