@@ -17,4 +17,9 @@ public class WheelTireData {
 		this.id = key;
 	}
 
+	public WheelTireData(){
+		id = "null";
+		pos = V3D.NULL;
+	}
+
 }
