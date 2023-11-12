@@ -36,7 +36,7 @@ public class VecUtil {
 
 	public static double[] rotate(double[] vec, double angle, int ax, int ay, int az){
 		if(angle == 0) return vec;
-		double c = (double)Math.cos(angle), s = (double)Math.sin(angle), oc = 1.0f - c;
+		double c = Math.cos(angle), s = Math.sin(angle), oc = 1.0f - c;
 		double xy = ax * ay, yz = ay * az, xz = ax * az;
 		double xs = ax * s, ys = ay * s, zs = az * s;
 		double f0 = ax * ax * oc + c, f1 = xy * oc + zs, f2 = xz * oc - ys;
