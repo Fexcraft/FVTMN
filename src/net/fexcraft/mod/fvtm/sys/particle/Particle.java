@@ -6,6 +6,7 @@ import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.V3D;
+import net.fexcraft.lib.frl.GLO;
 import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
 
@@ -23,8 +24,10 @@ public class Particle {
 	public String next;
 	//
 	public Polyhedron model;
-	public static Polyhedron cubemodel = new Polyhedron();
+	public static Polyhedron cubemodel;
 	static{
+		GLO.SUPPLIER = () -> new GLO();
+		cubemodel = new Polyhedron();
 		cubemodel.newGen()
 				.set("x", -.5f)
 				.set("y", -.5f)
