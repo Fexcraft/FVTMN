@@ -19,6 +19,8 @@ public abstract class EntityW implements MessageSender {
 
 	public abstract boolean isHostile();
 
+	public abstract boolean isLiving();
+
 	public abstract String getRegName();
 
 	public abstract <E> E local();
