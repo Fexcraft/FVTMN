@@ -17,6 +17,7 @@ import net.fexcraft.mod.fvtm.util.packet.PKT_VehKeyPress;
 import net.fexcraft.mod.fvtm.util.packet.Packets;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.MessageSender;
+import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -223,5 +224,12 @@ public class VehicleInstance {
 			point.sendUpdatePacket(entity);
 		}
 	}
+
+    public SeatInstance getSeatOf(Object passenger){
+		for(SeatInstance seat : seats){
+			if(seat.passenger_direct() == passenger) return seat;
+		}
+		return null;
+    }
 
 }
