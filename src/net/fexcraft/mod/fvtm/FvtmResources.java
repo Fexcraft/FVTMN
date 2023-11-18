@@ -24,12 +24,7 @@ import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.addon.AddonLocation;
-import net.fexcraft.mod.fvtm.data.attribute.AttrBoolean;
-import net.fexcraft.mod.fvtm.data.attribute.AttrFloat;
-import net.fexcraft.mod.fvtm.data.attribute.AttrInteger;
-import net.fexcraft.mod.fvtm.data.attribute.AttrString;
-import net.fexcraft.mod.fvtm.data.attribute.AttrTristate;
-import net.fexcraft.mod.fvtm.data.attribute.AttrVector;
+import net.fexcraft.mod.fvtm.data.attribute.*;
 import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
@@ -45,6 +40,8 @@ import net.fexcraft.mod.fvtm.model.loaders.FMFModelLoader;
 import net.fexcraft.mod.fvtm.model.loaders.JTMTModelLoader;
 import net.fexcraft.mod.fvtm.model.loaders.ObjModelLoader;
 import net.fexcraft.mod.fvtm.model.loaders.SMPTBJavaModelLoader;
+import net.fexcraft.mod.fvtm.sys.uni.KeyPress;
+import net.fexcraft.mod.fvtm.sys.uni.SeatInstance;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.fvtm.util.ZipUtils;
 import net.fexcraft.mod.fvtm.util.function.InventoryFunction;
@@ -60,6 +57,7 @@ import net.fexcraft.mod.uni.client.CTab;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
+import net.fexcraft.mod.uni.world.EntityW;
 import org.apache.commons.io.FilenameUtils;
 
 /**
@@ -469,4 +467,9 @@ public abstract class FvtmResources {
 
 	public abstract void registerFvtmItems();
 
+	public abstract boolean handleClick(KeyPress key, EntityW vehicle, SeatInstance seatInstance, EntityW player, StackWrapper stack);
+
+	public abstract boolean sendToggle(Attribute<?> attr, EntityW vehicle, KeyPress key, Float val, EntityW player);
+
+	public abstract double getMouseSensitivity();
 }
