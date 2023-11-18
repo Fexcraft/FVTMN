@@ -66,7 +66,7 @@ public enum VehicleType {
 		attrs.add(new AttrInteger("fuel_stored", 0).limit(0, Integer.MAX_VALUE));
 		//animation
 		attrs.add(new AttrBoolean("lights", false).addAccess("driver").sync(true)
-			.addIcons("true", "fvtm:textures/gui/addIcons/lights_low_on.png", "false", "fvtm:textures/gui/addIcons/lights_low_off.png"));
+			.addIcons("true", "fvtm:textures/gui/icons/lights_low_on.png", "false", "fvtm:textures/gui/icons/lights_low_off.png"));
 		attrs.add(new AttrFloat("throttle", 0f).limit(-10f, 10f));
 		attrs.add(new AttrBoolean("front_connected", false).editable(false));
 		attrs.add(new AttrBoolean("rear_connected", false).editable(false));
@@ -82,16 +82,16 @@ public enum VehicleType {
 		switch(this){
 			case LAND:{
 				attrs.add(new AttrBoolean("lights_fog", false).addAccess("driver").sync(true)
-					.addIcons("true", "fvtm:textures/gui/addIcons/lights_fog_on.png", "false", "fvtm:textures/gui/addIcons/lights_fog_off.png"));
+					.addIcons("true", "fvtm:textures/gui/icons/lights_fog_on.png", "false", "fvtm:textures/gui/icons/lights_fog_off.png"));
 				attrs.add(new AttrBoolean("lights_long", false).addAccess("driver").sync(true)
-					.addIcons("true", "fvtm:textures/gui/addIcons/lights_high_on.png", "false", "fvtm:textures/gui/addIcons/lights_high_off.png"));
+					.addIcons("true", "fvtm:textures/gui/icons/lights_high_on.png", "false", "fvtm:textures/gui/icons/lights_high_off.png"));
 				attrs.add(new AttrBoolean("lights_other", false).addAccess("driver").sync(true));
 				//attrs.add(new AttrBoolean("turn_light_left", false).setSeat("driver"));
 				//attrs.add(new AttrBoolean("turn_light_right", false).setSeat("driver"));
 				attrs.add(new AttrTristate("turn_lights", (Boolean)null).addAccess("driver").sync(true)
-					.addIcons("true", "fvtm:textures/gui/addIcons/turn_indicator_right.png", "false", "fvtm:textures/gui/addIcons/turn_indicator_left.png", "null", "fvtm:textures/gui/addIcons/turn_indicator.png"));
+					.addIcons("true", "fvtm:textures/gui/icons/turn_indicator_right.png", "false", "fvtm:textures/gui/icons/turn_indicator_left.png", "null", "fvtm:textures/gui/icons/turn_indicator.png"));
 				attrs.add(new AttrBoolean("warning_lights", false).addAccess("driver").sync(true)
-					.addIcons("true", "fvtm:textures/gui/addIcons/warning_lights_on.png", "false", "fvtm:textures/gui/addIcons/warning_lights_off.png"));
+					.addIcons("true", "fvtm:textures/gui/icons/warning_lights_on.png", "false", "fvtm:textures/gui/icons/warning_lights_off.png"));
 				//
 				attrs.add(new AttrFloat("steering_angle", 0f).limit(-90f, 90f));
 				attrs.add(new AttrFloat("wheel_angle", 0f).limit(-360f, 360f));
@@ -117,9 +117,9 @@ public enum VehicleType {
 			}
 			case WATER:{
 				attrs.add(new AttrBoolean("lights_fog", false).addAccess("driver").sync(true)
-						.addIcons("true", "fvtm:textures/gui/addIcons/lights_fog_on.png", "false", "fvtm:textures/gui/addIcons/lights_fog_off.png"));
+						.addIcons("true", "fvtm:textures/gui/icons/lights_fog_on.png", "false", "fvtm:textures/gui/icons/lights_fog_off.png"));
 				attrs.add(new AttrBoolean("lights_long", false).addAccess("driver").sync(true)
-						.addIcons("true", "fvtm:textures/gui/addIcons/lights_high_on.png", "false", "fvtm:textures/gui/addIcons/lights_high_off.png"));
+						.addIcons("true", "fvtm:textures/gui/icons/lights_high_on.png", "false", "fvtm:textures/gui/icons/lights_high_off.png"));
 				attrs.add(new AttrBoolean("lights_other", false).addAccess("driver").sync(true));
 				attrs.add(new AttrFloat("steering_angle", 0f).limit(-90f, 90f));
 				attrs.add(new AttrFloat("wheel_angle", 0f).limit(-360f, 360f));
