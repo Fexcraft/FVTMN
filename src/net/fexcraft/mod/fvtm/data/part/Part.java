@@ -19,6 +19,7 @@ import net.fexcraft.mod.fvtm.data.root.Soundable.SoundHolder;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureHolder;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
+import net.fexcraft.mod.fvtm.model.DefaultModel;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
 import net.fexcraft.mod.fvtm.model.PartModel;
@@ -196,6 +197,11 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 	@Override
 	public void loadModel(){
 		model = FvtmResources.getModel(modelid, modeldata, PartModel.class);
+	}
+
+	@Override
+	public Model getModel(){
+		return model;
 	}
 
 }
