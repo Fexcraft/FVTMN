@@ -71,7 +71,11 @@ public class VehicleInstance {
 		return point.getPivot();
 	}
 
-	public boolean onKeyPress(KeyPress key, Seat seat, MessageSender sender) {
+	public boolean onKeyPress(KeyPress key, Seat seat, MessageSender sender, boolean state){
+		return onKeyPress(key, seat, sender, false);
+	}
+
+	public boolean onKeyPress(KeyPress key, Seat seat, MessageSender sender){
 		//TODO script key press event
 		if (!seat.driver && key.driver_only()) return false;
 		if (entity.isOnClient() && !key.toggables()) {
@@ -169,6 +173,10 @@ public class VehicleInstance {
 				return false;
 			}
 		}
+	}
+
+	public boolean getKeyPressState(KeyPress key){
+		return false;
 	}
 
 	public void checkSteerAngle(boolean client){
