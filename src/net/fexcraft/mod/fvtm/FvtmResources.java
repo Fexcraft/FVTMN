@@ -17,6 +17,8 @@ import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
+import net.fexcraft.lib.common.Static;
+import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.DecorationData;
@@ -353,12 +355,8 @@ public abstract class FvtmResources {
 				try{
 					return clazz.getConstructor().newInstance();
 				}
-				catch(Exception e){
-					e.printStackTrace();
-					return getEmptyModelForClass(clazz);
-				}
-				catch(NoClassDefFoundError e){
-					e.printStackTrace();
+				catch(Throwable e){
+					e.printStackTrace(); Static.stop();
 					return getEmptyModelForClass(clazz);
 				}
 			});
@@ -442,7 +440,6 @@ public abstract class FvtmResources {
 	}
 
 	public abstract boolean isModPresent(String s);
-
 
 	public abstract IDL getExternalTexture(String custom);
 
