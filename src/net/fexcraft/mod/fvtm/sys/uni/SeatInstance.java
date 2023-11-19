@@ -82,7 +82,7 @@ public class SeatInstance {
 		pepitch = epitch;
 		eyaw = elook.deg_yaw() + point.getPivot().deg_yaw();
 		epitch = elook.pitch() + point.getPivot().deg_pitch();
-		passenger.setYawPitch(peyaw, pepitch, eyaw, epitch);
+		//passenger.setYawPitch(peyaw, pepitch, eyaw, epitch);
 	}
 
 	public V3D getCurrentLocalPosition(){
