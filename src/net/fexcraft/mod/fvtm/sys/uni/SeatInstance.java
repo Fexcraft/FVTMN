@@ -1,11 +1,16 @@
 package net.fexcraft.mod.fvtm.sys.uni;
 
 import net.fexcraft.lib.common.math.V3D;
+import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Seat;
+import net.fexcraft.mod.fvtm.data.attribute.Attribute;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
+import net.fexcraft.mod.fvtm.packet.Packets;
 import net.fexcraft.mod.fvtm.util.Pivot;
 import net.fexcraft.mod.uni.world.EntityW;
-import net.minecraft.entity.Entity;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -90,6 +95,35 @@ public class SeatInstance {
 
 	public boolean passengerIsPlayer(){
 		return passenger != null && passenger.isPlayer();
+	}
+
+	public boolean onKeyPress(KeyPress key, EntityW player){
+		if(key == null) return false;
+		else if(key.toggable_input() && root.entity.isOnClient()){
+			if(clicktimer > 0) return false;
+			boolean bool = FvtmResources.INSTANCE.handleClick(key, root.entity, this, player, null);
+			clicktimer += 10;
+			return bool;
+		}
+		else if(!seat.driver && root.entity.isOnClient()){
+			if(clicktimer > 0) return false;
+			Collection<Attribute<?>> attributes = root.data.getAttributes().values().stream().filter(pr -> (pr.valuetype.isTristate() || pr.valuetype.isNumber()) && pr.access.contains(seat.name)).collect(Collectors.toList());
+			boolean bool = false;
+			for(Attribute<?> attr : attributes){
+				Float val = attr.getKeyValue(key);
+				if(val != null){
+					KeyPress mouse = val == 0 ? KeyPress.RESET : val > 0 ? KeyPress.MOUSE_MAIN : KeyPress.MOUSE_RIGHT;
+					if(bool = FvtmResources.INSTANCE.sendToggle(attr, root.entity, key, val, player)) break;
+				}
+			}
+			clicktimer += 10;
+			return bool;
+		}
+		else if(key.dismount() && root.entity.isOnClient() && passenger != null){
+			passenger.dismount();
+			return true;
+		}
+		else return root.onKeyPress(key, seat, player);
 	}
 
 }
