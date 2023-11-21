@@ -34,8 +34,6 @@ public class VehicleInstance {
 	public double steer_yaw;
 	public double throttle;
 	public double speed;
-	public Pivot current;
-	public Pivot previous;
 	public ArrayList<SeatInstance> seats = new ArrayList<>();
 	public HashMap<String, WheelTireData> wheeldata = new HashMap<>();
 	public byte toggable_timer;
@@ -56,7 +54,7 @@ public class VehicleInstance {
 		if(data == null) return;
 		type = data.getType().getVehicleType();
 		point = data.getRotationPoint(null);
-		max_steering_yaw = data.getAttributeInteger("max_steering_angle", 30);
+		max_steering_yaw = data.getAttributeInteger("max_steering_angle", 45);
 	}
 
 	public UUID getPlacer(){
@@ -69,6 +67,10 @@ public class VehicleInstance {
 
 	public Pivot pivot(){
 		return point.getPivot();
+	}
+
+	public Pivot prev_pivot(){
+		return point.getPrevPivot();
 	}
 
 	public boolean onKeyPress(KeyPress key, Seat seat, MessageSender sender, boolean state){
@@ -100,11 +102,11 @@ public class VehicleInstance {
 				return true;
 			}
 			case TURN_LEFT: {
-				steer_yaw -= 0.5;
+				steer_yaw -= 5;
 				return true;
 			}
 			case TURN_RIGHT: {
-				steer_yaw += 0.5;
+				steer_yaw += 5;
 				return true;
 			}
 			case BRAKE: {
