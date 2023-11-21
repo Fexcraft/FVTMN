@@ -41,7 +41,7 @@ public class Pivot {
 
 	public void save(TagCW tag){
 		tag.set("yaw", ryaw);
-		tag.set("pitch", ryaw);
+		tag.set("pitch", rpitch);
 		tag.set("roll", rroll);
 	}
 
