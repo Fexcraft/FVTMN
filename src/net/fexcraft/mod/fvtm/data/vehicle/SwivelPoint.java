@@ -117,8 +117,8 @@ public class SwivelPoint {
 	}
 
 	public void loadPivot(TagCW com){
-		updatePrevAxe();
 		cpivot = Pivot.load(com);
+		updatePrevAxe();
 	}
 
 	public void savePivot(TagCW com){
