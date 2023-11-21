@@ -56,7 +56,7 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 		if((pack = ContentConfigUtil.getAddon(map)) == null) return null;
 		if((id = ContentConfigUtil.getID(pack, map)) == null) return null;
 		//
-		name = map.getString("Name", "Unnamed Material");
+		name = map.getString("Name", "Unnamed Part");
 		description = ContentConfigUtil.getStringList(map, "Description");
 		textures = ContentConfigUtil.getTextures(map);
 		if(map.has("Category")){
