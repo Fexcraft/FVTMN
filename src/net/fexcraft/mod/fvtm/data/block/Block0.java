@@ -1,9 +1,13 @@
 package net.fexcraft.mod.fvtm.data.block;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.RGB;
+import net.fexcraft.lib.mc.utils.Print;
+import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.root.*;
@@ -12,6 +16,7 @@ import net.fexcraft.mod.fvtm.data.root.Soundable.SoundHolder;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureHolder;
 import net.fexcraft.mod.fvtm.model.ModelData;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
+import net.fexcraft.mod.fvtm.util.Resources;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
@@ -27,6 +32,7 @@ import java.util.Map;
 public class Block0 extends Content<Block0> implements TextureHolder, ColorHolder, SoundHolder, WithItem, ItemTextureable {
 
     protected List<IDL> textures;
+    protected ArrayList<BlockFunction> functions = new ArrayList<>();
     protected Map<String, RGB> channels = new LinkedHashMap<>();
     protected Map<String, Sound> sounds = new LinkedHashMap<>();
     protected Map<String, AABB[]> aabbs = new LinkedHashMap<>();
@@ -155,7 +161,14 @@ public class Block0 extends Content<Block0> implements TextureHolder, ColorHolde
         tickable = map.getBoolean("Tickable", false);
         hastile = map.getBoolean("MultiSubBlock", false);
         hastile = map.getBoolean("HasBlockEntity", hastile);
-        //functions
+        if(map.has("Function")){
+            parseFunction(map.get("Function"));
+        }
+        else if(map.has("Functions")){
+            map.getArray("Functions").value.forEach(elm -> {
+                parseFunction(elm);
+            });
+        }
         //wirerelays
         //
         ctab = map.getString("CreativeTab", "default");
@@ -220,4 +233,22 @@ public class Block0 extends Content<Block0> implements TextureHolder, ColorHolde
     public Map<String, RGB> getDefaultColorChannels(){
         return channels;
     }
+
+    private void parseFunction(JsonValue elm) {
+        try {
+            if(!elm.isMap()){
+                functions.add(Resources.getBlockFunction(elm.string_value()).newInstance().parse(null));
+            }
+            else{
+                JsonMap obj = elm.asMap();
+                functions.add(Resources.getBlockFunction(obj.get("type").string_value()).newInstance().parse(obj));
+            }
+        }
+        catch (Exception e){
+            Print.log("Failed to load BlockFunction for '" + id.colon() + "' with JSON: " + elm);
+            e.printStackTrace();
+            Static.stop();
+        }
+    }
+
 }
