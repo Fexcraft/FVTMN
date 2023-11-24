@@ -10,6 +10,9 @@ import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.part.PartFunction.StaticFunction;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 
+/**
+ * @author Ferdinand Calo' (FEX___96)
+ */
 public class ContainerFunction extends StaticFunction {
 	
 	private ContainerType onlytype;

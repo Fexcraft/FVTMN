@@ -20,6 +20,9 @@ import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.world.WorldW;
 
+/**
+ * @author Ferdinand Calo' (FEX___96)
+ */
 public class ParticleEmitterFunction extends StaticFunction {
 	
 	public ArrayList<EmitterData> emitters = new ArrayList<EmitterData>();

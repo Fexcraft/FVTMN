@@ -1,7 +1,7 @@
 package net.fexcraft.mod.fvtm.sys.uni;
 
 import net.fexcraft.lib.common.math.V3D;
-import net.fexcraft.mod.fvtm.util.function.TireFunction.TireAttr;
+import net.fexcraft.mod.fvtm.function.part.TireFunction.TireAttr;
 
 /**
  * @author Ferdinand Calo' (FEX___96)

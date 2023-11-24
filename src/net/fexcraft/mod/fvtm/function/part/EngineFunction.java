@@ -16,6 +16,9 @@ import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.WorldW;
 
+/**
+ * @author Ferdinand Calo' (FEX___96)
+ */
 public class EngineFunction extends PartFunction {
 	
 	private float engine_speed;

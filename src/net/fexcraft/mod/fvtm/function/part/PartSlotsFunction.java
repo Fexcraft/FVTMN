@@ -12,6 +12,9 @@ import net.fexcraft.mod.fvtm.data.part.PartSlots;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.world.WorldW;
 
+/**
+ * @author Ferdinand Calo' (FEX___96)
+ */
 public class PartSlotsFunction extends StaticFunction {
 	
 	private PartSlots partslots;

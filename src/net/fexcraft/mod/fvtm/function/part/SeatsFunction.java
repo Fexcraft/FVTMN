@@ -11,6 +11,9 @@ import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.part.PartFunction.StaticFunction;
 
+/**
+ * @author Ferdinand Calo' (FEX___96)
+ */
 public class SeatsFunction extends StaticFunction {
 	
 	private ArrayList<Seat> seats = new ArrayList<>();

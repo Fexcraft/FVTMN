@@ -5,6 +5,9 @@ import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.uni.tag.TagCW;
 
+/**
+ * @author Ferdinand Calo' (FEX___96)
+ */
 public class BogieFunction extends PartFunction {
 	
 	private String inst_pos;

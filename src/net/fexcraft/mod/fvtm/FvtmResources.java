@@ -44,7 +44,7 @@ import net.fexcraft.mod.fvtm.sys.uni.SeatInstance;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.fvtm.util.ZipUtils;
 import net.fexcraft.mod.fvtm.util.function.InventoryFunction;
-import net.fexcraft.mod.fvtm.util.function.TireFunction;
+import net.fexcraft.mod.fvtm.function.part.TireFunction;
 import net.fexcraft.mod.fvtm.util.handler.BogieInstallationHandler;
 import net.fexcraft.mod.fvtm.util.handler.ConnectorInstallationHandler;
 import net.fexcraft.mod.fvtm.handler.TireInstallationHandler;

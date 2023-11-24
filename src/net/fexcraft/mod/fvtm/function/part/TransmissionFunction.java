@@ -15,6 +15,9 @@ import net.fexcraft.mod.fvtm.data.part.PartFunction.StaticFunction;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.world.WorldW;
 
+/**
+ * @author Ferdinand Calo' (FEX___96)
+ */
 public class TransmissionFunction extends StaticFunction {
 	
 	private ArrayList<Float> ratios = new ArrayList<>();
