@@ -9,7 +9,7 @@ import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartInstallHandler;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.data.vehicle.WheelSlot;
-import net.fexcraft.mod.fvtm.function.WheelFunction;
+import net.fexcraft.mod.fvtm.function.part.WheelFunction;
 import net.fexcraft.mod.fvtm.handler.WheelInstallationHandler.WheelData;
 import net.fexcraft.mod.fvtm.util.function.TireFunction;
 import net.fexcraft.mod.uni.world.MessageSender;

@@ -14,7 +14,7 @@ import net.fexcraft.mod.fvtm.data.part.PartSlot;
 import net.fexcraft.mod.fvtm.data.part.PartSlots;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
-import net.fexcraft.mod.fvtm.function.WheelPositionsFunction;
+import net.fexcraft.mod.fvtm.function.part.WheelPositionsFunction;
 import net.fexcraft.mod.fvtm.util.Rot;
 import net.fexcraft.mod.uni.world.MessageSender;
 

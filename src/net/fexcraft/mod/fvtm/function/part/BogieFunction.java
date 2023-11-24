@@ -1,4 +1,4 @@
-package net.fexcraft.mod.fvtm.function;
+package net.fexcraft.mod.fvtm.function.part;
 
 import net.fexcraft.app.json.FJson;
 import net.fexcraft.mod.fvtm.data.part.Part;

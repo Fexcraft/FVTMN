@@ -1,39 +1,35 @@
-package net.fexcraft.mod.fvtm.function;
+package net.fexcraft.mod.fvtm.function.part;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import net.fexcraft.app.json.FJson;
 import net.fexcraft.app.json.JsonValue;
-import net.fexcraft.mod.fvtm.data.Seat;
+import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.part.PartFunction.StaticFunction;
 
-public class SeatsFunction extends StaticFunction {
+public class ColorFunction extends StaticFunction {
 	
-	private ArrayList<Seat> seats = new ArrayList<>();
+	private TreeMap<String, RGB> colors = new TreeMap<>();
 
 	@Override
 	public PartFunction init(Part part, FJson json){
+		if(!json.isMap()) return this;
 		for(Entry<String, JsonValue<?>> entry : json.asMap().entries()){
-			seats.add(new Seat(entry.getKey(), entry.getValue().asMap()));
+			this.colors.put(entry.getKey(), new RGB(entry.getValue().string_value()));
 		}
 		return this;
 	}
 
 	@Override
 	public String getId(){
-		return "fvtm:seats";
+		return "fvtm:color";
 	}
 	
-	public Collection<Seat> getPositions(){
-		return seats;
+	public TreeMap<String, RGB> getColors(){
+		return colors;
 	}
 
-	public ArrayList<Seat> getSeats(){
-		return seats;
-	}
-	
 }

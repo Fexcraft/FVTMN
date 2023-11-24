@@ -1,4 +1,4 @@
-package net.fexcraft.mod.fvtm.function;
+package net.fexcraft.mod.fvtm.function.part;
 
 import java.util.List;
 import java.util.Map;

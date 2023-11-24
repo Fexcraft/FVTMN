@@ -1,4 +1,4 @@
-package net.fexcraft.mod.fvtm.function;
+package net.fexcraft.mod.fvtm.function.part;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
