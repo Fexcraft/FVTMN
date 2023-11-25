@@ -353,7 +353,10 @@ public abstract class FvtmResources {
 	public static Model getModel(String location, ModelData data, Class<? extends Model> clazz){
 		if(location == null || location.equals("") || location.equals("null")) return getEmptyModelForClass(clazz);
 		boolean bake = location.startsWith("baked|");
-		if(bake) location = location.substring(6);
+		if(bake){
+			location = location.substring(6);
+			data.set("Baked", true);
+		}
 		Model model = null;
 		if(MODELS.containsKey(location)){
 			if(bake && getEmptyModelForClass(clazz) instanceof BlockModel){
@@ -384,7 +387,6 @@ public abstract class FvtmResources {
 		}
 		MODELS.put(location, model);
 		if(bake && model instanceof BlockModel){
-			//TODO FCLBlockModelLoader.addBlockModel(new ResourceLocation(location), (FCLBlockModel)model);
 			return getEmptyModelForClass(clazz);
 		}
 		return model;
