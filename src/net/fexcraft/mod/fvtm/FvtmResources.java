@@ -24,6 +24,8 @@ import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.addon.AddonLocation;
 import net.fexcraft.mod.fvtm.data.attribute.*;
+import net.fexcraft.mod.fvtm.data.block.Block;
+import net.fexcraft.mod.fvtm.data.block.BlockData;
 import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
@@ -257,6 +259,8 @@ public abstract class FvtmResources {
 
 	public abstract void checkForCustomModel(AddonLocation loc, ContentType contype, Content<?> content);
 
+	public abstract void createContentBlocks();
+
 	public abstract void createContentItems();
 
 	public static void loadRecipes(){
@@ -323,6 +327,7 @@ public abstract class FvtmResources {
 	public void initModels(){
 		PARTS.forEach(part -> part.loadModel());
 		VEHICLES.forEach(vehicle -> vehicle.loadModel());
+		BLOCKS.forEach(block -> block.loadModel());
 		//other data types
 		for(DecorationData deco : DECORATIONS.values()){
 			Model model = getModel(deco.modelid, deco.modeldata, DefaultModel.class);
@@ -456,10 +461,28 @@ public abstract class FvtmResources {
 		return new PartData(part).read(com);
 	}
 
+	public PartData getPartData(Object com){
+		return getPartData(TagCW.wrap(com));
+	}
+
 	public VehicleData getVehicleData(TagCW com){
 		Vehicle vehicle = VEHICLES.get(com.getString("Vehicle"));
 		if(vehicle == null) return null;
 		return new VehicleData(vehicle).read(com);
+	}
+
+	public VehicleData getVehicleData(Object com){
+		return getVehicleData(TagCW.wrap(com));
+	}
+
+	public static BlockData getBlockData(TagCW com){
+		Block block = BLOCKS.get(com.getString("Block"));
+		if(block == null) return null;
+		return new BlockData(block).read(com);
+	}
+
+	public static BlockData getBlockData(Object com){
+		return getBlockData(TagCW.wrap(com));
 	}
 
 	public abstract void registerFvtmBlocks();
