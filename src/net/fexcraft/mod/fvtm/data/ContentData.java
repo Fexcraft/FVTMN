@@ -27,6 +27,14 @@ public abstract class ContentData<TYPE extends Content<TYPE>, SELF> {
 
 	public abstract SELF read(TagCW compound);
 
+	public TagCW write(Object compound){
+		return write(TagCW.wrap(compound));
+	}
+
+	public SELF read(Object compound){
+		return read(TagCW.wrap(compound));
+	}
+
 	public abstract SELF parse(JsonMap obj);
 
 	public abstract JsonMap toJson();
