@@ -50,7 +50,7 @@ public abstract class BlockFunction {
         return false;
     }
 
-    public static void sendClientUpdate(BlockData blockdata, Object pos, int dim){
+    public static void sendClientUpdate(BlockData blockdata, V3I pos, int dim){
         Packets.INSTANCE.send(blockdata, pos, dim);
     }
 
