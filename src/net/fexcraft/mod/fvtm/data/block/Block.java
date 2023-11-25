@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class Block0 extends Content<Block0> implements TextureHolder, ColorHolder, SoundHolder, WithItem, ItemTextureable {
+public class Block extends Content<Block> implements TextureHolder, ColorHolder, SoundHolder, WithItem, ItemTextureable {
 
     protected List<IDL> textures;
     protected ArrayList<BlockFunction> functions = new ArrayList<>();
@@ -39,7 +39,7 @@ public class Block0 extends Content<Block0> implements TextureHolder, ColorHolde
     protected Map<String, AABB[]> aabbs = new LinkedHashMap<>();
     protected ModelData modeldata;
     protected BlockType blocktype;
-    protected Object relaydata;
+    protected RelayData relaydata;
     protected Model model;
     protected boolean plain_model;
     protected boolean no3ditem;
@@ -73,7 +73,7 @@ public class Block0 extends Content<Block0> implements TextureHolder, ColorHolde
     protected Object block;
 
     @Override
-    public Block0 parse(JsonMap map){
+    public Block parse(JsonMap map){
         if((pack = ContentConfigUtil.getAddon(map)) == null) return null;
         if((id = ContentConfigUtil.getID(pack, map)) == null) return null;
         //
@@ -180,7 +180,7 @@ public class Block0 extends Content<Block0> implements TextureHolder, ColorHolde
         no3ditem = map.getBoolean("Disable3DItemModel", false);
         //
         try{
-            block = BlockType.BLOCK_IMPL.get(blocktype, hastile || relaydata != null, plain_model).getConstructor(Block0.class).newInstance(this);
+            block = BlockType.BLOCK_IMPL.get(blocktype, hastile || relaydata != null, plain_model).getConstructor(Block.class).newInstance(this);
         }
         catch(Throwable e){
             e.printStackTrace();
@@ -294,6 +294,18 @@ public class Block0 extends Content<Block0> implements TextureHolder, ColorHolde
             if(aabbs.containsKey("collision#normal")) return aabbs.get("collision#normal");
         }
         return aabbs.containsKey(state) ? aabbs.get(state) : aabbs.containsKey("normal") ? aabbs.get("normal") : AABB.FULL;
+    }
+
+    public BlockType getBlockType(){
+        return blocktype;
+    }
+
+    public RelayData getRelayData(){
+        return relaydata;
+    }
+
+    public ArrayList<BlockFunction> getFunctions(){
+        return functions;
     }
 
 }
