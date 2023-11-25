@@ -3,14 +3,14 @@ package net.fexcraft.mod.fvtm.ui;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.uni.ui.UIButton;
 import net.fexcraft.mod.uni.ui.UserInterface;
-import net.fexcraft.mod.uni.world.PlayerW;
+import net.fexcraft.mod.uni.world.EntityW;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
 public class UIImpl extends UserInterface {
 
-	public UIImpl(JsonMap map, PlayerW player) throws Exception {
+	public UIImpl(JsonMap map, EntityW player) throws Exception {
 		super(map, new CIImpl(map, player));
 	}
 
