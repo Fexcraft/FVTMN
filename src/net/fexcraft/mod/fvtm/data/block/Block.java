@@ -6,6 +6,7 @@ import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
+import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
@@ -240,11 +241,11 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
     private void parseFunction(JsonValue elm) {
         try {
             if(!elm.isMap()){
-                functions.add(Resources.getBlockFunction(elm.string_value()).newInstance().parse(null));
+                functions.add(FvtmRegistry.BLOCK_FUNCTIONS.get(elm.string_value()).newInstance().parse(null));
             }
             else{
                 JsonMap obj = elm.asMap();
-                functions.add(Resources.getBlockFunction(obj.get("type").string_value()).newInstance().parse(obj));
+                functions.add(FvtmRegistry.BLOCK_FUNCTIONS.get(obj.get("type").string_value()).newInstance().parse(obj));
             }
         }
         catch (Exception e){
