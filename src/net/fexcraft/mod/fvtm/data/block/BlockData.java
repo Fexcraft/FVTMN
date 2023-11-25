@@ -8,6 +8,7 @@ import net.fexcraft.mod.fvtm.data.root.Textureable;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureUser;
 import net.fexcraft.mod.fvtm.function.block.BoolBlockFunction;
 import net.fexcraft.mod.fvtm.util.function.InventoryBlockFunction;
+import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.Map;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class BlockData0 extends ContentData<Block, BlockData0> implements TextureUser, Colorable {
+public class BlockData extends ContentData<Block, BlockData> implements TextureUser, Colorable {
 
     protected Textureable texture;
     protected Map<String, RGB> channels = new LinkedHashMap<>();
@@ -25,7 +26,7 @@ public class BlockData0 extends ContentData<Block, BlockData0> implements Textur
     protected ArrayList<BoolBlockFunction> boolfuns = new ArrayList<>();
     protected InventoryBlockFunction invfunc;
 
-    public BlockData0(Block block){
+    public BlockData(Block block){
         super(block);
         texture = new Textureable(block);
         for(Map.Entry<String, RGB> entry : block.getDefaultColorChannels().entrySet()){
@@ -59,7 +60,7 @@ public class BlockData0 extends ContentData<Block, BlockData0> implements Textur
     }
 
     @Override
-    public BlockData0 read(TagCW compound){
+    public BlockData read(TagCW compound){
         texture.load(compound);
         for(String str : channels.keySet()){
             if(compound.has("RGB_" + str)){
@@ -74,7 +75,7 @@ public class BlockData0 extends ContentData<Block, BlockData0> implements Textur
     }
 
     @Override
-    public BlockData0 parse(JsonMap obj){
+    public BlockData parse(JsonMap obj){
         return null;
     }
 
@@ -125,6 +126,14 @@ public class BlockData0 extends ContentData<Block, BlockData0> implements Textur
 
     public InventoryBlockFunction getFunctionInventory(){
         return invfunc;
+    }
+
+    public ArrayList<BlockFunction> getFunctions(){
+        return functions;
+    }
+
+    public RelayData getRelayData(){
+        return type.relaydata;
     }
 
 }
