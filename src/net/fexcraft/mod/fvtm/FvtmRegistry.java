@@ -13,6 +13,7 @@ import net.fexcraft.mod.fvtm.data.Fuel;
 import net.fexcraft.mod.fvtm.data.Material;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
+import net.fexcraft.mod.fvtm.data.block.Block;
 import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
@@ -48,6 +49,7 @@ public class FvtmRegistry {
 	public static final Registry<Consumable> CONSUMABLES = new Registry<>();
 	public static final Registry<Vehicle> VEHICLES = new Registry<>();
 	public static final Registry<Part> PARTS = new Registry<>();
+	public static final Registry<Block> BLOCKS = new Registry<>();
 	public static TreeMap<String, TreeMap<String, ArrayList<Fuel>>> SORTED_FUELS = new TreeMap<>();
 	public static final HashMap<String, Particle> PARTICLES = new HashMap<>();
 	public static final HashMap<String, JsonMap> WIRE_DECO_CACHE = new HashMap<>();
@@ -60,6 +62,7 @@ public class FvtmRegistry {
 	public static final LinkedHashMap<String, Model> MODELS = new LinkedHashMap<>();
 	public static final ArrayList<ModelLoader> MODEL_LOADERS = new ArrayList<>();
 	//
+	public static final HashMap<IDL, Object> CONTENT_BLOCKS = new HashMap<>();
 	public static final HashMap<IDL, ItemWrapper> CONTENT_ITEMS = new HashMap<>();
 	public static final HashMap<String, ItemWrapper> ITEMS = new HashMap<>();
 
