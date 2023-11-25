@@ -13,4 +13,5 @@ public interface BlockEntity {
 
     public int getDim();
 
+    public int getMeta();
 }
