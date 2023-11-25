@@ -1,6 +1,7 @@
 package net.fexcraft.mod.uni.tag;
 
 import java.util.Collection;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.fexcraft.lib.common.math.V3D;
@@ -59,9 +60,14 @@ public interface TagCW {
 	//
 
 	public static Supplier<TagCW>[] SUPPLIER = new Supplier[1];
+	public static Function<Object, TagCW>[] WRAPPER = new Function[1];
 
 	public static TagCW create(){
 		return SUPPLIER[0].get();
+	}
+
+	public static TagCW wrap(Object com){
+		return WRAPPER[0].apply(com);
 	}
 
 	public abstract <T> T local();
