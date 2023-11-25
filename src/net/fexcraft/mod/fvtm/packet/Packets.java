@@ -18,7 +18,7 @@ public abstract class Packets {
     public abstract void send(SeatInstance seat);
 
     /** Send BlockData Update Packet to all around. */
-    public abstract void send(BlockData blockdata, Object pos, int dim);
+    public abstract void send(BlockData blockdata, V3I pos, int dim);
 
     /** Send BlockData Update Packet to all around. */
     public abstract void send(WorldW world, V3I pos);
