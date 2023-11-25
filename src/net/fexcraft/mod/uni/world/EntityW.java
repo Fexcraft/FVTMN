@@ -38,4 +38,5 @@ public abstract class EntityW implements MessageSender {
 
     public abstract void openUI(int ui, WorldW world, V3I pos);
 
+    public abstract String getName();
 }
