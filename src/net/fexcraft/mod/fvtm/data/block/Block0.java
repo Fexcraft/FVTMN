@@ -1,19 +1,20 @@
 package net.fexcraft.mod.fvtm.data.block;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.lib.mc.utils.Static;
+import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.root.*;
 import net.fexcraft.mod.fvtm.data.root.Colorable.ColorHolder;
 import net.fexcraft.mod.fvtm.data.root.Soundable.SoundHolder;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureHolder;
+import net.fexcraft.mod.fvtm.model.BlockModel;
+import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.fvtm.util.Resources;
@@ -39,6 +40,7 @@ public class Block0 extends Content<Block0> implements TextureHolder, ColorHolde
     protected ModelData modeldata;
     protected BlockType blocktype;
     protected Object relaydata;
+    protected Model model;
     protected boolean plain_model;
     protected boolean no3ditem;
     protected boolean weblike;
@@ -169,7 +171,9 @@ public class Block0 extends Content<Block0> implements TextureHolder, ColorHolde
                 parseFunction(elm);
             });
         }
-        //wirerelays
+        if(map.has("WireRelay")){
+            relaydata = new RelayData(map.getMap("WireRelay"));
+        }
         //
         ctab = map.getString("CreativeTab", "default");
         itemtexloc = ContentConfigUtil.getItemTexture(id, getContentType(), map);
@@ -249,6 +253,47 @@ public class Block0 extends Content<Block0> implements TextureHolder, ColorHolde
             e.printStackTrace();
             Static.stop();
         }
+    }
+
+    @Override
+    public void loadModel(){
+        model = FvtmResources.getModel(modelid, modeldata, BlockModel.class);
+    }
+
+    @Override
+    public Model getModel(){
+        return model;
+    }
+
+    public AABB[] getAABB(String type, String... states){
+        if(type.equals("selection")){
+            for(String state : states){
+                if(aabbs.containsKey("selection#" + state)) return aabbs.get("selection#" + state);
+            }
+            if(aabbs.containsKey("selection#normal")) return aabbs.get("selection#normal");
+        }
+        else if(type.equals("collision")){
+            for(String state : states){
+                if(aabbs.containsKey("collision#" + state)) return aabbs.get("collision#" + state);
+            }
+            if(aabbs.containsKey("collision#normal")) return aabbs.get("collision#normal");
+        }
+        for(String state : states){
+            if(aabbs.containsKey(state)) return aabbs.get(state);
+        }
+        return aabbs.containsKey("normal") ? aabbs.get("normal") : AABB.FULL;
+    }
+
+    public AABB[] getAABB(String type, String state){
+        if(type.equals("selection")){
+            if(aabbs.containsKey("selection#" + state)) return aabbs.get("selection#" + state);
+            if(aabbs.containsKey("selection#normal")) return aabbs.get("selection#normal");
+        }
+        else if(type.equals("collision")){
+            if(aabbs.containsKey("collision#" + state)) return aabbs.get("collision#" + state);
+            if(aabbs.containsKey("collision#normal")) return aabbs.get("collision#normal");
+        }
+        return aabbs.containsKey(state) ? aabbs.get(state) : aabbs.containsKey("normal") ? aabbs.get("normal") : AABB.FULL;
     }
 
 }
