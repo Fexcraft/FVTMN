@@ -21,6 +21,7 @@ import net.fexcraft.mod.fvtm.util.Resources;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
+import net.minecraft.block.material.Material;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -36,7 +37,7 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
     protected ArrayList<BlockFunction> functions = new ArrayList<>();
     protected Map<String, RGB> channels = new LinkedHashMap<>();
     protected Map<String, Sound> sounds = new LinkedHashMap<>();
-    protected Map<String, AABB[]> aabbs = new LinkedHashMap<>();
+    protected Map<String, AABBs> aabbs = new LinkedHashMap<>();
     protected ModelData modeldata;
     protected BlockType blocktype;
     protected RelayData relaydata;
@@ -64,8 +65,8 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
     protected float hardness;
     protected float lightlevel;
     protected float resistance;
-    protected float lightopacity;
     protected float damage;
+    protected int lightopacity;
     protected int harverest_level;
     protected int maxstacksize;
     protected int burntime;
@@ -106,22 +107,20 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
                     ArrayList<AABB> list = new ArrayList<>();
                     for(JsonValue<?> elm : value.value){
                         JsonArray arr = elm.asArray();
-                        list.add(new AABB(arr.get(0).float_value(), arr.get(1).float_value(), arr.get(2).float_value(),
+                        list.add(AABB.create(arr.get(0).float_value(), arr.get(1).float_value(), arr.get(2).float_value(),
                             arr.get(3).float_value(), arr.get(4).float_value(), arr.get(5).float_value()));
                     }
-                    aabbs.put(entry.getKey(), list.toArray(new AABB[0]));
+                    aabbs.put(entry.getKey(), new AABBs(list));
                 }
                 else{
                     JsonArray array = entry.getValue().asArray();
                     ArrayList<AABB> list = new ArrayList<>();
                     if(entry.getKey().startsWith("collision") && array.get(0).string_value().equals("null")){
-                        aabbs.put(entry.getKey(), AABB.NULL);
+                        aabbs.put(entry.getKey(), AABBs.EMPTY);
                     }
                     else{
-                        aabbs.put(entry.getKey(), new AABB[]{
-                            new AABB(array.get(0).float_value(), array.get(1).float_value(), array.get(2).float_value(),
-                                array.get(3).float_value(), array.get(4).float_value(), array.get(5).float_value())
-                        });
+                        aabbs.put(entry.getKey(), new AABBs(array.get(0).float_value(), array.get(1).float_value(), array.get(2).float_value(),
+                            array.get(3).float_value(), array.get(4).float_value(), array.get(5).float_value()));
                     }
                 }
             });
@@ -143,7 +142,7 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
         hardness = map.getFloat("Hardness", 1f);
         lightlevel = map.getFloat("LightLevel", 0f);
         resistance = map.getFloat("Resistance", 0f);
-        lightopacity = map.getFloat("LightOpacity", 0f);
+        lightopacity = map.getInteger("LightOpacity", 0);
         if(map.has("HarverestTool")){
             JsonArray array = map.getArray("HarverestTool");
             harverest_class = array.get(0).string_value();
@@ -195,7 +194,7 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
 
     @Override
     public Class<?> getDataClass(){
-        return BlockData0.class;
+        return BlockData.class;
     }
 
     @Override
@@ -265,7 +264,7 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
         return model;
     }
 
-    public AABB[] getAABB(String type, String... states){
+    public AABBs getAABB(String type, String... states){
         if(type.equals("selection")){
             for(String state : states){
                 if(aabbs.containsKey("selection#" + state)) return aabbs.get("selection#" + state);
@@ -281,10 +280,10 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
         for(String state : states){
             if(aabbs.containsKey(state)) return aabbs.get(state);
         }
-        return aabbs.containsKey("normal") ? aabbs.get("normal") : AABB.FULL;
+        return aabbs.containsKey("normal") ? aabbs.get("normal") : AABBs.FULL;
     }
 
-    public AABB[] getAABB(String type, String state){
+    public AABBs getAABB(String type, String state){
         if(type.equals("selection")){
             if(aabbs.containsKey("selection#" + state)) return aabbs.get("selection#" + state);
             if(aabbs.containsKey("selection#normal")) return aabbs.get("selection#normal");
@@ -293,7 +292,7 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
             if(aabbs.containsKey("collision#" + state)) return aabbs.get("collision#" + state);
             if(aabbs.containsKey("collision#normal")) return aabbs.get("collision#normal");
         }
-        return aabbs.containsKey(state) ? aabbs.get(state) : aabbs.containsKey("normal") ? aabbs.get("normal") : AABB.FULL;
+        return aabbs.containsKey(state) ? aabbs.get(state) : aabbs.containsKey("normal") ? aabbs.get("normal") : AABBs.FULL;
     }
 
     public BlockType getBlockType(){
@@ -306,6 +305,115 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
 
     public ArrayList<BlockFunction> getFunctions(){
         return functions;
+    }
+
+    public boolean hasRelay(){
+        return relaydata != null;
+    }
+
+    public String getMaterial(){
+        return material;
+    }
+
+    public String getMapColor(){
+        return mapcolor;
+    }
+
+    public float getHardness(){
+        return hardness;
+    }
+
+    public float getLightLevel(){
+        return lightlevel;
+    }
+
+    public float getResistance(){
+        return resistance;
+    }
+
+    public int getLightOpacity(){
+        return lightopacity;
+    }
+
+    public String getHarverestToolClass(){
+        return harverest_class;
+    }
+
+    public int getHarverestToolLevel(){
+        return harverest_level;
+    }
+
+    public boolean isFullBlock(){
+        return fullblock;
+    }
+
+    public boolean isFullCube(){
+        return fullcube;
+    }
+
+    public boolean isOpaque(){
+        return opaque;
+    }
+
+    public float getCollisionDamage(){
+        return damage;
+    }
+
+    public boolean isWebLike(){
+        return weblike;
+    }
+
+    public boolean isCutout(){
+        return cutout;
+    }
+
+    public boolean isTranslucent(){
+        return translucent;
+    }
+
+    public boolean isInvisible(){
+        return invisible;
+    }
+
+    public boolean isLadder(){
+        return ladder;
+    }
+
+    public boolean hasPlainModel(){
+        return plain_model;
+    }
+
+    public boolean isTickable(){
+        return tickable;
+    }
+
+    public int getMaxStackSize(){
+        return maxstacksize;
+    }
+
+    public boolean shouldHideItem(){
+        return hideitem;
+    }
+
+    public int getItemBurnTime(){
+        return burntime;
+    }
+
+    public boolean hasFunction(String key){
+        for(BlockFunction func : functions) if(func.id().equals(key)) return true;
+        return false;
+    }
+
+    public String getOreDictId(){
+        return oredict;
+    }
+
+    public <BLK> BLK getBlock(){
+        return (BLK)block;
+    }
+
+    public boolean isRandomRot(){
+        return randomrot;
     }
 
 }
