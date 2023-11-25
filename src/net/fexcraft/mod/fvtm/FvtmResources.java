@@ -33,6 +33,9 @@ import net.fexcraft.mod.fvtm.data.part.PartInstallHandler;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
+import net.fexcraft.mod.fvtm.function.block.BarrelBlockFunction;
+import net.fexcraft.mod.fvtm.function.block.BoolBlockFunction;
+import net.fexcraft.mod.fvtm.function.block.SeatBlockFunction;
 import net.fexcraft.mod.fvtm.function.part.*;
 import net.fexcraft.mod.fvtm.handler.DefaultPartInstallHandler;
 import net.fexcraft.mod.fvtm.model.*;
@@ -45,8 +48,10 @@ import net.fexcraft.mod.fvtm.sys.uni.KeyPress;
 import net.fexcraft.mod.fvtm.sys.uni.SeatInstance;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.fvtm.util.ZipUtils;
+import net.fexcraft.mod.fvtm.util.function.InventoryBlockFunction;
 import net.fexcraft.mod.fvtm.util.function.InventoryFunction;
 import net.fexcraft.mod.fvtm.function.part.TireFunction;
+import net.fexcraft.mod.fvtm.util.function.SetBlockFunction;
 import net.fexcraft.mod.fvtm.util.handler.BogieInstallationHandler;
 import net.fexcraft.mod.fvtm.util.handler.ConnectorInstallationHandler;
 import net.fexcraft.mod.fvtm.handler.TireInstallationHandler;
@@ -166,6 +171,12 @@ public abstract class FvtmResources {
 		PART_FUNCTIONS.put("fvtm:tire", TireFunction.class);
 		PART_FUNCTIONS.put("fvtm:transmission", TransmissionFunction.class);
 		PART_FUNCTIONS.put("fvtm:particle_emitter", ParticleEmitterFunction.class);
+		//
+		BLOCK_FUNCTIONS.put("fvtm:seat", SeatBlockFunction.class);
+		BLOCK_FUNCTIONS.put("fvtm:set_block", SetBlockFunction.class);
+		BLOCK_FUNCTIONS.put("fvtm:bool_value", BoolBlockFunction.class);
+		BLOCK_FUNCTIONS.put("fvtm:inventory", InventoryBlockFunction.class);
+		BLOCK_FUNCTIONS.put("fvtm:barrel", BarrelBlockFunction.class);
 	}
 
 	public void registerHandlers(){
