@@ -2,6 +2,7 @@ package net.fexcraft.mod.fvtm.data;
 
 import static net.fexcraft.mod.fvtm.FvtmRegistry.*;
 
+import net.fexcraft.mod.fvtm.data.block.Block;
 import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 
@@ -17,7 +18,7 @@ public enum ContentType {
 	CONTAINER(".container", "containers"),
 	CONSUMABLE(".consumable", "consumables", Consumable.class),
 	FUEL(".fuel", "fuels", Fuel.class),
-	BLOCK(".block", "blocks"),
+	BLOCK(".block", "blocks", Block.class),
 	MULTIBLOCK(".multiblock", "blocks"),
 	RAILGAUGE(".gauge", "railgauges"),
 	CLOTH(".cloth", "clothes"),
@@ -46,7 +47,7 @@ public enum ContentType {
 			case CONTAINER: return;
 			case CONSUMABLE: CONSUMABLES.register(content); return;
 			case FUEL: FUELS.register(content); return;
-			case BLOCK: return;
+			case BLOCK: BLOCKS.register(content); return;
 			case MULTIBLOCK: return;
 			case RAILGAUGE: return;
 			case CLOTH: return;
