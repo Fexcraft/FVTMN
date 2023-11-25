@@ -14,6 +14,7 @@ import net.fexcraft.mod.fvtm.data.Material;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
 import net.fexcraft.mod.fvtm.data.block.Block;
+import net.fexcraft.mod.fvtm.data.block.BlockFunction;
 import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
@@ -58,6 +59,7 @@ public class FvtmRegistry {
 	//
 	public static final LinkedHashMap<String, Class<? extends Attribute<?>>> ATTRIBUTES = new LinkedHashMap<>();
 	public static final LinkedHashMap<String, Class<? extends PartFunction>> PART_FUNCTIONS = new LinkedHashMap<>();
+	public static final LinkedHashMap<String, Class<? extends BlockFunction>> BLOCK_FUNCTIONS = new LinkedHashMap<>();
 	//
 	public static final LinkedHashMap<String, Model> MODELS = new LinkedHashMap<>();
 	public static final ArrayList<ModelLoader> MODEL_LOADERS = new ArrayList<>();
