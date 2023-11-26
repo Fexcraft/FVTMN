@@ -3,6 +3,7 @@ package net.fexcraft.mod.fvtm.model;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import net.fexcraft.lib.common.math.Vec3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -24,8 +25,59 @@ public class Transforms {
 	public void deapply(){
 		for(Transformer tr : transformers) tr.deapply();
 	}
-	
-	
+
+	public boolean hasRotate(){
+		for(Transformer trn : transformers){
+			if(trn instanceof TF_Rotate) return true;
+		}
+		return false;
+	}
+
+	public Vec3f getBakedRotate(){
+		for(Transformer trn : transformers){
+			if(trn instanceof TF_Rotate){
+				TF_Rotate tf = (TF_Rotate)trn;
+				return new Vec3f(tf.x, tf.y, tf.z);
+			}
+		}
+		return new Vec3f();
+	}
+
+	public boolean hasTranslate(){
+		for(Transformer trn : transformers){
+			if(trn instanceof TF_Translate) return true;
+		}
+		return false;
+	}
+
+	public Vec3f getBakedTranslate(){
+		for(Transformer trn : transformers){
+			if(trn instanceof TF_Translate){
+				TF_Translate tf = (TF_Translate)trn;
+				return new Vec3f(tf.x, tf.y, tf.z);
+			}
+		}
+		return new Vec3f();
+	}
+
+	public boolean hasScale(){
+		for(Transformer trn : transformers){
+			if(trn instanceof TF_Scale) return true;
+		}
+		return false;
+	}
+
+	public Vec3f getBakedScale(){
+		for(Transformer trn : transformers){
+			if(trn instanceof TF_Scale){
+				TF_Scale tf = (TF_Scale)trn;
+				return new Vec3f(tf.x, tf.y, tf.z);
+			}
+		}
+		return new Vec3f();
+	}
+
+
 	public static interface Transformer {
 		
 		public void apply();
