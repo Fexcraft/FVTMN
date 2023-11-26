@@ -146,4 +146,11 @@ public class ModelGroup extends ArrayList<Polyhedron<GLObject>> {
 		return add(new Polyhedron<GLObject>().importMRT(mrt, false, 0.0625f));
 	}
 
+    public <P extends Program> P getProgram(String key){
+		for(Program prog : all_programs){
+			if(prog.id().equals(key)) return (P)prog;
+		}
+		return null;
+    }
+
 }
