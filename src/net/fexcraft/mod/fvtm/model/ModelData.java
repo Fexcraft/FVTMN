@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Supplier;
 
+import net.fexcraft.lib.mc.utils.Print;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
@@ -28,6 +29,16 @@ public class ModelData extends HashMap<String, Object> {
 			return (T) set(key, ifmissing.get());
 		}
 		return (T) super.get(key);
+	}
+
+	/**
+	 * Gets the specific boolean value based on key, will return false if missing.
+	 */
+	public boolean bool(String key) {
+		Object bool = super.get(key);
+		if(bool == null) return false;
+		if(bool instanceof Boolean) return (boolean)bool;
+		return Boolean.parseBoolean(bool.toString());
 	}
 
 	/**
