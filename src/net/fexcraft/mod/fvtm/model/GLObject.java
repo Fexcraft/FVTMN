@@ -8,11 +8,11 @@ import net.fexcraft.mod.uni.IDL;
  */
 public class GLObject extends GLO<GLObject> {
 
-	public IDL texture;
+	public boolean textured;
 
 	@Override
 	public void copy(GLObject from, boolean full){
-		texture = from.texture;
+		textured = from.textured;
 	}
 
 }
