@@ -113,7 +113,6 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
                 }
                 else{
                     JsonArray array = entry.getValue().asArray();
-                    ArrayList<AABB> list = new ArrayList<>();
                     if(entry.getKey().startsWith("collision") && array.get(0).string_value().equals("null")){
                         aabbs.put(entry.getKey(), AABBs.EMPTY);
                     }
