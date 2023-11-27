@@ -48,4 +48,9 @@ public class AABBs {
         return aabbs;
     }
 
+    @Override
+    public String toString(){
+        return aabbs.toString();
+    }
+
 }
