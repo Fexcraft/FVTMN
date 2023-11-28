@@ -8,7 +8,7 @@ import net.fexcraft.mod.uni.IDL;
  */
 public class GLObject extends GLO<GLObject> {
 
-	public boolean textured;
+	public boolean textured = true;
 
 	@Override
 	public void copy(GLObject from, boolean full){
