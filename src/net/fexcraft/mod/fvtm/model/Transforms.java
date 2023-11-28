@@ -33,14 +33,12 @@ public class Transforms {
 		return false;
 	}
 
-	public Vec3f getBakedRotate(){
+	public ArrayList<TF_Rotate> getBakedRotate(){
+		ArrayList<TF_Rotate> list = new ArrayList<>();
 		for(Transformer trn : transformers){
-			if(trn instanceof TF_Rotate){
-				TF_Rotate tf = (TF_Rotate)trn;
-				return new Vec3f(tf.x, tf.y, tf.z);
-			}
+			if(trn instanceof TF_Rotate) list.add((TF_Rotate)trn);
 		}
-		return new Vec3f();
+		return list;
 	}
 
 	public boolean hasTranslate(){
@@ -115,7 +113,7 @@ public class Transforms {
 	
 	public static class TF_Rotate implements Transformer {
 		
-		private float x, y, z, angle;
+		public final float x, y, z, angle;
 		
 		public TF_Rotate(float xx, float yy, float zz, float angle){
 			x = xx; y = yy; z = zz; this.angle = angle;
