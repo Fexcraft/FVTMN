@@ -374,12 +374,7 @@ public abstract class FvtmResources {
 			data.set("Baked", true);
 		}
 		Model model = null;
-		if(MODELS.containsKey(location)){
-			if(bake && getEmptyModelForClass(clazz) instanceof BlockModel){
-				return getEmptyModelForClass(clazz);
-			}
-			return MODELS.get(location);
-		}
+		if(MODELS.containsKey(location)) return MODELS.get(location);
 		ModelLoader loader = getModelLoader(location, FilenameUtils.getExtension(location));
 		if(loader == null) return getEmptyModelForClass(clazz);
 		try{
@@ -402,9 +397,6 @@ public abstract class FvtmResources {
 			e.printStackTrace(); //Static.stop();
 		}
 		MODELS.put(location, model);
-		if(bake && model instanceof BlockModel){
-			return getEmptyModelForClass(clazz);
-		}
 		return model;
 	}
 
