@@ -74,7 +74,7 @@ public abstract class FvtmResources {
 	public static FvtmResources INSTANCE;
 	public static File FVTM_CONFIG_DIR;
 
-	public void init(){
+    public void init(){
 		FVTM_CONFIG_DIR = new File(FvtmRegistry.CONFIG_DIR, "/fvtm/");
 		if(!FVTM_CONFIG_DIR.exists()) FVTM_CONFIG_DIR.mkdirs();
 		INSTANCE.searchASMPacks();
@@ -325,6 +325,8 @@ public abstract class FvtmResources {
 	
 	//-V-// Model Loading //-V-//
 
+	private static boolean initialmodelload;
+
 	public void initModelLoaders(){
 		MODEL_LOADERS.add(new ClassModelLoader());
 		MODEL_LOADERS.add(new JTMTModelLoader());
@@ -348,6 +350,20 @@ public abstract class FvtmResources {
 
 	public void initModelsClear(){
 		ObjModelLoader.clearCache();
+	}
+
+	public static void initModelSystem(){
+		FvtmResources.INSTANCE.initModelLoaders();
+		FvtmResources.INSTANCE.initModelPrograms();
+		initialmodelload = true;
+		reloadModels();
+	}
+
+	public static void reloadModels(){
+		if(!initialmodelload) return;
+		MODELS.clear();
+		FvtmResources.INSTANCE.initModels();
+		FvtmResources.INSTANCE.initModelsClear();
 	}
 
 	public static Model getModel(String location, ModelData data, Class<? extends Model> clazz){
