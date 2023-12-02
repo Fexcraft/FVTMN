@@ -76,7 +76,7 @@ public class SMPTBJavaModelLoader implements ModelLoader {
             	}
             	matcher = creator.matcher(line);
             	if(matcher.matches()){
-            		confdata.creators().add(matcher.group(1));
+					model.addToCreators(matcher.group(1));
             		continue;
             	}
             	matcher = declaration.matcher(line);
