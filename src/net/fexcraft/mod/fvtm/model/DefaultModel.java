@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.TreeMap;
 
 import com.google.common.collect.ImmutableList;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import net.fexcraft.app.json.JsonArray;
+import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.frl.Polygon;
 import net.fexcraft.lib.frl.Polyhedron;
@@ -62,60 +62,48 @@ public class DefaultModel implements Model {
 
 	@Override
 	public Model parse(ModelData data){
-		smooth_shading = data.get(SMOOTHSHADING, false);
-		if(data.contains(PROGRAMS)){
-			ArrayList<Object> programs = data.get(PROGRAMS);
-			for(Object obj : programs){
-				if(obj instanceof String){
-					String[] split = obj.toString().trim().split(" ");
-					if(!groups.contains(split[0])) continue;
-					try{
-						groups.get(split[0]).addProgram(parseProgram(split));
-					}
-					catch(Exception e){
-						e.printStackTrace();
-					}
+		smooth_shading = data.getBoolean(SMOOTHSHADING, false);
+		if(data.has(PROGRAMS)){
+			JsonArray programs = data.getArray(PROGRAMS);
+			for(JsonValue<?> val : programs.value){
+				String[] split = val.toString().trim().split(" ");
+				if(!groups.contains(split[0])) continue;
+				try{
+					groups.get(split[0]).addProgram(parseProgram(split));
 				}
-				else{ // most likely json
-					Object[] objs = (Object[])obj;
-					if(!groups.contains(objs[0].toString())) continue;
-					try{
-						groups.get(objs[0].toString()).addProgram(parseProgram(objs[1].toString().split(" ")));
-					}
-					catch(Exception e){
-						e.printStackTrace();
-					}
+				catch(Exception e){
+					e.printStackTrace();
 				}
 			}
 		}
-		if(data.contains(CONDPROGRAMS)){
-			ArrayList<Object> programs = data.get(CONDPROGRAMS);
-			for(Object obj : programs){
-				if(obj instanceof JsonObject){
-					JsonObject json = (JsonObject)obj;
+		if(data.has(CONDPROGRAMS)){
+			JsonArray programs = data.getArray(CONDPROGRAMS);
+			for(JsonValue<?> val : programs.value){
+				if(val.isMap()){
+					JsonMap json = val.asMap();
 					if(!json.has("id") || !json.has("group")) continue;
 					try{
-						String group = json.get("group").getAsString();
-						String progid = json.get("id").getAsString();
+						String group = json.get("group").string_value();
+						String progid = json.get("id").string_value();
 						ConditionalProgram prog = null;
 						if(COND_PROGRAMS.containsKey(progid)){
 							prog = COND_PROGRAMS.get(progid).getConstructor().newInstance();
 						}
 						else prog = new ConditionBased(progid);
 						if(json.has("ifmet")){
-							JsonArray array = json.get("ifmet").getAsJsonArray();
-							for(JsonElement elm : array){
-								prog.addIf(parseProgram(elm.getAsString().trim().split(" "), 0));
+							JsonArray array = json.get("ifmet").asArray();
+							for(JsonValue<?> elm : array.value){
+								prog.addIf(parseProgram(elm.string_value().trim().split(" "), 0));
 							}
 						}
 						if(json.has("else")){
-							JsonArray array = json.get("else").getAsJsonArray();
-							for(JsonElement elm : array){
-								prog.addElse(parseProgram(elm.getAsString().trim().split(" "), 0));
+							JsonArray array = json.get("else").asArray();
+							for(JsonValue<?> elm : array.value){
+								prog.addElse(parseProgram(elm.string_value().trim().split(" "), 0));
 							}
 						}
 						if(json.has("args")){
-							prog = (ConditionalProgram)prog.parse(json.get("args").getAsString().trim().split(" "));
+							prog = (ConditionalProgram)prog.parse(json.get("args").string_value().trim().split(" "));
 						}
 						groups.get(group).addProgram(prog);
 					}
@@ -124,7 +112,7 @@ public class DefaultModel implements Model {
 					}
 					continue;
 				}
-				String string = obj.toString();
+				String string = val.toString();
 				String[] args = string.trim().split("||");
 				if(!groups.contains(args[0])) continue;
 				try{
@@ -153,14 +141,14 @@ public class DefaultModel implements Model {
 				}
 			}
 		}
-		if(data.contains(TRANSFORMS)){
-			for(String string : ((List<String>)data.get(TRANSFORMS))){
-				transforms.parse(string.trim().split(" "));
+		if(data.has(TRANSFORMS)){
+			for(JsonValue<?> val : data.getArray(TRANSFORMS).value){
+				transforms.parse(val.string_value().trim().split(" "));
 			}
 		}
-		if(data.contains(PIVOTS)){
-			for(String string : ((List<String>)data.get(PIVOTS))){
-				String[] args = string.trim().split(" ");
+		if(data.has(PIVOTS)){
+			for(JsonValue<?> val : data.getArray(PIVOTS).value){
+				String[] args = val.string_value().trim().split(" ");
 				if(!groups.contains(args[0])) continue;
 				try{
 					ModelGroup group = groups.get(args[0]);
@@ -185,9 +173,9 @@ public class DefaultModel implements Model {
 				}
 			}
 		}
-		if(data.contains(OFFSET)){
-			for(String string : ((List<String>)data.get(OFFSET))){
-				String[] args = string.trim().split(" ");
+		if(data.has(OFFSET)){
+			for(JsonValue<?> val : data.getArray(OFFSET).value){
+				String[] args = val.string_value().trim().split(" ");
 				if(!groups.contains(args[0])) continue;
 				try{
 					ModelGroup group = groups.get(args[0]);
