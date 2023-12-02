@@ -2,8 +2,10 @@ package net.fexcraft.mod.fvtm.model.loaders;
 
 import java.io.Closeable;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.function.Supplier;
 
+import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.model.DefaultModel;
 import net.fexcraft.mod.fvtm.model.FMFParser;
@@ -25,7 +27,7 @@ public class FMFModelLoader implements ModelLoader {
 	public Object[] load(String name, ModelData confdata, Supplier<Model> supplier) throws Exception {
 		Object[] stream = FvtmResources.getModelInputStreamWithFallback(name);
 		Model model = supplier.get();
-		confdata.putAll(FMFParser.parse((DefaultModel)model, (InputStream)stream[0]));
+		JsonHandler.wrap(FMFParser.parse((DefaultModel)model, (InputStream)stream[0]), confdata);
 		if(stream.length > 1) for(Closeable c : (Closeable[])stream[1]) c.close();
 		return new Object[]{ model, confdata };
 	}
