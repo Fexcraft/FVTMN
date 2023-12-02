@@ -115,7 +115,7 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 		//TODO load scripts
 		if(EnvInfo.CLIENT){
 			modelid = map.getString("Model", null);
-			modeldata = ContentConfigUtil.getModelData(map, "ModelData", new ModelData());
+			modeldata = new ModelData(map);
 		}
 		ctab = map.getString("CreativeTab", "default");
 		itemtexloc = ContentConfigUtil.getItemTexture(id, getContentType(), map);
