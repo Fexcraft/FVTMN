@@ -371,7 +371,7 @@ public abstract class FvtmResources {
 		boolean bake = location.startsWith("baked|");
 		if(bake){
 			location = location.substring(6);
-			data.set("Baked", true);
+			data.add("Baked", true);
 		}
 		Model model = null;
 		if(MODELS.containsKey(location)) return MODELS.get(location);
@@ -390,7 +390,6 @@ public abstract class FvtmResources {
 			if(ret.length == 0 || ret[0] == null) return getEmptyModelForClass(clazz);
 			model = (Model)ret[0];
 			if(ret.length > 1) data = (ModelData)ret[1];
-			data.convert();
 			model.parse(data).lock();
 		}
 		catch(Exception e){
