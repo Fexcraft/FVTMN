@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import net.fexcraft.app.json.JsonArray;
+import net.fexcraft.app.json.JsonHandler;
+import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.Static;
-import net.fexcraft.lib.common.json.JsonUtil;
 import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.lib.tmt.JsonToTMT;
 import net.fexcraft.lib.tmt.ModelRendererTurbo;
@@ -32,41 +32,40 @@ public class JTMTModelLoader implements ModelLoader {
 	@Override
 	public Object[] load(String name, ModelData confdata, Supplier<Model> supplier) throws Exception {
 		DefaultModel model = (DefaultModel)supplier.get();
-		JsonObject obj = JsonUtil.getObjectFromInputStream(FvtmResources.INSTANCE.getModelInputStream(name, true));
-		if(obj.has("creators")){
-			obj.get("creators").getAsJsonArray().forEach(elm -> {
-				confdata.creators().add(elm.getAsString());
+		JsonMap map = JsonHandler.parse(FvtmResources.INSTANCE.getModelInputStream(name, true), true).asMap();
+		if(map.has("creators")){
+			map.getArray("creators").value.forEach(elm -> {
+				model.addToCreators(elm.string_value());
 			});
 		}
-		model.tex_width = confdata.set(Model.TEXTURE_WIDTH, obj.get("texture_size_x").getAsInt());
-		model.tex_height = confdata.set(Model.TEXTURE_HEIGHT, obj.get("texture_size_y").getAsInt());
-		confdata.set(Model.SMOOTHSHADING, () -> obj.has("smooth_shading") && obj.get("smooth_shading").getAsBoolean());
+		model.tex_width = confdata.gsI(Model.TEXTURE_WIDTH, () -> map.getInteger("texture_size_x", 256));
+		model.tex_height = confdata.gsI(Model.TEXTURE_HEIGHT, () -> map.getInteger("texture_size_y", 256));
+		confdata.gsB(Model.SMOOTHSHADING, () -> map.getBoolean("smooth_shading", false));
         try{
-            if(JsonUtil.getIfExists(obj, "format", 2).intValue() == 1){
-                JsonObject modelobj = obj.get("model").getAsJsonObject();
-                for(Entry<String, JsonElement> entry : modelobj.entrySet()){
-					ModelRendererTurbo[] mrts = JsonToTMT.parse(null, entry.getValue().getAsJsonArray(), model.tex_width, model.tex_height);
+			if(map.getInteger("format", 2) == 1){
+				JsonMap modelmap = map.getMap("model");
+				for(Entry<String, JsonValue<?>> entry : modelmap.entries()){
+					ModelRendererTurbo[] mrts = JsonToTMT.parse(null, entry.getValue().asArray(), model.tex_width, model.tex_height);
 					ModelGroup group = new ModelGroup(entry.getKey());
 					for(ModelRendererTurbo mrt : mrts) group.add(new Polyhedron().importMRT(mrt, false, 0.0625f));
 					model.groups.add(group);
-                }
-            }
+				}
+			}
             else{
-            	JsonObject modelobj = obj.get("groups").getAsJsonObject();
-                for(Entry<String, JsonElement> entry : modelobj.entrySet()){
-                	JsonObject group = entry.getValue().getAsJsonObject();
+				JsonMap modelmap = map.getMap("groups");
+                for(Entry<String, JsonValue<?>> entry : modelmap.entries()){
+                	JsonMap group = entry.getValue().asMap();
 					//
-					ModelRendererTurbo[] mrts = JsonToTMT.parse(null, group.get("polygons").getAsJsonArray(), model.tex_width, model.tex_height);
+					ModelRendererTurbo[] mrts = JsonToTMT.parse(null, group.get("polygons").asArray(), model.tex_width, model.tex_height);
 					ModelGroup mgroup = new ModelGroup(entry.getKey());
 					for(ModelRendererTurbo mrt : mrts) mgroup.add(new Polyhedron().importMRT(mrt, false, 0.0625f));
 					model.groups.add(mgroup);
 					//
                 	if(group.has("fvtm:programs")){
-                		ArrayList<Object> arr = confdata.get(Model.PROGRAMS, () -> new ArrayList<>());
-                		JsonArray array = group.get("fvtm:programs").getAsJsonArray();
-                		for(JsonElement elm : array){
-                			if(elm.isJsonPrimitive()) arr.add(entry.getKey() + " " + elm.getAsString());
-                			else arr.add(new Object[]{ entry.getKey(), elm });
+                		JsonArray arr = confdata.getArray(Model.PROGRAMS, 0);
+                		JsonArray array = group.get("fvtm:programs").asArray();
+                		for(JsonValue<?> elm : array.value){
+							arr.add(entry.getKey() + " " + elm.string_value());
                 		}
                 	}
                 }
