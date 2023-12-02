@@ -81,7 +81,7 @@ public class DecorationData implements Colorable {
 					}
 				}
 				if(map.has("modeldata")){
-					modeldata = ContentConfigUtil.getModelData(map, "modeldata", modeldata);
+					modeldata = new ModelData(map, "modeldata");
 				}
 			}
 		}
