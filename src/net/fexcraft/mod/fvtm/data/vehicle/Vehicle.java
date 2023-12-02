@@ -156,7 +156,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 		partslots = new PartSlots(map.getMap("PartSlots"));
 		if(EnvInfo.CLIENT){
 			modelid = map.getString("Model", null);
-			modeldata = ContentConfigUtil.getModelData(map, "ModelData", new ModelData());
+			modeldata = new ModelData(map);
 		}
 		ctab = map.getString("CreativeTab", "default");
 		itemtexloc = ContentConfigUtil.getItemTexture(id, getContentType(), map);
