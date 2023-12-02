@@ -97,8 +97,8 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
         modelid = map.getString("Model", null);
         if(modelid == null || modelid.equals("null") || modelid.startsWith("baked|")) plain_model = true;
         if(EnvInfo.CLIENT){
-            modeldata = ContentConfigUtil.getModelData(map, "ModelData", new ModelData());
-            if(modeldata.bool("Baked")) plain_model = true;
+            modeldata = new ModelData(map);
+            if(modeldata.getBoolean("Baked", false)) plain_model = true;
         }
         if(map.has("AABBs")){
             map.getMap("AABBs").entries().forEach(entry -> {
