@@ -61,6 +61,16 @@ public class DefaultModel implements Model {
 	}
 
 	@Override
+	public void setGroups(ModelGroupList list){
+		groups = list;
+	}
+
+	@Override
+	public ModelGroupList getGroups(){
+		return groups;
+	}
+
+	@Override
 	public Model parse(ModelData data){
 		smooth_shading = data.getBoolean(SMOOTHSHADING, false);
 		if(data.has(PROGRAMS)){
