@@ -344,7 +344,9 @@ public abstract class FvtmResources {
 		//other data types
 		for(DecorationData deco : DECORATIONS.values()){
 			Model model = getModel(deco.modelid, deco.modeldata, DefaultModel.class);
-			if(model != null && model != DefaultModel.EMPTY) MODELS.put(deco.modelid, deco.model = model);
+			if(model != null && model != DefaultModel.EMPTY){
+				deco.model = model;
+			}
 		}
 	}
 
@@ -374,7 +376,18 @@ public abstract class FvtmResources {
 			data.add("Baked", true);
 		}
 		Model model = null;
-		if(MODELS.containsKey(location)) return MODELS.get(location);
+		if(MODELS.containsKey(location)){
+			try{
+				model = clazz.getConstructor().newInstance();
+				model.setGroups(MODELS.get(location).copyWithoutPrograms());
+				model.parse(data).lock();
+				return model;
+			}
+			catch(Throwable e){
+				e.printStackTrace(); Static.stop();
+				return getEmptyModelForClass(clazz);
+			}
+		}
 		ModelLoader loader = getModelLoader(location, FilenameUtils.getExtension(location));
 		if(loader == null) return getEmptyModelForClass(clazz);
 		try{
@@ -384,18 +397,18 @@ public abstract class FvtmResources {
 				}
 				catch(Throwable e){
 					e.printStackTrace(); Static.stop();
-					return getEmptyModelForClass(clazz);
+					return null;
 				}
 			});
 			if(ret.length == 0 || ret[0] == null) return getEmptyModelForClass(clazz);
 			model = (Model)ret[0];
 			if(ret.length > 1) data = (ModelData)ret[1];
+			MODELS.put(location, model.getGroups().copyWithoutPrograms());
 			model.parse(data).lock();
 		}
 		catch(Exception e){
 			e.printStackTrace(); //Static.stop();
 		}
-		MODELS.put(location, model);
 		return model;
 	}
 
