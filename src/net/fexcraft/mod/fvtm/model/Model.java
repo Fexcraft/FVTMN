@@ -29,6 +29,10 @@ public interface Model {
 	/** Only in use on Model init/generation. **/
 	public boolean addToCreators(String str);
 
+	public void setGroups(ModelGroupList list);
+
+	public ModelGroupList getGroups();
+
 	/** Reads ModelData other than the polygons/vertices. */
 	public Model parse(ModelData data);
 	
