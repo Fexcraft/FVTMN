@@ -18,6 +18,8 @@ public abstract class ModelGroupList extends ArrayList<ModelGroup> {
 
 	public abstract void render(ModelRenderData data);
 
+	public abstract ModelGroupList copyWithoutPrograms();
+
 	public ModelGroup get(String key){
 		for(ModelGroup group : this){
 			if(group.name.equals(key)) return group;
@@ -47,6 +49,15 @@ public abstract class ModelGroupList extends ArrayList<ModelGroup> {
 		@Override
 		public void render(ModelRenderData data){
 			for(ModelGroup group : this) group.render(data);
+		}
+
+		@Override
+		public ModelGroupList copyWithoutPrograms(){
+			DefaultModelGroupList list = new DefaultModelGroupList();
+			for(ModelGroup group : this){
+				list.add(group.copyWithoutPrograms());
+			}
+			return list;
 		}
 
 	}
