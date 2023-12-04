@@ -153,4 +153,11 @@ public class ModelGroup extends ArrayList<Polyhedron<GLObject>> {
 		return null;
     }
 
+	public ModelGroup copyWithoutPrograms(){
+		ModelGroup group = new ModelGroup(name);
+		group.addAll(this);
+		group.scale = scale;
+		return group;
+	}
+
 }
