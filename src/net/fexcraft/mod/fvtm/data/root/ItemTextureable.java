@@ -16,7 +16,7 @@ public interface ItemTextureable {
 
 	public static interface TextureableItem<CT> {
 
-		public Content<CT> getContentType();
+		public Content<CT> getContent();
 
 	}
 
