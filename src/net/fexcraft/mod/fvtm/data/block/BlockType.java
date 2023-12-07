@@ -51,22 +51,22 @@ public enum BlockType {
     public double getRotationFor(int state){
         if(rotations == 4){
             switch(state){
-                case 2: return 0;
-                case 3: return -180d;
-                case 4: return -90;
-                case 5: return -270d;
+                case 2: return 90;
+                case 3: return -90;
+                case 4: return 180;
+                case 5: return 0;
             }
         }
         else if(rotations == 16){
-            return state * 22.5 + 180;
+            return state * -22.5 + 90;
         }
         else if(rotations == 44){
             state %= 4;
             switch(state){
-                case 0: return 0;
-                case 1: return -180d;
-                case 2: return -90;
-                case 3: return -270d;
+                case 0: return 90;
+                case 1: return -90;
+                case 2: return 180;
+                case 3: return 0;
             }
         }
         return 0;
