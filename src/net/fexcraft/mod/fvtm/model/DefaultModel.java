@@ -17,6 +17,7 @@ import net.fexcraft.lib.common.math.Vec3f;
 import net.fexcraft.lib.frl.Polygon;
 import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.lib.frl.Vertex;
+import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.model.ConditionalPrograms.ConditionBased;
 import net.fexcraft.mod.fvtm.model.ModelGroupList.DefaultModelGroupList;
@@ -76,7 +77,7 @@ public class DefaultModel implements Model {
 		if(data.has(PROGRAMS)){
 			JsonArray programs = data.getArray(PROGRAMS);
 			for(JsonValue<?> val : programs.value){
-				String[] split = val.toString().trim().split(" ");
+				String[] split = val.string_value().trim().split(" ");
 				if(!groups.contains(split[0])) continue;
 				try{
 					groups.get(split[0]).addProgram(parseProgram(split));
