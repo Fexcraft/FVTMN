@@ -75,6 +75,10 @@ public class Transforms {
 		return new Vec3f();
 	}
 
+	public void add(Transformer transformer){
+		transformers.add(transformer);
+	}
+
 
 	public static interface Transformer {
 		
