@@ -431,19 +431,19 @@ public abstract class FvtmResources {
 		return null;
 	}
 
-	public InputStream getModelInputStream(String loc, boolean log){
-		return getModelInputStream(IDLManager.getIDLCached(loc), log);
+	public InputStream getAssetInputStream(String loc, boolean log){
+		return getAssetInputStream(IDLManager.getIDLCached(loc), log);
 	}
 
-	public abstract InputStream getModelInputStream(IDL loc, boolean log);
+	public abstract InputStream getAssetInputStream(IDL loc, boolean log);
 
-	public static Object[] getModelInputStreamWithFallback(String loc){
-		return getModelInputStreamWithFallback(IDLManager.getIDLCached(loc));
+	public static Object[] getAssetInputStreamWithFallback(String loc){
+		return getAssetInputStreamWithFallback(IDLManager.getIDLCached(loc));
 	}
 
-	public static Object[] getModelInputStreamWithFallback(IDL loc){
+	public static Object[] getAssetInputStreamWithFallback(IDL loc){
 		Closeable[] close = null;
-		InputStream stream = INSTANCE.getModelInputStream(loc, false);
+		InputStream stream = INSTANCE.getAssetInputStream(loc, false);
 		if(stream != null) return new Object[]{ stream };
 		try{
 			Addon addon = getAddon(loc.space());
