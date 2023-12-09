@@ -11,6 +11,7 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
+import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.model.Model;
@@ -71,8 +72,13 @@ public class ContentConfigUtil {
 		}
 		else{
 			IDL idl = IDLManager.getIDLCached(id.space() + ":textures/item/" + id.path() + ".png");
-			if(EnvInfo.CLIENT){
-				//TODO check if missing and return placeholder instead
+			if(EnvInfo.CLIENT && FvtmResources.INSTANCE.getAssetInputStream(idl, true) == null){
+				switch(contype){
+					case VEHICLE: return ITL_VEHICLE;
+					case PART: return ITL_PART;
+					case MULTIBLOCK: return ITL_MBLOCK;
+					default: return ITL_GENERAL;
+				}
 			}
 			return idl;
 		}
