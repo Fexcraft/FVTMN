@@ -32,7 +32,7 @@ public class JTMTModelLoader implements ModelLoader {
 	@Override
 	public Object[] load(String name, ModelData confdata, Supplier<Model> supplier) throws Exception {
 		DefaultModel model = (DefaultModel)supplier.get();
-		JsonMap map = JsonHandler.parse(FvtmResources.INSTANCE.getModelInputStream(name, true), true).asMap();
+		JsonMap map = JsonHandler.parse(FvtmResources.INSTANCE.getAssetInputStream(name, true), true).asMap();
 		if(map.has("creators")){
 			map.getArray("creators").value.forEach(elm -> {
 				model.addToCreators(elm.string_value());
