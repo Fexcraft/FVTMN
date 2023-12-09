@@ -25,7 +25,7 @@ public class FMFModelLoader implements ModelLoader {
 
 	@Override
 	public Object[] load(String name, ModelData confdata, Supplier<Model> supplier) throws Exception {
-		Object[] stream = FvtmResources.getModelInputStreamWithFallback(name);
+		Object[] stream = FvtmResources.getAssetInputStreamWithFallback(name);
 		Model model = supplier.get();
 		JsonHandler.wrap(FMFParser.parse((DefaultModel)model, (InputStream)stream[0]), confdata);
 		if(stream.length > 1) for(Closeable c : (Closeable[])stream[1]) c.close();
