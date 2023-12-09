@@ -37,7 +37,7 @@ public class SMPTBJavaModelLoader implements ModelLoader {
 
 	@Override
 	public Object[] load(String name, ModelData confdata, Supplier<Model> supplier) throws Exception {
-		Object[] stream = FvtmResources.getModelInputStreamWithFallback(name);
+		Object[] stream = FvtmResources.getAssetInputStreamWithFallback(name);
 		DefaultModel model = (DefaultModel)supplier.get();
 		//
         String line = null;
