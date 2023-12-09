@@ -176,7 +176,7 @@ public class ObjModelLoader implements ModelLoader {
 			objdata = INFO_CACHE.get(loc);
 		}
 		else{
-			Object[] stream = FvtmResources.getModelInputStreamWithFallback(loc);
+			Object[] stream = FvtmResources.getAssetInputStreamWithFallback(loc);
 			objdata = new ObjParser((InputStream)stream[0]).readComments(true).readModel(false).parse();
 			INFO_CACHE.put(loc, objdata);
 			if(stream.length > 1) for(Closeable c : (Closeable[])stream[1]) c.close();
@@ -191,7 +191,7 @@ public class ObjModelLoader implements ModelLoader {
 		if(DATA_CACHE.containsKey(loc)){
 			return DATA_CACHE.get(loc);
 		}
-		Object[] stream = FvtmResources.getModelInputStreamWithFallback(loc);
+		Object[] stream = FvtmResources.getAssetInputStreamWithFallback(loc);
 		ObjModel objmod = new ObjParser((InputStream)stream[0]).flipAxes(flip_x).flipFaces(flip_f).flipUV(flip_u, flip_v).readComments(false).noNormals(norm).parse();
 		if(stream.length > 1) for(Closeable c : (Closeable[])stream[1]) try{ c.close(); } catch(IOException e){ e.printStackTrace();}
 		DATA_CACHE.put(loc, objmod);
