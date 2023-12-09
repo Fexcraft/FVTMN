@@ -191,9 +191,9 @@ public class Config {
 				})
 				.rang(1, 16));
 		entries.add(new ConfigEntry(cato, "max_length", new JsonValue(256))
-						.info("Max total vector length of new placed roads.")
-						.cons((con, map) -> MAX_ROAD_LENGTH = con.getInteger(map))
-						.rang(4, 4096));
+				.info("Max total vector length of new placed roads.")
+				.cons((con, map) -> MAX_ROAD_LENGTH = con.getInteger(map))
+				.rang(4, 4096));
 		entries.add(new ConfigEntry(cato, "undo_cache_size", new JsonValue(8))
 				.info("How many roads should be remembered in the undo cache. Set '0' to disable the undo cache.")
 				.cons((con, map) -> ROAD_UNDO_CACHE_SIZE = con.getInteger(map))
@@ -220,7 +220,7 @@ public class Config {
 				.rang(1, 16));
 		entries.add(new ConfigEntry(catw, "max_length", new JsonValue(64))
 				.info("Max total vector length of new placed wires.")
-				.cons((con, map) -> MAX_ROAD_LENGTH = con.getInteger(map))
+				.cons((con, map) -> MAX_WIRE_LENGTH = con.getInteger(map))
 				.rang(1, 1024));
 
 		//1.12 specific settings
