@@ -37,7 +37,8 @@ public class AABBs {
     }
 
     public <AB> AB get(int idx){
-        return (AB)aabbs.get(0).direct();
+        if(idx >= aabbs.size()) return null;
+        return (AB)aabbs.get(idx).direct();
     }
 
     public <AB> AB offset(int i, int x, int y, int z){
