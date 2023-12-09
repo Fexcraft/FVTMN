@@ -19,6 +19,8 @@ public interface TagCW {
 
 	public int getInteger(String key);
 
+	public long getLong(String key);
+
 	public boolean getBoolean(String key);
 
 	public TagCW getCompound(String key);
@@ -40,6 +42,8 @@ public interface TagCW {
 	public void set(String key, double val);
 
 	public void set(String key, int val);
+
+	public void set(String key, long val);
 
 	public void set(String key, boolean val);
 
