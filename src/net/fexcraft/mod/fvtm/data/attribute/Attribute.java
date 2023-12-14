@@ -364,7 +364,7 @@ public abstract class Attribute<V> {
 			}
 			else attr.addAccess(map.get("access").string_value());
 		}
-		attr.target = map.getString("target", null);
+		attr.target = map.getString("target", "vehicle");
 		attr.group = map.getString("group", null);
 		attr.perm = map.getString("perm", null);
 		attr.sync = map.getBoolean("sync", false);
