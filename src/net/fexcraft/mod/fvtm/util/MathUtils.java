@@ -2,8 +2,7 @@ package net.fexcraft.mod.fvtm.util;
 
 import net.fexcraft.lib.common.Static;
 
-import static net.fexcraft.lib.common.Static.PI;
-import static net.fexcraft.lib.common.Static.PI2;
+import static net.fexcraft.lib.common.Static.*;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -27,7 +26,7 @@ public class MathUtils {
 	}
 
 	public static double valRad(double value){
-		while(value >= PI) value -= PI2;
+		while(value > PI) value -= PI2;
 		while(value < -PI) value += PI2;
 		return value;
 	}
