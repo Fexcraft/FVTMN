@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import net.fexcraft.lib.common.math.V3D;
+import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.data.Seat;
 import net.fexcraft.mod.fvtm.data.vehicle.SimplePhysData;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
@@ -17,6 +18,8 @@ import net.fexcraft.mod.fvtm.util.packet.PKT_VehKeyPress;
 import net.fexcraft.mod.fvtm.util.packet.Packets;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.MessageSender;
+
+import static net.fexcraft.mod.fvtm.gui.GuiHandler.VEHICLE_MAIN;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -72,11 +75,11 @@ public class VehicleInstance {
 		return point.getPrevPivot();
 	}
 
-	public boolean onKeyPress(KeyPress key, Seat seat, MessageSender sender, boolean state){
+	public boolean onKeyPress(KeyPress key, Seat seat, EntityW sender, boolean state){
 		return onKeyPress(key, seat, sender, false);
 	}
 
-	public boolean onKeyPress(KeyPress key, Seat seat, MessageSender sender){
+	public boolean onKeyPress(KeyPress key, Seat seat, EntityW player){
 		//TODO script key press event
 		if (!seat.driver && key.driver_only()) return false;
 		if (entity.isOnClient() && !key.toggables()) {
@@ -121,11 +124,12 @@ public class VehicleInstance {
 				return true;
 			}
 			case DISMOUNT: {
-				sender.dismount();
+				player.dismount();
 				return true;
 			}
 			case INVENTORY: {
 				//TODO open inventory ui
+				player.openUI(VEHICLE_MAIN, entity.getWorld(), new V3I(0, entity.getId(), 0));
 				return true;
 			}
 			case TOGGABLES: {
@@ -170,7 +174,7 @@ public class VehicleInstance {
 				return true;
 			}
 			default: {
-				sender.bar("Action '" + key + "' not found.");
+				player.bar("Action '" + key + "' not found.");
 				return false;
 			}
 		}
