@@ -85,7 +85,7 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 			JsonMap funcs = map.getMap("Functions");
 			for(Entry<String, JsonValue<?>> entry : funcs.entries()){
 				PartFunction fun = FvtmResources.getFunction(entry.getKey());
-				if(fun != null) functions.add(fun.init(this, entry.getValue().asMap()));
+				if(fun != null) functions.add(fun.init(this, entry.getValue()));
 			}
 		}
 		//
