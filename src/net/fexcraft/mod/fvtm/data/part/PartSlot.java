@@ -25,7 +25,7 @@ public class PartSlot {
 			rotation = array.size() > 5 ? new Rot(array.getArray(5)) : Rot.NULL;
 		}
 		else{
-			type = value.string_value();
+			type = value.isArray() ? key : value.string_value();
 			pos = V3D.NULL;
 			radius = 0.25f;
 			rotation = Rot.NULL;
