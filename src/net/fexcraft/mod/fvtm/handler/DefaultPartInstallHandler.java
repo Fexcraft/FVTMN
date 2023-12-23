@@ -88,7 +88,7 @@ public class DefaultPartInstallHandler extends PartInstallHandler {
 		Rot rosult = slots.get(slotin[1]).rotation;
 		if(!slotin[0].equals("vehicle")){
 			PartData mount = data.getPart(slotin[0]);
-			result = mount.getInstalledPos();
+			result = result.add(mount.getInstalledPos());
 			if(mount.getSwivelPointInstalledOn() != null && !mount.getSwivelPointInstalledOn().equals("vehicle")){
 				part.setInstalledOnSwivelPoint(mount.getSwivelPointInstalledOn());
 			}
