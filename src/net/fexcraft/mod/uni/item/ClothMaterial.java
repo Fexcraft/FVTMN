@@ -35,6 +35,6 @@ public interface ClothMaterial {
 
 	}
 
-	public Object getLocalMaterial();
+	public Object local();
 
 }
