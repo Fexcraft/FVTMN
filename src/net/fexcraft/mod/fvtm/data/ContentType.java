@@ -21,7 +21,7 @@ public enum ContentType {
 	BLOCK(".block", "blocks", Block.class),
 	MULTIBLOCK(".multiblock", "blocks"),
 	RAILGAUGE(".gauge", "railgauges"),
-	CLOTH(".cloth", "clothes"),
+	CLOTH(".cloth", "clothes", Cloth.class),
 	WIRE(".wire", "wires"),
 	;
 
@@ -50,7 +50,7 @@ public enum ContentType {
 			case BLOCK: BLOCKS.register(content); return;
 			case MULTIBLOCK: return;
 			case RAILGAUGE: return;
-			case CLOTH: return;
+			case CLOTH: CLOTHES.register(content); return;
 			case WIRE: return;
 			default: return;
 		}
