@@ -18,6 +18,7 @@ import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.Static;
+import net.fexcraft.lib.mc.registry.NamedResourceLocation;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.DecorationData;
@@ -73,6 +74,8 @@ public abstract class FvtmResources {
 
 	public static FvtmResources INSTANCE;
 	public static File FVTM_CONFIG_DIR;
+	public static final IDL NULL_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/null.png");
+	public static final IDL WHITE_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/white.png");
 
     public void init(){
 		FVTM_CONFIG_DIR = new File(FvtmRegistry.CONFIG_DIR, "/fvtm/");
@@ -341,6 +344,7 @@ public abstract class FvtmResources {
 		PARTS.forEach(part -> part.loadModel());
 		VEHICLES.forEach(vehicle -> vehicle.loadModel());
 		BLOCKS.forEach(block -> block.loadModel());
+		CLOTHES.forEach(cloth -> cloth.loadModel());
 		//other data types
 		for(DecorationData deco : DECORATIONS.values()){
 			Model model = getModel(deco.modelid, deco.modeldata, DefaultModel.class);
