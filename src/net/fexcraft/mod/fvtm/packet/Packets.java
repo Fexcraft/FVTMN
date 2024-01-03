@@ -3,6 +3,8 @@ package net.fexcraft.mod.fvtm.packet;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.data.block.BlockData;
 import net.fexcraft.mod.fvtm.sys.uni.SeatInstance;
+import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.WorldW;
 
 /**
@@ -22,5 +24,8 @@ public abstract class Packets {
 
     /** Send BlockData Update Packet to all around. */
     public abstract void send(WorldW world, V3I pos);
+
+    /** Send generic nbt packet to a vehicle. */
+    public abstract void send(VehicleInstance vehicleInstance, TagCW com);
 
 }
