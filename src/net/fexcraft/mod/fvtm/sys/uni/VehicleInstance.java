@@ -6,6 +6,10 @@ import java.util.UUID;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.lib.mc.network.PacketHandler;
+import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
+import net.fexcraft.lib.mc.utils.ApiUtil;
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.data.Seat;
 import net.fexcraft.mod.fvtm.data.vehicle.SimplePhysData;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
@@ -13,11 +17,14 @@ import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleType;
 import net.fexcraft.mod.fvtm.function.part.EngineFunction;
 import net.fexcraft.mod.fvtm.util.Pivot;
+import net.fexcraft.mod.fvtm.util.Resources;
 import net.fexcraft.mod.fvtm.util.packet.PKT_VehControl;
 import net.fexcraft.mod.fvtm.util.packet.PKT_VehKeyPress;
 import net.fexcraft.mod.fvtm.util.packet.Packets;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.MessageSender;
+import net.minecraft.nbt.NBTTagCompound;
 
 import static net.fexcraft.mod.fvtm.gui.GuiHandler.VEHICLE_MAIN;
 
@@ -81,12 +88,12 @@ public class VehicleInstance {
 
 	public boolean onKeyPress(KeyPress key, Seat seat, EntityW player){
 		//TODO script key press event
-		if (!seat.driver && key.driver_only()) return false;
-		if (entity.isOnClient() && !key.toggables()) {
+		if(!seat.driver && key.driver_only()) return false;
+		if(entity.isOnClient() && !key.toggables()){
 			Packets.sendToServer(new PKT_VehKeyPress(key));
 			return true;
 		}
-		switch (key) {
+		switch(key){
 			case ACCELERATE: {
 				throttle += throttle < 0 ? 0.02 : 0.01;
 				if (throttle > 1) throttle = 1;
@@ -94,11 +101,11 @@ public class VehicleInstance {
 			}
 			case DECELERATE: {
 				throttle -= throttle > 0 ? 0.02 : 0.01;
-				if (throttle < -1) {
+				if(throttle < -1){
 					throttle = -1;
 				}
 				SimplePhysData spdata = data.getType().getSphData();
-				if (spdata != null && throttle < 0 && spdata.min_throttle == 0) {
+				if(spdata != null && throttle < 0 && spdata.min_throttle == 0){
 					throttle = 0;
 				}
 				return true;
@@ -114,7 +121,7 @@ public class VehicleInstance {
 			case BRAKE: {
 				throttle *= 0.8;
 				entity.decreaseXZMotion(0.8);
-				if (throttle < -0.0001) {
+				if(throttle < -0.0001){
 					throttle = 0;
 				}
 				return true;
@@ -128,12 +135,11 @@ public class VehicleInstance {
 				return true;
 			}
 			case INVENTORY: {
-				//TODO open inventory ui
 				player.openUI(VEHICLE_MAIN, entity.getWorld(), new V3I(0, entity.getId(), 0));
 				return true;
 			}
 			case TOGGABLES: {
-				if (toggable_timer > 0) return true;
+				if(toggable_timer > 0) return true;
 				//TODO toggle action
 				toggable_timer = 10;
 			}
@@ -142,27 +148,28 @@ public class VehicleInstance {
 				return true;
 			}
 			case LIGHTS: {
-				if (toggable_timer > 0) return true;
-				if (data.getAttribute("lights").asBoolean()) {
-					if (data.getAttribute("lights_long").asBoolean()) {
+				if(toggable_timer > 0) return true;
+				if(data.getAttribute("lights").asBoolean()){
+					if(data.getAttribute("lights_long").asBoolean()){
 						data.getAttribute("lights").set(false);
 						data.getAttribute("lights_long").set(true);
 					}
-					else {
+					else{
 						data.getAttribute("lights_long").set(true);
 					}
 				}
-				else {
+				else{
 					data.getAttribute("lights").set(true);
 				}
+				sendLightsUpdate();
 				VehicleInstance trailer = rear;
-				while (trailer != null) {
+				while(trailer != null){
 					trailer.data.getAttribute("lights").set(data.getAttribute("lights").asBoolean());
 					trailer.data.getAttribute("lights_long").set(data.getAttribute("lights_long").asBoolean());
+					trailer.sendLightsUpdate();
 					trailer = trailer.rear;
 				}
 				toggable_timer = 10;
-				//TODO send lights sync packet
 				return true;
 			}
 			case COUPLER_REAR: {
@@ -232,10 +239,25 @@ public class VehicleInstance {
 
 	public void sendUpdatePacket(){
 		data.getAttribute("throttle").set(throttle);
-		Packets.sendToAllAround(new PKT_VehControl(entity), entity.direct());
+		net.fexcraft.mod.fvtm.util.packet.Packets.sendToAllAround(new PKT_VehControl(entity), entity.direct());
 		for(SwivelPoint point : data.getRotationPoints().values()){
 			point.sendUpdatePacket(entity);
 		}
+	}
+
+	public void sendLockUpdate(){
+		TagCW com = TagCW.create();
+		com.set("cargo", "lock_state");
+		com.set("state", data.getLock().isLocked());
+		Packets.INSTANCE.send(this, com);
+	}
+
+	public void sendLightsUpdate(){
+		TagCW com = TagCW.create();
+		com.set("cargo", "toggle_lights");
+		com.set("lights", data.getAttribute("lights").asBoolean());
+		com.set("lights_long", data.getAttribute("lights_long").asBoolean());
+		Packets.INSTANCE.send(this, com);
 	}
 
     public SeatInstance getSeatOf(Object passenger){
@@ -244,5 +266,24 @@ public class VehicleInstance {
 		}
 		return null;
     }
+
+	public void packet(TagCW packet, boolean client){
+		String cargo = packet.getString("cargo");
+		switch(cargo){
+			case "lock_state":{
+				data.getLock().setLocked(packet.getBoolean("state"));
+				return;
+			}
+			case "toggle_lights":{
+				data.getAttribute("lights").set(packet.getBoolean("lights"));
+				data.getAttribute("lights_long").set(packet.getBoolean("lights_long"));
+				return;
+			}
+			default:{
+				FvtmLogger.LOGGER.log("'" + data.getName() + "'/" + entity.getId() + " received invalid packet: " + packet.toString());
+				return;
+			}
+		}
+	}
 
 }
