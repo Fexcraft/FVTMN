@@ -44,6 +44,7 @@ public class Lockable implements Saveable {
 		boolean valid = stack.getItem().direct() instanceof LockableItem;
 		if(!valid || ((LockableItem)stack.getItem().local()).getLockCode(stack) == null){
 			sender.send("&cThis is not a key.");
+			return;
 		}
 		String icode = ((LockableItem)stack.getItem().local()).getLockCode(stack);
 		if(icode.equals(getCode())){
