@@ -3,11 +3,8 @@ package net.fexcraft.mod.fvtm.model;
 import java.util.*;
 import java.util.function.Supplier;
 
-import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
-import net.fexcraft.lib.mc.utils.Print;
-import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
