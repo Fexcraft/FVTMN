@@ -24,6 +24,8 @@ public abstract class UIButton extends UIElement {
 	public RGB hcolor = new RGB(0xf5da42);
 	public RGB ecolor = new RGB(0xffffff);
 	public RGB dcolor = new RGB(0xa3a3a3);
+	public RGB[][] palette = null;
+	public int[] palsize = null;
 
 	public UIButton(UserInterface ui, JsonMap map) throws Exception {
 		super(ui, map);
@@ -46,6 +48,14 @@ public abstract class UIButton extends UIElement {
 			ecolor.alpha = map.getFloat("e_alpha", ecolor.alpha);
 			hcolor.alpha = map.getFloat("h_alpha", hcolor.alpha);
 			dcolor.alpha = map.getFloat("d_alpha", dcolor.alpha);
+			if(map.has("palette")){
+				JsonArray pal = map.getArray("palette");
+				palette = new RGB[pal.get(0).integer_value()][pal.get(1).integer_value()];
+				palsize = new int[]{ pal.get(2).integer_value(), pal.get(3).integer_value() };
+				for(int i = 0; i < palette.length; i++)
+					for(int j = 0; j < palette[i].length; j++)
+						palette[i][j] = RGB.random();
+			}
 		}
 		dtx = htx = tx;
 		dty = hty = ty;
