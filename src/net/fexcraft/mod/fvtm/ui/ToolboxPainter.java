@@ -158,7 +158,11 @@ public class ToolboxPainter extends UserInterface {
 				break;
 			}
 			case "select":{
-				// send update packet
+				TagCW com = TagCW.create();
+				com.set("task", "apply");
+				com.set("channel", selchan);
+				com.set("color", current.packed);
+				container.SEND_TO_SERVER.accept(com);
 				break;
 			}
 			case "colorpicker":{
