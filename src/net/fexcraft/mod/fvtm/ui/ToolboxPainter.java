@@ -3,6 +3,7 @@ package net.fexcraft.mod.fvtm.ui;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.mc.utils.Print;
+import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
@@ -11,6 +12,11 @@ import net.fexcraft.mod.uni.ui.UserInterface;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -25,6 +31,7 @@ public class ToolboxPainter extends UserInterface {
 	private ArrayList<String> channels = new ArrayList<>();
 	public String selchan;
 	public RGB current = new RGB();
+	private File cachedcolors = null;
 
 	public ToolboxPainter(JsonMap map, ContainerInterface con) throws Exception {
 		super(map, con);
@@ -33,6 +40,9 @@ public class ToolboxPainter extends UserInterface {
 		setupSpectrum();
 		setupShadePalette();
 		updateColors();
+		cachedcolors = new File(FvtmRegistry.CONFIG_DIR, "/fvtm/custom_palette.fvtm");
+		if(!cachedcolors.exists()) cachedcolors.getParentFile().mkdirs();
+		loadColorCache();
 	}
 
 	private void setupSpectrum(){
@@ -167,6 +177,10 @@ public class ToolboxPainter extends UserInterface {
 				}
 				break;
 			}
+			case "save":{
+				saveColorCache();
+				break;
+			}
 			default:{
 				break;
 			}
@@ -224,6 +238,44 @@ public class ToolboxPainter extends UserInterface {
 	@Override
 	public void scrollwheel(int a, int x, int y){
 		//
+	}
+
+	private void loadColorCache(){
+		try{
+			if(!cachedcolors.exists()) return;
+			FileInputStream stream = new FileInputStream(cachedcolors);
+			UIButton button = buttons.get("pal_save");
+			int r = 0, i = 0;
+			while(r >= 0 || i >= button.palette[0].length){
+				byte[] bit = new byte[4];
+				r = stream.read(bit);
+				if(r < 0) break;
+				button.palette[0][i++].packed = ByteBuffer.wrap(bit).getInt();
+			}
+			stream.close();
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+
+	private void saveColorCache(){
+		try{
+			UIButton button = buttons.get("pal_save");
+			for(int i = button.palette[0].length - 2; i >= 0; i--){
+				button.palette[0][i + 1].packed = button.palette[0][i].packed;
+			}
+			button.palette[0][0].packed = current.packed;
+			FileOutputStream stream = new FileOutputStream(cachedcolors);
+			for(RGB color : button.palette[0]){
+				stream.write(ByteBuffer.allocate(4).putInt(color.packed).array());
+			}
+			stream.flush();
+			stream.close();
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 
 }
