@@ -54,7 +54,7 @@ public abstract class UIButton extends UIElement {
 				palsize = new int[]{ pal.get(2).integer_value(), pal.get(3).integer_value() };
 				for(int i = 0; i < palette.length; i++)
 					for(int j = 0; j < palette[i].length; j++)
-						palette[i][j] = RGB.random();
+						palette[i][j] = RGB.WHITE.copy();//RGB.random();
 			}
 		}
 		dtx = htx = tx;
