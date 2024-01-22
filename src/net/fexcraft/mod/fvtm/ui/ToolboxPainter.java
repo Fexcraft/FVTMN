@@ -185,6 +185,10 @@ public class ToolboxPainter extends UserInterface {
 				saveColorCache();
 				break;
 			}
+			case "help":{
+				container.get("open_wiki");
+				break;
+			}
 			default:{
 				break;
 			}
