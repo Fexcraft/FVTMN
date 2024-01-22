@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class WrapperHolder {
 
 	//public static final ConcurrentHashMap<Object, PlayerW> PLAYERS = new ConcurrentHashMap<>();
-	public static final ConcurrentHashMap<Object, EntityW> ENTITIES = new ConcurrentHashMap<>();
+	//public static final ConcurrentHashMap<Object, EntityW> ENTITIES = new ConcurrentHashMap<>();
 	public static final ConcurrentHashMap<Object, WorldW> WORLDS = new ConcurrentHashMap<>();
 	public static WrapperHolder INSTANCE;
 
