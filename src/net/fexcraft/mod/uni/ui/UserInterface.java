@@ -25,6 +25,7 @@ public abstract class UserInterface {
 	public int _fields;
 	public int screen_width;
 	public int screen_height;
+	public Object root;
 
 	public UserInterface(JsonMap map, ContainerInterface container) throws Exception {
 		this.container = container.set(this);
