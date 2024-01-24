@@ -103,13 +103,13 @@ public class Textureable implements Saveable {
 		if(selected >= holder.getDefaultTextures().size()) selected = holder.getDefaultTextures().size() - 1;
 		if(!compound.has("CurrentTexture")){
 			custom = compound.getString("CustomTexture");
-			if(selected < 0) current = external ? ExternalTextureLoader.get(custom) : IDLManager.getIDLNamed(custom);
+			if(selected < 0) current = external ? FvtmResources.INSTANCE.getExternalTexture(custom) : IDLManager.getIDLNamed(custom);
 			else current = holder.getDefaultTextures().get(selected > holder.getDefaultTextures().size() ? 0 : selected);
 		}
 		else{
 			String str = compound.getString("CurrentTexture");
 			if(selected < 0){
-				current = external ? ExternalTextureLoader.get(str) : IDLManager.getIDLNamed(custom);
+				current = external ? FvtmResources.INSTANCE.getExternalTexture(str): IDLManager.getIDLNamed(str);
 				custom = external ? str : current.toString();
 			}
 			else{
