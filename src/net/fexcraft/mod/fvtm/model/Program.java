@@ -10,7 +10,7 @@ import java.util.function.BiPredicate;
  */
 public interface Program {
 
-	public default String id(){ return "idless"; }
+	public String id();
 
 	public default void pre(ModelGroup group, ModelRenderData data){}
 
@@ -42,6 +42,11 @@ public interface Program {
 
 		public boolean test(ModelGroup group, ModelRenderData data){
 			return true;
+		}
+
+		@Override
+		public String id(){
+			return "conditional";
 		}
 
 		@Override
@@ -105,6 +110,10 @@ public interface Program {
 			return predicate.test(group, data);
 		}
 
+		@Override
+		public String id(){
+			return "functional";
+		}
 	}
 
 }
