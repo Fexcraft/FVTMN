@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Saveable;
-import net.fexcraft.mod.fvtm.util.ExternalTextureLoader;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.tag.TagCW;
