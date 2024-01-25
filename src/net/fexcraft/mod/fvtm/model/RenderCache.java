@@ -2,6 +2,7 @@ package net.fexcraft.mod.fvtm.model;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -11,26 +12,15 @@ import java.util.function.Supplier;
  */
 public interface RenderCache {
 
-	public Map<String, Float> fltmap();
+	public Map<Program, Object> map();
 
-	public Map<String, Object> map();
-	
-	/** Gets a float value if present, else returns null. */
-	public Float getFlt(String id);
-	
-	/** Returns the specified default value if entry is missing. */
-	public Float getFlt(String id, Float def);
-	
-	/** Set value to `null` to remove the entry. Otherwise, it updates the cache. */
-	public Float setFlt(String id, Float value);
-
-	/** Gets a object if present, else returns null. */
-	public <V> V get(String id);
+	/** Gets an object if present, else returns null. */
+	public <V> V get(Program prog);
 
 	/** Returns a new default object if entry is missing. */
-	public <V> V get(String id, Supplier<V> def);
+	public <V> V get(Program prog, Function<ModelRenderData, V> def);
 
 	/** Set object to `null` to remove the entry. Otherwise, it updates the cache. */
-	public <V> V set(String id, V value);
+	public <V> V set(Program prog, V value);
 
 }
