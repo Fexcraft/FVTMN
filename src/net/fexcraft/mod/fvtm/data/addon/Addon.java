@@ -26,7 +26,7 @@ import net.fexcraft.mod.fvtm.sys.particle.Particle;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDLManager;
-import net.fexcraft.mod.uni.client.CTab;
+import net.fexcraft.mod.fvtm.util.CTab;
 import net.fexcraft.mod.uni.item.ClothMaterial;
 
 /**
