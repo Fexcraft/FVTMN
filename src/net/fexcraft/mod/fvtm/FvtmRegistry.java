@@ -22,6 +22,7 @@ import net.fexcraft.mod.fvtm.sys.particle.Particle;
 import net.fexcraft.mod.fvtm.util.Registry;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
+import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 
 /**
@@ -32,7 +33,6 @@ import net.fexcraft.mod.uni.item.ItemWrapper;
 public class FvtmRegistry {
 
 	public static final String CORE_VER = "1.0.0";
-	public static String LOADER_VER;
 	public static File CONFIG_DIR;
 	public static boolean is112;
 	public static boolean is120;
@@ -68,7 +68,7 @@ public class FvtmRegistry {
 	public static final HashMap<String, ItemWrapper> ITEMS = new HashMap<>();
 
 	public static final void init(String loadver, File conf){
-		LOADER_VER = loadver;
+		UniReg.LOADER_VERSION = loadver;
 		is112 = loadver.equals("1.12");
 		is120 = !is112;
 		CONFIG_DIR = conf;
