@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fvtm.ui;
 
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.ui.UIButton;
 import net.fexcraft.mod.uni.ui.UserInterface;
 import net.fexcraft.mod.uni.world.EntityW;
@@ -10,8 +11,8 @@ import net.fexcraft.mod.uni.world.EntityW;
  */
 public class UIImpl extends UserInterface {
 
-	public UIImpl(JsonMap map, EntityW player) throws Exception {
-		super(map, new CIImpl(map, player));
+	public UIImpl(JsonMap map, EntityW player, V3I pos) throws Exception {
+		super(map, new CIImpl(map, player, pos));
 	}
 
 	@Override
