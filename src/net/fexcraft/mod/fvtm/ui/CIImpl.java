@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fvtm.ui;
 
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.world.EntityW;
@@ -10,8 +11,8 @@ import net.fexcraft.mod.uni.world.EntityW;
  */
 public class CIImpl extends ContainerInterface {
 
-	public CIImpl(JsonMap map, EntityW player){
-		super(map, player);
+	public CIImpl(JsonMap map, EntityW player, V3I pos){
+		super(map, player, pos);
 	}
 
 	@Override
