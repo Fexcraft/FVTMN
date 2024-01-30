@@ -1,5 +1,6 @@
 package net.fexcraft.mod.fvtm.data.vehicle;
 
+import static net.fexcraft.mod.fvtm.FvtmLogger.DEVLOG;
 import static net.fexcraft.mod.fvtm.FvtmRegistry.PARTS;
 
 import java.util.ArrayList;
@@ -90,7 +91,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 				try{
 					Part part = PARTS.get(entry.getValue());
 					if(part == null) continue;
-					if(installPart(MessageSender.DEVLOG, new PartData(part), entry.getKey(), false) != null){
+					if(installPart(DEVLOG, new PartData(part), entry.getKey(), false) != null){
 						Static.stop();
 					}
 				}
