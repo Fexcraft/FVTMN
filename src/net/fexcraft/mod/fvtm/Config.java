@@ -10,6 +10,7 @@ import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonHandler.PrintOption;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
+import net.fexcraft.mod.uni.UniReg;
 
 /**
  * FVTM Config File
@@ -224,7 +225,7 @@ public class Config {
 				.rang(1, 1024));
 
 		//1.12 specific settings
-		if(FvtmRegistry.LOADER_VER.equals("1.12")){
+		if(UniReg.LOADER_VERSION.equals("1.12")){
 			entries.add(new ConfigEntry(catg, "vehicle_update_range", new JsonValue(256))
 					.info("Range in which Vehicle Update Packets will be sent.").rang(64, 4096)
 					.cons((con, map) -> VEHICLE_UPDATE_RANGE = con.getInteger(map)));
