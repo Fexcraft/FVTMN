@@ -36,6 +36,8 @@ import net.fexcraft.mod.fvtm.function.part.EngineFunction;
 import net.fexcraft.mod.fvtm.function.part.PartSlotsFunction;
 import net.fexcraft.mod.fvtm.function.part.SeatsFunction;
 import net.fexcraft.mod.fvtm.function.part.WheelPositionsFunction;
+import net.fexcraft.mod.fvtm.model.animation.Animated;
+import net.fexcraft.mod.fvtm.model.animation.AnimationCompound;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.item.StackWrapper;
@@ -65,6 +67,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 	protected SwivelPoint rootpoint;
 	protected Textureable texture;
 	protected Lockable lock;
+	protected Animated animations;
 	protected String displayname;
 
 	public VehicleData(Vehicle type){
@@ -105,6 +108,9 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		sounds.putAll(type.getSounds());
 		partproviders.put("vehicle", type.getPartSlots());
 		lock = new Lockable();
+		if(EnvInfo.CLIENT){
+			animations = new Animated(type.model);
+		}
 	}
 
 	@Override

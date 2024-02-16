@@ -3,11 +3,7 @@ package net.fexcraft.mod.fvtm.model;
 import static net.fexcraft.mod.fvtm.model.ModelGroup.COND_PROGRAMS;
 import static net.fexcraft.mod.fvtm.model.ModelGroupList.SEPARATE_GROUP_LIST;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 import net.fexcraft.app.json.JsonArray;
@@ -18,6 +14,7 @@ import net.fexcraft.lib.frl.Polygon;
 import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.lib.frl.Vertex;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
+import net.fexcraft.mod.fvtm.model.animation.AnimationCompound;
 import net.fexcraft.mod.fvtm.model.program.ConditionalPrograms.ConditionBased;
 import net.fexcraft.mod.fvtm.model.ModelGroupList.DefaultModelGroupList;
 import net.fexcraft.mod.fvtm.model.Program.ConditionalProgram;
@@ -31,6 +28,7 @@ public class DefaultModel implements Model {
 	public static final DefaultModel EMPTY = new DefaultModel();
 	public static final ModelRenderData RENDERDATA = new ModelRenderData();
 	public TreeMap<RenderOrder, ModelGroupList> sorted = new TreeMap<>();
+	public List<AnimationCompound> animations = new ArrayList<>();
 	public ModelGroupList groups = new DefaultModelGroupList();
 	private List<String> authors = new ArrayList<>();
 	public Transforms transforms = new Transforms();
@@ -71,6 +69,11 @@ public class DefaultModel implements Model {
 	}
 
 	@Override
+	public List<AnimationCompound> getAnimations(){
+		return animations;
+	}
+
+	@Override
 	public Model parse(ModelData data){
 		smooth_shading = data.getBoolean(SMOOTHSHADING, false);
 		if(data.has(PROGRAMS)){
@@ -80,6 +83,17 @@ public class DefaultModel implements Model {
 				if(!groups.contains(split[0])) continue;
 				try{
 					groups.get(split[0]).addProgram(parseProgram(split));
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+		}
+		if(data.has(ANIMATIONS)){
+			JsonMap anicom = data.getMap(ANIMATIONS);
+			for(Map.Entry<String, JsonValue<?>> val : anicom.entries()){
+				try{
+					animations.add(new AnimationCompound(val.getKey(), val.getValue().asMap()));
 				}
 				catch(Exception e){
 					e.printStackTrace();

@@ -1,6 +1,9 @@
 package net.fexcraft.mod.fvtm.model;
 
+import net.fexcraft.mod.fvtm.model.animation.AnimationCompound;
+
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 
@@ -19,6 +22,7 @@ public interface Model {
 	public static final String PIVOTS = "Pivots";
 	public static final String OFFSET = "Offset";
 	public static final String TRANSFORMS = "Transforms";
+	public static final String ANIMATIONS = "Animations";
 
 	/**  Render call. */
 	public void render(ModelRenderData data);
@@ -32,6 +36,8 @@ public interface Model {
 	public void setGroups(ModelGroupList list);
 
 	public ModelGroupList getGroups();
+
+	public List<AnimationCompound> getAnimations();
 
 	/** Reads ModelData other than the polygons/vertices. */
 	public Model parse(ModelData data);
