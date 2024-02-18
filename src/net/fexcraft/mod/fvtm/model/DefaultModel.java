@@ -1,14 +1,5 @@
 package net.fexcraft.mod.fvtm.model;
 
-import static net.fexcraft.mod.fvtm.model.ModelGroup.COND_PROGRAMS;
-import static net.fexcraft.mod.fvtm.model.ModelGroupList.SEPARATE_GROUP_LIST;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.TreeMap;
-
 import com.google.common.collect.ImmutableList;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
@@ -18,10 +9,16 @@ import net.fexcraft.lib.frl.Polygon;
 import net.fexcraft.lib.frl.Polyhedron;
 import net.fexcraft.lib.frl.Vertex;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
-import net.fexcraft.mod.fvtm.model.program.ConditionalPrograms.ConditionBased;
 import net.fexcraft.mod.fvtm.model.ModelGroupList.DefaultModelGroupList;
 import net.fexcraft.mod.fvtm.model.Program.ConditionalProgram;
+import net.fexcraft.mod.fvtm.model.program.AnimationPrograms.AnimationRoot;
+import net.fexcraft.mod.fvtm.model.program.ConditionalPrograms.ConditionBased;
 import org.lwjgl.opengl.GL11;
+
+import java.util.*;
+
+import static net.fexcraft.mod.fvtm.model.ModelGroup.COND_PROGRAMS;
+import static net.fexcraft.mod.fvtm.model.ModelGroupList.SEPARATE_GROUP_LIST;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -104,7 +101,21 @@ public class DefaultModel implements Model {
 						}
 					}
 					else{//animation
-
+						String[] split = prarr.get(0).string_value().trim().split(" ");
+						try{
+							AnimationRoot root = (AnimationRoot)parseProgram(split);
+							for(int i = 1; i < prarr.size(); i++){
+								String[] splt = prarr.get(i).string_value().trim().split(" ");
+								String[] od = splt[0].split("-");
+								int off = Integer.parseInt(od[0]);
+								int dur = od.length > 1 ? Integer.parseInt(od[1]) : 0;
+								root.addProgram(off, dur, parseProgram(splt));
+							}
+							groups.get(split[0]).addProgram((Program)root);
+						}
+						catch(Exception e){
+							e.printStackTrace();
+						}
 					}
 					continue;
 				}
