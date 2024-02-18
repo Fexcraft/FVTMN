@@ -76,6 +76,38 @@ public class DefaultModel implements Model {
 		if(data.has(PROGRAMS)){
 			JsonArray programs = data.getArray(PROGRAMS);
 			for(JsonValue<?> val : programs.value){
+				if(val.isArray()){
+					JsonArray prarr = val.asArray();
+					if(prarr.size() > 1 && prarr.get(1).isArray()){//conditional
+						String[] split = prarr.get(0).string_value().trim().split(" ");
+						try{
+							ConditionalProgram prog = null;
+							if(COND_PROGRAMS.containsKey(split[1])){
+								prog = COND_PROGRAMS.get(split[1]).getConstructor().newInstance();
+							}
+							else prog = new ConditionBased(split[1]);
+							if(split.length > 2){
+								prog = (ConditionalProgram)prog.parse(Arrays.copyOfRange(split, 2, split.length));
+							}
+							for(JsonValue<?> elm : prarr.get(1).asArray().value){
+								prog.addIf(parseProgram(elm.string_value().trim().split(" "), 0));
+							}
+							if(prarr.size() > 2){
+								for(JsonValue<?> elm : prarr.get(2).asArray().value){
+									prog.addElse(parseProgram(elm.string_value().trim().split(" "), 0));
+								}
+							}
+							groups.get(split[0]).addProgram(prog);
+						}
+						catch(Exception e){
+							e.printStackTrace();
+						}
+					}
+					else{//animation
+
+					}
+					continue;
+				}
 				String[] split = val.string_value().trim().split(" ");
 				if(!groups.contains(split[0])) continue;
 				try{
