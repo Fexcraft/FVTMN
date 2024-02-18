@@ -33,6 +33,12 @@ public interface Program {
 
 	public default RenderOrder order(){ return RenderOrder.NORMAL; }
 
+	public default Program mirror(){ return this; }
+
+	public default void reset(ModelRenderData data){
+		data.cache.set(this, null);
+	}
+
 	//
 
 	public static class ConditionalProgram implements Program {
