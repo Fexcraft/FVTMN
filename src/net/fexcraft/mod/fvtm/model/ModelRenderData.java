@@ -21,6 +21,7 @@ public class ModelRenderData {
 	public Object entity;
 	public Object tile;
 	public Object blockstate;
+	public float partialticks;
 
 	public VehicleData vehicle;
 	public ContainerData container;
@@ -38,7 +39,7 @@ public class ModelRenderData {
 
 	public RenderCache cache;
 
-	public ModelRenderData set(VehicleData data, Object ent, RenderCache renca, boolean item) {
+	public ModelRenderData set(VehicleData data, Object ent, RenderCache renca, boolean item, float ticks) {
 		entity = ent;
 		vehicle = data;
 		color = data;
@@ -48,11 +49,12 @@ public class ModelRenderData {
 		cache = renca;
 		itemrender = item;
 		separaterender = false;
+		partialticks = ticks;
 		return this;
 	}
 
 
-	public ModelRenderData set(VehicleData data, Object ent, RenderCache renca, PartData partdata, String key, boolean item) {
+	public ModelRenderData set(VehicleData data, Object ent, RenderCache renca, PartData partdata, String key, boolean item, float ticks) {
 		entity = ent;
 		vehicle = data;
 		color = data;
@@ -62,6 +64,7 @@ public class ModelRenderData {
 		cache = renca;
 		itemrender = item;
 		separaterender = false;
+		partialticks = ticks;
 		return this;
 	}
 
