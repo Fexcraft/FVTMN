@@ -136,7 +136,7 @@ public class ObjModelLoader implements ModelLoader {
 	}
 
 	private void fillList(ObjModel model, ModelData data, int idx, String key){
-		List<String> list = ObjParser.getCommentValues(model, new String[]{ keys.get(12) }, null);
+		List<String> list = ObjParser.getCommentValues(model, new String[]{ keys.get(idx) }, null);
 		if(list.size() > 0){
 			JsonArray array = data.getArray(key, 0);
 			for(String str : list) array.add(str);
