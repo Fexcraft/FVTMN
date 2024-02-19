@@ -37,7 +37,7 @@ public interface Program {
 
 	public default int ticktime(){ return 0; }
 
-	public default void reverse(ModelRenderData data){}
+	public default void reverse(ModelRenderData data, boolean bool){}
 
 	public default Program pause(ModelRenderData data, boolean pause){ return this; }
 
