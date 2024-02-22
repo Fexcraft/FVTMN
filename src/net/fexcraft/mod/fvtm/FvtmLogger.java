@@ -10,16 +10,18 @@ public abstract class FvtmLogger {
 
 	public static FvtmLogger LOGGER = null;
 
-	public abstract void log(Object obj);
+	protected void log0(Object obj){}
 
-	public abstract void log(String str);
-
-	public void info(Object obj){
-		log(obj);
+	public void info(String s){
+		log0(s);
 	}
 
-	public void debug(String s){
-		if(EnvInfo.DEV) log(s);
+	public static void log(Object o){
+		LOGGER.log0(o);
+	}
+
+	public static void debug(Object o){
+		if(EnvInfo.DEV) LOGGER.log0(o);
 	}
 
 	public static final MessageSender LOG = new MessageSender(){
@@ -76,5 +78,4 @@ public abstract class FvtmLogger {
 		}
 
 	};
-
 }
