@@ -22,7 +22,7 @@ public enum ContentType {
 	MULTIBLOCK(".multiblock", "blocks"),
 	RAILGAUGE(".gauge", "railgauges"),
 	CLOTH(".cloth", "clothes", Cloth.class),
-	WIRE(".wire", "wires"),
+	WIRE(".wire", "wires", WireType.class),
 	;
 
 	public String suffix;
@@ -51,7 +51,7 @@ public enum ContentType {
 			case MULTIBLOCK: return;
 			case RAILGAUGE: return;
 			case CLOTH: CLOTHES.register(content); return;
-			case WIRE: return;
+			case WIRE: WIRES.register(content); return;
 			default: return;
 		}
 	}
