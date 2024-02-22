@@ -72,6 +72,14 @@ public class ModelGroup extends ArrayList<Polyhedron<GLObject>> {
 	public ArrayList<Program> getAllPrograms() {
 		return all_programs;
 	}
+
+	public ArrayList<Program> getPrePrograms() {
+		return pre_programs;
+	}
+
+	public ArrayList<Program> getPstPrograms() {
+		return pst_programs;
+	}
 	
 	//
 
