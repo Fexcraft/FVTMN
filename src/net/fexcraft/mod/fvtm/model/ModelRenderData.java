@@ -4,13 +4,10 @@ import java.util.ArrayList;
 
 import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.fvtm.data.block.BlockData;
-import net.fexcraft.mod.fvtm.data.container.ContainerData;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.root.Colorable;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureUser;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
-import net.fexcraft.mod.fvtm.item.ClothItem;
-import net.fexcraft.mod.fvtm.sys.tsign.TrafficSignData.CompDataRoot;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -24,14 +21,14 @@ public class ModelRenderData {
 	public float partialticks;
 
 	public VehicleData vehicle;
-	public ContainerData container;
+	public Object container;
 	public BlockData block;
 	public Colorable color;
 	public TextureUser texture;
 	public PartData part;
 	public String part_category;
 	public DecorationData decoration;
-	public CompDataRoot trafficsign_compdata;
+	public Object trafficsign_compdata;
 	public Object cloth_item;
 	public ArrayList<String> cloth_groups;
 	public boolean itemrender;
@@ -69,12 +66,12 @@ public class ModelRenderData {
 	}
 
 
-	public ModelRenderData set(ContainerData data, Object tileent, RenderCache renca, boolean item) {
+	public ModelRenderData set(Object data, Object tileent, RenderCache renca, boolean item) {
 		container = data;
 		tile = tileent;
 		cache = renca;
-		color = data;
-		texture = data;
+		color = (Colorable)data;
+		texture = (TextureUser)data;
 		itemrender = item;
 		return this;
 	}
@@ -104,7 +101,7 @@ public class ModelRenderData {
 	}
 
 
-	public ModelRenderData set(ClothItem item, ArrayList<String> list, Object ent, RenderCache renca) {
+	public ModelRenderData set(Object item, ArrayList<String> list, Object ent, RenderCache renca) {
 		cloth_item = item;
 		cloth_groups = list;
 		entity = ent;
@@ -114,7 +111,7 @@ public class ModelRenderData {
 	}
 
 
-	public ModelRenderData set(CompDataRoot comp) {
+	public ModelRenderData set(Object comp) {
 		trafficsign_compdata = comp;
 		itemrender = false;
 		return this;
