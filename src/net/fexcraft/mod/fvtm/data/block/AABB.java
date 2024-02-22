@@ -1,8 +1,5 @@
 package net.fexcraft.mod.fvtm.data.block;
 
-import net.minecraft.util.math.AxisAlignedBB;
-
-import java.util.ArrayList;
 import java.util.function.Supplier;
 
 /**
