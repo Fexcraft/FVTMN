@@ -7,8 +7,6 @@ import net.fexcraft.mod.fvtm.data.root.Colorable;
 import net.fexcraft.mod.fvtm.data.root.Textureable;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureUser;
 import net.fexcraft.mod.fvtm.function.block.BoolBlockFunction;
-import net.fexcraft.mod.fvtm.util.function.InventoryBlockFunction;
-import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 
 import java.util.ArrayList;
@@ -24,7 +22,7 @@ public class BlockData extends ContentData<Block, BlockData> implements TextureU
     protected Map<String, RGB> channels = new LinkedHashMap<>();
     protected ArrayList<BlockFunction> functions = new ArrayList<>();
     protected ArrayList<BoolBlockFunction> boolfuns = new ArrayList<>();
-    protected InventoryBlockFunction invfunc;
+    protected Object invfunc;
 
     public BlockData(Block block){
         super(block);
@@ -39,8 +37,8 @@ public class BlockData extends ContentData<Block, BlockData> implements TextureU
             if(func instanceof BoolBlockFunction){
                 boolfuns.add((BoolBlockFunction)func);
             }
-            if(func instanceof InventoryBlockFunction){
-                invfunc = (InventoryBlockFunction)func;
+            if(func.getClass().getName().contains("InventoryBlockFunction")){
+                invfunc = func;
             }
         }
     }
@@ -124,7 +122,7 @@ public class BlockData extends ContentData<Block, BlockData> implements TextureU
         return null;
     }
 
-    public InventoryBlockFunction getFunctionInventory(){
+    public Object getFunctionInventory(){
         return invfunc;
     }
 
