@@ -24,7 +24,7 @@ import net.fexcraft.mod.fvtm.data.root.Textureable.TextureHolder;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
-import net.fexcraft.mod.fvtm.model.VehicleModel;
+import net.fexcraft.mod.fvtm.model.content.VehicleModel;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
