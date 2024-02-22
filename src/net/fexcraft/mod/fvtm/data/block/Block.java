@@ -3,9 +3,9 @@ package net.fexcraft.mod.fvtm.data.block;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
+import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.RGB;
-import net.fexcraft.lib.mc.utils.Print;
-import net.fexcraft.lib.mc.utils.Static;
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Content;
@@ -14,9 +14,9 @@ import net.fexcraft.mod.fvtm.data.root.*;
 import net.fexcraft.mod.fvtm.data.root.Colorable.ColorHolder;
 import net.fexcraft.mod.fvtm.data.root.Soundable.SoundHolder;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureHolder;
-import net.fexcraft.mod.fvtm.model.BlockModel;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
+import net.fexcraft.mod.fvtm.model.content.BlockModel;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
@@ -247,7 +247,7 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
             }
         }
         catch (Exception e){
-            Print.log("Failed to load BlockFunction for '" + id.colon() + "' with JSON: " + elm);
+            FvtmLogger.log("Failed to load BlockFunction for '" + id.colon() + "' with JSON: " + elm);
             e.printStackTrace();
             Static.stop();
         }
