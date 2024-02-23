@@ -21,9 +21,10 @@ public enum ContentType {
 	FUEL(".fuel", "fuels", Fuel.class),
 	BLOCK(".block", "blocks", Block.class),
 	MULTIBLOCK(".multiblock", "blocks"),
-	RAILGAUGE(".gauge", "railgauges"),
+	RAILGAUGE(".gauge", "railgauges", RailGauge.class),
 	CLOTH(".cloth", "clothes", Cloth.class),
 	WIRE(".wire", "wires", WireType.class),
+	WIREDECO(".deco", "wires")
 	;
 
 	public String suffix;
