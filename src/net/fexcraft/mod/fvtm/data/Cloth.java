@@ -54,7 +54,6 @@ public class Cloth extends Content<Cloth> implements ItemTextureable, WithItem {
 		}
         ctab = map.getString("CreativeTab", "default");
         itemloc = ContentConfigUtil.getItemTexture(id, getContentType(), map);
-		item = new ClothItem(this);
 		return this;
 	}
 
