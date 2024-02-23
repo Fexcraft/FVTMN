@@ -370,6 +370,7 @@ public abstract class FvtmResources {
 		FvtmResources.INSTANCE.initModelPrograms();
 		initialmodelload = true;
 		reloadModels();
+		initialmodelload = false;
 	}
 
 	public static void reloadModels(){
