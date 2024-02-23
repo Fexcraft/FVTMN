@@ -55,6 +55,7 @@ public class FvtmRegistry {
 	public static final Registry<Cloth> CLOTHES = new Registry<>();
 	public static final Registry<WireType> WIRES = new Registry<>();
 	public static final Registry<Container> CONTAINERS = new Registry<>();
+	public static final Registry<RailGauge> RAILGAUGES = new Registry<>();
 	public static TreeMap<String, TreeMap<String, ArrayList<Fuel>>> SORTED_FUELS = new TreeMap<>();
 	public static final HashMap<String, Particle> PARTICLES = new HashMap<>();
 	public static final HashMap<String, JsonMap> WIRE_DECO_CACHE = new HashMap<>();
