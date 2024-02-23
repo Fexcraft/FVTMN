@@ -26,6 +26,8 @@ import net.fexcraft.mod.fvtm.data.addon.AddonLocation;
 import net.fexcraft.mod.fvtm.data.attribute.*;
 import net.fexcraft.mod.fvtm.data.block.Block;
 import net.fexcraft.mod.fvtm.data.block.BlockData;
+import net.fexcraft.mod.fvtm.data.container.Container;
+import net.fexcraft.mod.fvtm.data.container.ContainerData;
 import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
@@ -348,6 +350,7 @@ public abstract class FvtmResources {
 		BLOCKS.forEach(block -> block.loadModel());
 		CLOTHES.forEach(cloth -> cloth.loadModel());
 		WIRES.forEach(wire -> wire.loadModel());
+		CONTAINERS.forEach(con -> con.loadModel());
 		//other data types
 		for(DecorationData deco : DECORATIONS.values()){
 			Model model = getModel(deco.modelid, deco.modeldata, DefaultModel.class);
@@ -523,6 +526,23 @@ public abstract class FvtmResources {
 
 	public static BlockData getBlockData(Object com){
 		return getBlockData(TagCW.wrap(com));
+	}
+
+	public static ContainerData getContainerData(Object tag){
+		return getContainerData(TagCW.wrap(tag));
+	}
+
+	public static ContainerData getContainerData(TagCW com){
+		if(!com.has("Container")) return null;
+		Container con = CONTAINERS.get(com.getString("Container"));
+		if(con == null) return null;
+		try{
+			return new ContainerData(con).read(com);
+		}
+		catch(Throwable e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public abstract void registerFvtmBlocks();
