@@ -7,6 +7,7 @@ import net.fexcraft.mod.fvtm.data.root.Colorable;
 import net.fexcraft.mod.fvtm.data.root.Textureable;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureUser;
 import net.fexcraft.mod.fvtm.function.block.BoolBlockFunction;
+import net.fexcraft.mod.uni.impl.TagCWI;
 import net.fexcraft.mod.uni.tag.TagCW;
 
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ public class BlockData extends ContentData<Block, BlockData> implements TextureU
 
     @Override
     public BlockData read(TagCW compound){
+        if(compound == null) compound = TagCW.create();
         texture.load(compound);
         for(String str : channels.keySet()){
             if(compound.has("RGB_" + str)){
