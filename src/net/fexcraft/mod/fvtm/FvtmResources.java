@@ -351,6 +351,7 @@ public abstract class FvtmResources {
 		CLOTHES.forEach(cloth -> cloth.loadModel());
 		WIRES.forEach(wire -> wire.loadModel());
 		CONTAINERS.forEach(con -> con.loadModel());
+		RAILGAUGES.forEach(rail -> rail.loadModel());
 		//other data types
 		for(DecorationData deco : DECORATIONS.values()){
 			Model model = getModel(deco.modelid, deco.modeldata, DefaultModel.class);
