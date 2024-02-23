@@ -419,7 +419,7 @@ public abstract class FvtmResources {
 	}
 
 	public static Model getEmptyModelForClass(Class<? extends Model> clazz){
-		if(clazz == ContainerModel.class) return ContainerModel.EMPTY;
+		//if(clazz == ContainerModel.class) return ContainerModel.EMPTY;
 		//if(clazz == PartModel.class) return PartModel.EMPTY;
 		if(clazz == VehicleModel.class) return VehicleModel.EMPTY;
 		if(clazz == TrafficSignModel.class) return TrafficSignModel.EMPTY;
