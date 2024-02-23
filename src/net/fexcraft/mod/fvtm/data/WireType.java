@@ -77,7 +77,7 @@ public class WireType extends Content<WireType> implements WithItem, ItemTexture
 
 	@Override
 	public void loadModel(){
-		model = FvtmResources.getModel(modelid, modeldata, PartModel.class);
+		model = FvtmResources.getModel(modelid, modeldata, WireModel.class);
 	}
 
 	@Override
