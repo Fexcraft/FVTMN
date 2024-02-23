@@ -6,7 +6,7 @@ import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.root.ItemTextureable;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
 import net.fexcraft.mod.fvtm.item.ClothItem;
-import net.fexcraft.mod.fvtm.model.ClothModel;
+import net.fexcraft.mod.fvtm.model.content.ClothModel;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
