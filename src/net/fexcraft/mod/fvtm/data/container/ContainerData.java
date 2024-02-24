@@ -32,6 +32,7 @@ public class ContainerData extends ContentData<Container, ContainerData> impleme
 			channels.put(entry.getKey(), entry.getValue().copy());
 		}
 		inventory = type.invtype.gen(type.type.length() * 3);
+		lock = new Lockable();
 	}
 
 	@Override
@@ -60,14 +61,15 @@ public class ContainerData extends ContentData<Container, ContainerData> impleme
 		for(String str : channels.keySet()){
 			compound.set("RGB_" + str, channels.get(str).packed);
 		}
-		texture.save(new TagCWI(compound));
-		inventory.save(new TagCWI(compound), "Inventory");
-		lock.save(new TagCWI(compound));
+		texture.save(compound);
+		inventory.save(compound, "Inventory");
+		lock.save(compound);
 		return compound;
 	}
 
 	@Override
 	public ContainerData read(TagCW compound){
+		if(compound == null) compound = TagCW.create();
 		if(compound.has("RGBPrimary")){
 			channels.get("primary").packed = compound.getInteger("RGBPrimary");
 		}
@@ -80,9 +82,9 @@ public class ContainerData extends ContentData<Container, ContainerData> impleme
 			}
 		}
 		//
-		texture.load(new TagCWI(compound));
-		inventory.load(new TagCWI(compound), "Inventory");
-		lock.load(new TagCWI(compound));
+		texture.load(compound);
+		inventory.load(compound, "Inventory");
+		lock.load(compound);
 		return this;
 	}
 
