@@ -29,7 +29,7 @@ public class Handler_VehKeyPress implements PacketHandler<Packet_VehKeyPress> {
 	}
 
 	@Override
-	public Runnable handleClient(Packet_VehKeyPress packetBase, Passenger player){
+	public Runnable handleClient(Packet_VehKeyPress packet, Passenger player){
 		return null;
 	}
 
