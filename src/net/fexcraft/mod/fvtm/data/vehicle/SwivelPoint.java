@@ -7,10 +7,11 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fvtm.data.part.PartData;
+import net.fexcraft.mod.fvtm.packet.Packet_SPUpdate;
+import net.fexcraft.mod.fvtm.packet.Packets;
+import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 import net.fexcraft.mod.fvtm.util.Pivot;
-import net.fexcraft.mod.fvtm.packet.PKT_SPUpdate;
-import net.fexcraft.mod.fvtm.packet.PacketsImpl;
 import net.fexcraft.mod.uni.Pos;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
@@ -224,7 +225,7 @@ public class SwivelPoint {
 		return deg;
 	}
 
-	public void processPacket(PKT_SPUpdate pkt, boolean side){
+	public void processPacket(Packet_SPUpdate pkt, boolean side){
 		if(side){
 			servpos = new V3D(pkt.posX, pkt.posY, pkt.posZ);
 			servrot = new V3D(pkt.yaw, pkt.pitch, pkt.roll);
@@ -271,7 +272,7 @@ public class SwivelPoint {
 			}
     	}
 		if(!should) return;
-    	PacketsImpl.sendToAllAround(new PKT_SPUpdate(entity, this), entity.direct());
+		Packets.sendInRange(Packet_SPUpdate.class, (Passenger)entity, entity, this);
 	}
 
 }
