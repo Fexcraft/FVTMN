@@ -8,4 +8,7 @@ public abstract class FvtmWorld extends WorldW {
 	public abstract SeatInstance getSeat(int entid, int seatid);
 
 	public abstract SwivelPoint getSwivelPoint(int entid, String pointid);
+
+	public abstract Passenger getPassenger(int source);
+
 }
