@@ -46,12 +46,12 @@ public enum ContentType {
 			case PART: PARTS.register(content); return;
 			case VEHICLE: VEHICLES.register(content); return;
 			case MATERIAL: MATERIALS.register(content); return;
-			case CONTAINER: return;
+			case CONTAINER: CONTAINERS.register(content); return;
 			case CONSUMABLE: CONSUMABLES.register(content); return;
 			case FUEL: FUELS.register(content); return;
 			case BLOCK: BLOCKS.register(content); return;
 			case MULTIBLOCK: return;
-			case RAILGAUGE: return;
+			case RAILGAUGE: RAILGAUGES.register(content); return;
 			case CLOTH: CLOTHES.register(content); return;
 			case WIRE: WIRES.register(content); return;
 			default: return;
