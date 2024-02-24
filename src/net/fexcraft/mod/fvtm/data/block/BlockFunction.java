@@ -3,7 +3,7 @@ package net.fexcraft.mod.fvtm.data.block;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
-import net.fexcraft.mod.fvtm.packet.Packets;
+import net.fexcraft.mod.fvtm.packet.PacketsImpl;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.*;
@@ -51,11 +51,11 @@ public abstract class BlockFunction {
     }
 
     public static void sendClientUpdate(BlockData blockdata, V3I pos, int dim){
-        Packets.INSTANCE.send(blockdata, pos, dim);
+        PacketsImpl.INSTANCE.send(blockdata, pos, dim);
     }
 
     public static void sendClientUpdate(WorldW world, V3I pos){
-        Packets.INSTANCE.send(world, pos);
+        PacketsImpl.INSTANCE.send(world, pos);
     }
 
 }

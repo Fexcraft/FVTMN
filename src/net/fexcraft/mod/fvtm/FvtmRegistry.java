@@ -25,8 +25,6 @@ import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.UniReg;
 import net.fexcraft.mod.uni.item.ItemWrapper;
-import net.fexcraft.mod.uni.tag.TagCW;
-import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * FVTM Registry

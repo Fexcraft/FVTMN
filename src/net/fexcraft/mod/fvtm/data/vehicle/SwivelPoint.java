@@ -9,9 +9,8 @@ import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 import net.fexcraft.mod.fvtm.util.Pivot;
-import net.fexcraft.mod.fvtm.util.handler.SPM_DI;
-import net.fexcraft.mod.fvtm.util.packet.PKT_SPUpdate;
-import net.fexcraft.mod.fvtm.util.packet.Packets;
+import net.fexcraft.mod.fvtm.packet.PKT_SPUpdate;
+import net.fexcraft.mod.fvtm.packet.PacketsImpl;
 import net.fexcraft.mod.uni.Pos;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
@@ -75,7 +74,7 @@ public class SwivelPoint {
 	            	e.printStackTrace();
 	            }
 			}
-			else movers.add(new SPM_DI(map));
+			else movers.add(new DefaultSwivelPointMover(map));
 		}
 		else if(!json.isArray()){
 			if(json.string_value().endsWith(".class")){
@@ -87,7 +86,7 @@ public class SwivelPoint {
 					e.printStackTrace();
 				}
 			}
-			else movers.add(new SPM_DI(key == null ? "arrinit" : key, json.string_value()));
+			else movers.add(new DefaultSwivelPointMover(key == null ? "arrinit" : key, json.string_value()));
 		}
 	}
 
@@ -272,7 +271,7 @@ public class SwivelPoint {
 			}
     	}
 		if(!should) return;
-    	Packets.sendToAllAround(new PKT_SPUpdate(entity, this), entity.direct());
+    	PacketsImpl.sendToAllAround(new PKT_SPUpdate(entity, this), entity.direct());
 	}
 
 }

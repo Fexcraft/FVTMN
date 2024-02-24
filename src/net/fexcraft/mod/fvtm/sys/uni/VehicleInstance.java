@@ -6,9 +6,6 @@ import java.util.UUID;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
-import net.fexcraft.lib.mc.network.PacketHandler;
-import net.fexcraft.lib.mc.network.packet.PacketNBTTagCompound;
-import net.fexcraft.lib.mc.utils.ApiUtil;
 import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.data.Seat;
 import net.fexcraft.mod.fvtm.data.vehicle.SimplePhysData;
@@ -16,15 +13,13 @@ import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleType;
 import net.fexcraft.mod.fvtm.function.part.EngineFunction;
+import net.fexcraft.mod.fvtm.packet.Packets;
 import net.fexcraft.mod.fvtm.util.Pivot;
-import net.fexcraft.mod.fvtm.util.Resources;
-import net.fexcraft.mod.fvtm.util.packet.PKT_VehControl;
-import net.fexcraft.mod.fvtm.util.packet.PKT_VehKeyPress;
-import net.fexcraft.mod.fvtm.util.packet.Packets;
+import net.fexcraft.mod.fvtm.packet.PKT_VehControl;
+import net.fexcraft.mod.fvtm.packet.Packet_VehKeyPress;
+import net.fexcraft.mod.fvtm.packet.PacketsImpl;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
-import net.fexcraft.mod.uni.world.MessageSender;
-import net.minecraft.nbt.NBTTagCompound;
 
 import static net.fexcraft.mod.fvtm.gui.GuiHandler.VEHICLE_MAIN;
 
@@ -90,7 +85,7 @@ public class VehicleInstance {
 		//TODO script key press event
 		if(!seat.driver && key.driver_only()) return false;
 		if(entity.isOnClient() && !key.toggables()){
-			Packets.sendToServer(new PKT_VehKeyPress(key));
+			Packets.send(Packet_VehKeyPress.class, key);
 			return true;
 		}
 		switch(key){
@@ -239,7 +234,7 @@ public class VehicleInstance {
 
 	public void sendUpdatePacket(){
 		data.getAttribute("throttle").set(throttle);
-		net.fexcraft.mod.fvtm.util.packet.Packets.sendToAllAround(new PKT_VehControl(entity), entity.direct());
+		PacketsImpl.sendToAllAround(new PKT_VehControl(entity), entity.direct());
 		for(SwivelPoint point : data.getRotationPoints().values()){
 			point.sendUpdatePacket(entity);
 		}
@@ -249,7 +244,7 @@ public class VehicleInstance {
 		TagCW com = TagCW.create();
 		com.set("cargo", "lock_state");
 		com.set("state", data.getLock().isLocked());
-		Packets.INSTANCE.send(this, com);
+		PacketsImpl.INSTANCE.send(this, com);
 	}
 
 	public void sendLightsUpdate(){
@@ -257,7 +252,7 @@ public class VehicleInstance {
 		com.set("cargo", "toggle_lights");
 		com.set("lights", data.getAttribute("lights").asBoolean());
 		com.set("lights_long", data.getAttribute("lights_long").asBoolean());
-		Packets.INSTANCE.send(this, com);
+		PacketsImpl.INSTANCE.send(this, com);
 	}
 
     public SeatInstance getSeatOf(Object passenger){

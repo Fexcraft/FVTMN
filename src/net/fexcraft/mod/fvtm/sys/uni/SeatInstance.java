@@ -5,7 +5,6 @@ import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Seat;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
-import net.fexcraft.mod.fvtm.packet.Packets;
 import net.fexcraft.mod.fvtm.util.Pivot;
 import net.fexcraft.mod.uni.world.EntityW;
 
