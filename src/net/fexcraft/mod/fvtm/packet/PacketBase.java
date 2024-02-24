@@ -13,4 +13,8 @@ public interface PacketBase<S> {
 
 	public void decode(ByteBuf buffer);
 
+	public default Object[] data(){
+		return new Object[0];
+	}
+
 }
