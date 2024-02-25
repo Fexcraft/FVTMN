@@ -22,13 +22,12 @@ import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.WorldW;
 
-import static net.fexcraft.mod.fvtm.data.block.BlockUtil.DEF_MAT_TIRE_ARR;
-
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
 public class TireFunction extends PartFunction {
-	
+
+	public static HashMap<Object, TireFunction.MatTireAttr> DEF_MAT_TIRE_ARR = new HashMap<>();
 	private static HashMap<Part, TireAttr> TIRES = new HashMap<>();
 	private String inst_on;
 	private WheelSlot wheel;
