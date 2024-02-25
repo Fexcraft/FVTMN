@@ -59,7 +59,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 	protected TreeMap<String, Sound> sounds = new TreeMap<>();
 	protected TreeMap<String, SwivelPoint> rotpoints = new TreeMap<>();
 	protected TreeMap<String, PartSlots> partproviders = new TreeMap<>();
-	protected ArrayList<VehicleScript> scripts = new ArrayList<>();
+	//protected ArrayList<VehicleScript> scripts = new ArrayList<>();
 	protected ArrayList<String> inventories = new ArrayList<>();
 	protected ArrayList<Seat> seats = new ArrayList<>();
 	protected V3D front_conn, rear_conn;
@@ -139,7 +139,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 			cwpos.set(vec.getKey(), list);
 		}
 		compound.set("WheelPos", cwpos);
-		if(!scripts.isEmpty()){
+		/*if(!scripts.isEmpty()){
 			TagCW cscripts = TagCW.create();
 			for(VehicleScript script : scripts){
 				TagCW com = script.save(this, TagCW.create());
@@ -147,7 +147,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 				cscripts.set(script.getId(), com);
 			}
 			if(!cscripts.empty()) compound.set("Scripts", cscripts);
-		}
+		}*/
 		if(!rotpoints.isEmpty()){
 			TagCW csp = TagCW.create();
 			for(Entry<String, SwivelPoint> point : rotpoints.entrySet()){
@@ -219,14 +219,14 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 				wheelpos.put(key, cwp.getV3D(key));
 			}
 		}
-		if(compound.has("Scripts")){
+		/*if(compound.has("Scripts")){
 			TagCW cscripts = compound.getCompound("Scripts");
 			for(String key : cscripts.keys()){
 				if(getVehicleScript(key) != null){
 					getVehicleScript(key).load(this, cscripts.getCompound(key));
 				}
 			}
-		}
+		}*/
 		if(compound.has("SwivelPoints")){
 			TagCW csp = compound.getCompound("SwivelPoints");
 			for(String key : csp.keys()){
@@ -608,7 +608,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		return getAttribute("fuel_capacity").asInteger();
 	}
 
-	public VehicleScript getVehicleScript(String string){
+	/*public VehicleScript getVehicleScript(String string){
 		for(VehicleScript script : scripts) if(script.getId().equals(string)) return script; return null;
 	}
 
@@ -618,7 +618,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 
 	public ArrayList<VehicleScript> getScripts(){
 		return scripts;
-	}
+	}*/
 
 	public V3D getFrontConnector(){
 		return front_conn;
