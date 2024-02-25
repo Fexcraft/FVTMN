@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
-import net.fexcraft.mod.fvtm.Config;
 import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.data.Seat;
 import net.fexcraft.mod.fvtm.data.vehicle.SimplePhysData;
@@ -16,13 +15,13 @@ import net.fexcraft.mod.fvtm.data.vehicle.VehicleType;
 import net.fexcraft.mod.fvtm.function.part.EngineFunction;
 import net.fexcraft.mod.fvtm.packet.Packet_VehMove;
 import net.fexcraft.mod.fvtm.packet.Packets;
+import net.fexcraft.mod.fvtm.ui.UIKey;
 import net.fexcraft.mod.fvtm.util.Pivot;
 import net.fexcraft.mod.fvtm.packet.Packet_VehKeyPress;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
 
 import static net.fexcraft.mod.fvtm.Config.VEHICLE_UPDATE_RANGE;
-import static net.fexcraft.mod.fvtm.gui.GuiHandler.VEHICLE_MAIN;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -131,7 +130,7 @@ public class VehicleInstance {
 				return true;
 			}
 			case INVENTORY: {
-				player.openUI(VEHICLE_MAIN, entity.getWorld(), new V3I(0, entity.getId(), 0));
+				player.openUI(UIKey.VEHICLE_MAIN, new V3I(0, entity.getId(), 0));
 				return true;
 			}
 			case TOGGABLES: {
