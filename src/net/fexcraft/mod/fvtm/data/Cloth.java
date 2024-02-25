@@ -5,7 +5,6 @@ import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.root.ItemTextureable;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
-import net.fexcraft.mod.fvtm.item.ClothItem;
 import net.fexcraft.mod.fvtm.model.content.ClothModel;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
@@ -21,7 +20,6 @@ import net.fexcraft.mod.uni.item.ClothMaterial;
 public class Cloth extends Content<Cloth> implements ItemTextureable, WithItem {
 	
 	protected short max_health;
-	protected ClothItem item;
 	protected String ctab, modelid;
 	protected String eq_slot;
 	protected ClothMaterial material;
@@ -65,10 +63,6 @@ public class Cloth extends Content<Cloth> implements ItemTextureable, WithItem {
 	@Override
 	public Class<?> getDataClass(){
 		return null;
-	}
-	
-	public ClothItem getClothItem(){
-		return item;
 	}
 
 	public int getMaxDamage(){
