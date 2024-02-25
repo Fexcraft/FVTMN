@@ -1,11 +1,10 @@
 package net.fexcraft.mod.fvtm.data;
 
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.Static;
-import net.fexcraft.lib.common.math.V3D;
-import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.root.ItemTextureable;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
@@ -91,8 +90,8 @@ public class RailGauge extends Content<RailGauge> implements WithItem, ItemTextu
 					presets.add(pre);
 				}
 				catch(Exception e){
-					Print.log("Failed to load a RailGauge Preset for '" + id.colon() + "'!");
-					Print.log("JSON: " + JsonHandler.toString(val, JsonHandler.PrintOption.FLAT));
+					FvtmLogger.log("Failed to load a RailGauge Preset for '" + id.colon() + "'!");
+					FvtmLogger.log("JSON: " + JsonHandler.toString(val, JsonHandler.PrintOption.FLAT));
 					e.printStackTrace();
 					Static.halt();
 				}
