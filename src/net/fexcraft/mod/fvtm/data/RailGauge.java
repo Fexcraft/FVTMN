@@ -12,7 +12,7 @@ import net.fexcraft.mod.fvtm.data.root.WithItem;
 import net.fexcraft.mod.fvtm.model.ModelData;
 import net.fexcraft.mod.fvtm.model.RailGaugeModel;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
-import net.fexcraft.mod.fvtm.util.GridV3D;
+import net.fexcraft.mod.fvtm.util.QV3D;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
@@ -78,13 +78,13 @@ public class RailGauge extends Content<RailGauge> implements WithItem, ItemTextu
 					JsonArray path = mep.getArray("path");
 					JsonArray temp;
 					Preset pre = new Preset();
-					pre.path = new GridV3D[path.size()];
+					pre.path = new QV3D[path.size()];
 					for(int i = 0; i < pre.path.length; i++){
 						temp = path.get(i).asArray();
 						double x = temp.get(0).float_value();
 						double y = temp.get(1).float_value();
 						double z = temp.get(2).float_value();
-						pre.path[i] = new GridV3D(new V3D(x, y, z));
+						pre.path[i] = new QV3D(x, y, z, 0);
 					}
 					pre.name = mep.get("name").string_value().toLowerCase();
 					pre.segmentation = mep.getInteger("segmentation", pre.segmentation);
@@ -103,7 +103,7 @@ public class RailGauge extends Content<RailGauge> implements WithItem, ItemTextu
 
 	public static class Preset {
 
-		public GridV3D[] path;
+		public QV3D[] path;
 		public String name;
 		public int segmentation = 4;
 
