@@ -51,7 +51,6 @@ public class Config {
 	public static int MAX_RAIL_TRACK_LENGTH;
 	//road
 	public static boolean DISABLE_ROADS;
-	public static int ROAD_PLACING_GRID;
 	public static int MAX_ROAD_LENGTH;
 	public static int ROAD_UNDO_CACHE_SIZE;
 	public static int ROAD_UNDO_CACHE_CLEARTIME;
@@ -62,7 +61,6 @@ public class Config {
 	//deprecated
 	public static int VEHICLE_UPDATE_RANGE;
 	public static boolean OVERLAY_ON_BOTTOM;
-	public static int RAIL_PLACING_GRID;
 
 	public static void init(File file){
 		FILE = file;
@@ -149,17 +147,6 @@ public class Config {
 				.info("Interval (milliseconds) in which it is checked for trains/rails to be unloaded.")
 				.cons((con, map) -> UNLOAD_INTERVAL = con.getInteger(map))
 				.rang(60000, 86400000));
-		entries.add(new ConfigEntry(catr, "placing_grid", new JsonValue(4))
-				.info("Grid size for when using the rail/junction creation tool, valid are 16 ('per-pixel accuracy'), 8, 4, 2 or 1 (full block)")
-				.cons((con, map) -> {
-					RAIL_PLACING_GRID = con.getInteger(map);
-					if(RAIL_PLACING_GRID > 16) RAIL_PLACING_GRID = 16;
-					if(RAIL_PLACING_GRID > 8 && RAIL_PLACING_GRID < 16) RAIL_PLACING_GRID = 8;
-					if(RAIL_PLACING_GRID > 4 && RAIL_PLACING_GRID < 8) RAIL_PLACING_GRID = 4;
-					if(RAIL_PLACING_GRID > 2 && RAIL_PLACING_GRID < 4) RAIL_PLACING_GRID = 2;
-					if(RAIL_PLACING_GRID < 1) RAIL_PLACING_GRID = 1;
-				})
-				.rang(1, 16));
 		entries.add(new ConfigEntry(catr, "generation_segmentator", new JsonValue(4))
 				.info("Segmentator divider for rail generator, valid are 16, 8, 4, 2 or 1.")
 				.cons((con, map) -> {
@@ -180,17 +167,6 @@ public class Config {
 		entries.add(new ConfigEntry(cato, "disable", new JsonValue(false))
 				.info("If FVTM road system should be disabled.")
 				.cons((con, map) -> DISABLE_ROADS = con.getBoolean(map)));
-		entries.add(new ConfigEntry(cato, "placing_grid", new JsonValue(4))
-				.info("Grid size for when using the road placing tool, valid are 16 ('per-pixel accuracy'), 8, 4, 2 or 1 (full block)")
-				.cons((con, map) -> {
-					ROAD_PLACING_GRID = con.getInteger(map);
-					if(ROAD_PLACING_GRID > 16) ROAD_PLACING_GRID = 16;
-					if(ROAD_PLACING_GRID > 8 && ROAD_PLACING_GRID < 16) ROAD_PLACING_GRID = 8;
-					if(ROAD_PLACING_GRID > 4 && ROAD_PLACING_GRID < 8) ROAD_PLACING_GRID = 4;
-					if(ROAD_PLACING_GRID > 2 && ROAD_PLACING_GRID < 4) ROAD_PLACING_GRID = 2;
-					if(ROAD_PLACING_GRID < 1) ROAD_PLACING_GRID = 1;
-				})
-				.rang(1, 16));
 		entries.add(new ConfigEntry(cato, "max_length", new JsonValue(256))
 				.info("Max total vector length of new placed roads.")
 				.cons((con, map) -> MAX_ROAD_LENGTH = con.getInteger(map))
