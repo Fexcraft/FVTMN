@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fvtm.Config;
 import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.data.Seat;
 import net.fexcraft.mod.fvtm.data.vehicle.SimplePhysData;
@@ -13,14 +14,14 @@ import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleType;
 import net.fexcraft.mod.fvtm.function.part.EngineFunction;
+import net.fexcraft.mod.fvtm.packet.Packet_VehMove;
 import net.fexcraft.mod.fvtm.packet.Packets;
 import net.fexcraft.mod.fvtm.util.Pivot;
-import net.fexcraft.mod.fvtm.packet.PKT_VehControl;
 import net.fexcraft.mod.fvtm.packet.Packet_VehKeyPress;
-import net.fexcraft.mod.fvtm.packet.PacketsImpl;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
 
+import static net.fexcraft.mod.fvtm.Config.VEHICLE_UPDATE_RANGE;
 import static net.fexcraft.mod.fvtm.gui.GuiHandler.VEHICLE_MAIN;
 
 /**
@@ -234,7 +235,7 @@ public class VehicleInstance {
 
 	public void sendUpdatePacket(){
 		data.getAttribute("throttle").set(throttle);
-		PacketsImpl.sendToAllAround(new PKT_VehControl(entity), entity.direct());
+		Packets.sendInRange(Packet_VehMove.class, entity.getWorld(), entity.getPos(), VEHICLE_UPDATE_RANGE, entity, this);
 		for(SwivelPoint point : data.getRotationPoints().values()){
 			point.sendUpdatePacket(entity);
 		}
@@ -244,7 +245,7 @@ public class VehicleInstance {
 		TagCW com = TagCW.create();
 		com.set("cargo", "lock_state");
 		com.set("state", data.getLock().isLocked());
-		PacketsImpl.INSTANCE.send(this, com);
+		Packets.INSTANCE.send(this, com);
 	}
 
 	public void sendLightsUpdate(){
@@ -252,7 +253,7 @@ public class VehicleInstance {
 		com.set("cargo", "toggle_lights");
 		com.set("lights", data.getAttribute("lights").asBoolean());
 		com.set("lights_long", data.getAttribute("lights_long").asBoolean());
-		PacketsImpl.INSTANCE.send(this, com);
+		Packets.INSTANCE.send(this, com);
 	}
 
     public SeatInstance getSeatOf(Object passenger){
