@@ -44,6 +44,7 @@ import net.fexcraft.mod.fvtm.model.*;
 import net.fexcraft.mod.fvtm.model.content.BlockModel;
 import net.fexcraft.mod.fvtm.model.content.ClothModel;
 import net.fexcraft.mod.fvtm.model.content.VehicleModel;
+import net.fexcraft.mod.fvtm.model.content.WireModel;
 import net.fexcraft.mod.fvtm.model.loaders.ClassModelLoader;
 import net.fexcraft.mod.fvtm.model.loaders.FMFModelLoader;
 import net.fexcraft.mod.fvtm.model.loaders.JTMTModelLoader;
