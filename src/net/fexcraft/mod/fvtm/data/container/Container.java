@@ -12,7 +12,6 @@ import net.fexcraft.mod.fvtm.data.root.Colorable.ColorHolder;
 import net.fexcraft.mod.fvtm.data.root.ItemTextureable;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureHolder;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
-import net.fexcraft.mod.fvtm.item.ContainerItem;
 import net.fexcraft.mod.fvtm.model.DefaultModel;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
@@ -37,7 +36,6 @@ public class Container extends Content<Container> implements TextureHolder, Colo
 	protected IDL keytype;
 	protected InvHandler invtype;
 	protected ContainerType type;
-	protected ContainerItem item;
 	protected String modelid, ctab;
 	protected IDL itemtexloc;
 	protected boolean no3ditem;
