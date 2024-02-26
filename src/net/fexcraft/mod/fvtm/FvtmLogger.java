@@ -10,7 +10,7 @@ public abstract class FvtmLogger {
 
 	public static FvtmLogger LOGGER = null;
 
-	protected void log0(Object obj){}
+	protected abstract void log0(Object obj);
 
 	public void info(String s){
 		log0(s);
