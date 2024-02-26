@@ -85,6 +85,12 @@ public abstract class FvtmResources {
     public void init(){
 		FVTM_CONFIG_DIR = new File(FvtmRegistry.CONFIG_DIR, "/fvtm/");
 		if(!FVTM_CONFIG_DIR.exists()) FVTM_CONFIG_DIR.mkdirs();
+		if(EnvInfo.is120()){
+			JsonMap map = new JsonMap();
+			map.add("ID", "fvtm");
+			map.add("Name", "FVTM Internal Addon");
+			ADDONS.register(new Addon(null, AddonLocation.INTERNAL).parse(map));
+		}
 		INSTANCE.searchASMPacks();
 		boolean failed = searchPacksInResourcePacks();
 		if(!EnvInfo.CLIENT || failed){
@@ -212,6 +218,7 @@ public abstract class FvtmResources {
 	public void searchInPacksFor(ContentType contype){
 		if(contype == ContentType.ADDON) return;
 		for(Addon addon : ADDONS){
+			if(addon.getFile() == null) continue;
 			if(addon.getFile().isDirectory()){
 				File folder = new File(addon.getFile(), "assets/" + addon.getID().id() + "/config/" + contype.folder + "/");
 				if(!folder.exists()) continue;
