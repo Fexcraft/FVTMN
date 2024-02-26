@@ -23,7 +23,7 @@ public interface CTab {
 			TABS.put(aid, IMPL[0].getConstructor(Addon.class, String.class).newInstance(addon, id));
 		}
 		catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
 		return TABS.get(aid);
 	}
