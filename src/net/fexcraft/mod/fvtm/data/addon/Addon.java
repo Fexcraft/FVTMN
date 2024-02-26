@@ -46,7 +46,7 @@ public class Addon extends Content<Addon> {
 	private String license;
 
 	public Addon(File file, AddonLocation loc){
-		isJar = !file.isDirectory();
+		isJar = file != null && !file.isDirectory();
 		this.file = file;
 		this.loc = loc;
 	}
