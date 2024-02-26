@@ -5,16 +5,11 @@ import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.data.block.BlockData;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
-import net.fexcraft.mod.fvtm.sys.uni.SeatInstance;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.WorldW;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.function.BiConsumer;
 
 import static net.fexcraft.mod.fvtm.Config.VEHICLE_UPDATE_RANGE;
 

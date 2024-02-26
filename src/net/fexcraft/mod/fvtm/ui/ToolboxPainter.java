@@ -2,9 +2,7 @@ package net.fexcraft.mod.fvtm.ui;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.RGB;
-import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
-import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UIButton;
@@ -19,9 +17,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import static net.fexcraft.mod.fvtm.FvtmRegistry.DECORATIONS;
-import static net.fexcraft.mod.fvtm.FvtmRegistry.DECORATION_CATEGORIES;
 
 /**
  * @author Ferdinand Calo' (FEX___96)

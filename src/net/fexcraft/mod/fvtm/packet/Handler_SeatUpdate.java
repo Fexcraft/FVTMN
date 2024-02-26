@@ -1,13 +1,7 @@
 package net.fexcraft.mod.fvtm.packet;
 
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
-import net.fexcraft.mod.fvtm.sys.uni.RootVehicle;
 import net.fexcraft.mod.fvtm.sys.uni.SeatInstance;
-import net.fexcraft.mod.uni.world.EntityW;
-import net.minecraft.entity.Entity;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-
-import static net.fexcraft.mod.fvtm.Config.VEHICLE_UPDATE_RANGE;
 
 /**
  * @author Ferdinand Calo' (FEX___96)

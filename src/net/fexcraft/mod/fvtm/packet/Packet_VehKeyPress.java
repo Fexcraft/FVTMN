@@ -1,9 +1,7 @@
 package net.fexcraft.mod.fvtm.packet;
 
 import io.netty.buffer.ByteBuf;
-import net.fexcraft.lib.mc.api.packet.IPacket;
 import net.fexcraft.mod.fvtm.sys.uni.KeyPress;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 /**
  * @author Ferdinand Calo' (FEX___96)

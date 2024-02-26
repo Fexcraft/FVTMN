@@ -1,8 +1,6 @@
 package net.fexcraft.mod.fvtm.packet;
 
-import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
-import net.fexcraft.mod.uni.world.EntityW;
 
 /**
  * @author Ferdinand Calo' (FEX___96)

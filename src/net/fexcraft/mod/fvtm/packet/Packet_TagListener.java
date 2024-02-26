@@ -1,10 +1,8 @@
 package net.fexcraft.mod.fvtm.packet;
 
 import io.netty.buffer.ByteBuf;
-import net.fexcraft.mod.fvtm.sys.uni.KeyPress;
 import net.fexcraft.mod.uni.tag.TagCW;
 
-import java.nio.Buffer;
 import java.nio.charset.StandardCharsets;
 
 /**

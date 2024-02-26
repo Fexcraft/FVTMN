@@ -3,7 +3,6 @@ package net.fexcraft.mod.fvtm.util;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.uni.tag.TagCW;
-import net.minecraft.nbt.NBTTagCompound;
 
 /**
  *
