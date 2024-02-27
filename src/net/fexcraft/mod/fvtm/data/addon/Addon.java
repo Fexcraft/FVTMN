@@ -65,11 +65,16 @@ public class Addon extends Content<Addon> {
 		license = map.getString("License", "All Rights Reserved");
 		if(EnvInfo.CLIENT){
 			if(!map.has("CreativeTabs")){
-				creativetabs.put(CTab.DEFAULT, CTab.create(this, CTab.DEFAULT));
+				creativetabs.put(CTab.DEFAULT, CTab.create(this, CTab.DEFAULT, "fvtm:decoration"));
+			}
+			else if(map.get("CreativeTabs").isArray()){
+				map.getArray("CreativeTabs").value.forEach(jsn -> {
+					creativetabs.put(jsn.string_value(), CTab.create(this, jsn.string_value(), "fvtm:decoration"));
+				});
 			}
 			else{
-				map.getArray("CreativeTabs").value.forEach(jsn -> {
-					creativetabs.put(jsn.string_value(), CTab.create(this, jsn.string_value()));
+				map.getMap("CreativeTabs").entries().forEach(entry -> {
+					creativetabs.put(entry.getKey(), CTab.create(this, entry.getKey(), entry.getValue().string_value()));
 				});
 			}
 		}
