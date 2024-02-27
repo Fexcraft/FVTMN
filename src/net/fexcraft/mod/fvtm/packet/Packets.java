@@ -28,12 +28,15 @@ public abstract class Packets {
 
 	public abstract TagCW readTag(ByteBuf buffer);
 
+	@Deprecated
 	/** Send BlockData Update Packet to all around. */
 	public abstract void send(BlockData blockdata, V3I pos, int dim);
 
+	@Deprecated
 	/** Send BlockData Update Packet to all around. */
 	public abstract void send(WorldW world, V3I pos);
 
+	@Deprecated
 	/** Send generic nbt packet to a vehicle. */
 	public abstract void send(VehicleInstance vehicleInstance, TagCW com);
 
