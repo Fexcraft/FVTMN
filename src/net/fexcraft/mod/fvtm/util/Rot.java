@@ -88,4 +88,8 @@ public class Rot {
 		return new Rot(vec.add(other.vec));
 	}
 
+	public V3D vec(){
+		return vec;
+	}
+
 }
