@@ -416,7 +416,8 @@ public abstract class FvtmResources {
 					return clazz.getConstructor().newInstance();
 				}
 				catch(Throwable e){
-					e.printStackTrace(); Static.stop();
+					FvtmLogger.log(e, "new model instance of " + clazz);
+					Static.stop();
 					return null;
 				}
 			});
@@ -427,7 +428,7 @@ public abstract class FvtmResources {
 			model.parse(data).lock();
 		}
 		catch(Exception e){
-			e.printStackTrace(); //Static.stop();
+			FvtmLogger.log(e, "model load of " + location);
 		}
 		return model;
 	}
@@ -489,7 +490,7 @@ public abstract class FvtmResources {
 			}
 		}
 		catch(Throwable e){
-			//e.printStackTrace();
+			FvtmLogger.log(e, "asset input steam of " + loc);
 		}
 		return close == null ? new Object[]{ stream } : new Object[]{ stream, close };
 	}
