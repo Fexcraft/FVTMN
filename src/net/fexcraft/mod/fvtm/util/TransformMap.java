@@ -6,7 +6,7 @@ import net.fexcraft.lib.common.math.Vec3f;
 
 public class TransformMap extends TreeMap<String, Vec3f> {
 
-	public static String[] TYPES;
+	public static String[] TYPES = new String[]{ "null" };
 
 	public TransformMap(int gltype){
 		super();
