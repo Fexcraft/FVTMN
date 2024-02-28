@@ -24,6 +24,13 @@ public abstract class FvtmLogger {
 		if(EnvInfo.DEV) LOGGER.log0(o);
 	}
 
+	public static void log(Throwable e, String info){
+		LOGGER.log0("ERROR: " + e.getCause() + " @ " + info);
+		for(StackTraceElement elm : e.getStackTrace()){
+			LOGGER.log0(elm);
+		}
+	}
+
 	public static final MessageSender LOG = new MessageSender(){
 
 		@Override
