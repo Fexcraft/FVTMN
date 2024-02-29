@@ -13,4 +13,10 @@ public abstract class Passenger extends EntityW {
 		return (FvtmWorld)getWorld();
 	}
 
+	public abstract void set(int veh, int seatid);
+
+	public abstract int vehicle();
+
+	public abstract int seat();
+
 }
