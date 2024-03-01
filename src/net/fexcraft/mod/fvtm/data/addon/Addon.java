@@ -88,9 +88,6 @@ public class Addon extends Content<Addon> {
 				supp_tex.put(entry.getKey(), new TextureSupply(entry.getKey(), entry.getValue().asMap()));
 			});
 		}
-		if(map.has("WireDecos")){
-			FvtmRegistry.WIRE_DECO_CACHE.put(getID().id(), map.getMap("WireDecos"));
-		}
 		if(map.has("Particles") && EnvInfo.CLIENT){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("Particles").entries()){
 				try{
