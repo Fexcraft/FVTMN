@@ -24,7 +24,7 @@ public enum ContentType {
 	RAILGAUGE(".gauge", "railgauges", RailGauge.class),
 	CLOTH(".cloth", "clothes", Cloth.class),
 	WIRE(".wire", "wires", WireType.class),
-	WIREDECO(".deco", "wires")
+	WIREDECO(".deco", "wires", WireDeco.class)
 	;
 
 	public String suffix;
@@ -54,6 +54,7 @@ public enum ContentType {
 			case RAILGAUGE: RAILGAUGES.register(content); return;
 			case CLOTH: CLOTHES.register(content); return;
 			case WIRE: WIRES.register(content); return;
+			case WIREDECO: WIREDECOS.register(content); return;
 			default: return;
 		}
 	}
