@@ -17,12 +17,7 @@ import net.fexcraft.mod.uni.IDLManager;
 public class WireModel extends DefaultModel {
 
 	public static final WireModel EMPTY = new WireModel();
-	public static final HashMap<String, WireModel> DECOS = new HashMap<>();
 	public HashMap<Integer, ArrayList<V3D[]>> wire_model = new HashMap<>();
-	protected IDL texture = FvtmRegistry.NULL_TEXTURE;
-	protected ArrayList<String> accepts = new ArrayList<>();
-	protected String decotype = "relay";
-	protected String key;
 	public boolean wire_nocull = false;
 
 	@Override
@@ -82,43 +77,6 @@ public class WireModel extends DefaultModel {
 			wire_model.get(idx).add(new V3D[]{ new V3D(start_x + tl.x, start_y - h + bl.y, 0).scale(scale), new V3D(start_x + width + tr.x, start_y - h + br.y, 0).scale(scale) });
 		}
 		if(mirror) addWireRectShape(idx, scale, -start_x - width, start_y, width, height, tl, tr, bl, br, false);
-	}
-
-	public void texture(IDL resloc){
-		texture = resloc;
-	}
-
-	public void texture(String texloc){
-		texture = IDLManager.getIDLCached(texloc);
-	}
-
-	public IDL texture(){
-		return texture;
-	}
-
-	public void accepts(ArrayList<String> array){
-		accepts = array;
-	}
-
-	public boolean accepts(String wire_type){
-		return accepts.size() == 0 || accepts.contains(wire_type);
-	}
-
-	public void decotype(String type){
-		decotype = type;
-	}
-
-	public String decotype(){
-		return decotype;
-	}
-
-	public WireModel key(String key){
-		this.key = key;
-		return this;
-	}
-
-	public String key(){
-		return key;
 	}
 
 }
