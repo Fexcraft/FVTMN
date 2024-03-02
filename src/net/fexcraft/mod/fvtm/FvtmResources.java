@@ -1,18 +1,5 @@
 package net.fexcraft.mod.fvtm;
 
-import static net.fexcraft.mod.fvtm.FvtmLogger.LOGGER;
-import static net.fexcraft.mod.fvtm.FvtmRegistry.*;
-
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
-
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonMap;
@@ -42,37 +29,41 @@ import net.fexcraft.mod.fvtm.function.block.BoolBlockFunction;
 import net.fexcraft.mod.fvtm.function.block.SeatBlockFunction;
 import net.fexcraft.mod.fvtm.function.part.*;
 import net.fexcraft.mod.fvtm.handler.DefaultPartInstallHandler;
+import net.fexcraft.mod.fvtm.handler.TireInstallationHandler;
+import net.fexcraft.mod.fvtm.handler.WheelInstallationHandler;
 import net.fexcraft.mod.fvtm.model.*;
 import net.fexcraft.mod.fvtm.model.content.BlockModel;
 import net.fexcraft.mod.fvtm.model.content.ClothModel;
 import net.fexcraft.mod.fvtm.model.content.VehicleModel;
 import net.fexcraft.mod.fvtm.model.content.WireModel;
-import net.fexcraft.mod.fvtm.model.loaders.ClassModelLoader;
-import net.fexcraft.mod.fvtm.model.loaders.FMFModelLoader;
-import net.fexcraft.mod.fvtm.model.loaders.JTMTModelLoader;
-import net.fexcraft.mod.fvtm.model.loaders.ObjModelLoader;
-import net.fexcraft.mod.fvtm.model.loaders.SMPTBJavaModelLoader;
+import net.fexcraft.mod.fvtm.model.loaders.*;
 import net.fexcraft.mod.fvtm.sys.uni.KeyPress;
 import net.fexcraft.mod.fvtm.sys.uni.SeatInstance;
+import net.fexcraft.mod.fvtm.util.CTab;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.fvtm.util.ZipUtils;
 import net.fexcraft.mod.fvtm.util.function.InventoryBlockFunction;
 import net.fexcraft.mod.fvtm.util.function.InventoryFunction;
-import net.fexcraft.mod.fvtm.function.part.TireFunction;
 import net.fexcraft.mod.fvtm.util.function.SetBlockFunction;
 import net.fexcraft.mod.fvtm.util.handler.BogieInstallationHandler;
 import net.fexcraft.mod.fvtm.util.handler.ConnectorInstallationHandler;
-import net.fexcraft.mod.fvtm.handler.TireInstallationHandler;
-import net.fexcraft.mod.fvtm.handler.WheelInstallationHandler;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
-import net.fexcraft.mod.fvtm.util.CTab;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
 import org.apache.commons.io.FilenameUtils;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
+
+import static net.fexcraft.mod.fvtm.FvtmLogger.LOGGER;
+import static net.fexcraft.mod.fvtm.FvtmRegistry.*;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -84,7 +75,7 @@ public abstract class FvtmResources {
 	public static final IDL NULL_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/null.png");
 	public static final IDL WHITE_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/white.png");
 
-    public void init(){
+	public void init(){
 		FVTM_CONFIG_DIR = new File(FvtmRegistry.CONFIG_DIR, "/fvtm/");
 		if(!FVTM_CONFIG_DIR.exists()) FVTM_CONFIG_DIR.mkdirs();
 		//if(EnvInfo.is120()){
@@ -318,13 +309,33 @@ public abstract class FvtmResources {
 		return ADDONS.get(INTERNAL_ADDON_ID).getCreativeTab(tabid);
 	}
 
-	public abstract StackWrapper newStack(ItemWrapper item);
+	public abstract StackWrapper newStack0(ItemWrapper item);
 
-	public abstract StackWrapper newStack(Object local);
+	public abstract StackWrapper newStack0(TagCW com);
+
+	public abstract StackWrapper newStack0(Object item);
 
 	public static StackWrapper newStack(IDL id){
-		return INSTANCE.newStack(FvtmRegistry.getItem(id.colon()));
+		return INSTANCE.newStack0(FvtmRegistry.getItem(id.colon()));
 	}
+
+	public static StackWrapper newStack(TagCW com){
+		return INSTANCE.newStack0(com);
+	}
+
+	public static StackWrapper newStack(Object item){
+		return INSTANCE.newStack0(item);
+	}
+
+	public static StackWrapper newStack(ItemWrapper item){
+		return INSTANCE.newStack0(item);
+	}
+
+	public static StackWrapper wrapStack(Object stack){
+		return INSTANCE.wrapStack0(stack);
+	}
+
+	public abstract StackWrapper wrapStack0(Object stack);
 
 	public static JsonMap getJson(String loc){
 		try{
