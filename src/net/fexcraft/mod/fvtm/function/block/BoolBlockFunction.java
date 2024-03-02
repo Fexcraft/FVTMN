@@ -7,7 +7,7 @@ import net.fexcraft.mod.fvtm.data.block.Block;
 import net.fexcraft.mod.fvtm.data.block.BlockEntity;
 import net.fexcraft.mod.fvtm.data.block.BlockFunction;
 import net.fexcraft.mod.uni.tag.TagCW;
-import net.fexcraft.mod.uni.world.BlockSide;
+import net.fexcraft.mod.uni.world.CubeSide;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.StateWrapper;
 import net.fexcraft.mod.uni.world.WorldW;
@@ -61,7 +61,7 @@ public class BoolBlockFunction extends BlockFunction {
 	}
 
 	@Override
-	public boolean onClick(WorldW world, V3I pos, V3D hit, StateWrapper state, BlockSide side, EntityW player, boolean mainhand){
+	public boolean onClick(WorldW world, V3I pos, V3D hit, StateWrapper state, CubeSide side, EntityW player, boolean mainhand){
 		if(!mainhand) return false;
 		value = !value;
 		if(world.isTilePresent(pos)) sendClientUpdate(world, pos);
