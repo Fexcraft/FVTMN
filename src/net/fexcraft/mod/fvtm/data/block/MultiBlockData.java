@@ -28,7 +28,7 @@ public class MultiBlockData extends ContentData<MultiBlock, MultiBlockData> {
 	public TagCW write(TagCW compound){
 		if(compound == null) compound = TagCW.create();
 		for(Map.Entry<String, InvHandler> entry : inventories.entrySet()){
-			String pre = entry.getValue().getBlkSavePrefix();
+			String pre = entry.getValue().getSavePrefix();
 			entry.getValue().save(compound, pre + entry.getKey());
 		}
 		if(script != null){
@@ -41,7 +41,7 @@ public class MultiBlockData extends ContentData<MultiBlock, MultiBlockData> {
 	@Override
 	public MultiBlockData read(TagCW compound){
 		for(Map.Entry<String, InvHandler> entry : inventories.entrySet()){
-			String pre = entry.getValue().getBlkSavePrefix();
+			String pre = entry.getValue().getSavePrefix();
 			if(!compound.has(pre + entry.getKey())) continue;
 			entry.getValue().load(compound, pre + entry.getKey());
 		}
