@@ -57,7 +57,7 @@ public class FvtmRegistry {
 	public static final Registry<WireDeco> WIREDECOS = new Registry<>();
 	public static final Registry<Container> CONTAINERS = new Registry<>();
 	public static final Registry<RailGauge> RAILGAUGES = new Registry<>();
-	public static final Registry<MultiBlock> MULTIBLOCKS  = new Registry<>();
+	public static final Registry<MultiBlock> MULTIBLOCKS = new Registry<>();
 	public static TreeMap<String, TreeMap<String, ArrayList<Fuel>>> SORTED_FUELS = new TreeMap<>();
 	public static final HashMap<String, Particle> PARTICLES = new HashMap<>();
 	public static final HashMap<String, DecorationData> DECORATIONS = new HashMap<>();
@@ -96,6 +96,15 @@ public class FvtmRegistry {
 
 	public static Fuel getFuel(IDL idl){
 		return FUELS.get(idl);
+	}
+
+	public static String getFuelName(IDL id){
+		return getFuelName(id.colon());
+	}
+
+	public static String getFuelName(String id){
+		Fuel fuel = getFuel(id);
+		return fuel == null ? "not-found" : fuel.getName();
 	}
 
 	public static ItemWrapper getItem(String id){
