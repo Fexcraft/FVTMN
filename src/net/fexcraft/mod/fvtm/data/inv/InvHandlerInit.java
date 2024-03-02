@@ -36,7 +36,10 @@ public class InvHandlerInit extends InvHandler{
 				return InvHandlerItem.IMPL.getConstructor(String.class, int.class, int.class)
 					.newInstance(initarg, capacity, min);
 			}
-			else if(type.isFluid()) return new InvHandlerFluid(initarg, capacity);
+			else if(type.isFluid()){
+				return InvHandlerFluid.IMPL.getConstructor(String.class, int.class)
+					.newInstance(initarg, capacity);
+			}
 			else if(type.isContainer()) return null;
 			else if(type.isVariable()) return new InvHandlerVar(initarg, capacity);
 		}
