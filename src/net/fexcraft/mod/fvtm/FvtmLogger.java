@@ -25,7 +25,7 @@ public abstract class FvtmLogger {
 	}
 
 	public static void log(Throwable e, String info){
-		LOGGER.log0("ERROR: " + e.getCause() + " @ " + info);
+		LOGGER.log0("ERROR: " + e.getMessage() + " / " + e.getCause() + " @ " + info);
 		for(StackTraceElement elm : e.getStackTrace()){
 			LOGGER.log0(elm);
 		}
