@@ -87,12 +87,12 @@ public abstract class FvtmResources {
     public void init(){
 		FVTM_CONFIG_DIR = new File(FvtmRegistry.CONFIG_DIR, "/fvtm/");
 		if(!FVTM_CONFIG_DIR.exists()) FVTM_CONFIG_DIR.mkdirs();
-		if(EnvInfo.is120()){
+		//if(EnvInfo.is120()){
 			JsonMap map = new JsonMap();
 			map.add("ID", "fvtm");
 			map.add("Name", "FVTM Internal Addon");
 			ADDONS.register(new Addon(null, AddonLocation.INTERNAL).parse(map));
-		}
+		//}
 		INSTANCE.searchASMPacks();
 		boolean failed = searchPacksInResourcePacks();
 		if(!EnvInfo.CLIENT || failed){
@@ -317,7 +317,7 @@ public abstract class FvtmResources {
 			Addon addon = getAddon(split[0]);
 			if(addon != null) return addon.getCreativeTab(split[1]);
 		}
-		return ADDONS.get("fvtm:fvtm").getCreativeTab(tabid);
+		return ADDONS.get(INTERNAL_ADDON_ID).getCreativeTab(tabid);
 	}
 
 	public abstract StackWrapper newStack(ItemWrapper item);
