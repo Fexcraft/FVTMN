@@ -7,6 +7,7 @@ import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.inv.InvHandler;
+import net.fexcraft.mod.fvtm.data.inv.InvHandlerInit;
 import net.fexcraft.mod.fvtm.data.inv.InvType;
 import net.fexcraft.mod.fvtm.data.root.Colorable.ColorHolder;
 import net.fexcraft.mod.fvtm.data.root.ItemTextureable;
@@ -58,7 +59,7 @@ public class Container extends Content<Container> implements TextureHolder, Colo
 			channels.put("secondary", RGB.WHITE.copy());
 		}
 		keytype = map.has("KeyType") ? IDLManager.getIDLCached(map.getString("KeyType", null)) : null;
-		invtype = new InvHandler(InvType.parse(map.getString("InventoryType", "item"), false));
+		invtype = new InvHandlerInit(InvType.parse(map.getString("InventoryType", "item"), false));
 		invtype.setCapacity(map.getInteger("InventorySize", invtype.type.isItem() ? 8 : 16000));
         if(invtype.type.isFluid() && map.has("FluidType")) invtype.setArg(map.get("FluidType").string_value());
         if(invtype.type.isItem() &&  map.has("ContentFilter")) invtype.setArg(map.get("ContentFilter").string_value());
