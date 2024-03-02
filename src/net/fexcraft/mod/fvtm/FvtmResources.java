@@ -26,6 +26,8 @@ import net.fexcraft.mod.fvtm.data.addon.AddonLocation;
 import net.fexcraft.mod.fvtm.data.attribute.*;
 import net.fexcraft.mod.fvtm.data.block.Block;
 import net.fexcraft.mod.fvtm.data.block.BlockData;
+import net.fexcraft.mod.fvtm.data.block.MultiBlock;
+import net.fexcraft.mod.fvtm.data.block.MultiBlockData;
 import net.fexcraft.mod.fvtm.data.container.Container;
 import net.fexcraft.mod.fvtm.data.container.ContainerData;
 import net.fexcraft.mod.fvtm.data.part.Part;
@@ -535,6 +537,16 @@ public abstract class FvtmResources {
 		Block block = BLOCKS.get(com.getString("Block"));
 		if(block == null) return null;
 		return new BlockData(block).read(com);
+	}
+
+	public static MultiBlockData getMultiBlockData(Object com){
+		return getMultiBlockData(TagCW.wrap(com));
+	}
+
+	public static MultiBlockData getMultiBlockData(TagCW com){
+		MultiBlock block = MULTIBLOCKS.get(com.getString("Block"));
+		if(block == null) return null;
+		return new MultiBlockData(block).read(com);
 	}
 
 	public static BlockData getBlockData(Object com){
