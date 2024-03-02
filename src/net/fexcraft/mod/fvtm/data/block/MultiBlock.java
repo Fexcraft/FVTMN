@@ -8,6 +8,7 @@ import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.inv.InvHandler;
+import net.fexcraft.mod.fvtm.data.inv.InvHandlerInit;
 import net.fexcraft.mod.fvtm.data.inv.InvType;
 import net.fexcraft.mod.fvtm.data.root.ItemTextureable;
 import net.fexcraft.mod.fvtm.data.root.WithItem;
@@ -50,7 +51,7 @@ public class MultiBlock extends Content<MultiBlock> implements WithItem, ItemTex
 			JsonMap invs = map.getMap("Inventories");
 			for(Entry<String, JsonValue<?>> entry : invs.entries()){
 				JsonArray array = entry.getValue().asArray();
-				InvHandler handler = new InvHandler(InvType.parse(array.get(0).string_value(), true));
+				InvHandler handler = new InvHandlerInit(InvType.parse(array.get(0).string_value(), true));
 				handler.setCapacity(array.get(1).integer_value());
 				if(array.size() > 2){
 					handler.setArg(array.get(2).string_value());
