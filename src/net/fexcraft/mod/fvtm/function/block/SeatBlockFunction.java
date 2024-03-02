@@ -10,7 +10,7 @@ import net.fexcraft.mod.fvtm.data.block.BlockData;
 import net.fexcraft.mod.fvtm.data.block.BlockFunction;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.uni.item.StackWrapper;
-import net.fexcraft.mod.uni.world.BlockSide;
+import net.fexcraft.mod.uni.world.CubeSide;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.StateWrapper;
 import net.fexcraft.mod.uni.world.WorldW;
@@ -43,7 +43,7 @@ public class SeatBlockFunction extends BlockFunction.StaticBlockFunction {
     }
 
     @Override
-    public boolean onClick(WorldW world, V3I pos, V3D hit, StateWrapper state, BlockSide side, EntityW player, boolean main){
+    public boolean onClick(WorldW world, V3I pos, V3D hit, StateWrapper state, CubeSide side, EntityW player, boolean main){
         if(!main) return false;
         if(!player.isRiding()){
             world.spawnBlockSeat(offset.add(pos.x + 0.5, pos.y, pos.z + 0.5), player);
