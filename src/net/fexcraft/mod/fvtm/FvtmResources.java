@@ -292,9 +292,7 @@ public abstract class FvtmResources {
 
 	public abstract void createContentItems();
 
-	public static void loadRecipes(){
-
-	}
+	public abstract void registerRecipes();
 
 	public abstract ItemWrapper getItemWrapper(String id);
 
