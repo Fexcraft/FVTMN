@@ -1,4 +1,4 @@
-# FVTM-Core
+# FVTM-N
 Neutral minecraft-independent part of FVTM
 
 ## Links
