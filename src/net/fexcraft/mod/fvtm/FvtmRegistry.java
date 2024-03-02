@@ -43,6 +43,7 @@ public class FvtmRegistry {
 	public static IDL NONE_CLOTH_MAT;
 	public static final IDL NULL_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/null.png");
 	public static final IDL WHITE_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/white.png");
+	public static final IDL STANDARD_GAUGE = IDLManager.getIDLCached("fvtm:standard");
 	//
 	public static final Registry<Addon> ADDONS = new Registry<>();
 	public static final Registry<Fuel> FUELS = new Registry<>();
