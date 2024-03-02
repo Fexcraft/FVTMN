@@ -12,6 +12,7 @@ import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
 import net.fexcraft.mod.fvtm.data.block.Block;
 import net.fexcraft.mod.fvtm.data.block.BlockFunction;
+import net.fexcraft.mod.fvtm.data.block.MultiBlock;
 import net.fexcraft.mod.fvtm.data.container.Container;
 import net.fexcraft.mod.fvtm.data.container.ContainerData;
 import net.fexcraft.mod.fvtm.data.part.Part;
@@ -55,6 +56,7 @@ public class FvtmRegistry {
 	public static final Registry<WireDeco> WIREDECOS = new Registry<>();
 	public static final Registry<Container> CONTAINERS = new Registry<>();
 	public static final Registry<RailGauge> RAILGAUGES = new Registry<>();
+	public static final Registry<MultiBlock> MULTIBLOCKS  = new Registry<>();
 	public static TreeMap<String, TreeMap<String, ArrayList<Fuel>>> SORTED_FUELS = new TreeMap<>();
 	public static final HashMap<String, Particle> PARTICLES = new HashMap<>();
 	public static final HashMap<String, DecorationData> DECORATIONS = new HashMap<>();
