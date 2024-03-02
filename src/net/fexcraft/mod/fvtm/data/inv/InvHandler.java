@@ -55,9 +55,9 @@ public abstract class InvHandler {
 
 	public abstract String getContentDesc();
 
-	public abstract void dropAllAt(EntityW entity);
+	public void dropAllAt(EntityW entity){}
 
-	public abstract void dropAllAt(WorldW world, V3I pos);
+	public void dropAllAt(WorldW world, V3I pos){}
 
 	public abstract String getSavePrefix();
 
