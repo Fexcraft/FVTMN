@@ -78,15 +78,15 @@ public abstract class FvtmResources {
 	public void init(){
 		FVTM_CONFIG_DIR = new File(FvtmRegistry.CONFIG_DIR, "/fvtm/");
 		if(!FVTM_CONFIG_DIR.exists()) FVTM_CONFIG_DIR.mkdirs();
-		//if(EnvInfo.is120()){
-			JsonMap map = new JsonMap();
-			map.add("ID", INTERNAL_ADDON_ID.colon());
-			map.add("Name", "FVTM Internal Addon");
-			JsonMap ctabs = new JsonMap();
-			ctabs.add("default", "fvtm:toolbox" + (EnvInfo.is120() ? "_0" : ""));
-			map.add("CreativeTabs", ctabs);
-			ADDONS.register(new Addon(null, AddonLocation.INTERNAL).parse(map));
-		//}
+		//
+		JsonMap map = new JsonMap();
+		map.add("ID", INTERNAL_ADDON_ID.colon());
+		map.add("Name", "FVTM Internal Addon");
+		JsonMap ctabs = new JsonMap();
+		ctabs.add("default", "fvtm:toolbox" + (EnvInfo.is120() ? "_0" : ""));
+		map.add("CreativeTabs", ctabs);
+		ADDONS.register(new Addon(null, AddonLocation.INTERNAL).parse(map));
+		//
 		INSTANCE.searchASMPacks();
 		boolean failed = searchPacksInResourcePacks();
 		if(!EnvInfo.CLIENT || failed){
@@ -249,20 +249,24 @@ public abstract class FvtmResources {
 						if(entry == null) break;
 						lastentry = entry.getName();
 						if(entry.getName().startsWith(path) && entry.getName().endsWith(contype.suffix)){
-							JsonMap map = JsonHandler.parse(zip.getInputStream(entry));
-							Content<?> content = (Content<?>)contype.impl.newInstance().parse(map);
-							if(content == null){
-								IDL idl = ContentConfigUtil.getID(map);
-								LOGGER.log("Errors while loading config from zip: " + addon.getFile() + " for " + idl.colon());
+							try{
+								JsonMap map = JsonHandler.parse(zip.getInputStream(entry));
+								Content<?> content = (Content<?>)contype.impl.newInstance().parse(map);
+								if(content == null){
+									IDL idl = ContentConfigUtil.getID(map);
+									LOGGER.log("Errors while loading config from zip: " + addon.getFile() + " for " + idl.colon());
+								}
+								contype.register(content);
+								if(EnvInfo.CLIENT) checkForCustomModel(addon.getLocation(), contype, content);
 							}
-							contype.register(content);
-							if(EnvInfo.CLIENT) checkForCustomModel(addon.getLocation(), contype, content);
+							catch(Exception e){
+								FvtmLogger.log(e, "config parsing of " + entry.getName());
+							}
 						}
 					}
 				}
-				catch (Exception e){
-					LOGGER.log("Errors while loading config from zip: " + addon.getFile() + " - " + lastentry); //Static.stop();
-					if(EnvInfo.DEV) e.printStackTrace();
+				catch(Exception e){
+					FvtmLogger.log(e, "while loading config from zip " + addon.getFile() + " / " + lastentry);
 				}
 			}
 		}
@@ -352,7 +356,7 @@ public abstract class FvtmResources {
 	}
 
 	public abstract JsonMap getJsonC(String loc);
-	
+
 	//-V-// Model Loading //-V-//
 
 	private static boolean initialmodelload;
@@ -366,7 +370,7 @@ public abstract class FvtmResources {
 	}
 
 	public abstract void initModelPrograms();
-	
+
 	public void initModels(){
 		PARTS.forEach(part -> part.loadModel());
 		VEHICLES.forEach(vehicle -> vehicle.loadModel());
@@ -420,7 +424,8 @@ public abstract class FvtmResources {
 				return model;
 			}
 			catch(Throwable e){
-				e.printStackTrace(); Static.stop();
+				e.printStackTrace();
+				Static.stop();
 				return getEmptyModelForClass(clazz);
 			}
 		}
