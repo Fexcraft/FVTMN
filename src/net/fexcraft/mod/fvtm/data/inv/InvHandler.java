@@ -83,5 +83,5 @@ public abstract class InvHandler {
 
 	public void setVarValue(int i){}
 
-	public void update(Object tile, String key){}
+	public void update(Object tile, String key, boolean remote){}
 }
