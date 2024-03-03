@@ -41,6 +41,7 @@ public class FvtmRegistry {
 	//
 	public static IDL INTERNAL_ADDON_ID = IDLManager.getIDLCached("fvtm:fvtm");
 	public static IDL NONE_CLOTH_MAT;
+	public static final IDL AIR = IDLManager.getIDLCached("minecraft:air");
 	public static final IDL NULL_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/null.png");
 	public static final IDL WHITE_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/white.png");
 	public static final IDL STANDARD_GAUGE = IDLManager.getIDLCached("fvtm:standard");
