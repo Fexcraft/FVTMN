@@ -5,6 +5,7 @@ package net.fexcraft.mod.fvtm.ui;
  */
 public class UIKey {
 
+	public static final int ID12_TOOLBOX_COLORS = 600;
 	public static final int ID12_DECORATION_EDITOR = 713;
 	public static final int ID12_VEHICLE_MAIN = 930;
 	public static final int ID12_BLOCK_INVENTORY_ITEM = 961;
@@ -13,6 +14,7 @@ public class UIKey {
 	public static final int ID12_MULTIBLOCK_INVENTORY_ITEM = 9511;
 	public static final int ID12_MULTIBLOCK_INVENTORY_FLUID = 9512;
 	public static final int ID12_MULTIBLOCK_INVENTORY_VAR = 9513;
+	public static final UIKey TOOLBOX_COLORS = new UIKey(ID12_TOOLBOX_COLORS, "fvtm:toolbox_colors");
 	public static final UIKey VEHICLE_MAIN = new UIKey(ID12_VEHICLE_MAIN, "fvtm:vehicle_main");
 	public static final UIKey DECORATION_EDITOR = new UIKey(ID12_DECORATION_EDITOR, "fvtm:decoration_editor");
 	public static final UIKey BLOCK_INVENTORY_ITEM = new UIKey(ID12_BLOCK_INVENTORY_ITEM, "fvtm:block_inventory_item");
