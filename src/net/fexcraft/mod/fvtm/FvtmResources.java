@@ -82,6 +82,9 @@ public abstract class FvtmResources {
 			JsonMap map = new JsonMap();
 			map.add("ID", "fvtm");
 			map.add("Name", "FVTM Internal Addon");
+			JsonMap ctabs = new JsonMap();
+			ctabs.add("default", "fvtm:toolbox" + (EnvInfo.is120() ? "_0" : ""));
+			map.add("CreativeTabs", ctabs);
 			ADDONS.register(new Addon(null, AddonLocation.INTERNAL).parse(map));
 		//}
 		INSTANCE.searchASMPacks();
