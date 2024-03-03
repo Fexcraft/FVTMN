@@ -39,12 +39,12 @@ public class FvtmRegistry {
 	public static boolean is112;
 	public static boolean is120;
 	//
-	public static IDL INTERNAL_ADDON_ID = IDLManager.getIDLCached("fvtm:fvtm");
+	public static IDL INTERNAL_ADDON_ID;
 	public static IDL NONE_CLOTH_MAT;
-	public static final IDL AIR = IDLManager.getIDLCached("minecraft:air");
-	public static final IDL NULL_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/null.png");
-	public static final IDL WHITE_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/white.png");
-	public static final IDL STANDARD_GAUGE = IDLManager.getIDLCached("fvtm:standard");
+	public static IDL AIR;
+	public static IDL NULL_TEXTURE;
+	public static IDL WHITE_TEXTURE;
+	public static IDL STANDARD_GAUGE;
 	//
 	public static final Registry<Addon> ADDONS = new Registry<>();
 	public static final Registry<Fuel> FUELS = new Registry<>();
@@ -82,6 +82,12 @@ public class FvtmRegistry {
 		CONFIG_DIR = conf;
 		if(!CONFIG_DIR.exists()) CONFIG_DIR.mkdirs();
 		Config.init(new File(conf, "fvtm.json"));
+		//
+		INTERNAL_ADDON_ID = IDLManager.getIDLCached("fvtm:fvtm");
+		AIR = IDLManager.getIDLCached("minecraft:air");
+		NULL_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/null.png");
+		WHITE_TEXTURE = IDLManager.getIDLNamed("No Texture;fvtm:textures/entity/white.png");
+		STANDARD_GAUGE = IDLManager.getIDLCached("fvtm:standard");
 	}
 
 	public static Addon getAddon(String id){
