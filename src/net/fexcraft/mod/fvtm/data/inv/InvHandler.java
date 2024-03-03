@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fvtm.data.inv;
 
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fvtm.util.handler.ContentFilter;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WorldW;
