@@ -77,11 +77,11 @@ public class VehicleInstance {
 		return point.getPrevPivot();
 	}
 
-	public boolean onKeyPress(KeyPress key, Seat seat, EntityW sender, boolean state){
+	public boolean onKeyPress(KeyPress key, Seat seat, Passenger sender, boolean state){
 		return onKeyPress(key, seat, sender, false);
 	}
 
-	public boolean onKeyPress(KeyPress key, Seat seat, EntityW player){
+	public boolean onKeyPress(KeyPress key, Seat seat, Passenger player){
 		//TODO script key press event
 		if(!seat.driver && key.driver_only()) return false;
 		if(entity.isOnClient() && !key.toggables()){
