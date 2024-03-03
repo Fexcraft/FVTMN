@@ -4,6 +4,7 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.packet.Packets;
+import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.*;
@@ -46,7 +47,7 @@ public abstract class BlockFunction {
 
     public void addInformation(StackWrapper stack, WorldW world, BlockData data, List<String> list, boolean adv){}
 
-    public boolean onClick(WorldW world, V3I pos, V3D hit, StateWrapper state, CubeSide side, EntityW player, boolean mainhand){
+    public boolean onClick(WorldW world, V3I pos, V3D hit, StateWrapper state, CubeSide side, Passenger player, boolean mainhand){
         return false;
     }
 
