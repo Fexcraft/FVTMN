@@ -22,9 +22,10 @@ public class WireModel extends DefaultModel {
 
 	@Override
 	public WireModel parse(ModelData data){
+		super.parse(data);
 		wire_nocull = data.getBoolean("NoWireCulling", false);
+		if(!data.has("Wire") || !data.get("Wire").isArray()) return this;
 		List<String> wires = data.getArray("Wire").toStringList();
-		if(wires.isEmpty()) return this;
 		for(int i = 0; i < wires.size(); i++){
 			String[] args = wires.get(i).trim().split(" ");
 			boolean rect = args[0].equals("rect") || args[0].equals("flat");
