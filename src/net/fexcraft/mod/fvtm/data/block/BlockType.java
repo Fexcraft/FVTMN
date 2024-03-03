@@ -7,6 +7,7 @@ public enum BlockType {
 
     GENERIC_4ROT(4),
     GENERIC_4X4ROT(44),
+    GENERIC_8ROT(8),
     GENERIC_16ROT(16),
     GENERIC_SIMPLE(0),
     GENERIC_2VAR(0),
@@ -57,6 +58,9 @@ public enum BlockType {
                 case 5: return 0;
             }
         }
+        else if(rotations == 8){
+            return state * -45 + 90;
+        }
         else if(rotations == 16){
             return state * -22.5 + 90;
         }
@@ -86,6 +90,10 @@ public enum BlockType {
 
     public boolean is4Rot(){
         return rotations == 4;
+    }
+
+    public boolean is8Rot(){
+        return rotations == 8;
     }
 
     public boolean is16Rot(){
