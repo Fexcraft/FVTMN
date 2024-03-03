@@ -80,7 +80,7 @@ public abstract class FvtmResources {
 		if(!FVTM_CONFIG_DIR.exists()) FVTM_CONFIG_DIR.mkdirs();
 		//if(EnvInfo.is120()){
 			JsonMap map = new JsonMap();
-			map.add("ID", "fvtm");
+			map.add("ID", INTERNAL_ADDON_ID.colon());
 			map.add("Name", "FVTM Internal Addon");
 			JsonMap ctabs = new JsonMap();
 			ctabs.add("default", "fvtm:toolbox" + (EnvInfo.is120() ? "_0" : ""));
