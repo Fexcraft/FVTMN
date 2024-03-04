@@ -89,7 +89,7 @@ public class ContentConfigUtil {
 		if(map.has("Texture")){
 			list.add(IDLManager.getIDLNamed(map.get("Texture", "No Texture;fvtm:textures/entity/null.png")));
 		}
-		if(map.has("Textures")){
+		if(map.has("Textures") && map.get("Textures").isArray()){
 			for(JsonValue<?> tex : map.get("Textures").asArray().value){
 				list.add(IDLManager.getIDLNamed(tex.string_value()));
 			}
