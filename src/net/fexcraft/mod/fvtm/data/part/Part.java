@@ -68,7 +68,7 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 			}
 		}
 		else categories = new ArrayList<>();
-		if(map.has("Attributes")){
+		if(map.has("Attributes") && map.get("Attributes").isMap()){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("Attributes").entries()){
 				Attribute<?> attr = Attribute.parse(entry.getKey(), entry.getValue().asMap());
 				if(attr != null) attributes.put(attr.id, attr);
@@ -80,7 +80,7 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 				attr_mods.put(entry.getKey(), entry.getValue().string_value());
 			}
 		}
-		if(map.has("Functions")){
+		if(map.has("Functions") && map.get("Functions").isMap()){
 			JsonMap funcs = map.getMap("Functions");
 			for(Entry<String, JsonValue<?>> entry : funcs.entries()){
 				PartFunction fun = FvtmResources.getFunction(entry.getKey());
@@ -93,7 +93,7 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 		installhandler = PartInstallHandler.getHandler(instid);
 		installhandler_data = installhandler.parseData(inst != null && inst.isMap() ? inst.asMap() : new JsonMap());
 		//
-		if(map.has("SwivelPoints")){
+		if(map.has("SwivelPoints") && map.get("SwivelPoints").isMap()){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("SwivelPoints").entries()){
 				SwivelPoint point = new SwivelPoint(entry.getKey(), entry.getValue().asMap());
 				swivelpoints.put(entry.getKey(), point);
