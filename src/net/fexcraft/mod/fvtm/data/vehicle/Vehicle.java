@@ -92,7 +92,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 		}
 		maxkeys = map.getInteger("MaxKeys", 5);
 		keytype = map.has("KeyType") ? IDLManager.getIDLCached(map.getString("KeyType", null)) : null;
-		if(map.has("Attributes")){
+		if(map.has("Attributes") && map.get("Attributes").isMap()){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("Attributes").entries()){
 				Attribute<?> attr = Attribute.parse(entry.getKey(), entry.getValue().asMap());
 				if(attr != null) attributes.put(attr.id, attr);
@@ -111,7 +111,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 				attri.icons.putAll(attr.icons);
 			}
 		}
-		if(map.has("WheelPositions")){
+		if(map.has("WheelPositions") && map.get("WheelPositions").isMap()){
 			for(Entry<String, JsonValue<?>> entry : map.get("WheelPositions").asMap().entries()){
 				wheelpos.put(entry.getKey(), new WheelSlot(entry.getValue().asMap()));
 			}
@@ -132,7 +132,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 				installed.put(entry.getKey(), IDLManager.getIDLCached(entry.getValue().string_value()));
 			}
 		}
-		if(map.has("SwivelPoints")){
+		if(map.has("SwivelPoints") && map.get("SwivelPoints").isMap()){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("SwivelPoints").entries()){
 				SwivelPoint point = new SwivelPoint(entry.getKey(), entry.getValue().asMap());
 				swivelpoints.put(entry.getKey(), point);
@@ -153,7 +153,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 			liftingpoints.put("ph0", new LiftingPoint("ph0", new V3D(0, 0, -20), null, 0));
 			liftingpoints.put("ph1", new LiftingPoint("ph1", new V3D(0, 0, 20), null, 0));
 		}
-		partslots = new PartSlots(map.getMap("PartSlots"));
+		partslots = new PartSlots(map.has("PartSlots") && map.get("PartSlots").isMap() ? map.getMap("PartSlots") : new JsonMap());
 		if(EnvInfo.CLIENT){
 			modelid = map.getString("Model", null);
 			modeldata = new ModelData(map);
