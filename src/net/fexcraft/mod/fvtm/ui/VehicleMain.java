@@ -31,21 +31,39 @@ public class VehicleMain extends UserInterface {
 	public boolean onAction(UIButton button, String id, int l, int t, int x, int y, int mb){
 		switch(id){
 			case "status":{
+				TagCW tag = TagCW.create();
+				tag.set("open", "info");
+				container.SEND_TO_SERVER.accept(tag);
 				break;
 			}
 			case "fuel":{
+				TagCW tag = TagCW.create();
+				tag.set("open", "fuel");
+				container.SEND_TO_SERVER.accept(tag);
 				break;
 			}
 			case "attributes":{
+				TagCW tag = TagCW.create();
+				tag.set("open", "attributes");
+				container.SEND_TO_SERVER.accept(tag);
 				break;
 			}
 			case "inventories":{
+				TagCW tag = TagCW.create();
+				tag.set("open", "inventories");
+				container.SEND_TO_SERVER.accept(tag);
 				break;
 			}
 			case "containers":{
+				TagCW tag = TagCW.create();
+				tag.set("open", "containers");
+				container.SEND_TO_SERVER.accept(tag);
 				break;
 			}
 			case "connectors":{
+				TagCW tag = TagCW.create();
+				tag.set("open", "connectors");
+				container.SEND_TO_SERVER.accept(tag);
 				break;
 			}
 		}
