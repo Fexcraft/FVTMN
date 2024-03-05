@@ -103,7 +103,8 @@ public class ToolboxPainter extends UserInterface {
 				updateColors();
 				break;
 			}
-			case "pal_hor":{
+			case "pal_hor":
+			case "pal_save": {
 				int idx = (x - button.x) / button.palsize[0];
 				if(idx < 0) idx = 0;
 				if(idx >= button.palette[0].length) idx = button.palette[0].length - 1;
