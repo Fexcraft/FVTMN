@@ -20,6 +20,18 @@ public abstract class FvtmLogger {
 		LOGGER.log0(o);
 	}
 
+	public static void log(Iterable<?> it){
+		LOGGER.log0("#[");
+		for(Object o : it) LOGGER.log0(it);
+		LOGGER.log0("]#");
+	}
+
+	public static void log(Object... os){
+		LOGGER.log0("@[");
+		for(Object o : os) LOGGER.log0(o);
+		LOGGER.log0("]@");
+	}
+
 	public static void debug(Object o){
 		if(EnvInfo.DEV) LOGGER.log0(o);
 	}
