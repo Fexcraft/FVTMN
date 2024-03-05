@@ -8,6 +8,13 @@ public class UIKey {
 	public static final int ID12_TOOLBOX_COLORS = 600;
 	public static final int ID12_DECORATION_EDITOR = 713;
 	public static final int ID12_VEHICLE_MAIN = 930;
+	public static final int ID12_VEHICLE_INFO = 931;
+	public static final int ID12_VEHICLE_ATTR_EDITOR = 932;
+	public static final int ID12_VEHICLE_FUEL = 933;
+	public static final int ID12_VEHICLE_TOGGABLES = 934;
+	public static final int ID12_VEHICLE_INVENTORIES = 935;
+	public static final int ID12_VEHICLE_CONTAINERS = 937;
+	public static final int ID12_VEHICLE_CONNECTORS = 939;
 	public static final int ID12_BLOCK_INVENTORY_ITEM = 961;
 	public static final int ID12_BLOCK_INVENTORY_FLUID = 962;
 	public static final int ID12_BLOCK_INVENTORY_VAR = 963;
@@ -16,6 +23,13 @@ public class UIKey {
 	public static final int ID12_MULTIBLOCK_INVENTORY_VAR = 9513;
 	public static final UIKey TOOLBOX_COLORS = new UIKey(ID12_TOOLBOX_COLORS, "fvtm:toolbox_colors");
 	public static final UIKey VEHICLE_MAIN = new UIKey(ID12_VEHICLE_MAIN, "fvtm:vehicle_main");
+	public static final UIKey VEHICLE_INFO = new UIKey(ID12_VEHICLE_INFO, "fvtm:vehicle_info");
+	public static final UIKey VEHICLE_ATTR_EDITOR = new UIKey(ID12_VEHICLE_ATTR_EDITOR, "fvtm:vehicle_attr_editor");
+	public static final UIKey VEHICLE_FUEL = new UIKey(ID12_VEHICLE_FUEL, "fvtm:vehicle_fuel");
+	public static final UIKey VEHICLE_TOGGABLES = new UIKey(ID12_VEHICLE_TOGGABLES, "fvtm:vehicle_toggables");
+	public static final UIKey VEHICLE_INVENTORIES = new UIKey(ID12_VEHICLE_INVENTORIES, "fvtm:vehicle_inventories");
+	public static final UIKey VEHICLE_CONTAINERS = new UIKey(ID12_VEHICLE_CONTAINERS, "fvtm:vehicle_containers");
+	public static final UIKey VEHICLE_CONNECTORS = new UIKey(ID12_VEHICLE_CONNECTORS, "fvtm:vehicle_connectors");
 	public static final UIKey DECORATION_EDITOR = new UIKey(ID12_DECORATION_EDITOR, "fvtm:decoration_editor");
 	public static final UIKey BLOCK_INVENTORY_ITEM = new UIKey(ID12_BLOCK_INVENTORY_ITEM, "fvtm:block_inventory_item");
 	public static final UIKey BLOCK_INVENTORY_FLUID = new UIKey(ID12_BLOCK_INVENTORY_FLUID, "fvtm:block_inventory_fluid");
