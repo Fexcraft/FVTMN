@@ -38,7 +38,7 @@ public class DecoEditor extends UserInterface {
 	}
 
 	@Override
-	public boolean onAction(UIButton button, String id, int l, int t, int x, int y, int mb){
+	public boolean onAction(UIButton button, String id, int x, int y, int mb){
 		boolean found = true;
 		switch(id){
 			case "cat_prev":{
@@ -237,13 +237,13 @@ public class DecoEditor extends UserInterface {
 	}
 
 	@Override
-	public boolean onScroll(UIButton button, String id, int gl, int gt, int mx, int my, int am) {
+	public boolean onScroll(UIButton button, String id, int mx, int my, int am) {
 		if(id.startsWith("pos")){
 			int ax = Integer.parseInt(id.substring(3));
 			float val = fields.get(id).number();
 			val += am > 0 ? -1 : 1;
 			fields.get("pos" + ax).text(val + "");
-			onAction(button, id, gl, gt, mx, my, 0);
+			onAction(button, id, mx, my, 0);
 			return true;
 		}
 		else if(id.startsWith("rot")){
@@ -251,7 +251,7 @@ public class DecoEditor extends UserInterface {
 			float val = fields.get(id).number();
 			val += am > 0 ? -1 : 1;
 			fields.get("rot" + ax).text(val + "");
-			onAction(button, id, gl, gt, mx, my, 0);
+			onAction(button, id, mx, my, 0);
 			return true;
 		}
 		else if(id.startsWith("scl")){
@@ -259,7 +259,7 @@ public class DecoEditor extends UserInterface {
 			float val = fields.get(id).number();
 			val += am > 0 ? -1 : 1;
 			fields.get("scl" + ax).text(val + "");
-			onAction(button, id, gl, gt, mx, my, 0);
+			onAction(button, id, mx, my, 0);
 			return true;
 		}
 		return false;
