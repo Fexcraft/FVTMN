@@ -85,7 +85,7 @@ public class ToolboxPainter extends UserInterface {
 	}
 
 	@Override
-	public boolean onAction(UIButton button, String id, int l, int t, int x, int y, int mb){
+	public boolean onAction(UIButton button, String id, int x, int y, int mb){
 		switch(id){
 			case "prev":{
 				int idx = channels.indexOf(selchan);
@@ -221,27 +221,6 @@ public class ToolboxPainter extends UserInterface {
 				shade.palette[x][z] = new RGB(r, g, l);
 			}
 		}
-	}
-
-	@Override
-	public boolean onScroll(UIButton button, String id, int gl, int gt, int mx, int my, int am){
-		//
-		return false;
-	}
-
-	@Override
-	public void predraw(float ticks, int mx, int my){
-		//
-	}
-
-	@Override
-	public void postdraw(float ticks, int mx, int my){
-		//
-	}
-
-	@Override
-	public void scrollwheel(int a, int x, int y){
-		//
 	}
 
 	private void loadColorCache(){
