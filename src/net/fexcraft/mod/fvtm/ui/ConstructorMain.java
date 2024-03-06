@@ -18,7 +18,7 @@ public class ConstructorMain extends UserInterface {
 	}
 
 	@Override
-	public boolean onAction(UIButton button, String id, int l, int t, int x, int y, int mb){
+	public boolean onAction(UIButton button, String id, int x, int y, int mb){
 		switch(id) {
 			case "lift_up": {
 				TagCW com = TagCW.create();
@@ -63,7 +63,7 @@ public class ConstructorMain extends UserInterface {
 	}
 
 	@Override
-	public boolean onScroll(UIButton button, String id, int gl, int gt, int mx, int my, int am) {
+	public boolean onScroll(UIButton button, String id, int mx, int my, int am) {
 		//
 		return false;
 	}
