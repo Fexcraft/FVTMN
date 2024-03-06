@@ -130,7 +130,7 @@ public class VehicleInstance {
 				return true;
 			}
 			case INVENTORY: {
-				player.openUI(UIKey.VEHICLE_MAIN, new V3I(0, entity.getId(), 0));
+				player.openUI(UIKey.VEHICLE_MAIN, new V3I(entity.getId(), 0, 0));
 				return true;
 			}
 			case TOGGABLES: {
