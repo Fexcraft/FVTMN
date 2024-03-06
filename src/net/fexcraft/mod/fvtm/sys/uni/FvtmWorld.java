@@ -13,4 +13,7 @@ public abstract class FvtmWorld extends WorldW {
 	public abstract Passenger getPassenger(int source);
 
 	public abstract void onVehicleMove(Packet_VehMove packet);
+
+	public abstract VehicleInstance getVehicle(int entid);
+
 }
