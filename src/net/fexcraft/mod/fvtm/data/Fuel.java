@@ -2,6 +2,7 @@ package net.fexcraft.mod.fvtm.data;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
+import net.fexcraft.mod.uni.item.StackWrapper;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -43,6 +44,20 @@ public class Fuel extends Content<Fuel> {
 	
 	public String getSecondaryGroup(){
 		return secondary;
+	}
+
+	public static interface FuelItem {
+
+		public Fuel getStoredFuelType(StackWrapper stack);
+
+		public int getStoredFuelAmount(StackWrapper stack);
+
+		public String getStoredFuelName(StackWrapper stack);
+
+		public void extractFuel(StackWrapper stack, int stored);
+
+		public void insertFuel(StackWrapper stack, int stored);
+
 	}
 
 }
