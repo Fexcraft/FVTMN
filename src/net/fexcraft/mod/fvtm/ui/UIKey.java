@@ -1,10 +1,14 @@
 package net.fexcraft.mod.fvtm.ui;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
 public class UIKey {
 
+	public static final ArrayList<UIKey> ALLKEYS = new ArrayList<>();
 	public static final int ID12_TOOLBOX_COLORS = 600;
 	public static final int ID12_DECORATION_EDITOR = 713;
 	public static final int ID12_VEHICLE_MAIN = 930;
@@ -44,6 +48,14 @@ public class UIKey {
 	public UIKey(int id12, String id20){
 		id = id12;
 		key = id20;
+		ALLKEYS.add(this);
+	}
+
+	public static int get(String id){
+		for(UIKey key : ALLKEYS){
+			if(key.key.equals(id)) return key.id;
+		}
+		return 0;
 	}
 
 }
