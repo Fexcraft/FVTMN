@@ -2,7 +2,6 @@ package net.fexcraft.mod.fvtm.ui.vehicle;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
-import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.ui.UIKey;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -40,7 +39,7 @@ public class VehicleMainCon extends ContainerInterface {
 	}
 
 	@Override
-	public void onClosed() {
+	public void onClosed(EntityW player) {
 
 	}
 
