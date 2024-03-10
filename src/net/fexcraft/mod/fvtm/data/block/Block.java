@@ -41,6 +41,7 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
     protected BlockType blocktype;
     protected RelayData relaydata;
     protected Model model;
+    protected Boolean passable;
     protected boolean plain_model;
     protected boolean no3ditem;
     protected boolean weblike;
@@ -158,6 +159,7 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
         hideitem = map.getBoolean("HideItem", false);
         randomrot = map.getBoolean("RandomRotation", false);
         ladder = map.getBoolean("Ladder", false);
+        passable = map.has("Passable") ? map.getBoolean("Passable", false) : null;
         tickable = map.getBoolean("Tickable", false);
         hastile = map.getBoolean("MultiSubBlock", false);
         hastile = map.getBoolean("HasBlockEntity", hastile);
@@ -417,6 +419,10 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
 
     public ModelData getModelData(){
         return modeldata;
+    }
+
+    public Boolean getPassable(){
+        return passable;
     }
 
 }
