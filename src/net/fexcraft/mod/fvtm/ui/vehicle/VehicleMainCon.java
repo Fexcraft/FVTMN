@@ -38,9 +38,4 @@ public class VehicleMainCon extends ContainerInterface {
 		if(ui != null) ((Passenger)player).openUI(ui, pos);
 	}
 
-	@Override
-	public void onClosed(EntityW player) {
-
-	}
-
 }
