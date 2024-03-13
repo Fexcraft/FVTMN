@@ -15,7 +15,7 @@ public class UIKey {
 	public static final int ID12_VEHICLE_INFO = 931;
 	public static final int ID12_VEHICLE_ATTR_EDITOR = 932;
 	public static final int ID12_VEHICLE_FUEL = 933;
-	public static final int ID12_VEHICLE_TOGGABLES = 934;
+	public static final int ID12_VEHICLE_ATTRIBUTES = 934;
 	public static final int ID12_VEHICLE_INVENTORIES = 935;
 	public static final int ID12_VEHICLE_CONTAINERS = 937;
 	public static final int ID12_VEHICLE_CONNECTORS = 939;
@@ -30,7 +30,7 @@ public class UIKey {
 	public static final UIKey VEHICLE_INFO = new UIKey(ID12_VEHICLE_INFO, "fvtm:vehicle_info");
 	public static final UIKey VEHICLE_ATTR_EDITOR = new UIKey(ID12_VEHICLE_ATTR_EDITOR, "fvtm:vehicle_attr_editor");
 	public static final UIKey VEHICLE_FUEL = new UIKey(ID12_VEHICLE_FUEL, "fvtm:vehicle_fuel");
-	public static final UIKey VEHICLE_TOGGABLES = new UIKey(ID12_VEHICLE_TOGGABLES, "fvtm:vehicle_toggables");
+	public static final UIKey VEHICLE_ATTRIBUTES = new UIKey(ID12_VEHICLE_ATTRIBUTES, "fvtm:vehicle_attributes");
 	public static final UIKey VEHICLE_INVENTORIES = new UIKey(ID12_VEHICLE_INVENTORIES, "fvtm:vehicle_inventories");
 	public static final UIKey VEHICLE_CONTAINERS = new UIKey(ID12_VEHICLE_CONTAINERS, "fvtm:vehicle_containers");
 	public static final UIKey VEHICLE_CONNECTORS = new UIKey(ID12_VEHICLE_CONNECTORS, "fvtm:vehicle_connectors");
