@@ -17,7 +17,7 @@ public class VehicleFuel extends UserInterface {
 	public VehicleFuel(JsonMap map, ContainerInterface con) throws Exception{
 		super(map, con);
 		accepts = texts.get("accepts");
-		accepts.value("gui.fvtm.vehicle.fuel.accepts");
+		accepts.value("ui.fvtm.vehicle_fuel.accepts");
 		accepts.translate();
 		veh = (VehicleInstance)container.get("vehicle");
 		String accepted = " ";
