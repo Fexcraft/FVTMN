@@ -29,7 +29,7 @@ public class VehicleMainCon extends ContainerInterface {
 		switch(com.getString("open")){
 			case "info": ui  = UIKey.VEHICLE_INFO; break;
 			case "fuel": ui  = UIKey.VEHICLE_FUEL; break;
-			case "attributes": ui  = UIKey.VEHICLE_TOGGABLES; break;
+			case "attributes": ui  = UIKey.VEHICLE_ATTRIBUTES; break;
 			case "inventories": ui  = UIKey.VEHICLE_INVENTORIES; break;
 			case "containers": ui  = UIKey.VEHICLE_CONTAINERS; break;
 			case "connectors": ui  = UIKey.VEHICLE_CONNECTORS; break;
