@@ -55,6 +55,11 @@ public abstract class FvtmLogger {
 		}
 
 		@Override
+		public void send(String str, Object... args){
+			FvtmLogger.LOGGER.log(str, args);
+		}
+
+		@Override
 		public void bar(String s){
 			FvtmLogger.LOGGER.log(s);
 		}
@@ -73,6 +78,11 @@ public abstract class FvtmLogger {
 		}
 
 		@Override
+		public void send(String str, Object... args){
+			if(EnvInfo.DEV) FvtmLogger.LOGGER.log(str, args);
+		}
+
+		@Override
 		public void bar(String s){
 			if(EnvInfo.DEV) FvtmLogger.LOGGER.log(s);
 		}
@@ -87,6 +97,11 @@ public abstract class FvtmLogger {
 
 		@Override
 		public void send(String s){
+			//
+		}
+
+		@Override
+		public void send(String str, Object... args){
 			//
 		}
 
