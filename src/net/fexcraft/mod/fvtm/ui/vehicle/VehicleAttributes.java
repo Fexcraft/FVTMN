@@ -117,7 +117,7 @@ public class VehicleAttributes extends UserInterface {
 			if(!attr.valuetype.isBoolean() && b != 0){
 				com.set("reset", true);
 			}
-			com.set("bool", attr.asBoolean());
+			com.set("bool", !attr.asBoolean());
 			container.SEND_TO_SERVER.accept(com);
 		}
 		if(id.startsWith("edit_")){
