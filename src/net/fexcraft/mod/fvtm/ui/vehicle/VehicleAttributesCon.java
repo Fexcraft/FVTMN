@@ -5,8 +5,10 @@ import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.data.Fuel;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
+import net.fexcraft.mod.fvtm.data.attribute.AttributeUtil;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
+import net.fexcraft.mod.fvtm.ui.UIKey;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
@@ -19,7 +21,6 @@ import net.fexcraft.mod.uni.world.EntityW;
 public class VehicleAttributesCon extends ContainerInterface {
 
 	protected VehicleInstance vehicle;
-	protected int vehid;
 
 	public VehicleAttributesCon(JsonMap map, EntityW player, V3I pos){
 		super(map, player, pos);
@@ -34,7 +35,15 @@ public class VehicleAttributesCon extends ContainerInterface {
 
 	@Override
 	public void packet(TagCW com, boolean client){
-		//
+		if(client) return;
+		if(com.getString("cargo").equals("toggle")){
+			AttributeUtil.processToggle(vehicle, com, (Passenger)player);
+		}
+		else if(com.getString("cargo").equals("editor")){
+			int idx = vehicle.data.getAttributeIndex(vehicle.data.getAttribute(com.getString("attr")));
+			if(idx < 0) return;
+			((Passenger)player).openUI(UIKey.VEHICLE_ATTR_EDITOR, pos.add(0, idx, 0));
+		}
 	}
 
 }
