@@ -8,6 +8,8 @@ import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.data.Seat;
+import net.fexcraft.mod.fvtm.data.attribute.Attribute;
+import net.fexcraft.mod.fvtm.data.attribute.AttributeUtil;
 import net.fexcraft.mod.fvtm.data.vehicle.SimplePhysData;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
@@ -89,12 +91,12 @@ public class VehicleInstance {
 			return true;
 		}
 		switch(key){
-			case ACCELERATE: {
+			case ACCELERATE:{
 				throttle += throttle < 0 ? 0.02 : 0.01;
-				if (throttle > 1) throttle = 1;
+				if(throttle > 1) throttle = 1;
 				return true;
 			}
-			case DECELERATE: {
+			case DECELERATE:{
 				throttle -= throttle > 0 ? 0.02 : 0.01;
 				if(throttle < -1){
 					throttle = -1;
@@ -105,15 +107,15 @@ public class VehicleInstance {
 				}
 				return true;
 			}
-			case TURN_LEFT: {
+			case TURN_LEFT:{
 				steer_yaw -= 5;
 				return true;
 			}
-			case TURN_RIGHT: {
+			case TURN_RIGHT:{
 				steer_yaw += 5;
 				return true;
 			}
-			case BRAKE: {
+			case BRAKE:{
 				throttle *= 0.8;
 				entity.decreaseXZMotion(0.8);
 				if(throttle < -0.0001){
@@ -121,28 +123,28 @@ public class VehicleInstance {
 				}
 				return true;
 			}
-			case ENGINE: {
+			case ENGINE:{
 				//TODO toggle engine on
 				return true;
 			}
-			case DISMOUNT: {
+			case DISMOUNT:{
 				player.dismount();
 				return true;
 			}
-			case INVENTORY: {
+			case INVENTORY:{
 				player.openUI(UIKey.VEHICLE_MAIN, new V3I(entity.getId(), 0, 0));
 				return true;
 			}
-			case TOGGABLES: {
+			case TOGGABLES:{
 				if(toggable_timer > 0) return true;
 				//TODO toggle action
 				toggable_timer = 10;
 			}
-			case SCRIPTS: {
+			case SCRIPTS:{
 				//TODO scripts ui
 				return true;
 			}
-			case LIGHTS: {
+			case LIGHTS:{
 				if(toggable_timer > 0) return true;
 				if(data.getAttribute("lights").asBoolean()){
 					if(data.getAttribute("lights_long").asBoolean()){
@@ -167,15 +169,15 @@ public class VehicleInstance {
 				toggable_timer = 10;
 				return true;
 			}
-			case COUPLER_REAR: {
+			case COUPLER_REAR:{
 				//TODO coupling
 				return true;
 			}
-			case COUPLER_FRONT: {
+			case COUPLER_FRONT:{
 				//TODO coupling
 				return true;
 			}
-			default: {
+			default:{
 				player.bar("Action '" + key + "' not found.");
 				return false;
 			}
@@ -255,14 +257,23 @@ public class VehicleInstance {
 		Packets.INSTANCE.send(this, com);
 	}
 
-    public SeatInstance getSeatOf(Object passenger){
+	public void sendAttrToggle(TagCW com){
+		com.set("cargo", "toggle_attr");
+		Packets.INSTANCE.send(this, com);
+	}
+
+	public SeatInstance getSeatOf(Object passenger){
 		for(SeatInstance seat : seats){
 			if(seat.passenger_direct() == passenger) return seat;
 		}
 		return null;
-    }
+	}
 
-	public void packet(TagCW packet, boolean client){
+	public SeatInstance getSeatOf(Passenger passenger){
+		return getSeatOf(passenger.direct());
+	}
+
+	public void packet(TagCW packet, Passenger passenger){
 		String cargo = packet.getString("cargo");
 		switch(cargo){
 			case "lock_state":{
@@ -272,6 +283,10 @@ public class VehicleInstance {
 			case "toggle_lights":{
 				data.getAttribute("lights").set(packet.getBoolean("lights"));
 				data.getAttribute("lights_long").set(packet.getBoolean("lights_long"));
+				return;
+			}
+			case "toggle_attr":{
+				if(passenger.isOnClient()) AttributeUtil.processToggleClient(this, packet, passenger);
 				return;
 			}
 			default:{
