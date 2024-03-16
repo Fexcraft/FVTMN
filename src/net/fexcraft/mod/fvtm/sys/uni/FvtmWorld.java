@@ -4,6 +4,8 @@ import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.packet.Packet_VehMove;
 import net.fexcraft.mod.uni.world.WorldW;
 
+import java.util.ArrayList;
+
 public abstract class FvtmWorld extends WorldW {
 
 	public abstract SeatInstance getSeat(int entid, int seatid);
@@ -17,5 +19,9 @@ public abstract class FvtmWorld extends WorldW {
 	public abstract VehicleInstance getVehicle(int entid);
 
 	public abstract boolean noViewEntity();
+
+	public abstract ArrayList<VehicleInstance> getVehicles();
+
+	public abstract Passenger getClientPassenger();
 
 }
