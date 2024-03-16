@@ -5,7 +5,9 @@ import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Seat;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
+import net.fexcraft.mod.fvtm.handler.InteractionHandler;
 import net.fexcraft.mod.fvtm.util.Pivot;
+import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.world.EntityW;
 
 import java.util.Collection;
@@ -100,7 +102,7 @@ public class SeatInstance {
 		if(key == null) return false;
 		else if(key.toggable_input() && root.entity.isOnClient()){
 			if(clicktimer > 0) return false;
-			boolean bool = FvtmResources.INSTANCE.handleClick(key, root.entity, this, player, null);
+			boolean bool = InteractionHandler.handle(key, root, null, player, StackWrapper.EMPTY);
 			clicktimer += 10;
 			return bool;
 		}
