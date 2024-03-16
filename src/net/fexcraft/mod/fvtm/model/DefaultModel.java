@@ -25,6 +25,7 @@ import static net.fexcraft.mod.fvtm.model.ModelGroupList.SEPARATE_GROUP_LIST;
  */
 public class DefaultModel implements Model {
 
+	public static DefaultModel LAST;
 	public static final DefaultModel EMPTY = new DefaultModel();
 	public static final ModelRenderData RENDERDATA = new ModelRenderData();
 	public TreeMap<RenderOrder, ModelGroupList> sorted = new TreeMap<>();
@@ -40,6 +41,7 @@ public class DefaultModel implements Model {
 
 	@Override
 	public void render(ModelRenderData data){
+		LAST = this;
 		transforms.apply();
 		if(FvtmRegistry.is112) GL11.glShadeModel(smooth_shading ? GL11.GL_FLAT : GL11.GL_SMOOTH);
 		for(ModelGroupList list : sorted.values()) list.render(data);
