@@ -16,4 +16,6 @@ public abstract class FvtmWorld extends WorldW {
 
 	public abstract VehicleInstance getVehicle(int entid);
 
+	public abstract boolean noViewEntity();
+
 }
