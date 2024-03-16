@@ -1,5 +1,6 @@
 package net.fexcraft.mod.fvtm.sys.uni;
 
+import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.ui.UIKey;
 import net.fexcraft.mod.uni.world.EntityW;
@@ -22,5 +23,9 @@ public abstract class Passenger extends EntityW {
 	public abstract int vehicle();
 
 	public abstract int seat();
+
+	public abstract V3D getEyeVec();
+
+	public abstract V3D getLookVec();
 
 }
