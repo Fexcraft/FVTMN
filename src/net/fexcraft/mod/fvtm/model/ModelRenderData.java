@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.fvtm.data.block.BlockData;
+import net.fexcraft.mod.fvtm.data.container.Container;
+import net.fexcraft.mod.fvtm.data.container.ContainerData;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.root.Colorable;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureUser;
@@ -21,7 +23,7 @@ public class ModelRenderData {
 	public float partialticks;
 
 	public VehicleData vehicle;
-	public Object container;
+	public ContainerData container;
 	public BlockData block;
 	public Colorable color;
 	public TextureUser texture;
@@ -66,7 +68,7 @@ public class ModelRenderData {
 	}
 
 
-	public ModelRenderData set(Object data, Object tileent, RenderCache renca, boolean item) {
+	public ModelRenderData set(ContainerData data, Object tileent, RenderCache renca, boolean item) {
 		container = data;
 		tile = tileent;
 		cache = renca;
