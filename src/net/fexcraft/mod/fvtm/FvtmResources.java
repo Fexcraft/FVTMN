@@ -530,13 +530,13 @@ public abstract class FvtmResources {
 		}
 	}
 
-	public PartData getPartData(TagCW com){
+	public static PartData getPartData(TagCW com){
 		Part part = PARTS.get(com.getString("Part"));
 		if(part == null) return null;
 		return new PartData(part).read(com);
 	}
 
-	public PartData getPartData(Object com){
+	public static PartData getPartData(Object com){
 		return getPartData(TagCW.wrap(com));
 	}
 
@@ -590,8 +590,6 @@ public abstract class FvtmResources {
 	public abstract void registerFvtmBlocks();
 
 	public abstract void registerFvtmItems();
-
-	public abstract boolean handleClick(KeyPress key, EntityW vehicle, SeatInstance seatInstance, EntityW player, StackWrapper stack);
 
 	public abstract boolean sendToggle(Attribute<?> attr, EntityW vehicle, KeyPress key, Float val, EntityW player);
 
