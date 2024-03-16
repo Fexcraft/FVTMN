@@ -242,6 +242,13 @@ public class VehicleInstance {
 		}
 	}
 
+	public void sendVehicleData(){
+		TagCW com = TagCW.create();
+		data.write(com);
+		com.set("cargo", "vehicledata");
+		Packets.INSTANCE.send(this, com);
+	}
+
 	public void sendLockUpdate(){
 		TagCW com = TagCW.create();
 		com.set("cargo", "lock_state");
@@ -287,6 +294,10 @@ public class VehicleInstance {
 			}
 			case "toggle_attr":{
 				if(passenger.isOnClient()) AttributeUtil.processToggleClient(this, packet, passenger);
+				return;
+			}
+			case "vehicledata":{
+				data.read(packet);
 				return;
 			}
 			default:{
