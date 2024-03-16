@@ -14,13 +14,11 @@ import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.handler.DefaultPartInstallHandler.DPIHData;
 import net.fexcraft.mod.fvtm.packet.Packet_TagListener;
 import net.fexcraft.mod.fvtm.packet.Packets;
-import net.fexcraft.mod.fvtm.sys.uni.KeyPress;
-import net.fexcraft.mod.fvtm.sys.uni.Passenger;
-import net.fexcraft.mod.fvtm.sys.uni.SeatInstance;
-import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
+import net.fexcraft.mod.fvtm.sys.uni.*;
 import net.fexcraft.mod.uni.item.ItemType;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
+import net.fexcraft.mod.uni.world.WrapperHolder;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -31,6 +29,7 @@ import java.util.Map;
  */
 public class InteractionHandler {
 
+	private static FvtmWorld world;
 	private static String last = "";
 	private static long cooldown = 0;
 	private static float seatbbs = .375f;
@@ -42,8 +41,9 @@ public class InteractionHandler {
 	public static boolean handle(KeyPress key, VehicleInstance vehicle, SeatInstance seat, Passenger pass, StackWrapper stack){
 		if(key.equals(KeyPress.MOUSE_RIGHT) && mountSeat(vehicle, seat, pass, stack)) return true;
 		if(stack.empty() || !stack.isItemOf(ItemType.PART)) return false;
+		if(Time.getDate() < cooldown) return false;
 		PartData data = stack.getContent(ContentType.PART);
-		if(data.getType().getInstallHandlerData() instanceof DPIHData) return false;
+		if(!(data.getType().getInstallHandlerData() instanceof DPIHData)) return false;
 		ArrayList<Interactive> list = new ArrayList<>();
 		SwivelPoint point = null;
 		for(Map.Entry<String, PartSlots> entry : vehicle.data.getPartSlotProviders().entrySet()){
@@ -52,24 +52,36 @@ public class InteractionHandler {
 				String type = sentry.getValue().type;
 				if(vehicle.data.hasPart(type)){
 					Part part = vehicle.data.getPart(type).getType();
-					if(!(part.getInstallHandlerData() instanceof DPIHData) || !((DPIHData)part.getInstallHandlerData()).swappable)
-						continue;
+					if(!(part.getInstallHandlerData() instanceof DPIHData) || !((DPIHData)part.getInstallHandlerData()).swappable) continue;
 				}
 				for(String sub : data.getType().getCategories()){
 					if(!sub.equals(type)) continue;
 					list.add(new Interactive(point, entry.getKey(), entry.getValue(), sentry.getKey()));
 				}
-				Interactive res = getInteracted(seat == null, vehicle, pass, list);
-				if(res == null) return false;
-				if(res.id().equals(last) && Time.getDate() < cooldown) return true;
-				TagCW com = TagCW.create();
-				com.set("source", res.source);
-				com.set("category", res.category);
-				com.set("entity", vehicle.entity.getId());
-				Packets.send(Packet_TagListener.class, "install_part", com);
-				last = res.id();
-				cooldown = Time.getDate() + 20;
 			}
+		}
+		Interactive res = getInteracted(seat == null, vehicle, pass, list);
+		if(res == null) return false;
+		if(res.id().equals(last) && Time.getDate() < cooldown) return true;
+		TagCW com = TagCW.create();
+		com.set("source", res.source);
+		com.set("category", res.category);
+		com.set("entity", vehicle.entity.getId());
+		Packets.send(Packet_TagListener.class, "install_part", com);
+		last = res.id();
+		cooldown = Time.getDate() + 20;
+		return true;
+	}
+
+	public static boolean handle(KeyPress key, StackWrapper stack){
+		if(!stack.empty() && !(stack.isItemOf(ItemType.PART) || stack.isItemOf(ItemType.LEAD))) return false;
+		world = WrapperHolder.getClientWorld();
+		ArrayList<VehicleInstance> vehs = world.getVehicles();
+		Passenger pass = world.getClientPassenger();
+		V3D passpos = pass.getPos();
+		for(VehicleInstance veh : vehs){
+			if(veh.data.getAttribute("collision_range").asFloat() + 1 < veh.entity.getPos().dis(passpos)) continue;
+			if(handle(key, veh, null, pass, stack)) return true;
 		}
 		return false;
 	}
@@ -79,7 +91,7 @@ public class InteractionHandler {
 		if(!stack.empty() && stack.isItemOf(ItemType.LEAD)) return false;
 		if(seat == null) seat = pass.getSeatOn();
 		V3D evec = pass.getEyeVec();
-		V3D lvec = pass.getLookVec().multiply(3);
+		V3D lvec = evec.add(pass.getLookVec().multiply(3));
 		V3D vec0;
 		for(int i = 0; i < vehicle.data.getSeats().size(); i++){
 			if(seat != null && seat.index == i) continue;
@@ -107,7 +119,7 @@ public class InteractionHandler {
 	private static Interactive getInteracted(boolean external, VehicleInstance vehicle, Passenger pass, ArrayList<Interactive> list){
 		if(pass.getFvtmWorld().noViewEntity()) return null;
 		V3D evec = pass.getEyeVec();
-		V3D lvec = pass.getLookVec().multiply(external ? 3 : 2);
+		V3D lvec = evec.add(pass.getLookVec().multiply(external ? 3 : 2));
 		V3D vec0;
 		LinkedHashMap<String, AABB> map = new LinkedHashMap<>();
 		for(Interactive inter : list){
