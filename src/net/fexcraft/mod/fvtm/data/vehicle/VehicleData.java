@@ -1,17 +1,5 @@
 package net.fexcraft.mod.fvtm.data.vehicle;
 
-import static net.fexcraft.mod.fvtm.FvtmLogger.DEVLOG;
-import static net.fexcraft.mod.fvtm.FvtmLogger.NONE;
-import static net.fexcraft.mod.fvtm.FvtmRegistry.PARTS;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
-
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.RGB;
@@ -20,23 +8,11 @@ import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.ContentData;
 import net.fexcraft.mod.fvtm.data.Seat;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
-import net.fexcraft.mod.fvtm.data.part.Part;
-import net.fexcraft.mod.fvtm.data.part.PartData;
-import net.fexcraft.mod.fvtm.data.part.PartFunction;
-import net.fexcraft.mod.fvtm.data.part.PartSlot;
-import net.fexcraft.mod.fvtm.data.part.PartSlots;
-import net.fexcraft.mod.fvtm.data.root.Colorable;
-import net.fexcraft.mod.fvtm.data.root.Lockable;
-import net.fexcraft.mod.fvtm.data.root.Sound;
-import net.fexcraft.mod.fvtm.data.root.Soundable;
-import net.fexcraft.mod.fvtm.data.root.Textureable;
+import net.fexcraft.mod.fvtm.data.part.*;
+import net.fexcraft.mod.fvtm.data.root.*;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureHolder;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureUser;
-import net.fexcraft.mod.fvtm.function.part.ColorFunction;
-import net.fexcraft.mod.fvtm.function.part.EngineFunction;
-import net.fexcraft.mod.fvtm.function.part.PartSlotsFunction;
-import net.fexcraft.mod.fvtm.function.part.SeatsFunction;
-import net.fexcraft.mod.fvtm.function.part.WheelPositionsFunction;
+import net.fexcraft.mod.fvtm.function.part.*;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.item.StackWrapper;
@@ -44,6 +20,13 @@ import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.tag.TagLW;
 import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.MessageSender;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+
+import static net.fexcraft.mod.fvtm.FvtmLogger.NONE;
+import static net.fexcraft.mod.fvtm.FvtmRegistry.PARTS;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -361,7 +344,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 	/** Null-Safe attribute value check. Works with tri-state attributes too. */
 	public Boolean getAttributeBoolean(String id, boolean def){
 		Attribute<?> attr = getAttribute(id);
-		return attr == null ? def : attr.asTristate();
+		return attr == null ? def : attr.asBoolean();
 	}
 
 	/** Null-Safe attribute value check. Works with integer attributes too. */
