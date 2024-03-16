@@ -36,9 +36,8 @@ public abstract class Packets {
 	/** Send BlockData Update Packet to all around. */
 	public abstract void send(WorldW world, V3I pos);
 
-	@Deprecated
-	/** Send generic nbt packet to a vehicle. */
-	public abstract void send(VehicleInstance vehicleInstance, TagCW com);
+	/** Send generic compound packet to a vehicle, works for both server and client. */
+	public abstract void send(VehicleInstance vehicle, TagCW com);
 
 	/** Sends a Packet to the Server. */
 	public abstract void send0(Class<? extends PacketBase> packet, Object... data);
