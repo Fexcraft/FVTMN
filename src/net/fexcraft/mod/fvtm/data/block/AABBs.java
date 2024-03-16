@@ -41,7 +41,7 @@ public class AABBs {
         return (AB)aabbs.get(idx).direct();
     }
 
-    public <AB> AB offset(int i, int x, int y, int z){
+    public AABB offset(int i, int x, int y, int z){
         return aabbs.get(i).offset(x, y, z);
     }
 
