@@ -43,7 +43,9 @@ public abstract class AABB {
 
     public abstract Object direct();
 
-    public abstract <AB> AB offset(int x, int y, int z);
+    public abstract AABB offset(int x, int y, int z);
+
+    public abstract AABB offset(V3D vec);
 
     @Override
     public String toString(){
@@ -53,5 +55,4 @@ public abstract class AABB {
     public abstract boolean contains(V3D vec);
 
     public abstract boolean contains(Object vec);
-
 }
