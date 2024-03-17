@@ -60,7 +60,7 @@ public class PartData extends ContentData<Part, PartData> implements TextureUser
 		//if(!compound.hasKey("Part")) return null;
 		//type = Resources.getPart(compound.getString("Part"));
 		//if(type == null) return null;//TODO add "placeholder" for "missing" items
-		if(compound.direct() == null) compound = TagCW.create();
+		if(compound == null || compound.direct() == null) compound = TagCW.create();
 		currentpos = SaveUtils.loadV3D(compound.getList("CurrentPos"));
 		currentrot = Rot.fromTag("CurrentRot", compound);
 		rotpoint = compound.has("SwivelPoint") ? compound.getString("SwivelPoint") : null;
