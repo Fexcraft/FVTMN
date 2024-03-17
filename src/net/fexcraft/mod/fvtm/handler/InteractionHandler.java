@@ -76,11 +76,9 @@ public class InteractionHandler {
 	public static boolean handle(KeyPress key, StackWrapper stack){
 		if(!stack.empty() && !(stack.isItemOf(ItemType.PART) || stack.isItemOf(ItemType.LEAD))) return false;
 		world = WrapperHolder.getClientWorld();
-		ArrayList<VehicleInstance> vehs = world.getVehicles();
 		Passenger pass = world.getClientPassenger();
-		V3D passpos = pass.getPos();
+		ArrayList<VehicleInstance> vehs = world.getVehicles(pass.getPos());
 		for(VehicleInstance veh : vehs){
-			if(veh.data.getAttribute("collision_range").asFloat() + 1 < veh.entity.getPos().dis(passpos)) continue;
 			if(handle(key, veh, null, pass, stack)) return true;
 		}
 		return false;
