@@ -110,7 +110,7 @@ public abstract class VehicleFuelCon extends InventoryInterface {
 						com.set("primary", vehicle.data.getAttribute("fuel_primary").asString());
 						com.set("secondary", seco.asString());
 						com.set("quality", qual.asFloat());
-						SEND_TO_CLIENT.accept(com);
+						SEND_TO_CLIENT.accept(com, player);
 					}
 				}
 			}
@@ -122,7 +122,7 @@ public abstract class VehicleFuelCon extends InventoryInterface {
 			TagCW is = TagCW.create();
 			stack.save(is);
 			com.set("stack", is);
-			SEND_TO_CLIENT.accept(com);
+			SEND_TO_CLIENT.accept(com, player);
 		}
 	}
 
