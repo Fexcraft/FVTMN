@@ -8,24 +8,24 @@ import net.fexcraft.mod.uni.world.EntityW;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public abstract class Passenger extends EntityW {
+public interface Passenger extends EntityW {
 
-	public abstract SeatInstance getSeatOn();
+	public SeatInstance getSeatOn();
 
-	public FvtmWorld getFvtmWorld(){
+	public default FvtmWorld getFvtmWorld(){
 		return (FvtmWorld)getWorld();
 	}
 
-	public abstract void openUI(UIKey key, V3I pos);
+	public void openUI(UIKey key, V3I pos);
 
-	public abstract void set(int veh, int seatid);
+	public void set(int veh, int seatid);
 
-	public abstract int vehicle();
+	public int vehicle();
 
-	public abstract int seat();
+	public int seat();
 
-	public abstract V3D getEyeVec();
+	public V3D getEyeVec();
 
-	public abstract V3D getLookVec();
+	public V3D getLookVec();
 
 }
