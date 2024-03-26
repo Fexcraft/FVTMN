@@ -7,8 +7,8 @@ import java.util.Map;
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
+import net.fexcraft.lib.common.math.AxisRotator;
 import net.fexcraft.lib.common.math.Vec3f;
-import net.fexcraft.mod.fcl.util.Axis3DL;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.model.DefaultModel;
 import net.fexcraft.mod.fvtm.model.Model;
@@ -121,8 +121,8 @@ public class BlockModel extends DefaultModel {
 	 */
 	public static class BakedTransformData {
 
-		public Axis3DL rot_poly, rot_meta;
-		public Axis3DL[] rot_tf;
+		public AxisRotator rot_poly, rot_meta;
+		public AxisRotator[] rot_tf;
 		public Vec3f translate;
 		public Vec3f scale;
 
