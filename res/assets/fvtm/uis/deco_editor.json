@@ -523,28 +523,28 @@
 			"absolute": true,
 			"size": [ 132, 8 ],
 			"pos": [ -136, 5 ],
-			"value": "gui.fvtm.decoration_editor.position",
+			"value": "ui.fvtm.decoration_editor.position",
 			"translate": true
 		},
 		"rot": {
 			"absolute": true,
 			"size": [ 132, 8 ],
 			"pos": [ -136, 33 ],
-			"value": "gui.fvtm.decoration_editor.rotation",
+			"value": "ui.fvtm.decoration_editor.rotation",
 			"translate": true
 		},
 		"scl": {
 			"absolute": true,
 			"size": [ 132, 8 ],
 			"pos": [ -136, 61 ],
-			"value": "gui.fvtm.decoration_editor.scale",
+			"value": "ui.fvtm.decoration_editor.scale",
 			"translate": true
 		},
 		"tex": {
 			"absolute": true,
 			"size": [ 132, 8 ],
 			"pos": [ -136, 89 ],
-			"value": "gui.fvtm.decoration_editor.texture",
+			"value": "ui.fvtm.decoration_editor.texture",
 			"translate": true
 		},
 		"texc": {
