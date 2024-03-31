@@ -10,6 +10,7 @@ public class UIKey {
 
 	public static final ArrayList<UIKey> ALLKEYS = new ArrayList<>();
 	public static final int ID12_TOOLBOX_COLORS = 600;
+	public static final int ID12_VEHICLE_CATALOG = 610;
 	public static final int ID12_DECORATION_EDITOR = 713;
 	public static final int ID12_VEHICLE_MAIN = 930;
 	public static final int ID12_VEHICLE_INFO = 931;
@@ -29,6 +30,7 @@ public class UIKey {
 	public static final int ID12_MULTIBLOCK_INVENTORY_FLUID = 9512;
 	public static final int ID12_MULTIBLOCK_INVENTORY_VAR = 9513;
 	public static final UIKey TOOLBOX_COLORS = new UIKey(ID12_TOOLBOX_COLORS, "fvtm:toolbox_colors");
+	public static final UIKey VEHICLE_CATALOG = new UIKey(ID12_VEHICLE_CATALOG, "fvtm:vehicle_catalog");
 	public static final UIKey VEHICLE_MAIN = new UIKey(ID12_VEHICLE_MAIN, "fvtm:vehicle_main");
 	public static final UIKey VEHICLE_INFO = new UIKey(ID12_VEHICLE_INFO, "fvtm:vehicle_info");
 	public static final UIKey VEHICLE_ATTR_EDITOR = new UIKey(ID12_VEHICLE_ATTR_EDITOR, "fvtm:vehicle_attr_editor");
