@@ -73,26 +73,24 @@
 		"desc0": {
 			"pos": [ 9, 106 ],
 			"size": [ 238, 8 ],
-			"autoscale": true,
-			"color": "cfcfcf"
+			"autoscale": true
 		},
 		"desc1": {
-			"pos": [ 9, 106 ],
+			"pos": [ 9, 118 ],
 			"size": [ 238, 8 ],
-			"autoscale": true,
-			"color": "cfcfcf"
+			"autoscale": true
 		},
 		"desc2": {
 			"pos": [ 9, 130 ],
 			"size": [ 238, 8 ],
-			"autoscale": true,
-			"color": "cfcfcf"
+			"autoscale": true
 		},
 		"vehicle": {
 			"pos": [ 65, 144 ],
 			"size": [ 150, 8 ],
 			"autoscale": true,
-			"color": "cfcfcf"
+			"color": "545454",
+			"centered": true
 		}
 	}
 }
