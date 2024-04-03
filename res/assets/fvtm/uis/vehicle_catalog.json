@@ -67,8 +67,8 @@
 			"pos": [ 22, 9 ],
 			"size": [ 212, 8 ],
 			"autoscale": true,
-			"color": "242424",
-			"value": "..."
+			"centered": true,
+			"color": "cfcfcf"
 		},
 		"desc0": {
 			"pos": [ 9, 106 ],
