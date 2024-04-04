@@ -9,14 +9,14 @@
 			"pos": [ 0, 0 ],
 			"buttons": [
 				"pack_prev", "pack_next",
-				"rec_prev", "rec_next",
+				"var_prev", "var_next",
 				"veh_prev", "veh_next",
 				"confirm", "info"
 			],
 			"texts": [
 				"pack", "desc0",
 				"desc1", "desc2",
-				"vehicle", "recipe"
+				"vehicle", "variant"
 			]
 		}
 	},
@@ -31,15 +31,15 @@
 			"size": [ 14, 14 ],
 			"tooltip": "ui.fvtm.vehicle_catalog.next_pack"
 		},
-		"rec_prev": {
+		"var_prev": {
 			"pos": [ 132, 55 ],
 			"size": [ 10, 16 ],
-			"tooltip": "ui.fvtm.vehicle_catalog.prev_recipe"
+			"tooltip": "ui.fvtm.vehicle_catalog.prev_variant"
 		},
-		"rec_next": {
+		"var_next": {
 			"pos": [ 238, 55 ],
 			"size": [ 10, 16 ],
-			"tooltip": "ui.fvtm.vehicle_catalog.next_recipe"
+			"tooltip": "ui.fvtm.vehicle_catalog.next_variant"
 		},
 		"info": {
 			"pos": [ 7, 141 ],
@@ -95,7 +95,7 @@
 			"color": "545454",
 			"centered": true
 		},
-		"recipe": {
+		"variant": {
 			"pos": [ 146, 97 ],
 			"size": [ 88, 7 ],
 			"autoscale": true,
