@@ -4,6 +4,7 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.part.PartSlots;
+import net.fexcraft.mod.fvtm.data.vehicle.CatalogPreset;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
@@ -21,6 +22,8 @@ public class VehicleCatalog extends UserInterface {
 
 	private ArrayList<Addon> vehpacks = new ArrayList<>();
 	private HashMap<Addon, ArrayList<Vehicle>> vehicles = new LinkedHashMap<>();
+	private CatalogPreset preset;
+	private VehicleData data;
 	private Vehicle veh;
 	private int pack;
 	private int vehicle;
@@ -29,6 +32,7 @@ public class VehicleCatalog extends UserInterface {
 	public VehicleCatalog(JsonMap map, ContainerInterface container) throws Exception{
 		super(map, container);
 		for(Vehicle veh : FvtmRegistry.VEHICLES){
+			if(veh.getCatalog().isEmpty()) continue;
 			if(!vehpacks.contains(veh.getAddon())){
 				vehpacks.add(veh.getAddon());
 				vehicles.put(veh.getAddon(), new ArrayList<>());
@@ -57,6 +61,14 @@ public class VehicleCatalog extends UserInterface {
 				switchVehicle(1);
 				return true;
 			}
+			case "var_prev":{
+				switchRecipe(-1);
+				return true;
+			}
+			case "var_next":{
+				switchRecipe(1);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -80,12 +92,16 @@ public class VehicleCatalog extends UserInterface {
 	}
 
 	private void switchRecipe(int i){
-		texts.get("desc0").value("Variant/Preset Name Here");
-		texts.get("desc1").value(veh.getDescription().size() > 0 ? veh.getDescription().get(0) : "");
-		texts.get("desc2").value(veh.getDescription().size() > 1 ? veh.getDescription().get(1) : "ui.fvtm.vehicle_catalog.no_desc");
-		if(veh.getDescription().isEmpty()) texts.get("desc2").translate();
-		texts.get("recipe").value("ui.fvtm.vehicle_catalog.recipe");
-		texts.get("recipe").translate(recipe + 1, 1);
+		recipe += i;
+		if(recipe >= veh.getCatalog().size()) recipe = 0;
+		if(recipe < 0) recipe = veh.getCatalog().size() - 1;
+		preset = veh.getCatalog().get(recipe);
+		texts.get("desc0").value(preset.name);
+		texts.get("desc1").value(preset.getDesc(0));
+		texts.get("desc2").value(preset.getDesc(1));
+		if(preset.desc.isEmpty()) texts.get("desc1").translate();
+		texts.get("variant").value("ui.fvtm.vehicle_catalog.variant");
+		texts.get("variant").translate(recipe + 1, veh.getCatalog().size());
 	}
 
 }
