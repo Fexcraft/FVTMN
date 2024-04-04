@@ -21,7 +21,6 @@ public class VehicleCatalog extends UserInterface {
 
 	private ArrayList<Addon> vehpacks = new ArrayList<>();
 	private HashMap<Addon, ArrayList<Vehicle>> vehicles = new LinkedHashMap<>();
-	private VehicleData data;
 	private Vehicle veh;
 	private int pack;
 	private int vehicle;
@@ -81,16 +80,12 @@ public class VehicleCatalog extends UserInterface {
 	}
 
 	private void switchRecipe(int i){
-		data = new VehicleData(veh);
-		int slots = 0;
-		int prov = 0;
-		for(PartSlots ps : data.getPartSlotProviders().values()){
-			slots += ps.size();
-			prov++;
-		}
-		texts.get("desc0").translate("ui.fvtm.vehicle_catalog.desc0", data.getWheelPositions().size(), data.getSeats().size());
-		texts.get("desc1").translate("ui.fvtm.vehicle_catalog.desc1", prov, slots);
-		texts.get("desc2").translate("ui.fvtm.vehicle_catalog.desc2", recipe + 1, 1);
+		texts.get("desc0").value("Variant/Preset Name Here");
+		texts.get("desc1").value(veh.getDescription().size() > 0 ? veh.getDescription().get(0) : "");
+		texts.get("desc2").value(veh.getDescription().size() > 1 ? veh.getDescription().get(1) : "ui.fvtm.vehicle_catalog.no_desc");
+		if(veh.getDescription().isEmpty()) texts.get("desc2").translate();
+		texts.get("recipe").value("ui.fvtm.vehicle_catalog.recipe");
+		texts.get("recipe").translate(recipe + 1, 1);
 	}
 
 }
