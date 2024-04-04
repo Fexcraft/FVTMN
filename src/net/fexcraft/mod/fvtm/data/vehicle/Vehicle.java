@@ -11,6 +11,7 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.V3D;
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
@@ -54,6 +55,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 	protected Map<String, SwivelPoint> swivelpoints = new LinkedHashMap<>();
 	protected float coupler_range = 1f;
 	protected Map<String, LiftingPoint> liftingpoints = new HashMap<>();
+	protected List<CatalogPreset> catalog = new ArrayList<>();
 	protected IDL keytype;
 	protected int maxkeys;
 	protected PartSlots partslots;
@@ -161,6 +163,16 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 		ctab = map.getString("CreativeTab", "default");
 		itemtexloc = ContentConfigUtil.getItemTexture(id, getContentType(), map);
 		no3ditem = map.getBoolean("Disable3DItemModel", false);
+		if(map.has("Catalog")){
+			for(Entry<String, JsonValue<?>> catlog : map.getMap("Catalog").entries()){
+				try{
+					catalog.add(new CatalogPreset(this, catlog.getKey(), catlog.getValue().asMap()));
+				}
+				catch(Exception e){
+					FvtmLogger.log(e, "vehicle catalog entry loading of " + id.colon());
+				}
+			}
+		}
 		return this;
 	}
 
@@ -299,4 +311,9 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 	public boolean isTracked(){
 		return tracked;
 	}
+
+	public List<CatalogPreset> getCatalog(){
+		return catalog;
+	}
+
 }
