@@ -16,7 +16,7 @@
 			"texts": [
 				"pack", "desc0",
 				"desc1", "desc2",
-				"vehicle"
+				"vehicle", "recipe"
 			]
 		}
 	},
@@ -73,21 +73,31 @@
 		"desc0": {
 			"pos": [ 9, 106 ],
 			"size": [ 238, 8 ],
+			"color": "545454",
 			"autoscale": true
 		},
 		"desc1": {
 			"pos": [ 9, 118 ],
 			"size": [ 238, 8 ],
+			"color": "545454",
 			"autoscale": true
 		},
 		"desc2": {
 			"pos": [ 9, 130 ],
 			"size": [ 238, 8 ],
+			"color": "545454",
 			"autoscale": true
 		},
 		"vehicle": {
 			"pos": [ 65, 144 ],
 			"size": [ 150, 8 ],
+			"autoscale": true,
+			"color": "545454",
+			"centered": true
+		},
+		"recipe": {
+			"pos": [ 146, 97 ],
+			"size": [ 88, 7 ],
 			"autoscale": true,
 			"color": "545454",
 			"centered": true
