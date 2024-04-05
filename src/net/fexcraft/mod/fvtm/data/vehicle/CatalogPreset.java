@@ -22,7 +22,7 @@ public class CatalogPreset {
 
 	public final Map<String, String> parts = new LinkedHashMap<>();
 	public final Map<String, RGB> channels = new LinkedHashMap<>();
-	public final List<StackWrapper> recipe = new ArrayList<>();
+	public final List<String> recipe = new ArrayList<>();
 	public final List<String> desc;
 	public final Vehicle vehicle;
 	public final String name;
@@ -44,7 +44,7 @@ public class CatalogPreset {
 
 				}
 				else{
-					recipe.add(FvtmResources.newStack(IDLManager.getIDL(elm.string_value())));
+					recipe.add(elm.string_value());
 				}
 			}
 		}
