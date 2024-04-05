@@ -1,18 +1,20 @@
 package net.fexcraft.mod.fvtm.ui.vehicle;
 
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.vehicle.CatalogPreset;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
-import net.fexcraft.mod.uni.IDLManager;
+import net.fexcraft.mod.fvtm.model.DefaultModel;
+import net.fexcraft.mod.fvtm.render.VehicleRenderer;
+import net.fexcraft.mod.fvtm.util.TexUtil;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UIButton;
 import net.fexcraft.mod.uni.ui.UserInterface;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,6 +102,7 @@ public class VehicleCatalog extends UserInterface {
 		if(recipe >= veh.getCatalog().size()) recipe = 0;
 		if(recipe < 0) recipe = veh.getCatalog().size() - 1;
 		preset = veh.getCatalog().get(recipe);
+		data = preset.getVehicleData();
 		texts.get("desc0").value(preset.name);
 		texts.get("desc1").value(preset.getDesc(0));
 		texts.get("desc2").value(preset.getDesc(1));
@@ -122,6 +125,19 @@ public class VehicleCatalog extends UserInterface {
 				drawer.draw(gLeft + 146 + (x * 18), gTop + 25 + (y * 18) , stacks.get(z));
 			}
 		}
+	}
+
+	@Override
+	public void postdraw(float ticks, int mx, int my){
+		GL11.glPushMatrix();
+		GL11.glTranslated(gLeft + 67, gTop + 63, 0);
+		GL11.glRotatef(180, 0, 0, 1);
+		GL11.glRotatef(135, 0, 1, 0);
+		GL11.glScalef(preset.scale * 16, preset.scale * 16, preset.scale * 16);
+		TexUtil.bindTexture(data.getCurrentTexture());
+		veh.getModel().render(DefaultModel.RENDERDATA.set(data, null, null, null, null, false, ticks));
+		VehicleRenderer.renderPoint(data.getRotationPoint("vehicle"), null, data, null, ticks);
+		GL11.glPopMatrix();
 	}
 
 }
