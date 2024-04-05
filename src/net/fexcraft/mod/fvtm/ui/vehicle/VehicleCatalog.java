@@ -1,12 +1,15 @@
 package net.fexcraft.mod.fvtm.ui.vehicle;
 
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
+import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
-import net.fexcraft.mod.fvtm.data.part.PartSlots;
 import net.fexcraft.mod.fvtm.data.vehicle.CatalogPreset;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
+import net.fexcraft.mod.uni.IDLManager;
+import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UIButton;
 import net.fexcraft.mod.uni.ui.UserInterface;
@@ -22,6 +25,7 @@ public class VehicleCatalog extends UserInterface {
 
 	private ArrayList<Addon> vehpacks = new ArrayList<>();
 	private HashMap<Addon, ArrayList<Vehicle>> vehicles = new LinkedHashMap<>();
+	private ArrayList<StackWrapper> stacks = new ArrayList<>();
 	private CatalogPreset preset;
 	private VehicleData data;
 	private Vehicle veh;
@@ -102,6 +106,22 @@ public class VehicleCatalog extends UserInterface {
 		if(preset.desc.isEmpty()) texts.get("desc1").translate();
 		texts.get("variant").value("ui.fvtm.vehicle_catalog.variant");
 		texts.get("variant").translate(recipe + 1, veh.getCatalog().size());
+		stacks.clear();
+		for(String str : preset.recipe){
+			stacks.add(FvtmResources.newStack(FvtmRegistry.getItem(str)));
+		}
+	}
+
+	@Override
+	public void drawbackground(float ticks, int mx, int my){
+		if(stacks.size() == 0) return;
+		for(int x = 0; x < 5; x++){
+			for(int y = 0; y < 4; y++){
+				int z = x + (y * 5);
+				if(z >= stacks.size()) break;
+				drawer.draw(gLeft + 146 + (x * 18), gTop + 25 + (y * 18) , stacks.get(z));
+			}
+		}
 	}
 
 }
