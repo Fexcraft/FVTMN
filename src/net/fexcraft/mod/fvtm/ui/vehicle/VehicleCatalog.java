@@ -1,23 +1,16 @@
 package net.fexcraft.mod.fvtm.ui.vehicle;
 
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.vehicle.CatalogPreset;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
-import net.fexcraft.mod.fvtm.model.DefaultModel;
-import net.fexcraft.mod.fvtm.render.VehicleRenderer;
-import net.fexcraft.mod.fvtm.util.TexUtil;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UIButton;
 import net.fexcraft.mod.uni.ui.UserInterface;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,15 +21,15 @@ import java.util.LinkedHashMap;
  */
 public class VehicleCatalog extends UserInterface {
 
-	private ArrayList<Addon> vehpacks = new ArrayList<>();
-	private HashMap<Addon, ArrayList<Vehicle>> vehicles = new LinkedHashMap<>();
-	private ArrayList<StackWrapper> stacks = new ArrayList<>();
-	private CatalogPreset preset;
-	private VehicleData data;
-	private Vehicle veh;
-	private int pack;
-	private int vehicle;
-	private int recipe;
+	protected ArrayList<Addon> vehpacks = new ArrayList<>();
+	protected HashMap<Addon, ArrayList<Vehicle>> vehicles = new LinkedHashMap<>();
+	protected ArrayList<StackWrapper> stacks = new ArrayList<>();
+	protected CatalogPreset preset;
+	protected VehicleData data;
+	protected Vehicle veh;
+	protected int pack;
+	protected int vehicle;
+	protected int recipe;
 
 	public VehicleCatalog(JsonMap map, ContainerInterface container) throws Exception{
 		super(map, container);
@@ -128,22 +121,6 @@ public class VehicleCatalog extends UserInterface {
 				drawer.draw(gLeft + 146 + (x * 18), gTop + 25 + (y * 18) , stacks.get(z));
 			}
 		}
-	}
-
-	@Override
-	public void postdraw(float ticks, int mx, int my){
-        RenderHelper.enableStandardItemLighting();
-		GL11.glPushMatrix();
-		GL11.glTranslated(gLeft + 67, gTop + 63, 100);
-		GL11.glRotated(Math.atan((mx - gLeft - 67) / 40f) * 20, 0, 1, 0);
-		GL11.glRotated(-Math.atan((my - gTop - 63) / 40f) * 15, 1, 0, 0);
-		GL11.glScalef(-preset.scale * 16, -preset.scale * 16, -preset.scale * 16);
-		RGB.glColorReset();
-		GlStateManager.disableLighting();
-		TexUtil.bindTexture(data.getCurrentTexture());
-		veh.getModel().render(DefaultModel.RENDERDATA.set(data, null, null, null, null, false, ticks));
-		VehicleRenderer.renderPoint(data.getRotationPoint("vehicle"), null, data, null, ticks);
-		GL11.glPopMatrix();
 	}
 
 }
