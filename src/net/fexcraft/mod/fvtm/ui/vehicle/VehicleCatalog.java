@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fvtm.ui.vehicle;
 
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
@@ -14,6 +15,8 @@ import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UIButton;
 import net.fexcraft.mod.uni.ui.UserInterface;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -129,11 +132,16 @@ public class VehicleCatalog extends UserInterface {
 
 	@Override
 	public void postdraw(float ticks, int mx, int my){
+        RenderHelper.enableStandardItemLighting();
+		GlStateManager.enableDepth();
+		GlStateManager.disableBlend();
+		GlStateManager.disableAlpha();
 		GL11.glPushMatrix();
-		GL11.glTranslated(gLeft + 67, gTop + 63, 0);
-		GL11.glRotatef(180, 0, 0, 1);
-		GL11.glRotatef(135, 0, 1, 0);
-		GL11.glScalef(preset.scale * 16, preset.scale * 16, preset.scale * 16);
+		GL11.glTranslated(gLeft + 67, gTop + 63, 100);
+		GL11.glRotated(Math.atan((mx - gLeft - 67) / 40f) * 20, 0, 1, 0);
+		GL11.glRotated(Math.atan((my - gTop - 63) / 40f) * 20, 1, 0, 0);
+		GL11.glScalef(-preset.scale * 16, -preset.scale * 16, -preset.scale * 16);
+		RGB.WHITE.glColorApply();
 		TexUtil.bindTexture(data.getCurrentTexture());
 		veh.getModel().render(DefaultModel.RENDERDATA.set(data, null, null, null, null, false, ticks));
 		VehicleRenderer.renderPoint(data.getRotationPoint("vehicle"), null, data, null, ticks);
