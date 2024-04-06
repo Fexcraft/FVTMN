@@ -133,15 +133,13 @@ public class VehicleCatalog extends UserInterface {
 	@Override
 	public void postdraw(float ticks, int mx, int my){
         RenderHelper.enableStandardItemLighting();
-		GlStateManager.enableDepth();
-		GlStateManager.disableBlend();
-		GlStateManager.disableAlpha();
 		GL11.glPushMatrix();
 		GL11.glTranslated(gLeft + 67, gTop + 63, 100);
 		GL11.glRotated(Math.atan((mx - gLeft - 67) / 40f) * 20, 0, 1, 0);
-		GL11.glRotated(Math.atan((my - gTop - 63) / 40f) * 20, 1, 0, 0);
+		GL11.glRotated(-Math.atan((my - gTop - 63) / 40f) * 15, 1, 0, 0);
 		GL11.glScalef(-preset.scale * 16, -preset.scale * 16, -preset.scale * 16);
-		RGB.WHITE.glColorApply();
+		RGB.glColorReset();
+		GlStateManager.disableLighting();
 		TexUtil.bindTexture(data.getCurrentTexture());
 		veh.getModel().render(DefaultModel.RENDERDATA.set(data, null, null, null, null, false, ticks));
 		VehicleRenderer.renderPoint(data.getRotationPoint("vehicle"), null, data, null, ticks);
