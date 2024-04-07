@@ -4,6 +4,7 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.V3D;
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.ContentData;
 import net.fexcraft.mod.fvtm.data.Seat;
@@ -70,24 +71,23 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		}
 		front_conn = type.getDefaultConnectorFront();
 		rear_conn = type.getDefaultConnectorRear();
+		partproviders.put("vehicle", type.getPartSlots());
 		if(type.getInstalled() != null){
 			for(java.util.Map.Entry<String, IDL> entry : type.getInstalled().entrySet()){
 				try{
 					Part part = PARTS.get(entry.getValue());
 					if(part == null) continue;
 					if(installPart(NONE, new PartData(part), entry.getKey(), false) != null){
-						Static.stop();
+						FvtmLogger.log(new Exception(), "vehicle part pre-install returned non-null for " + entry.getValue().colon() + " as " + entry.getKey());
 					}
 				}
 				catch(Exception e){
-					e.printStackTrace();
-					Static.stop();
+					FvtmLogger.log(e, "vehicledata part pre-install of " + entry.getValue().colon() + " as " + entry.getKey());
 				}
 			}
 		}
 		rotpoints.values().forEach(point -> point.linkToParent(this));
 		sounds.putAll(type.getSounds());
-		partproviders.put("vehicle", type.getPartSlots());
 		lock = new Lockable();
 	}
 
