@@ -285,8 +285,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		//
 		for(Attribute<?> attr : attributes.values()){
 			if(attr.origin == null) continue;
-			String origin = attr.origin.split("\\|")[0];
-			PartData part = parts.get(origin);
+			PartData part = getAttributeOrigin(attr.origin);
 			if(part == null) continue;
 			for(Attribute<?> ettr : part.getType().getDefaultAttributes().values()){
 				if(ettr.id.equals(attr.id)){
@@ -735,6 +734,15 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 
 	public boolean hasfuel(){
 		return getAttribute("fuel_stored").asInteger() > 0;
+	}
+
+	public PartData getAttributeOrigin(Attribute<?> attr){
+		return getAttributeOrigin(attr.origin);
+	}
+
+	public PartData getAttributeOrigin(String origin){
+		if(origin == null) return null;
+		return parts.get(origin.split("\\|")[0]);
 	}
 
 }
