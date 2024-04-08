@@ -149,7 +149,7 @@ public class VehicleInstance {
 				if(data.getAttribute("lights").asBoolean()){
 					if(data.getAttribute("lights_long").asBoolean()){
 						data.getAttribute("lights").set(false);
-						data.getAttribute("lights_long").set(true);
+						data.getAttribute("lights_long").set(false);
 					}
 					else{
 						data.getAttribute("lights_long").set(true);
