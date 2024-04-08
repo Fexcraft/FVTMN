@@ -1,0 +1,12 @@
+{
+	"_info_": "Road Tool Custom Layer UI",
+	"background": true,
+	"size": [ 176, 128 ],
+	"tabs": {
+		"main": {
+			"texture": "fvtm:textures/gui/road_tool_custom.png",
+			"size": [ 176, 92 ],
+			"pos": [ 0, 36 ]
+		}
+	}
+}
