@@ -169,9 +169,10 @@ public class InteractionHandler {
 				String val = attribute.asString();
 				if(external) val = "external-" + val;
 				AttrBox ab = attribute.getBox(val);
+				PartData part = vehicle.data.getAttributeOrigin(attribute);
 				if(ab == null) return;
 				point = vehicle.data.getRotationPoint(ab.swivel_point);
-				V3D pos = point.getRelativeVector(ab.pos).add(vehicle.entity.getPos());
+				V3D pos = point.getRelativeVector(ab.pos.add(part == null ? V3D.NULL : part.getInstalledPos())).add(vehicle.entity.getPos());
 				double hs = ab.size * .5;
 				aabbs.put(attribute.id, AABB.create(pos.x - hs, pos.y - hs, pos.z - hs, pos.x + hs, pos.y + hs, pos.z + hs));
 			}
