@@ -67,6 +67,22 @@ ui.fvtm.vehicle_catalog.confirm=Confirm Selection
 ui.fvtm.vehicle_catalog.variant=Variant %s of %s
 ui.fvtm.vehicle_catalog.no_desc=no variant description was provided
 //
+ui.fvtm.road_tool.add_width=Increase Road Width
+ui.fvtm.road_tool.sub_width=Decrease Road Width
+ui.fvtm.road_tool.enable_ground=Enable Road Underground
+ui.fvtm.road_tool.disable_ground=Disable Road Underground
+ui.fvtm.road_tool.add_left=Increase Left Wall Height
+ui.fvtm.road_tool.sub_left=Decrease Left Wall Height
+ui.fvtm.road_tool.add_right=Increase Right Wall Height
+ui.fvtm.road_tool.sub_right=Decrease Right Wall Height
+ui.fvtm.road_tool.enable_top=Enable Tunnel Top/Ceiling
+ui.fvtm.road_tool.disable_top=Disable Tunnel Top/Ceiling
+ui.fvtm.road_tool.enable_lines=Enable Road Lines Layer
+ui.fvtm.road_tool.disable_lines=Disable Road Lines Layer
+ui.fvtm.road_tool.edit_road=Customize Road Layer
+ui.fvtm.road_tool.edit_top=Customize Top/Ceiling Layer
+ui.fvtm.road_tool.edit_lines=Customize Lines Layer
+//
 ui.fvtm.decoration_editor.position=Position Offset
 ui.fvtm.decoration_editor.rotation=Rotation (Degrees)
 ui.fvtm.decoration_editor.scale=Scale
