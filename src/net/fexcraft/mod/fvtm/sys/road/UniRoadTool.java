@@ -1,18 +1,14 @@
-package net.fexcraft.mod.fvtm.util;
+package net.fexcraft.mod.fvtm.sys.road;
 
 import net.fexcraft.lib.common.math.V3I;
-import net.fexcraft.lib.common.utils.Formatter;
-import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.ui.UIKey;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
-import net.minecraft.item.ItemStack;
 
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import static net.fexcraft.lib.common.utils.Formatter.format;
 
@@ -79,13 +75,13 @@ public class UniRoadTool {
 
 	public static int onUse(Passenger pass, boolean main){
 		if(pass.getWorld().isClient()) return 0;
-		if(pass.isShiftDown() && main){
-			pass.openUI(UIKey.ROAD_TOOL, V3I.NULL);
-			return 2;
-		}
 		if(!pass.isCreative()){
 			pass.send("tooltip.fvtm.road_tool.creative");
 			return 1;
+		}
+		if(pass.isShiftDown() && main){
+			pass.openUI(UIKey.ROAD_TOOL, V3I.NULL);
+			return 2;
 		}
 		return 3;
 	}
