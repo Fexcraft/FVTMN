@@ -1,9 +1,14 @@
 package net.fexcraft.mod.fvtm.sys.road;
 
+import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.FvtmResources;
+import net.fexcraft.mod.fvtm.item.RoadToolItem;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
+import net.fexcraft.mod.fvtm.sys.uni.Path;
+import net.fexcraft.mod.fvtm.sys.uni.PathType;
 import net.fexcraft.mod.fvtm.ui.UIKey;
+import net.fexcraft.mod.fvtm.util.QV3D;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 
@@ -84,6 +89,37 @@ public class UniRoadTool {
 			return 2;
 		}
 		return 3;
+	}
+
+	public static boolean placeRoad(Passenger pass, StackWrapper stack, QV3D vector, Road road){
+		return RoadToolItem.placeRoad(pass.local(), pass.getWorld().local(), stack.local(), vector, road, pass.local());
+	}
+
+	public static class Road extends Path {
+
+		public Road(QV3D[] gridvecs){
+			super(gridvecs);
+		}
+
+		public Road(QV3D[] gridvecs, QV3D vector){
+			super(gridvecs, vector);
+		}
+
+		@Override
+		public V3D getVectorPosition(double distance, boolean reverse){
+			return super.getVectorPosition0(distance, reverse);
+		}
+
+		@Override
+		public PathType getType(){
+			return PathType.ROAD;
+		}
+
+	}
+
+	public static V3D grv(double rad, V3D vec){
+		double co = Math.cos(rad), si = Math.sin(rad);
+		return new V3D(co * vec.x, vec.y, si * vec.x);
 	}
 
 }
