@@ -28,4 +28,6 @@ public interface Passenger extends EntityW {
 
 	public V3D getLookVec();
 
+	public boolean isShiftDown();
+
 }
