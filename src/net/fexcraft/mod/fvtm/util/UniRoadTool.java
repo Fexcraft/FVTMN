@@ -1,8 +1,11 @@
 package net.fexcraft.mod.fvtm.util;
 
+import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.FvtmResources;
+import net.fexcraft.mod.fvtm.sys.uni.Passenger;
+import net.fexcraft.mod.fvtm.ui.UIKey;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.minecraft.item.ItemStack;
@@ -16,11 +19,11 @@ import static net.fexcraft.lib.common.utils.Formatter.format;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public interface UniRoadTool {
+public class UniRoadTool {
 
 	public static final Object[] NA = new Object[0];
 
-	public default void addTooltip(TagCW com, List<String> list, BiFunction<String, Object[], String> translator){
+	public static void addTooltip(TagCW com, List<String> list, BiFunction<String, Object[], String> translator){
 		list.add(format(translator.apply("tooltip.fvtm.road_tool.toolbox", NA)));
 		if(com.empty()){
 			list.add(format(translator.apply("tooltip.fvtm.road_tool.empty", NA)));
@@ -72,6 +75,19 @@ public interface UniRoadTool {
 			}
 			list.add(format(translator.apply("tooltip.fvtm.road_tool.undo", NA)));
 		}
+	}
+
+	public static int onUse(Passenger pass, boolean main){
+		if(pass.getWorld().isClient()) return 0;
+		if(pass.isShiftDown() && main){
+			pass.openUI(UIKey.ROAD_TOOL, V3I.NULL);
+			return 2;
+		}
+		if(!pass.isCreative()){
+			pass.send("tooltip.fvtm.road_tool.creative");
+			return 1;
+		}
+		return 3;
 	}
 
 }
