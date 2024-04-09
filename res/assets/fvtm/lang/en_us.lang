@@ -177,6 +177,7 @@ tooltip.fvtm.road_tool.lines_fill=&6Line Layer Fill: &b%s &7x%s
 tooltip.fvtm.road_tool.lines_fill_custom=&6Line Layer Fill: &bCUSTOM &7x%s
 tooltip.fvtm.road_tool.undo=&7Use &6/fvtm undo road &7to undo last road.
 tooltip.fvtm.road_tool.creative=&9This is a &6CREATIVE &9mode tool.
+tooltip.fvtm.road_tool.created=&o> Road Created.
 
 # Other
 itemGroup.fvtm=FVTM [Internal-Addon]
