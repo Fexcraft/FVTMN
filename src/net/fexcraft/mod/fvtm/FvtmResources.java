@@ -41,6 +41,7 @@ import net.fexcraft.mod.fvtm.sys.uni.KeyPress;
 import net.fexcraft.mod.fvtm.sys.uni.SeatInstance;
 import net.fexcraft.mod.fvtm.util.CTab;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
+import net.fexcraft.mod.fvtm.util.QV3D;
 import net.fexcraft.mod.fvtm.util.ZipUtils;
 import net.fexcraft.mod.fvtm.util.function.InventoryBlockFunction;
 import net.fexcraft.mod.fvtm.util.function.InventoryFunction;
@@ -54,10 +55,12 @@ import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
+import net.fexcraft.mod.uni.world.WorldW;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -596,5 +599,7 @@ public abstract class FvtmResources {
 	public abstract double getMouseSensitivity();
 
 	public abstract Object getBlockMaterial(String key, boolean allownull);
+
+	public abstract void spawnRoadMarker(WorldW world, QV3D vector, UUID nid);
 
 }
