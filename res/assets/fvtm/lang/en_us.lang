@@ -163,6 +163,20 @@ item.fvtm:road_tool.name=Road Tool
 item.fvtm:decoration.name=Decoration (Editor)
 item.fvtm:toolbox.name=FVTM Toolbox
 
+# Tooltips
+tooltip.fvtm.road_tool.toolbox=&aRoad Placing Toolbox
+tooltip.fvtm.road_tool.empty=No compound data.
+tooltip.fvtm.road_tool.road_fill=&6Road Fill: &b%s &7x%s
+tooltip.fvtm.road_tool.road_fill_custom=&6Road Fill: &bCUSTOM &7x%s
+tooltip.fvtm.road_tool.ground_fill=&9Ground Fill: &7%s
+tooltip.fvtm.road_tool.left_fill=&9Left Wall: &7%s &ex%s
+tooltip.fvtm.road_tool.right_fill=&9Right Wall: &7%s &ex%s
+tooltip.fvtm.road_tool.top_fill=&6Top/Roof Fill: &b%s &7x%s
+tooltip.fvtm.road_tool.top_fill_custom=&6Top/Roof Fill: &bCUSTOM &7x%s
+tooltip.fvtm.road_tool.lines_fill=&6Line Layer Fill: &b%s &7x%s
+tooltip.fvtm.road_tool.lines_fill_custom=&6Line Layer Fill: &bCUSTOM &7x%s
+tooltip.fvtm.road_tool.undo=&7Use &6/fvtm undo road &7to undo last road.
+
 # Other
 itemGroup.fvtm=FVTM [Internal-Addon]
 fvtm.recipes.blocks=FVTM Blocks
