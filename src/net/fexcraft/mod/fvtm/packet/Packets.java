@@ -4,12 +4,17 @@ import io.netty.buffer.ByteBuf;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.data.block.BlockData;
+import net.fexcraft.mod.fvtm.handler.AttrReqHandler;
+import net.fexcraft.mod.fvtm.sys.road.RoadPlacingUtil;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
+import net.fexcraft.mod.fvtm.util.QV3D;
+import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.WorldW;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import static net.fexcraft.mod.fvtm.Config.VEHICLE_UPDATE_RANGE;
 
@@ -22,7 +27,50 @@ public abstract class Packets {
 	public static HashMap<String, PacketListener> LIS_SERVER = new HashMap<>();
 	public static Packets INSTANCE = null;
 
-	public abstract void init();
+	public void init(){
+		LIS_SERVER.put("attr_toggle", (com, player) -> {
+			AttrReqHandler.processToggleRequest(player, com);
+		});
+		LIS_SERVER.put("attr_update", (com, player) -> {
+			AttrReqHandler.processUpdateRequest(player, com);
+		});
+		if(EnvInfo.CLIENT){
+			LIS_CLIENT.put("attr_toggle", (tag, player) -> {
+				AttrReqHandler.processToggleResponse(player, tag);
+			});
+			LIS_CLIENT.put("attr_update", (tag, player) -> {
+				AttrReqHandler.processUpdateResponse(player, tag);
+			});
+			LIS_CLIENT.put("road_tool_new", (tag, player) -> {
+				UUID uuid = new UUID(tag.getLong("uuid_m"), tag.getLong("uuid_l"));
+				RoadPlacingUtil.CL_CURRENT = new RoadPlacingUtil.NewRoad(uuid, new QV3D(tag, "vector"), tag.getInteger("width"));
+				RoadPlacingUtil.QUEUE.put(uuid, RoadPlacingUtil.CL_CURRENT);
+			});
+			LIS_CLIENT.put("road_tool_add", (tag, player) -> {
+				UUID uuid = new UUID(tag.getLong("uuid_m"), tag.getLong("uuid_l"));
+				RoadPlacingUtil.NewRoad road = RoadPlacingUtil.QUEUE.get(uuid);
+				if(road == null) return;
+				road.add(new QV3D(tag, "vector"), tag.getInteger("width"));
+			});
+			LIS_CLIENT.put("road_tool_selected", (tag, player) -> {
+				UUID uuid = new UUID(tag.getLong("uuid_m"), tag.getLong("uuid_l"));
+				RoadPlacingUtil.NewRoad road = RoadPlacingUtil.QUEUE.get(uuid);
+				if(road == null) return;
+				road.selected = tag.getInteger("selected");
+			});
+			LIS_CLIENT.put("road_tool_remove", (tag, player) -> {
+				UUID uuid = new UUID(tag.getLong("uuid_m"), tag.getLong("uuid_l"));
+				RoadPlacingUtil.NewRoad road = RoadPlacingUtil.QUEUE.get(uuid);
+				if(road == null) return;
+				road.remove(player, new QV3D(tag, "vector"));
+			});
+			LIS_CLIENT.put("road_tool_reset", (tag, player) -> {
+				UUID uuid = new UUID(tag.getLong("uuid_m"), tag.getLong("uuid_l"));
+				if(RoadPlacingUtil.CL_CURRENT.id.equals(uuid)) RoadPlacingUtil.CL_CURRENT = null;
+				RoadPlacingUtil.QUEUE.remove(uuid);
+			});
+		}
+	}
 
 	public abstract void writeTag(ByteBuf buffer, TagCW tag);
 
