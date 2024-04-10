@@ -15,6 +15,7 @@ import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleType;
 import net.fexcraft.mod.fvtm.function.part.EngineFunction;
+import net.fexcraft.mod.fvtm.packet.Packet_TagListener;
 import net.fexcraft.mod.fvtm.packet.Packet_VehMove;
 import net.fexcraft.mod.fvtm.packet.Packets;
 import net.fexcraft.mod.fvtm.ui.UIKey;
@@ -22,6 +23,7 @@ import net.fexcraft.mod.fvtm.util.Pivot;
 import net.fexcraft.mod.fvtm.packet.Packet_VehKeyPress;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
+import net.minecraft.nbt.NBTTagCompound;
 
 import static net.fexcraft.mod.fvtm.Config.VEHICLE_UPDATE_RANGE;
 
@@ -267,6 +269,33 @@ public class VehicleInstance {
 	public void sendAttrToggle(TagCW com){
 		com.set("cargo", "toggle_attr");
 		Packets.INSTANCE.send(this, com);
+	}
+
+	public void sendAttrToggle(Attribute<?> attr){
+		if(attr == null) return;
+		TagCW packet = TagCW.create();
+		packet.set("attr", attr.id);
+		packet.set("entity", entity.getId());
+		if(attr.valuetype.isTristate()){
+			if(attr.asTristate() == null){
+				packet.set("value", false);
+				packet.set("reset", true);
+			}
+			else{
+				packet.set("value", attr.asBoolean());
+			}
+		}
+		else if(attr.valuetype.isFloat()){
+			packet.set("value", attr.asFloat());
+		}
+		else if(attr.valuetype.isInteger()){
+			packet.set("value", attr.asInteger());
+		}
+		else if(attr.valuetype.isString()){
+			packet.set("value", attr.asString());
+		}
+		else packet.set("value", attr.asString());
+		Packets.sendToAll(Packet_TagListener.class, "attr_update", packet);
 	}
 
 	public SeatInstance getSeatOf(Object passenger){
