@@ -594,8 +594,6 @@ public abstract class FvtmResources {
 
 	public abstract void registerFvtmItems();
 
-	public abstract boolean sendToggle(Attribute<?> attr, EntityW vehicle, KeyPress key, Float val, EntityW player);
-
 	public abstract double getMouseSensitivity();
 
 	public abstract Object getBlockMaterial(String key, boolean allownull);
