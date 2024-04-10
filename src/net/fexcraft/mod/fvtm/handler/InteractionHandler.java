@@ -2,6 +2,8 @@ package net.fexcraft.mod.fvtm.handler;
 
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.lib.common.math.V3D;
+import net.fexcraft.lib.mc.utils.Print;
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.attribute.AttrBox;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
@@ -19,10 +21,14 @@ import net.fexcraft.mod.uni.item.ItemType;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -40,36 +46,131 @@ public class InteractionHandler {
 	/** Vehicle Interaction */
 	public static boolean handle(KeyPress key, VehicleInstance vehicle, SeatInstance seat, Passenger pass, StackWrapper stack){
 		if(key.equals(KeyPress.MOUSE_RIGHT) && mountSeat(vehicle, seat, pass, stack)) return true;
-		if(stack.empty() || !stack.isItemOf(ItemType.PART)) return false;
 		if(Time.getDate() < cooldown) return false;
-		PartData data = stack.getContent(ContentType.PART);
-		if(!(data.getType().getInstallHandlerData() instanceof DPIHData)) return false;
-		ArrayList<Interactive> list = new ArrayList<>();
-		SwivelPoint point = null;
-		for(Map.Entry<String, PartSlots> entry : vehicle.data.getPartSlotProviders().entrySet()){
-			point = vehicle.data.getRotationPointOfPart(entry.getKey());
-			for(Map.Entry<String, PartSlot> sentry : entry.getValue().entrySet()){
-				String type = sentry.getValue().type;
-				if(vehicle.data.hasPart(type)){
-					Part part = vehicle.data.getPart(type).getType();
-					if(!(part.getInstallHandlerData() instanceof DPIHData) || !((DPIHData)part.getInstallHandlerData()).swappable) continue;
+		if(!stack.empty()){
+			if(stack.isItemOf(ItemType.PART)){
+				PartData data = stack.getContent(ContentType.PART);
+				if(!(data.getType().getInstallHandlerData() instanceof DPIHData)) return false;
+				ArrayList<Interactive> list = new ArrayList<>();
+				SwivelPoint point = null;
+				for(Map.Entry<String, PartSlots> entry : vehicle.data.getPartSlotProviders().entrySet()){
+					point = vehicle.data.getRotationPointOfPart(entry.getKey());
+					for(Map.Entry<String, PartSlot> sentry : entry.getValue().entrySet()){
+						String type = sentry.getValue().type;
+						if(vehicle.data.hasPart(type)){
+							Part part = vehicle.data.getPart(type).getType();
+							if(!(part.getInstallHandlerData() instanceof DPIHData) || !((DPIHData)part.getInstallHandlerData()).swappable)
+								continue;
+						}
+						for(String sub : data.getType().getCategories()){
+							if(!sub.equals(type)) continue;
+							list.add(new Interactive(point, entry.getKey(), entry.getValue(), sentry.getKey()));
+						}
+					}
 				}
-				for(String sub : data.getType().getCategories()){
-					if(!sub.equals(type)) continue;
-					list.add(new Interactive(point, entry.getKey(), entry.getValue(), sentry.getKey()));
-				}
+				Interactive res = getInteracted(seat == null, vehicle, pass, list);
+				if(res == null) return false;
+				if(res.id().equals(last) && Time.getDate() < cooldown) return true;
+				TagCW com = TagCW.create();
+				com.set("source", res.source);
+				com.set("category", res.category);
+				com.set("entity", vehicle.entity.getId());
+				Packets.send(Packet_TagListener.class, "install_part", com);
+				last = res.id();
+				cooldown = Time.getDate() + 20;
+				return true;
 			}
+			return false;
 		}
-		Interactive res = getInteracted(seat == null, vehicle, pass, list);
-		if(res == null) return false;
-		if(res.id().equals(last) && Time.getDate() < cooldown) return true;
-		TagCW com = TagCW.create();
-		com.set("source", res.source);
-		com.set("category", res.category);
-		com.set("entity", vehicle.entity.getId());
-		Packets.send(Packet_TagListener.class, "install_part", com);
-		last = res.id();
-		cooldown = Time.getDate() + 20;
+		List<Attribute<?>> attributes = vehicle.data.getAttributes().values().stream().filter(attr -> attr.hasBoxes() && (attr.valuetype.isTristate() || attr.valuetype.isNumber()) && (seat == null ? attr.external : (seat.seat.driver || attr.access.contains(seat.seat.name)))).collect(Collectors.toList());
+		FvtmLogger.marker(seat == null ? "noseat" : seat.seat.name);
+		FvtmLogger.marker(attributes);
+		if(attributes.size() == 0) return false;
+		ArrayList<Interactive> list = new ArrayList<>();
+		attributes.forEach(attr -> list.add(new Interactive(attr)));
+		FvtmLogger.marker(list);
+		Interactive inter = getInteracted(seat == null, vehicle, pass, list);
+		if(inter == null) return false;
+		FvtmLogger.marker(inter);
+		Attribute<?> attr = inter.attribute;
+		if(attr.id.equals(last) && Time.getDate() < cooldown) return true;
+		return toggle(attr, vehicle, key, null, pass);
+	}
+
+	public static boolean toggle(Attribute<?> attr, VehicleInstance vehicle, KeyPress press, Float val, Passenger pass){
+		TagCW packet = TagCW.create();
+		packet.set("attr", attr.id);
+		packet.set("entity", vehicle.entity.getId());
+		switch(press){
+			case MOUSE_MAIN:{
+				if(attr.valuetype.isTristate()){
+					packet.set("bool", !attr.valuetype.isBoolean() ? false : !attr.asBoolean());
+					pass.bar("interact.fvtm.attribute.toggle_bool", attr.id, packet.getBoolean("bool"));
+				}
+				else if(attr.valuetype.isFloat()){
+					float flaot = attr.asFloat() + (val != null ? val : attr.getBox(attr.asString()).increase);
+					packet.set("value", flaot);
+					attr.set(flaot);
+					pass.bar("interact.fvtm.attribute.increase_number", attr.id, packet.getFloat("value"));
+				}
+				else if(attr.valuetype.isInteger()){
+					int ent = attr.asInteger() + (int)(val != null ? val : attr.getBox(attr.asString()).increase);
+					packet.set("value", ent);
+					attr.set(ent);
+					pass.bar("interact.fvtm.attribute.increase_number", attr.id, packet.getInteger("value"));
+				}
+				break;
+			}
+			case MOUSE_RIGHT:{
+				if(attr.valuetype.isTristate()){
+					packet.set("bool", !attr.valuetype.isBoolean() ? true : !attr.asBoolean());
+					pass.bar("interact.fvtm.attribute.toggle_bool", attr.id, packet.getBoolean("bool"));
+				}
+				else if(attr.valuetype.isFloat()){
+					float flaot = attr.asFloat() - (val != null ? -val : attr.getBox(attr.asString()).decrease);
+					packet.set("value", flaot);
+					attr.set(flaot);
+					pass.bar("interact.fvtm.attribute.decrease_number", attr.id, packet.getFloat("value"));
+				}
+				else if(attr.valuetype.isInteger()){
+					int ent = attr.asInteger() - (int)(val != null ? -val : attr.getBox(attr.asString()).decrease);
+					packet.set("value", ent);
+					attr.set(ent);
+					pass.bar("interact.fvtm.attribute.decrease_number", attr.id, packet.getInteger("value"));
+				}
+				break;
+			}
+			case RESET:{
+				if(attr.valuetype.isTristate()){
+					packet.set("bool", false);
+					packet.set("reset", true);
+					pass.bar("interact.fvtm.attribute.reset_bool", attr.id);
+				}
+				else if(attr.valuetype.isFloat()){
+					float flaot = val != null ? val : attr.getBox(attr.asString()).reset;
+					packet.set("value", flaot);
+					attr.set(flaot);
+					pass.bar("interact.fvtm.attribute.reset_number", attr.id, packet.getFloat("value"));
+				}
+				else if(attr.valuetype.isInteger()){
+					int ent = (int)(val != null ? val : attr.getBox(attr.asString()).reset);
+					packet.set("value", ent);
+					attr.set(ent);
+					pass.bar("interact.fvtm.attribute.reset_number", attr.id, packet.getInteger("value"));
+				}
+				break;
+			}
+			default:
+				return false;
+		}
+		if(pass.isOnClient()){
+			Packets.send(Packet_TagListener.class, "attr_toggle", packet);
+			last = attr.id;
+			cooldown = Time.getDate() + 20;
+		}
+		else{
+			FvtmLogger.marker("ERROR:INTERACT-ON-SERVER " + packet.toString());
+		}
 		return true;
 	}
 
@@ -79,7 +180,7 @@ public class InteractionHandler {
 		Passenger pass = world.getClientPassenger();
 		ArrayList<VehicleInstance> vehs = world.getVehicles(pass.getPos());
 		for(VehicleInstance veh : vehs){
-			if(handle(key, veh, null, pass, stack)) return true;
+			if(handle(key, veh, pass.getSeatOn(), pass, stack)) return true;
 		}
 		return false;
 	}
@@ -174,6 +275,8 @@ public class InteractionHandler {
 				point = vehicle.data.getRotationPoint(ab.swivel_point);
 				V3D pos = point.getRelativeVector(ab.pos.add(part == null ? V3D.NULL : part.getInstalledPos())).add(vehicle.entity.getPos());
 				double hs = ab.size * .5;
+				World w = world.local();
+				w.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.x, pos.y, pos.z, 0, 0, 0);
 				aabbs.put(attribute.id, AABB.create(pos.x - hs, pos.y - hs, pos.z - hs, pos.x + hs, pos.y + hs, pos.z + hs));
 			}
 		}
