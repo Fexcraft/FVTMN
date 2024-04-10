@@ -114,7 +114,7 @@ public class SeatInstance {
 				Float val = attr.getKeyValue(key);
 				if(val != null){
 					KeyPress mouse = val == 0 ? KeyPress.RESET : val > 0 ? KeyPress.MOUSE_MAIN : KeyPress.MOUSE_RIGHT;
-					if(bool = FvtmResources.INSTANCE.sendToggle(attr, root.entity, key, val, player)) break;
+					if(bool = InteractionHandler.toggle(attr, root, key, val, player)) break;
 				}
 			}
 			clicktimer += 10;
