@@ -110,6 +110,9 @@ ui.fvtm.road_tool.road_slot_info3=&7-> Addon Blocks of the ROAD type
 ui.fvtm.road_tool.road_slot_info4=&b- Fureniku's Roads
 ui.fvtm.road_tool.road_slot_info5=&7-> road and sidewalk blocks with varying height (1-16mb)
 //
+ui.fvtm.road_tool_custom.scroll_left=Scroll Left
+ui.fvtm.road_tool_custom.scroll_right=Scroll Right
+//
 ui.fvtm.decoration_editor.position=Position Offset
 ui.fvtm.decoration_editor.rotation=Rotation (Degrees)
 ui.fvtm.decoration_editor.scale=Scale
