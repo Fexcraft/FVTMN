@@ -6,7 +6,11 @@
 		"main": {
 			"texture": "fvtm:textures/gui/road_tool_custom.png",
 			"size": [ 176, 92 ],
-			"pos": [ 0, 36 ]
+			"pos": [ 0, 36 ],
+			"buttons": [
+				"scroll_left",
+				"scroll_right"
+			]
 		},
 		"left": {
 			"texture": "fvtm:textures/gui/road_tool_custom.png",
@@ -37,6 +41,26 @@
 			"size": [ 53, 32 ],
 			"pos": [ 115, 0 ],
 			"uv": [ 7, 0 ]
+		},
+		"scroll": {
+			"texture": "fvtm:textures/gui/road_tool_custom.png",
+			"size": [ 176, 20 ],
+			"pos": [ 0, -25 ],
+			"uv": [ 0, 131 ]
+		}
+	},
+	"buttons": {
+		"scroll_left": {
+			"pos": [ -2, 12 ],
+			"size": [ 8, 8 ],
+			"uv": [ 76, 12 ],
+			"tooltip": "ui.fvtm.road_tool_custom.scroll_left"
+		},
+		"scroll_right": {
+			"pos": [ 169, 12 ],
+			"size": [ 8, 8 ],
+			"uv": [ 88, 12 ],
+			"tooltip": "ui.fvtm.road_tool_custom.scroll_right"
 		}
 	},
 	"slots": {
