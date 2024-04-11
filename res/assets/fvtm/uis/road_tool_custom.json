@@ -7,6 +7,48 @@
 			"texture": "fvtm:textures/gui/road_tool_custom.png",
 			"size": [ 176, 92 ],
 			"pos": [ 0, 36 ]
+		},
+		"left": {
+			"texture": "fvtm:textures/gui/road_tool_custom.png",
+			"size": [ 15, 32 ],
+			"pos": [ -8, 0 ],
+			"uv": [ 70, 0 ]
+		},
+		"right": {
+			"texture": "fvtm:textures/gui/road_tool_custom.png",
+			"size": [ 15, 32 ],
+			"pos": [ 168, 0 ],
+			"uv": [ 87, 0 ]
+		},
+		"full0": {
+			"texture": "fvtm:textures/gui/road_tool_custom.png",
+			"size": [ 54, 32 ],
+			"pos": [ 7, 0 ],
+			"uv": [ 7, 0 ]
+		},
+		"full1": {
+			"texture": "fvtm:textures/gui/road_tool_custom.png",
+			"size": [ 54, 32 ],
+			"pos": [ 61, 0 ],
+			"uv": [ 7, 0 ]
+		},
+		"full2": {
+			"texture": "fvtm:textures/gui/road_tool_custom.png",
+			"size": [ 53, 32 ],
+			"pos": [ 115, 0 ],
+			"uv": [ 7, 0 ]
+		}
+	},
+	"slots": {
+		"player3x9": {
+			"pos": [ 8, 44 ],
+			"index": 9,
+			"repeat": [ 9, 3 ]
+		},
+		"player1x9": {
+			"pos": [ 8, 100 ],
+			"index": 0,
+			"repeat": [ 9, 1 ]
 		}
 	}
 }
