@@ -17,6 +17,7 @@ public class RoadToolCustomUI extends UserInterface {
 
 	protected RoadToolCustomCon rtc;
 	protected boolean sscr;
+	protected float seg;
 
 	public RoadToolCustomUI(JsonMap map, ContainerInterface con) throws Exception{
 		super(map, con);
@@ -30,6 +31,7 @@ public class RoadToolCustomUI extends UserInterface {
 		tabs.get("scroll").visible(sscr);
 		buttons.get("scroll_left").visible(sscr);
 		buttons.get("scroll_right").visible(sscr);
+		seg = 162f / rtc.size[0];
 	}
 
 	@Override
@@ -51,6 +53,12 @@ public class RoadToolCustomUI extends UserInterface {
 				}
 				drawer.draw(left + (rtc.size[0] - 1) * 18, gTop, 43, 0, 25, 32);
 			}
+		}
+		else{
+			float b = seg * rtc.scroll;
+			float w = seg * 9;
+			drawer.draw(gLeft + 7 + b, gTop - 18, 7, 151, (int)w, 6);
+			drawer.draw(gLeft + 3.5f + b + (w / 2), gTop - 24, 177, 132, 7, 7);
 		}
 	}
 
