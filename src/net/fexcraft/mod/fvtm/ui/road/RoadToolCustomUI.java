@@ -1,6 +1,8 @@
 package net.fexcraft.mod.fvtm.ui.road;
 
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UIButton;
@@ -14,7 +16,6 @@ import java.util.List;
 public class RoadToolCustomUI extends UserInterface {
 
 	protected RoadToolCustomCon rtc;
-	protected int[] size = new int[]{ 1, 0, 0, 0, 0, 0 };
 	protected boolean sscr;
 
 	public RoadToolCustomUI(JsonMap map, ContainerInterface con) throws Exception{
@@ -61,6 +62,7 @@ public class RoadToolCustomUI extends UserInterface {
 				com.set("cargo", "scroll");
 				com.set("by", -1);
 				container.SEND_TO_SERVER.accept(com);
+				if(--rtc.scroll < 0) rtc.scroll = 0;
 				return true;
 			}
 			case "scroll_right":{
@@ -68,6 +70,7 @@ public class RoadToolCustomUI extends UserInterface {
 				com.set("cargo", "scroll");
 				com.set("by", 1);
 				container.SEND_TO_SERVER.accept(com);
+				if(++rtc.scroll + 9 >= rtc.size[0]) rtc.scroll = rtc.size[0] - 9;
 				return true;
 			}
 		}
@@ -76,7 +79,12 @@ public class RoadToolCustomUI extends UserInterface {
 
 	@Override
 	public void getTooltip(int mx, int my, List<String> list){
-		//
+		if(rtc.size[0] < 9) return;
+		if(tabs.get("scroll").hovered(gLeft, gTop, mx, my)){
+			Object[] objs = new Object[]{ rtc.scroll + 1, rtc.scroll + 9, rtc.size[0] };
+			list.add(Formatter.format(container.TRANSFORMAT.apply("ui.fvtm.road_tool_custom.scroll_status", objs)));
+		}
 	}
+
 
 }
