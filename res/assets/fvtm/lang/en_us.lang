@@ -112,6 +112,7 @@ ui.fvtm.road_tool.road_slot_info5=&7-> road and sidewalk blocks with varying hei
 //
 ui.fvtm.road_tool_custom.scroll_left=Scroll Left
 ui.fvtm.road_tool_custom.scroll_right=Scroll Right
+ui.fvtm.road_tool_custom.scroll_status=&7Currently viewing &a%s-%s &7of &e%s
 //
 ui.fvtm.decoration_editor.position=Position Offset
 ui.fvtm.decoration_editor.rotation=Rotation (Degrees)
