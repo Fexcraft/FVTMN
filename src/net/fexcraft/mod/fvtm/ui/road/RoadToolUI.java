@@ -168,15 +168,24 @@ public class RoadToolUI extends UserInterface {
 				return true;
 			}
 			case "edit_road":{
-				((Passenger)container.player).openUI(UIKey.ROAD_TOOL_CUSTOM, new V3I(0, 0, 0));
+				TagCW compound = TagCW.create();
+				compound.set("cargo", "custom");
+				compound.set("layer", 0);
+				container.SEND_TO_SERVER.accept(compound);
 				return true;
 			}
 			case "edit_top":{
-				((Passenger)container.player).openUI(UIKey.ROAD_TOOL_CUSTOM, new V3I(4, 0, 0));
+				TagCW compound = TagCW.create();
+				compound.set("cargo", "custom");
+				compound.set("layer", 4);
+				container.SEND_TO_SERVER.accept(compound);
 				return true;
 			}
 			case "edit_lines":{
-				((Passenger)container.player).openUI(UIKey.ROAD_TOOL_CUSTOM, new V3I(5, 0, 0));
+				TagCW compound = TagCW.create();
+				compound.set("cargo", "custom");
+				compound.set("layer", 5);
+				container.SEND_TO_SERVER.accept(compound);
 				return true;
 			}
 		}
