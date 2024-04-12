@@ -2,6 +2,7 @@ package net.fexcraft.mod.fvtm.ui.road;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.ui.UIKey;
 import net.fexcraft.mod.uni.EnvInfo;
@@ -52,10 +53,10 @@ public abstract class RoadToolCustomCon extends InventoryInterface {
 				break;
 			}
 			case "scroll":{
+				saveStacks();
 				scroll += packet.getInteger("by");
 				if(scroll < 0) scroll = 0;
 				if(scroll + 9 >= size[0]) scroll = size[0] - 9;
-				saveStacks();
 				fillStacks();
 				break;
 			}
@@ -71,10 +72,13 @@ public abstract class RoadToolCustomCon extends InventoryInterface {
 			int is = size[0] > 9 ? 9 : size[0];
 			for(int i = 0; i < is; i++){
 				int j = i + scroll;
-				if(!isInventoryEmpty(i)){
+				if(isInventoryEmpty(i)){
+					com.rem("Block" + j);
+					if(idx > 0 && EnvInfo.is112()) com.rem("Meta" + j);
+				}
+				else{
 					StackWrapper stack = getInventoryContent(i);
 					com.set("Block" + j, stack.getID());
-					if(idx > 0 && EnvInfo.is112()) com.set("Meta" + j, stack.damage());
 				}
 			}
 			stack.getTag().set(tagname, com);
