@@ -2,7 +2,6 @@ package net.fexcraft.mod.fvtm.ui.road;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.utils.Formatter;
-import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UIButton;
@@ -66,23 +65,42 @@ public class RoadToolCustomUI extends UserInterface {
 	public boolean onAction(UIButton button, String id, int x, int y, int b){
 		switch(id){
 			case "scroll_left":{
-				TagCW com = TagCW.create();
-				com.set("cargo", "scroll");
-				com.set("by", -1);
-				container.SEND_TO_SERVER.accept(com);
-				if(--rtc.scroll < 0) rtc.scroll = 0;
+				scroll(-1);
 				return true;
 			}
 			case "scroll_right":{
-				TagCW com = TagCW.create();
-				com.set("cargo", "scroll");
-				com.set("by", 1);
-				container.SEND_TO_SERVER.accept(com);
-				if(++rtc.scroll + 9 >= rtc.size[0]) rtc.scroll = rtc.size[0] - 9;
+				scroll(1);
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private void scroll(int by){
+		TagCW com = TagCW.create();
+		com.set("cargo", "scroll");
+		com.set("by", by);
+		container.SEND_TO_SERVER.accept(com);
+		rtc.scroll += by;
+		if(rtc.scroll < 0) rtc.scroll = 0;
+		if(rtc.scroll + 9 >= rtc.size[0]) rtc.scroll = rtc.size[0] - 9;
+	}
+
+	@Override
+	public void scrollwheel(int am, int mx, int my){
+		if(my < gTop + 36) scroll(am < 0 ? 1 : -1);
+	}
+
+	@Override
+	public boolean onClick(int mx, int my, int mb){
+		if(mb == 0 && mx >= gLeft + 7 && mx <= gLeft + 169 && my >= gTop - 18 && my <= gTop - 12){
+			int sg = (int)((mx - gLeft - 7) / seg);
+			if(sg < 0) sg = 0;
+			if(sg >= rtc.size[0] - 9) sg = rtc.size[0] - 9;
+			scroll(sg - rtc.scroll);
+			return true;
+		}
+		return super.onClick(mx, my, mb);
 	}
 
 	@Override
