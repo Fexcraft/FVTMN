@@ -31,9 +31,8 @@ public abstract class RoadToolCustomCon extends InventoryInterface {
 			stack.getTag().set("RoadLayers", size);
 		}
 		else size = stack.getTag().getIntArray("RoadLayers");
-		tagname = "Custom" + RoadToolCon.fills[idx];
+		tagname = "Custom" + RoadToolCon.fills[idx = pos.x];
 		offset = size[0] > 9 ? 9 * 9 : (size[0] * 9);
-		idx = pos.x;
 	}
 
 	@Override
