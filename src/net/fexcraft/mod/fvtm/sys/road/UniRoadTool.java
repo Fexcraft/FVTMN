@@ -144,8 +144,53 @@ public class UniRoadTool {
 			border_hr = layers[3];
 			border_r = new ArrayList<>();
 		}
-
+		if(layers[4] > 0 && stack.getTag().has("TopFill") && !stack.getTag().has("CustomTopFill")){
+			stack0 = FvtmResources.newStack(stack.getTag().getCompound("TopFill"));
+			top = StateWrapper.STACK_GETTER.apply(stack0);
+		}
+		if(layers[5] > 0 && stack.getTag().has("LinesFill") && !stack.getTag().has("CustomLinesFill")){
+			stack0 = FvtmResources.newStack(stack.getTag().getCompound("LinesFill"));
+			line_b = StateWrapper.STACK_GETTER.apply(stack0);
+		}
+		top_h = border_hl > border_hr ? border_hl : border_hr;
+		if(top_h == 0){
+			if(layers[5] > 0){
+				border_hl++;
+				border_hr++;
+				top_h = 2;
+			}
+			top_h = 1;
+		}
+		ArrayList<StateWrapper> roadfill_b;
+		ArrayList<StateWrapper> rooffill_b;
+		ArrayList<StateWrapper> linefill_b;
+		if(stack.getTag().has("CustomRoadFill")){
+			roadfill = new ArrayList<>();
+			roadfill_b = new ArrayList<>();
+			loadFill(roadfill, roadfill_b, layers[0], stack.getTag().getCompound("CustomRoadFill"));
+		}
+		if(layers[4] > 0 && stack.getTag().has("CustomTopFill")){
+			rooffill = new ArrayList<>();
+			rooffill_b = new ArrayList<>();
+			loadFill(rooffill, rooffill_b, layers[0], stack.getTag().getCompound("CustomTopFill"));
+		}
+		if(layers[5] > 0 && stack.getTag().has("CustomLinesFill")){
+			linefill = new ArrayList<>();
+			linefill_b = new ArrayList<>();
+			loadFill(linefill, linefill_b, layers[0], stack.getTag().getCompound("CustomLinesFill"));
+		}
 		return RoadToolItem.placeRoad(pass.local(), pass.getWorld().local(), stack.local(), vector, _road, pass.local());
+	}
+
+	private static void loadFill(ArrayList<ArrayList<QV3D>> fill, ArrayList<StateWrapper> bill, int width, TagCW com){
+		for(int i = 0; i < width; i++){
+			fill.add(new ArrayList<>());
+			StateWrapper state = StateWrapper.DEFAULT;
+			if(com.has("Block" + i)){
+				state = StateWrapper.STACK_GETTER.apply(FvtmResources.newStack(com.getCompound("Block" + i)));
+			}
+			bill.add(state);
+		}
 	}
 
 	public static class Road extends Path {
