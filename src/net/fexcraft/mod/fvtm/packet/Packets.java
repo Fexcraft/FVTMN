@@ -3,11 +3,13 @@ package net.fexcraft.mod.fvtm.packet;
 import io.netty.buffer.ByteBuf;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.data.block.BlockData;
 import net.fexcraft.mod.fvtm.handler.AttrReqHandler;
 import net.fexcraft.mod.fvtm.sys.road.RoadPlacingUtil;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
+import net.fexcraft.mod.fvtm.ui.UIKey;
 import net.fexcraft.mod.fvtm.util.QV3D;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -33,6 +35,9 @@ public abstract class Packets {
 		});
 		LIS_SERVER.put("attr_update", (com, player) -> {
 			AttrReqHandler.processUpdateRequest(player, com);
+		});
+		LIS_SERVER.put("open_ui", (com, player) -> {
+			player.openUI(UIKey.byId(com.getInteger("ui")), new V3I(com.getIntArray("pos"), 0));
 		});
 		if(EnvInfo.CLIENT){
 			LIS_CLIENT.put("attr_toggle", (tag, player) -> {
