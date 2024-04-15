@@ -1,7 +1,6 @@
 package net.fexcraft.mod.fvtm.ui;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -70,6 +69,13 @@ public class UIKey {
 			if(key.key.equals(id)) return key.id;
 		}
 		return 0;
+	}
+
+	public static UIKey byId(int ui){
+		for(UIKey key : ALLKEYS){
+			if(key.id == ui) return key;
+		}
+		return null;
 	}
 
 }
