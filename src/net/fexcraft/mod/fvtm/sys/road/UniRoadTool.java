@@ -1,5 +1,6 @@
 package net.fexcraft.mod.fvtm.sys.road;
 
+import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.FvtmResources;
@@ -107,20 +108,20 @@ public class UniRoadTool {
 		StateWrapper bot;
 		StateWrapper left;
 		StateWrapper righ;
-		StateWrapper line_b;
-		StateWrapper road_b;
+		StateWrapper line_b = null;
+		StateWrapper road_b = null;
 		ArrayList<QV3D> roof;
-		ArrayList<QV3D> ground;
-		ArrayList<QV3D> border_l;
-		ArrayList<QV3D> border_r;
+		ArrayList<QV3D> ground = null;
+		ArrayList<QV3D> border_l = null;
+		ArrayList<QV3D> border_r = null;
 		ArrayList<QV3D> line;
 		ArrayList<QV3D> road;
 		int top_h = 0;
 		int border_hl = 0;
 		int border_hr = 0;
-		ArrayList<ArrayList<QV3D>> rooffill;
-		ArrayList<ArrayList<QV3D>> linefill;
-		ArrayList<ArrayList<QV3D>> roadfill;
+		ArrayList<ArrayList<QV3D>> rooffill = null;
+		ArrayList<ArrayList<QV3D>> linefill = null;
+		ArrayList<ArrayList<QV3D>> roadfill = null;
 		boolean flnk;
 		if(stack.getTag().has("RoadFill")){
 			stack0 = FvtmResources.newStack(stack.getTag().getCompound("RoadFill"));
@@ -179,6 +180,43 @@ public class UniRoadTool {
 			linefill_b = new ArrayList<>();
 			loadFill(linefill, linefill_b, layers[0], stack.getTag().getCompound("CustomLinesFill"));
 		}
+		V3I pos = new V3I();
+		V3D last;
+		V3D vec;
+		StateWrapper state;
+		int width = layers[0];
+		int height = 0;
+		double angle;
+		double passed = 0;
+		double half = width * 0.5 - 0.5;
+		road = roadfill == null && road_b != null ? new ArrayList<>() : null;
+		roof = rooffill == null && layers[4] > 0 ? new ArrayList<>() : null;
+		line = linefill == null && layers[5] > 0 ? new ArrayList<>() : null;
+		vec = _road.getVectorPosition(0.001, false);
+		angle = Math.atan2(_road.vecpath[0].z - vec.z, _road.vecpath[0].x - vec.x) + Static.rad90;
+		for(double db = -half; db <= half; db += 0.25){
+			if(road != null) road.add(gen(_road.vecpath[0], angle, db, 0));
+			if(ground != null) ground.add(gen(_road.vecpath[0], angle, db, -1));
+			if(line != null) line.add(gen(_road.vecpath[0], angle, db, 1));
+			if(roof != null) roof.add(gen(_road.vecpath[0], angle, db, top_h));
+		}
+		if(roadfill != null){
+			for(int i = 0; i < roadfill.size(); i++){
+				roadfill.get(i).add(gen(_road.vecpath[0], angle, -half + 0.25 + i, 0));
+			}
+		}
+		if(linefill != null){
+			for(int i = 0; i < linefill.size(); i++){
+				linefill.get(i).add(gen(_road.vecpath[0], angle, -half + 0.25 + i, 1));
+			}
+		}
+		if(rooffill != null){
+			for(int i = 0; i < rooffill.size(); i++){
+				rooffill.get(i).add(gen(_road.vecpath[0], angle, -half + 0.25 + i, top_h));
+			}
+		}
+		if(border_l != null) border_l.add(gen(_road.vecpath[0], angle, -half - 1, 0));
+		if(border_r != null) border_r.add(gen(_road.vecpath[0], angle, half + 1, 0));
 		return RoadToolItem.placeRoad(pass.local(), pass.getWorld().local(), stack.local(), vector, _road, pass.local());
 	}
 
@@ -218,6 +256,14 @@ public class UniRoadTool {
 	public static V3D grv(double rad, V3D vec){
 		double co = Math.cos(rad), si = Math.sin(rad);
 		return new V3D(co * vec.x, vec.y, si * vec.x);
+	}
+
+	public static V3D grv(double rad, double x, double y){
+		return new V3D(Math.cos(rad) * x, y, Math.sin(rad) * x);
+	}
+
+	public static QV3D gen(V3D vec, double rad, double x, double y){
+		return new QV3D(vec.add(grv(rad, x, y)), 16);
 	}
 
 }
