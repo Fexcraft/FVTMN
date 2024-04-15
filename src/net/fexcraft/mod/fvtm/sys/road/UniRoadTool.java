@@ -165,9 +165,9 @@ public class UniRoadTool {
 			}
 			top_h = 1;
 		}
-		ArrayList<StateWrapper> roadfill_b;
-		ArrayList<StateWrapper> rooffill_b;
-		ArrayList<StateWrapper> linefill_b;
+		ArrayList<StateWrapper> roadfill_b = null;
+		ArrayList<StateWrapper> rooffill_b = null;
+		ArrayList<StateWrapper> linefill_b = null;
 		if(stack.getTag().has("CustomRoadFill")){
 			roadfill = new ArrayList<>();
 			roadfill_b = new ArrayList<>();
@@ -245,15 +245,34 @@ public class UniRoadTool {
 			}
 			if(rooffill != null){
 				for(int i = 0; i < rooffill.size(); i++){
-					rooffill.get(i).add(gen(vec, angle, -half + off+ 0.25 + i, top_h));
+					rooffill.get(i).add(gen(vec, angle, -half + off + 0.25 + i, top_h));
 				}
 			}
-			if(border_l != null) border_l.add(gen(vec, angle, -half + off + - 1, 0));
+			if(border_l != null) border_l.add(gen(vec, angle, -half + off + -1, 0));
 			if(border_r != null) border_r.add(gen(vec, angle, half + off + 1, 0));
 		}
+		FvtmWorld world = pass.getFvtmWorld();
 		JsonMap map = new JsonMap();
 		if(road != null){
-			roadFill(pass.getFvtmWorld(), road, road_b, top_h, flnk, map);
+			roadFill(world, road, pos, road_b, top_h, flnk, map);
+		}
+		StateWrapper block = null;
+		if(roadfill != null){
+			for(int i = 0; i < roadfill.size(); i++){
+				block = roadfill_b.get(i);
+				flnk = CompatUtil.isValidFurenikus(block.getIDL());
+				roadFill(world, roadfill.get(i), pos, block, top_h, flnk, map);
+			}
+		}
+		if(linefill != null){
+			for(int i = 0; i < linefill.size(); i++){
+				basicFill(world, linefill.get(i), pos, linefill_b.get(i), map);
+			}
+		}
+		if(rooffill != null){
+			for(int i = 0; i < rooffill.size(); i++){
+				basicFill(world, rooffill.get(i), pos, rooffill_b.get(i), map);
+			}
 		}
 		return RoadToolItem.placeRoad(pass.local(), pass.getWorld().local(), stack.local(), vector, _road, pass.local());
 	}
@@ -277,9 +296,8 @@ public class UniRoadTool {
 		}
 	}
 
-	private static void roadFill(FvtmWorld world, ArrayList<QV3D> road, StateWrapper block, int th, boolean flnk, JsonMap map){
+	private static void roadFill(FvtmWorld world, ArrayList<QV3D> road, V3I pos, StateWrapper block, int th, boolean flnk, JsonMap map){
 		int height;
-		V3I pos = new V3I();
 		StateWrapper state;
 		boolean bool;
 		for(QV3D vec : road){
@@ -301,6 +319,18 @@ public class UniRoadTool {
 				pos.y++;
 				insert(map, pos, world.getStateAt(pos));
 				world.setBlockState(pos, StateWrapper.DEFAULT);
+			}
+		}
+	}
+
+	private static void basicFill(FvtmWorld world, ArrayList<QV3D> vecs, V3I pos, StateWrapper block, JsonMap map){
+		StateWrapper state;
+		for(QV3D v : vecs){
+			pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
+			state = world.getStateAt(pos);
+			if(state.getBlock() != block.getBlock()){
+				insert(map, pos, state);
+				world.setBlockState(pos, block);
 			}
 		}
 	}
