@@ -8,14 +8,19 @@ import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.Path;
 import net.fexcraft.mod.fvtm.sys.uni.PathType;
 import net.fexcraft.mod.fvtm.ui.UIKey;
+import net.fexcraft.mod.fvtm.util.CompatUtil;
 import net.fexcraft.mod.fvtm.util.QV3D;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
+import net.fexcraft.mod.uni.world.StateWrapper;
+import net.fexcraft.mod.uni.world.WrapperHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
 import static net.fexcraft.lib.common.utils.Formatter.format;
+import static net.fexcraft.mod.fvtm.Config.MAX_ROAD_LENGTH;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -91,8 +96,56 @@ public class UniRoadTool {
 		return 3;
 	}
 
-	public static boolean placeRoad(Passenger pass, StackWrapper stack, QV3D vector, Road road){
-		return RoadToolItem.placeRoad(pass.local(), pass.getWorld().local(), stack.local(), vector, road, pass.local());
+	public static boolean placeRoad(Passenger pass, StackWrapper stack, QV3D vector, Road _road){
+		if(_road.length > MAX_ROAD_LENGTH){
+			pass.bar("interact.fvtm.road_tool.too_long");
+			return false;
+		}
+		StackWrapper stack0 = null;
+		int[] layers = stack.getTag().getIntArray("RoadLayers");
+		StateWrapper top;
+		StateWrapper bot;
+		StateWrapper left;
+		StateWrapper righ;
+		StateWrapper line_b;
+		StateWrapper road_b;
+		ArrayList<QV3D> roof;
+		ArrayList<QV3D> ground;
+		ArrayList<QV3D> border_l;
+		ArrayList<QV3D> border_r;
+		ArrayList<QV3D> line;
+		ArrayList<QV3D> road;
+		int top_h = 0;
+		int border_hl = 0;
+		int border_hr = 0;
+		ArrayList<ArrayList<QV3D>> rooffill;
+		ArrayList<ArrayList<QV3D>> linefill;
+		ArrayList<ArrayList<QV3D>> roadfill;
+		boolean flnk;
+		if(stack.getTag().has("RoadFill")){
+			stack0 = FvtmResources.newStack(stack.getTag().getCompound("RoadFill"));
+			flnk = CompatUtil.isValidFurenikus(stack.getIDL());
+			road_b = StateWrapper.STACK_GETTER.apply(stack0);
+		}
+		if(layers[1] > 0 && stack.getTag().has("BottomFill")){
+			stack0 = FvtmResources.newStack(stack.getTag().getCompound("BottomFill"));
+			bot = StateWrapper.STACK_GETTER.apply(stack0);
+			ground = new ArrayList<>();
+		}
+		if(layers[2] > 0 && stack.getTag().has("SideLeftFill")){
+			stack0 = FvtmResources.newStack(stack.getTag().getCompound("SideLeftFill"));
+			left = StateWrapper.STACK_GETTER.apply(stack0);
+			border_hl = layers[2];
+			border_l = new ArrayList<>();
+		}
+		if(layers[3] > 0 && stack.getTag().has("SideRightFill")){
+			stack0 = FvtmResources.newStack(stack.getTag().getCompound("SideRightFill"));
+			righ = StateWrapper.STACK_GETTER.apply(stack0);
+			border_hr = layers[3];
+			border_r = new ArrayList<>();
+		}
+
+		return RoadToolItem.placeRoad(pass.local(), pass.getWorld().local(), stack.local(), vector, _road, pass.local());
 	}
 
 	public static class Road extends Path {
