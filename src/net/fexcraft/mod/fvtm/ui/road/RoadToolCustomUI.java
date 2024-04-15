@@ -1,7 +1,11 @@
 package net.fexcraft.mod.fvtm.ui.road;
 
 import net.fexcraft.app.json.JsonMap;
+import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.lib.common.utils.Formatter;
+import net.fexcraft.mod.fvtm.packet.Packet_TagListener;
+import net.fexcraft.mod.fvtm.packet.Packets;
+import net.fexcraft.mod.fvtm.ui.UIKey;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.ui.UIButton;
@@ -89,6 +93,17 @@ public class RoadToolCustomUI extends UserInterface {
 	@Override
 	public void scrollwheel(int am, int mx, int my){
 		if(my < gTop + 36) scroll(am < 0 ? 1 : -1);
+	}
+
+	@Override
+	public boolean keytyped(char c, int code){
+		if(code == 1){
+			TagCW com = TagCW.create();
+			com.set("ui", UIKey.ROAD_TOOL.id);
+			com.set("pos", V3I.NULL.toIntegerArray());
+			Packets.send(Packet_TagListener.class, "open_ui", com);
+		}
+		return true;
 	}
 
 	@Override
