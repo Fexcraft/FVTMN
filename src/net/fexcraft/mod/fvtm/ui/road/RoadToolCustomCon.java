@@ -2,9 +2,6 @@ package net.fexcraft.mod.fvtm.ui.road;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
-import net.fexcraft.mod.fvtm.FvtmLogger;
-import net.fexcraft.mod.fvtm.sys.uni.Passenger;
-import net.fexcraft.mod.fvtm.ui.UIKey;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -45,12 +42,6 @@ public abstract class RoadToolCustomCon extends InventoryInterface {
 	public void packet(TagCW packet, boolean client){
 		if(!packet.has("cargo")) return;
 		switch(packet.getString("cargo")){
-			case "save":{
-				saveStacks();
-				player.closeUI();
-				((Passenger)player).openUI(UIKey.ROAD_TOOL, pos);
-				break;
-			}
 			case "scroll":{
 				saveStacks();
 				scroll += packet.getInteger("by");
