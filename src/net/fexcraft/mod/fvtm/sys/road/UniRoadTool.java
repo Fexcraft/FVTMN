@@ -217,6 +217,37 @@ public class UniRoadTool {
 		}
 		if(border_l != null) border_l.add(gen(_road.vecpath[0], angle, -half - 1, 0));
 		if(border_r != null) border_r.add(gen(_road.vecpath[0], angle, half + 1, 0));
+		double off;
+		while(passed < _road.length){
+			passed += 0.125;
+			last = vec;
+			vec = _road.getVectorPosition(passed, false);
+			angle = Math.atan2(last.z - vec.z, last.x - vec.x) + Static.rad90;
+			off = roadfill == null ? 0 : 0.25;
+			for(double db = -half; db <= half; db += 0.25){
+				if(road != null) road.add(gen(vec, angle, db, 0));
+				if(ground != null) ground.add(gen(vec, angle, db + off, -1));
+				if(line != null) line.add(gen(vec, angle, db, 1));
+				if(roof != null) roof.add(gen(vec, angle, db, top_h));
+			}
+			if(roadfill != null){
+				for(int i = 0; i < roadfill.size(); i++){
+					roadfill.get(i).add(gen(vec, angle, -half + 0.25 + i, 0));
+				}
+			}
+			if(linefill != null){
+				for(int i = 0; i < linefill.size(); i++){
+					linefill.get(i).add(gen(vec, angle, -half + off + 0.25 + i, 1));
+				}
+			}
+			if(rooffill != null){
+				for(int i = 0; i < rooffill.size(); i++){
+					rooffill.get(i).add(gen(vec, angle, -half + off+ 0.25 + i, top_h));
+				}
+			}
+			if(border_l != null) border_l.add(gen(vec, angle, -half + off + - 1, 0));
+			if(border_r != null) border_r.add(gen(vec, angle, half + off + 1, 0));
+		}
 		return RoadToolItem.placeRoad(pass.local(), pass.getWorld().local(), stack.local(), vector, _road, pass.local());
 	}
 
