@@ -5,6 +5,7 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.item.RoadToolItem;
 import net.fexcraft.mod.fvtm.sys.uni.FvtmWorld;
@@ -107,10 +108,10 @@ public class UniRoadTool {
 		}
 		StackWrapper stack0 = null;
 		int[] layers = stack.getTag().getIntArray("RoadLayers");
-		StateWrapper top;
-		StateWrapper bot;
-		StateWrapper left;
-		StateWrapper righ;
+		StateWrapper top = null;
+		StateWrapper bot = null;
+		StateWrapper left = null;
+		StateWrapper righ = null;
 		StateWrapper line_b = null;
 		StateWrapper road_b = null;
 		ArrayList<QV3D> roof;
@@ -274,7 +275,45 @@ public class UniRoadTool {
 				basicFill(world, rooffill.get(i), pos, rooffill_b.get(i), map);
 			}
 		}
-		return RoadToolItem.placeRoad(pass.local(), pass.getWorld().local(), stack.local(), vector, _road, pass.local());
+		if(border_l != null){
+			borderFill(world, border_l, pos, left, border_hl, map);
+		}
+		if(border_r != null){
+			borderFill(world, border_r, pos, righ, border_hr, map);
+		}
+		if(ground != null){
+			for(QV3D v : ground){
+				pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
+				state = world.getStateAt(pos);
+				if(!world.isFvtmRoad(state) && !CompatUtil.isValidFurenikus(state.getIDL())){
+					insert(map, pos, state);
+					world.setBlockState(pos, bot);
+				}
+			}
+		}
+		if(line != null){
+			for(QV3D v : line){
+				pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
+				insert(map, pos, world.getStateAt(pos));
+				world.setBlockState(pos, line_b);
+			}
+		}
+		if(roof != null){
+			for(QV3D v : roof){
+				pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
+				try{
+					insert(map, pos, world.getStateAt(pos));
+					world.setBlockState(pos, top);
+				}
+				catch(Exception e){
+					FvtmLogger.log(e, "road top/ceiling creation");
+				}
+			}
+		}
+		pass.bar("interact.fvtm.road_tool.complete");
+		RoadPlacingCache.addEntry(pass.getUUID(), pass.dimid(), map);
+		stack.getTag().set("LastRoadDim", pass.dimid());
+		return true;
 	}
 
 	private static void insert(JsonMap map, V3I pos, StateWrapper state){
@@ -331,6 +370,17 @@ public class UniRoadTool {
 			if(state.getBlock() != block.getBlock()){
 				insert(map, pos, state);
 				world.setBlockState(pos, block);
+			}
+		}
+	}
+
+	private static void borderFill(FvtmWorld world, ArrayList<QV3D> vecs, V3I pos, StateWrapper block, int top, JsonMap map){
+		for(QV3D v : vecs){
+			pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
+			for(int i = -1; i < top; i++){
+				V3I vp = pos.add(0, i, 0);
+				insert(map, vp, world.getStateAt(vp));
+				world.setBlockState(vp, block);
 			}
 		}
 	}
