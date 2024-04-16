@@ -64,12 +64,12 @@ public abstract class RoadToolCustomCon extends InventoryInterface {
 				int j = i + scroll;
 				if(isInventoryEmpty(i)){
 					com.rem("Block" + j);
-					if(idx > 0 && EnvInfo.is112()) com.rem("Meta" + j);
 				}
 				else{
 					StackWrapper stack = getInventoryContent(i);
-					com.set("Block" + j, stack.getID());
-					if(EnvInfo.is112()) com.set("Meta" + j, stack.damage());
+					TagCW tag = TagCW.create();
+					stack.save(tag);
+					com.set("Block" + j, tag);
 				}
 			}
 			stack.getTag().set(tagname, com);
