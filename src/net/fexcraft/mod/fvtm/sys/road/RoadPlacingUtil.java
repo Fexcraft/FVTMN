@@ -161,7 +161,7 @@ public class RoadPlacingUtil {
 				pass.send("no_queue_entry / 1");
 				return;
 			}
-			if(!UniRoadTool.placeRoad(pass, stack, vector, new Road(nroad.points.toArray(new QV3D[0])))) return;
+			if(!UniRoadTool.placeRoad(pass, stack, new Road(nroad.points.toArray(new QV3D[0])))) return;
 			pass.send("&o> Road Created.");
 			nroad.reset();
 		}
