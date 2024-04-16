@@ -5,7 +5,7 @@
 	"tabs": {
 		"main": {
 			"texture": "fvtm:textures/gui/road_tool.png",
-			"size": [ 182, 212 ],
+			"size": [ 191, 212 ],
 			"pos": [ 0, 0 ],
 			"buttons": [
 				"add_width", "sub_width",
@@ -14,9 +14,9 @@
 				"add_right", "sub_right",
 				"enable_top", "disable_top",
 				"enable_lines", "disable_lines",
-				"edit_road",
-				"edit_top",
-				"edit_lines"
+				"edit_road", "rem_road",
+				"edit_top", "rem_top",
+				"edit_lines", "rem_lines"
 			],
 			"texts": [
 				"road_fill", "road_width",
@@ -103,6 +103,21 @@
 			"pos": [ 168, 112 ],
 			"size": [ 8, 8 ],
 			"tooltip": "ui.fvtm.road_tool.edit_lines"
+		},
+		"rem_road": {
+			"pos": [ 177, 12 ],
+			"size": [ 8, 8 ],
+			"tooltip": "ui.fvtm.road_tool.remove_custom_road"
+		},
+		"rem_top": {
+			"pos": [ 177, 92 ],
+			"size": [ 8, 8 ],
+			"tooltip": "ui.fvtm.road_tool.remove_custom_top"
+		},
+		"rem_lines": {
+			"pos": [ 177, 112 ],
+			"size": [ 8, 8 ],
+			"tooltip": "ui.fvtm.road_tool.remove_custom_lines"
 		}
 	},
 	"texts": {
