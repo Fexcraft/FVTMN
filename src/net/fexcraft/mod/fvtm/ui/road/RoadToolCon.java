@@ -54,6 +54,14 @@ public abstract class RoadToolCon extends InventoryInterface {
 				((Passenger)player).openUI(UIKey.ROAD_TOOL_CUSTOM, new V3I(com.getInteger("layer"), 0, 0));
 				break;
 			}
+			case "remove":{
+				stack.getTag().rem("Custom" + fills[com.getInteger("layer")]);
+				custom_road = stack.getTag().has("CustomRoadFill");
+				custom_top = stack.getTag().has("CustomTopFill");
+				custom_lines = stack.getTag().has("CustomLinesFill");
+				if(!client) SEND_TO_CLIENT.accept(com, player);
+				break;
+			}
 		}
 	}
 
