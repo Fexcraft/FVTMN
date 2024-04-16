@@ -69,6 +69,7 @@ public abstract class RoadToolCustomCon extends InventoryInterface {
 				else{
 					StackWrapper stack = getInventoryContent(i);
 					com.set("Block" + j, stack.getID());
+					if(EnvInfo.is112()) com.set("Meta" + j, stack.damage());
 				}
 			}
 			stack.getTag().set(tagname, com);
