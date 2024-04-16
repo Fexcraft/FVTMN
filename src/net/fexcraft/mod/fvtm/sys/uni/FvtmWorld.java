@@ -28,6 +28,10 @@ public abstract class FvtmWorld extends WorldW {
 
 	public abstract boolean isFvtmRoad(StateWrapper state);
 
+	public boolean isFvtmRoad(Object state){
+		return isFvtmRoad(StateWrapper.of(state));
+	}
+
 	public abstract int getRoadHeight(StateWrapper state);
 
 	public abstract StateWrapper getRoadWithHeight(StateWrapper block, int height);
