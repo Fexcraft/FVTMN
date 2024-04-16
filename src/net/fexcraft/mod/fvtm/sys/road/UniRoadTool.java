@@ -101,7 +101,7 @@ public class UniRoadTool {
 		return 3;
 	}
 
-	public static boolean placeRoad(Passenger pass, StackWrapper stack, QV3D vector, Road _road){
+	public static boolean placeRoad(Passenger pass, StackWrapper stack, Road _road){
 		if(_road.length > MAX_ROAD_LENGTH){
 			pass.bar("interact.fvtm.road_tool.too_long");
 			return false;
@@ -189,7 +189,6 @@ public class UniRoadTool {
 		V3D vec;
 		StateWrapper state;
 		int width = layers[0];
-		int height = 0;
 		double angle;
 		double passed = 0;
 		double half = width * 0.5 - 0.5;
