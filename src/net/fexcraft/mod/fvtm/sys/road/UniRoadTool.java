@@ -321,7 +321,7 @@ public class UniRoadTool {
 		JsonArray array = new JsonArray();
 		array.add(state.getIDL().colon());
 		if(EnvInfo.is112()) array.add(state.get12Meta());
-		map.add(pos.toString(), array);
+		map.add(pos.asString(), array);
 	}
 
 	private static void loadFill(ArrayList<ArrayList<QV3D>> fill, ArrayList<StateWrapper> bill, int width, TagCW com){
