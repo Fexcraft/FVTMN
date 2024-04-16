@@ -337,17 +337,16 @@ public class UniRoadTool {
 	private static void roadFill(FvtmWorld world, ArrayList<QV3D> road, V3I pos, StateWrapper block, int th, boolean flnk, JsonMap map){
 		int height;
 		StateWrapper state;
-		boolean bool;
 		for(QV3D vec : road){
 			height = vec.y;
 			pos.set(vec.pos.x, vec.pos.y + (vec.y > 0 ? 1 : 0), vec.pos.z);
 			state = world.getStateAt(pos);
 			if(!isRoad(world, state, block) || isLower(world, state, height)){
-				if(bool = isRoad(world, world.getStateAt(pos.add(0, 1, 0)))) height = 0;
+				if(isRoad(world, world.getStateAt(pos.add(0, 1, 0)))) height = 0;
 				insert(map, pos, state);
 				world.setBlockState(pos, world.getRoadWithHeight(block, CompatUtil.getRoadHeight(height, flnk)));
 			}
-			if((height < 9 || height == 0) || isRoad(world, world.getStateAt(pos.add(0, -1, 0)))){
+			if((height < 9 && height != 0) || isRoad(world, world.getStateAt(pos.add(0, -1, 0)))){
 				V3I down = pos.add(0, -1, 0);
 				insert(map, down, world.getStateAt(down));
 				world.setBlockState(down, world.getRoadWithHeight(block, CompatUtil.getRoadHeight(0, flnk)));
