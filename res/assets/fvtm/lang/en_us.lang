@@ -45,6 +45,7 @@ interact.fvtm.vehicle.attribute.not_external=&eAttribute is not externally acces
 interact.fvtm.vehicle.attribute.not_supported=&eToggling this attribute type is not supported yet.
 //
 interact.fvtm.road_tool.too_long=&cRoad vector length exceeds the configured max length.
+interact.fvtm.road_tool.complete=&bRoad placed!
 
 # UI
 ui.fvtm.toolbox.painter.info=Here you can edit your vehicle/block/container's color.
