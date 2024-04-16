@@ -76,7 +76,7 @@ public class RoadToolUI extends UserInterface {
 			texts.get("right_fill").translate();
 		}
 		else{
-			texts.get("ground_fill").value(rtc.getInventoryContent(3).getName());
+			texts.get("right_fill").value(rtc.getInventoryContent(3).getName());
 		}
 		if(size[3] > 0){
 			texts.get("right_size").value("ui.fvtm.road_tool.right_fill_size");
@@ -184,6 +184,27 @@ public class RoadToolUI extends UserInterface {
 			case "edit_lines":{
 				TagCW compound = TagCW.create();
 				compound.set("cargo", "custom");
+				compound.set("layer", 5);
+				container.SEND_TO_SERVER.accept(compound);
+				return true;
+			}
+			case "rem_road":{
+				TagCW compound = TagCW.create();
+				compound.set("cargo", "remove");
+				compound.set("layer", 0);
+				container.SEND_TO_SERVER.accept(compound);
+				return true;
+			}
+			case "rem_top":{
+				TagCW compound = TagCW.create();
+				compound.set("cargo", "remove");
+				compound.set("layer", 4);
+				container.SEND_TO_SERVER.accept(compound);
+				return true;
+			}
+			case "rem_lines":{
+				TagCW compound = TagCW.create();
+				compound.set("cargo", "remove");
 				compound.set("layer", 5);
 				container.SEND_TO_SERVER.accept(compound);
 				return true;
