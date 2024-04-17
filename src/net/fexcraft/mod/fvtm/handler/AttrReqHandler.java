@@ -4,7 +4,6 @@ import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
 import net.fexcraft.mod.fvtm.packet.Packet_TagListener;
 import net.fexcraft.mod.fvtm.packet.Packets;
-import net.fexcraft.mod.fvtm.sys.rail.RailEntity;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -73,7 +72,7 @@ public class AttrReqHandler {
 		}
 	}
 
-	private static void toggleAttrRailEnt(RailEntity ent, String attribute, boolean bool, TagCW compound, boolean b, Object syncval){
+	/*private static void toggleAttrRailEnt(RailEntity ent, String attribute, boolean bool, TagCW compound, boolean b, Object syncval){
 		Attribute<?> attr0 = ent.vehdata.getAttribute(attribute);
 		if(attr0 == null) return;
 		toggleAttr(attr0, bool, compound, true, syncval);
@@ -82,7 +81,7 @@ public class AttrReqHandler {
 			compound.set("entity", ent.entity.getEntityId());
 			Packets.sendToAll(Packet_TagListener.class, "attr_toggle", compound);
 		}
-	}
+	}*///TODO
 
 	private static void toggleAttr(Attribute<?> attr, boolean bool, TagCW tag, boolean check, Object syncval){
 		if(check && attr.sync){
