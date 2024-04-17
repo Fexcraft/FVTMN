@@ -1,12 +1,7 @@
 package net.fexcraft.mod.fvtm.util;
 
-import net.fexcraft.mod.fvtm.block.Asphalt;
-import net.fexcraft.mod.fvtm.block.generated.G_ROAD;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 
 public class CompatUtil {
 	
