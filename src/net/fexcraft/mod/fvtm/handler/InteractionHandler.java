@@ -2,7 +2,6 @@ package net.fexcraft.mod.fvtm.handler;
 
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.lib.common.math.V3D;
-import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.attribute.AttrBox;
@@ -21,8 +20,6 @@ import net.fexcraft.mod.uni.item.ItemType;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.WrapperHolder;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -275,8 +272,6 @@ public class InteractionHandler {
 				point = vehicle.data.getRotationPoint(ab.swivel_point);
 				V3D pos = point.getRelativeVector(ab.pos.add(part == null ? V3D.NULL : part.getInstalledPos())).add(vehicle.entity.getPos());
 				double hs = ab.size * .5;
-				World w = world.local();
-				w.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.x, pos.y, pos.z, 0, 0, 0);
 				aabbs.put(attribute.id, AABB.create(pos.x - hs, pos.y - hs, pos.z - hs, pos.x + hs, pos.y + hs, pos.z + hs));
 			}
 		}
