@@ -1,7 +1,7 @@
 package net.fexcraft.mod.fvtm.sys.road;
 
+import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.V3D;
-import net.fexcraft.lib.mc.utils.Static;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.packet.Packet_TagListener;
 import net.fexcraft.mod.fvtm.packet.Packets;
