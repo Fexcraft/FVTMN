@@ -239,16 +239,16 @@ public class UniRoadTool {
 			}
 			if(linefill != null){
 				for(int i = 0; i < linefill.size(); i++){
-					linefill.get(i).add(gen(vec, angle, -half + off + 0.25 + i, 1));
+					linefill.get(i).add(gen(vec, angle, -half + off + i, 1));
 				}
 			}
 			if(rooffill != null){
 				for(int i = 0; i < rooffill.size(); i++){
-					rooffill.get(i).add(gen(vec, angle, -half + off + 0.25 + i, top_h));
+					rooffill.get(i).add(gen(vec, angle, -half + off + i, top_h));
 				}
 			}
-			if(border_l != null) border_l.add(gen(vec, angle, -half + off + -1, 0));
-			if(border_r != null) border_r.add(gen(vec, angle, half + off + 1, 0));
+			if(border_l != null) border_l.add(gen(vec, angle, -half - 1 + off, 0));
+			if(border_r != null) border_r.add(gen(vec, angle, half + 1 + off, 0));
 		}
 		FvtmWorld world = pass.getFvtmWorld();
 		JsonMap map = new JsonMap();
