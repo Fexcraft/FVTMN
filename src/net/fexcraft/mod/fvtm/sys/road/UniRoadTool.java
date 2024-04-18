@@ -426,7 +426,7 @@ public class UniRoadTool {
 	}
 
 	public static QV3D gen(V3D vec, double rad, double x, double y){
-		return new QV3D(vec.add(grv(rad, x, y)), 16);
+		return new QV3D(vec.add(grv(rad, x, y)).sub(0.5, 0, 0.5), 16);
 	}
 
 }
