@@ -2,7 +2,7 @@ package net.fexcraft.mod.fvtm.sys.uni;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fvtm.util.QV3D;
-import net.fexcraft.mod.fvtm.util.Vector3D;
+import net.fexcraft.mod.fvtm.util.Vec3D;
 import net.fexcraft.mod.uni.tag.TagCW;
 
 import java.util.ArrayList;
@@ -94,9 +94,9 @@ public abstract class Path {
 	}
 
 	public static V3D move(V3D vec0, V3D vec1, double dis){
-		double[] dest = Vector3D.newVector(vec1), beg = Vector3D.newVector(vec0);
-    	dest = Vector3D.direction(dest[0] - beg[0], dest[1] - beg[1], dest[2] - beg[2]);
-    	dest = Vector3D.newVector(beg[0] + (dest[0] * dis), beg[1] + (dest[1] * dis), beg[2] + (dest[2] * dis));
+		double[] dest = Vec3D.newVector(vec1), beg = Vec3D.newVector(vec0);
+    	dest = Vec3D.direction(dest[0] - beg[0], dest[1] - beg[1], dest[2] - beg[2]);
+    	dest = Vec3D.newVector(beg[0] + (dest[0] * dis), beg[1] + (dest[1] * dis), beg[2] + (dest[2] * dis));
 		return new V3D(dest[0], dest[1], dest[2]);
 	}
 	
