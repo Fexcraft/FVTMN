@@ -315,7 +315,7 @@ public class UniRoadTool {
 	}
 
 	private static void insert(JsonMap map, V3I pos, StateWrapper state){
-		if(map.has(pos.toString())) return;
+		if(map.has(pos.asString())) return;
 		JsonArray array = new JsonArray();
 		array.add(state.getIDL().colon());
 		if(EnvInfo.is112()) array.add(state.get12Meta());
