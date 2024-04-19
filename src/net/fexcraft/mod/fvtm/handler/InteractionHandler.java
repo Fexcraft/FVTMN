@@ -80,15 +80,11 @@ public class InteractionHandler {
 			return false;
 		}
 		List<Attribute<?>> attributes = vehicle.data.getAttributes().values().stream().filter(attr -> attr.hasBoxes() && (attr.valuetype.isTristate() || attr.valuetype.isNumber()) && (seat == null ? attr.external : (seat.seat.driver || attr.access.contains(seat.seat.name)))).collect(Collectors.toList());
-		FvtmLogger.marker(seat == null ? "noseat" : seat.seat.name);
-		FvtmLogger.marker(attributes);
 		if(attributes.size() == 0) return false;
 		ArrayList<Interactive> list = new ArrayList<>();
 		attributes.forEach(attr -> list.add(new Interactive(attr)));
-		FvtmLogger.marker(list);
 		Interactive inter = getInteracted(seat == null, vehicle, pass, list);
 		if(inter == null) return false;
-		FvtmLogger.marker(inter);
 		Attribute<?> attr = inter.attribute;
 		if(attr.id.equals(last) && Time.getDate() < cooldown) return true;
 		return toggle(attr, vehicle, key, null, pass);
