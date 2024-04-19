@@ -39,12 +39,28 @@ public abstract class Packets {
 		LIS_SERVER.put("open_ui", (com, player) -> {
 			player.openUI(UIKey.byId(com.getInteger("ui")), new V3I(com.getIntArray("pos"), 0));
 		});
+		LIS_SERVER.put("vehicle", (com, player) -> {
+			VehicleInstance inst = player.getFvtmWorld().getVehicle(com.getInteger("entity"));
+			if(inst != null) inst.packet(com, player);
+		});
+		LIS_SERVER.put("vehicle_packet", (com, player) -> {
+			VehicleInstance inst = player.getFvtmWorld().getVehicle(com.getInteger("entity"));
+			if(inst != null) inst.packet(com, player);
+		});
 		if(EnvInfo.CLIENT){
 			LIS_CLIENT.put("attr_toggle", (tag, player) -> {
 				AttrReqHandler.processToggleResponse(player, tag);
 			});
 			LIS_CLIENT.put("attr_update", (tag, player) -> {
 				AttrReqHandler.processUpdateResponse(player, tag);
+			});
+			LIS_CLIENT.put("vehicle", (tag, player) -> {
+				VehicleInstance inst = player.getFvtmWorld().getVehicle(tag.getInteger("entity"));
+				if(inst != null) inst.packet(tag, player);
+			});
+			LIS_CLIENT.put("vehicle_packet", (tag, player) -> {
+				VehicleInstance inst = player.getFvtmWorld().getVehicle(tag.getInteger("entity"));
+				if(inst != null) inst.packet(tag, player);
 			});
 			LIS_CLIENT.put("road_tool_new", (tag, player) -> {
 				UUID uuid = new UUID(tag.getLong("uuid_m"), tag.getLong("uuid_l"));
