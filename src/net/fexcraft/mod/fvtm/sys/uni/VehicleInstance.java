@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.FvtmLogger;
@@ -125,7 +126,7 @@ public class VehicleInstance {
 				return true;
 			}
 			case ENGINE:{
-				//TODO toggle engine on
+				toggleEngine();
 				return true;
 			}
 			case DISMOUNT:{
@@ -183,6 +184,22 @@ public class VehicleInstance {
 				return false;
 			}
 		}
+	}
+
+	public void toggleEngine(){
+		if(toggable_timer > 0) return;
+		TagCW com = TagCW.create();
+		com.set("cargo", "engine_toggle");
+		toggable_timer += 10;
+		EngineFunction engine = data.getPart("engine").getFunction("fvtm:engine");
+		if(entity.isOnClient()) engine.setState(com.getBoolean("engine_toggle_result"));
+		else com.set("engine_toggle_result", engine.toggle());
+		if(data.getStoredFuel() == 0){
+			com.set("engine_toggle_result", engine.setState(false));
+			com.set("no_fuel", true);
+		}
+		Packets.INSTANCE.send(this, com);
+		throttle = 0;
 	}
 
 	public boolean getKeyPressState(KeyPress key){
@@ -326,6 +343,24 @@ public class VehicleInstance {
 			}
 			case "vehicledata":{
 				data.read(packet);
+				return;
+			}
+			case "engine_toggle":{
+				if(passenger.getSeatOn() != null && passenger.getSeatOn().root == this){
+					boolean state = packet.getBoolean("engine_toggle_result");
+					if(data.getPart("engine").getFunction(EngineFunction.class, "fvtm:engine").setState(state)){
+						passenger.send("interact.fvtm.vehicle.engine_toggled_on");
+					}
+					else{
+						passenger.send("interact.fvtm.vehicle.engine_toggled_off");
+					}
+					if(packet.has("no_fuel") && packet.getBoolean("no_fuel")){
+						passenger.send("interact.fvtm.vehicle.engine_no_fuel");
+					}
+					//TODO sounds
+				}
+				throttle = 0;
+				//TODO engine running sound loop
 				return;
 			}
 			default:{
