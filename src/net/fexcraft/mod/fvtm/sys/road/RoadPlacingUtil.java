@@ -27,6 +27,10 @@ public class RoadPlacingUtil {
 
 	public static void place(WorldW world, Passenger pass, TagCW com, QV3D vector){
 		UUID roadid = CURRENT.get(pass.getUUID());
+		if(!com.has("RoadLayers")){
+			pass.send("interact.fvtm.road_tool.empty");
+			return;
+		}
 		int width = com.getIntArray("RoadLayers")[0];
 		if(roadid == null){
 			UUID newid = genId();
