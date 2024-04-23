@@ -107,12 +107,12 @@ public class UniRoadTool {
 		}
 		StackWrapper stack0 = null;
 		int[] layers = stack.getTag().getIntArray("RoadLayers");
-		StateWrapper top = null;
-		StateWrapper bot = null;
-		StateWrapper left = null;
-		StateWrapper righ = null;
-		StateWrapper line_b = null;
-		StateWrapper road_b = null;
+		StackWrapper top = null;
+		StackWrapper bot = null;
+		StackWrapper left = null;
+		StackWrapper righ = null;
+		StackWrapper line_b = null;
+		StackWrapper road_b = null;
 		ArrayList<QV3D> roof;
 		ArrayList<QV3D> ground = null;
 		ArrayList<QV3D> border_l = null;
@@ -127,34 +127,28 @@ public class UniRoadTool {
 		ArrayList<ArrayList<QV3D>> roadfill = null;
 		boolean flnk = false;
 		if(stack.getTag().has("RoadFill")){
-			stack0 = FvtmResources.newStack(stack.getTag().getCompound("RoadFill"));
+			road_b = FvtmResources.newStack(stack.getTag().getCompound("RoadFill"));
 			flnk = CompatUtil.isValidFurenikus(stack.getIDL());
-			road_b = StateWrapper.from(stack0);
 		}
 		if(layers[1] > 0 && stack.getTag().has("BottomFill")){
-			stack0 = FvtmResources.newStack(stack.getTag().getCompound("BottomFill"));
-			bot = StateWrapper.from(stack0);
+			bot = FvtmResources.newStack(stack.getTag().getCompound("BottomFill"));
 			ground = new ArrayList<>();
 		}
 		if(layers[2] > 0 && stack.getTag().has("SideLeftFill")){
-			stack0 = FvtmResources.newStack(stack.getTag().getCompound("SideLeftFill"));
-			left = StateWrapper.from(stack0);
+			left = FvtmResources.newStack(stack.getTag().getCompound("SideLeftFill"));
 			border_hl = layers[2];
 			border_l = new ArrayList<>();
 		}
 		if(layers[3] > 0 && stack.getTag().has("SideRightFill")){
-			stack0 = FvtmResources.newStack(stack.getTag().getCompound("SideRightFill"));
-			righ = StateWrapper.from(stack0);
+			righ = FvtmResources.newStack(stack.getTag().getCompound("SideRightFill"));
 			border_hr = layers[3];
 			border_r = new ArrayList<>();
 		}
 		if(layers[4] > 0 && stack.getTag().has("TopFill") && !stack.getTag().has("CustomTopFill")){
-			stack0 = FvtmResources.newStack(stack.getTag().getCompound("TopFill"));
-			top = StateWrapper.from(stack0);
+			top = FvtmResources.newStack(stack.getTag().getCompound("TopFill"));
 		}
 		if(layers[5] > 0 && stack.getTag().has("LinesFill") && !stack.getTag().has("CustomLinesFill")){
-			stack0 = FvtmResources.newStack(stack.getTag().getCompound("LinesFill"));
-			line_b = StateWrapper.from(stack0);
+			line_b = FvtmResources.newStack(stack.getTag().getCompound("LinesFill"));
 		}
 		top_h = border_hl > border_hr ? border_hl : border_hr;
 		if(top_h == 0){
@@ -165,9 +159,9 @@ public class UniRoadTool {
 			}
 			top_h = 1;
 		}
-		ArrayList<StateWrapper> roadfill_b = null;
-		ArrayList<StateWrapper> rooffill_b = null;
-		ArrayList<StateWrapper> linefill_b = null;
+		ArrayList<StackWrapper> roadfill_b = null;
+		ArrayList<StackWrapper> rooffill_b = null;
+		ArrayList<StackWrapper> linefill_b = null;
 		if(stack.getTag().has("CustomRoadFill")){
 			roadfill = new ArrayList<>();
 			roadfill_b = new ArrayList<>();
@@ -322,33 +316,33 @@ public class UniRoadTool {
 		map.add(pos.asString(), array);
 	}
 
-	private static void loadFill(ArrayList<ArrayList<QV3D>> fill, ArrayList<StateWrapper> bill, int width, TagCW com){
+	private static void loadFill(ArrayList<ArrayList<QV3D>> fill, ArrayList<StackWrapper> bill, int width, TagCW com){
 		for(int i = 0; i < width; i++){
 			fill.add(new ArrayList<>());
-			StateWrapper state = StateWrapper.DEFAULT;
+			StackWrapper stack = StackWrapper.EMPTY;
 			if(com.has("Block" + i)){
-				state = StateWrapper.from(FvtmResources.newStack(com.getCompound("Block" + i)));
+				stack = FvtmResources.newStack(com.getCompound("Block" + i));
 			}
-			bill.add(state);
+			bill.add(stack);
 		}
 	}
 
-	private static void roadFill(FvtmWorld world, ArrayList<QV3D> road, V3I pos, StateWrapper block, int th, boolean flnk, JsonMap map){
+	private static void roadFill(FvtmWorld world, ArrayList<QV3D> road, V3I pos, StackWrapper stack, int th, boolean flnk, JsonMap map){
 		int height;
 		StateWrapper state;
 		for(QV3D vec : road){
 			height = vec.y;
 			pos.set(vec.pos.x, vec.pos.y + (vec.y > 0 ? 1 : 0), vec.pos.z);
 			state = world.getStateAt(pos);
-			if(!isRoad(world, state, block) || isLower(world, state, height)){
+			if(!isRoad(world, state, stack) || isLower(world, state, height)){
 				if(isRoad(world, world.getStateAt(pos.add(0, 1, 0)))) height = 0;
 				insert(map, pos, state);
-				world.setBlockState(pos, world.getRoadWithHeight(block, CompatUtil.getRoadHeight(height, flnk)));
+				world.setBlockState(pos, world.getRoadWithHeight(stack, CompatUtil.getRoadHeight(height, flnk)));
 			}
 			if((height < 9 && height != 0) || isRoad(world, world.getStateAt(pos.add(0, -1, 0)))){
 				V3I down = pos.add(0, -1, 0);
 				insert(map, down, world.getStateAt(down));
-				world.setBlockState(down, world.getRoadWithHeight(block, CompatUtil.getRoadHeight(0, flnk)));
+				world.setBlockState(down, world.getRoadWithHeight(stack, CompatUtil.getRoadHeight(0, flnk)));
 			}
 			int c = th < 4 ? 4 : th;
 			for(int i = 1; i < c; i++){
@@ -359,25 +353,25 @@ public class UniRoadTool {
 		}
 	}
 
-	private static void basicFill(FvtmWorld world, ArrayList<QV3D> vecs, V3I pos, StateWrapper block, JsonMap map){
+	private static void basicFill(FvtmWorld world, ArrayList<QV3D> vecs, V3I pos, StateWrapper stack, JsonMap map){
 		StateWrapper state;
 		for(QV3D v : vecs){
 			pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
 			state = world.getStateAt(pos);
-			if(state.getBlock() != block.getBlock()){
+			if(state.getBlock() != stack.getBlock()){
 				insert(map, pos, state);
-				world.setBlockState(pos, block);
+				world.setBlockState(pos, stack);
 			}
 		}
 	}
 
-	private static void borderFill(FvtmWorld world, ArrayList<QV3D> vecs, V3I pos, StateWrapper block, int top, JsonMap map){
+	private static void borderFill(FvtmWorld world, ArrayList<QV3D> vecs, V3I pos, StackWrapper stack, int top, JsonMap map){
 		for(QV3D v : vecs){
 			pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
 			for(int i = -1; i < top; i++){
 				V3I vp = pos.add(0, i, 0);
 				insert(map, vp, world.getStateAt(vp));
-				world.setBlockState(vp, block);
+				world.setBlockState(vp, stack);
 			}
 		}
 	}
