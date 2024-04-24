@@ -247,31 +247,31 @@ public class UniRoadTool {
 		FvtmWorld world = pass.getFvtmWorld();
 		JsonMap map = new JsonMap();
 		if(road != null){
-			roadFill(world, road, pos, road_b, top_h, flnk, map);
+			roadFill(world, pass, road, pos, road_b, top_h, flnk, map);
 		}
-		StateWrapper block = null;
+		StackWrapper block = null;
 		if(roadfill != null){
 			for(int i = 0; i < roadfill.size(); i++){
 				block = roadfill_b.get(i);
 				flnk = CompatUtil.isValidFurenikus(block.getIDL());
-				roadFill(world, roadfill.get(i), pos, block, top_h, flnk, map);
+				roadFill(world, pass, roadfill.get(i), pos, block, top_h, flnk, map);
 			}
 		}
 		if(linefill != null){
 			for(int i = 0; i < linefill.size(); i++){
-				basicFill(world, linefill.get(i), pos, linefill_b.get(i), map);
+				basicFill(world, pass, linefill.get(i), pos, linefill_b.get(i), map);
 			}
 		}
 		if(rooffill != null){
 			for(int i = 0; i < rooffill.size(); i++){
-				basicFill(world, rooffill.get(i), pos, rooffill_b.get(i), map);
+				basicFill(world, pass, rooffill.get(i), pos, rooffill_b.get(i), map);
 			}
 		}
 		if(border_l != null){
-			borderFill(world, border_l, pos, left, border_hl, map);
+			borderFill(world, pass, border_l, pos, left, border_hl, map);
 		}
 		if(border_r != null){
-			borderFill(world, border_r, pos, righ, border_hr, map);
+			borderFill(world, pass, border_r, pos, righ, border_hr, map);
 		}
 		if(ground != null){
 			for(QV3D v : ground){
@@ -279,7 +279,7 @@ public class UniRoadTool {
 				state = world.getStateAt(pos);
 				if(!world.isFvtmRoad(state) && !CompatUtil.isValidFurenikus(state.getIDL())){
 					insert(map, pos, state);
-					world.setBlockState(pos, bot);
+					world.setBlockState(pos, StateWrapper.from(bot, new StateWrapper.PlacingContext(world, pos, V3D.NULL, null, pass, true)));
 				}
 			}
 		}
@@ -287,7 +287,7 @@ public class UniRoadTool {
 			for(QV3D v : line){
 				pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
 				insert(map, pos, world.getStateAt(pos));
-				world.setBlockState(pos, line_b);
+				world.setBlockState(pos, StateWrapper.from(line_b, new StateWrapper.PlacingContext(world, pos, V3D.NULL, null, pass, true)));
 			}
 		}
 		if(roof != null){
@@ -295,7 +295,7 @@ public class UniRoadTool {
 				pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
 				try{
 					insert(map, pos, world.getStateAt(pos));
-					world.setBlockState(pos, top);
+					world.setBlockState(pos, StateWrapper.from(top, new StateWrapper.PlacingContext(world, pos, V3D.NULL, null, pass, true)));
 				}
 				catch(Exception e){
 					FvtmLogger.log(e, "road top/ceiling creation");
@@ -327,22 +327,24 @@ public class UniRoadTool {
 		}
 	}
 
-	private static void roadFill(FvtmWorld world, ArrayList<QV3D> road, V3I pos, StackWrapper stack, int th, boolean flnk, JsonMap map){
+	private static void roadFill(FvtmWorld world, Passenger pass, ArrayList<QV3D> road, V3I pos, StackWrapper stack, int th, boolean flnk, JsonMap map){
 		int height;
 		StateWrapper state;
+		StateWrapper block;
 		for(QV3D vec : road){
 			height = vec.y;
 			pos.set(vec.pos.x, vec.pos.y + (vec.y > 0 ? 1 : 0), vec.pos.z);
 			state = world.getStateAt(pos);
-			if(!isRoad(world, state, stack) || isLower(world, state, height)){
+			block = StateWrapper.from(stack, new StateWrapper.PlacingContext(world, pos, V3D.NULL, null, pass, true));
+			if(!isRoad(world, state, block) || isLower(world, state, height)){
 				if(isRoad(world, world.getStateAt(pos.add(0, 1, 0)))) height = 0;
 				insert(map, pos, state);
-				world.setBlockState(pos, world.getRoadWithHeight(stack, CompatUtil.getRoadHeight(height, flnk)));
+				world.setBlockState(pos, world.getRoadWithHeight(block, CompatUtil.getRoadHeight(height, flnk)));
 			}
 			if((height < 9 && height != 0) || isRoad(world, world.getStateAt(pos.add(0, -1, 0)))){
 				V3I down = pos.add(0, -1, 0);
 				insert(map, down, world.getStateAt(down));
-				world.setBlockState(down, world.getRoadWithHeight(stack, CompatUtil.getRoadHeight(0, flnk)));
+				world.setBlockState(down, world.getRoadWithHeight(block, CompatUtil.getRoadHeight(0, flnk)));
 			}
 			int c = th < 4 ? 4 : th;
 			for(int i = 1; i < c; i++){
@@ -353,25 +355,27 @@ public class UniRoadTool {
 		}
 	}
 
-	private static void basicFill(FvtmWorld world, ArrayList<QV3D> vecs, V3I pos, StateWrapper stack, JsonMap map){
+	private static void basicFill(FvtmWorld world, Passenger pass, ArrayList<QV3D> vecs, V3I pos, StackWrapper stack, JsonMap map){
 		StateWrapper state;
+		StateWrapper block;
 		for(QV3D v : vecs){
 			pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
+			block = StateWrapper.from(stack, new StateWrapper.PlacingContext(world, pos, V3D.NULL, null, pass, true));
 			state = world.getStateAt(pos);
-			if(state.getBlock() != stack.getBlock()){
+			if(state.getBlock() != block.getBlock()){
 				insert(map, pos, state);
-				world.setBlockState(pos, stack);
+				world.setBlockState(pos, block);
 			}
 		}
 	}
 
-	private static void borderFill(FvtmWorld world, ArrayList<QV3D> vecs, V3I pos, StackWrapper stack, int top, JsonMap map){
+	private static void borderFill(FvtmWorld world, Passenger pass, ArrayList<QV3D> vecs, V3I pos, StackWrapper stack, int top, JsonMap map){
 		for(QV3D v : vecs){
 			pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
 			for(int i = -1; i < top; i++){
 				V3I vp = pos.add(0, i, 0);
 				insert(map, vp, world.getStateAt(vp));
-				world.setBlockState(vp, stack);
+				world.setBlockState(vp, StateWrapper.from(stack, new StateWrapper.PlacingContext(world, pos, V3D.NULL, null, pass, true)));
 			}
 		}
 	}
@@ -420,7 +424,7 @@ public class UniRoadTool {
 	}
 
 	public static QV3D gen(V3D vec, double rad, double x, double y){
-		return new QV3D(vec.add(grv(rad, x, y)).sub(0.5, 0, 0.5), 16);
+		return new QV3D(vec.add(grv(rad, x, y)).sub(0.75, 0, 0.75), 16);
 	}
 
 }
