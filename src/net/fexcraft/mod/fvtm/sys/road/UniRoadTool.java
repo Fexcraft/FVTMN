@@ -128,7 +128,7 @@ public class UniRoadTool {
 		boolean flnk = false;
 		if(stack.getTag().has("RoadFill")){
 			road_b = FvtmResources.newStack(stack.getTag().getCompound("RoadFill"));
-			flnk = CompatUtil.isValidFurenikus(stack.getIDL());
+			flnk = CompatUtil.isValidFurenikus(road_b.getIDL());
 		}
 		if(layers[1] > 0 && stack.getTag().has("BottomFill")){
 			bot = FvtmResources.newStack(stack.getTag().getCompound("BottomFill"));
