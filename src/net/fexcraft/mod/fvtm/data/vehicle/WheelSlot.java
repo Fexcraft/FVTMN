@@ -29,7 +29,7 @@ public class WheelSlot {
 	public WheelSlot(JsonMap map){
 		position = ContentConfigUtil.getVector(map.getArray("pos"));
 		mirror = map.getBoolean("mirror", false);
-		hubsize = map.getFloat("hubsize", 4f);
+		hubsize = map.getFloat("hubsize", 0f);
 		if(map.has("radius")){
 			float rad = map.getFloat("radius", 16);
 			max_radius = rad + 1;
