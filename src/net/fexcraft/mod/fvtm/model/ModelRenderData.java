@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.fvtm.data.block.BlockData;
-import net.fexcraft.mod.fvtm.data.container.Container;
 import net.fexcraft.mod.fvtm.data.container.ContainerData;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.root.Colorable;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureUser;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
+import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -38,7 +38,7 @@ public class ModelRenderData {
 
 	public RenderCache cache;
 
-	public ModelRenderData set(VehicleData data, Object ent, RenderCache renca, boolean item, float ticks) {
+	public ModelRenderData set(VehicleData data, VehicleInstance ent, RenderCache renca, boolean item, float ticks) {
 		entity = ent;
 		vehicle = data;
 		color = data;
@@ -52,8 +52,11 @@ public class ModelRenderData {
 		return this;
 	}
 
+	public ModelRenderData set(VehicleInstance ent, RenderCache renca, boolean item, float ticks) {
+		return set(ent.data, ent, renca, item, ticks);
+	}
 
-	public ModelRenderData set(VehicleData data, Object ent, RenderCache renca, PartData partdata, String key, boolean item, float ticks) {
+	public ModelRenderData set(VehicleData data, VehicleInstance ent, RenderCache renca, PartData partdata, String key, boolean item, float ticks) {
 		entity = ent;
 		vehicle = data;
 		color = data;
