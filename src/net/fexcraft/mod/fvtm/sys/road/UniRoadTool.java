@@ -105,7 +105,6 @@ public class UniRoadTool {
 			pass.bar("interact.fvtm.road_tool.too_long");
 			return false;
 		}
-		StackWrapper stack0 = null;
 		int[] layers = stack.getTag().getIntArray("RoadLayers");
 		StackWrapper top = null;
 		StackWrapper bot = null;
