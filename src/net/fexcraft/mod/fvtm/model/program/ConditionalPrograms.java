@@ -44,7 +44,7 @@ public class ConditionalPrograms {
 
 		@Override
 		public boolean test(ModelGroup list, ModelRenderData data){
-			return cond.isMet(data);
+			return cond != null && cond.isMet(data);
 		}
 
 	}
