@@ -12,6 +12,7 @@ import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartInstallHandler;
 import net.fexcraft.mod.fvtm.data.part.PartSlot;
 import net.fexcraft.mod.fvtm.data.part.PartSlots;
+import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.function.part.WheelPositionsFunction;
@@ -43,8 +44,17 @@ public class DefaultPartInstallHandler extends PartInstallHandler {
 			sender.send("handler.install.fvtm.default.vehicle_missing_required_parts");
 			return false;
 		}
+		if(!swivelpresent(data, cat)){
+			sender.send("handler.install.fvtm.default.vehicle_swivelpoint_missing");
+		}
 		sender.send("handler.install.fvtm.default.check_passed");
 		return true;
+	}
+
+	private boolean swivelpresent(VehicleData data, String cat){
+		String[] slotin = cat.split(":");
+		PartSlots slots = data.getPartSlotsProvider(slotin[0]);
+		return data.getRotationPoints().containsKey(slots.get(slotin[1]).swivel);
 	}
 
 	private String getslotcat(String cat){
@@ -89,10 +99,13 @@ public class DefaultPartInstallHandler extends PartInstallHandler {
 		if(!slotin[0].equals("vehicle")){
 			PartData mount = data.getPart(slotin[0]);
 			result = result.add(mount.getInstalledPos());
-			if(mount.getSwivelPointInstalledOn() != null && !mount.getSwivelPointInstalledOn().equals("vehicle")){
+			if(mount.getSwivelPointInstalledOn() != null && !mount.getSwivelPointInstalledOn().equals(SwivelPoint.DEFAULT)){
 				part.setInstalledOnSwivelPoint(mount.getSwivelPointInstalledOn());
 			}
 			if(slots.copy_rot) rosult = rosult.add(mount.getInstalledRot());
+		}
+		if(!slots.get(slotin[1]).swivel.equals(SwivelPoint.DEFAULT) && data.getRotationPoints().containsKey(slots.get(slotin[1]).swivel)){
+			part.setInstalledOnSwivelPoint(slots.get(slotin[1]).swivel);
 		}
 		part.setInstalledPos(result);
 		part.setInstalledRot(rosult);
