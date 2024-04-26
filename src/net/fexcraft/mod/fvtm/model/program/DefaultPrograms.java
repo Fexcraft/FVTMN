@@ -1,9 +1,7 @@
 package net.fexcraft.mod.fvtm.model.program;
 
 import net.fexcraft.lib.common.math.Time;
-import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.mod.fvtm.FvtmLogger;
-import net.fexcraft.mod.fvtm.model.Program;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
