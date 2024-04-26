@@ -24,6 +24,7 @@
 	"handler.install.fvtm.default.part_incompatible_vehicle": "Part is incompatible with this vehicle.",
 	"handler.install.fvtm.default.vehicle_contains_incompatible": "Vehicle contains parts incompatible with this part.",
 	"handler.install.fvtm.default.vehicle_missing_required_parts": "Vehicle does not contain all required parts.",
+	"handler.install.fvtm.default.vehicle_swivelpoint_missing": "Vehicle is missing a required SwivelPoint.",
 	"handler.install.fvtm.default.check_passed": "Installation check passed.",
 	"handler.install.fvtm.default.success": "Part installed into selected spot.",
 	"handler.deinstall.fvtm.default.part_not_removable": "Part is marked as non removable.",
