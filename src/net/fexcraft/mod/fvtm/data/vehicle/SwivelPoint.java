@@ -11,6 +11,7 @@ import net.fexcraft.mod.fvtm.packet.Packet_SPUpdate;
 import net.fexcraft.mod.fvtm.packet.Packets;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
+import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.fvtm.util.Pivot;
 import net.fexcraft.mod.uni.Pos;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -43,7 +44,7 @@ public class SwivelPoint {
 
 	public SwivelPoint(String id, JsonMap map){
 		this.id = id;
-		position = map.has("pos") ? Pos.frJson(map.get("pos"), true).toV3D() : new V3D();
+		position = map.has("pos") ? ContentConfigUtil.getVector(map.getArray("pos")) : new V3D();
 		prevpos = position.copy();
 		rid = map.getString("parent", DEFAULT);
 		cpivot.set_rotation(map.getFloat("yaw", 0), map.getFloat("pitch", 0), map.getFloat("roll", 0), true);
