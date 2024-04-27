@@ -88,6 +88,12 @@
 	"item.fvtm:decoration.name": "FVTM Decoration",
 	"item.fvtm:road_tool.name": "FVTM Road Tool",
 
+	"interact.fvtm.attribute.toggle_bool": "&7Toggling: &6%s &a> %s",
+	"interact.fvtm.attribute.reset_bool": "&7Resetting: &6%s",
+	"interact.fvtm.attribute.increase_number": "&7Increasing: &6%s &a> %s",
+	"interact.fvtm.attribute.decrease_number": "&7Decreasing: &6%s &a> %s",
+	"interact.fvtm.attribute.reset_number": "&7Resetting: &6%s &a> %s",
+
 	"interact.fvtm.road_tool.empty": "Please setup the tool first!",
     "interact.fvtm.road_tool.too_long": "&cRoad vector length exceeds the configured max length.",
     "interact.fvtm.road_tool.complete": "&bRoad placed!",
