@@ -388,4 +388,10 @@ public abstract class Attribute<V> {
 		}
 		return attr;
 	}
+
+	@Override
+	public String toString(){
+		return String.format("Attr{ %s, %s }", id, value);
+	}
+
 }
