@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fvtm.sys.uni;
 
 import net.fexcraft.lib.common.math.V3D;
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Seat;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
@@ -114,7 +115,7 @@ public class SeatInstance {
 				Float val = attr.getKeyValue(key);
 				if(val != null){
 					KeyPress mouse = val == 0 ? KeyPress.RESET : val > 0 ? KeyPress.MOUSE_MAIN : KeyPress.MOUSE_RIGHT;
-					if(bool = InteractionHandler.toggle(attr, root, key, val, player)) break;
+					if(bool = InteractionHandler.toggle(attr, root, mouse, val, player)) break;
 				}
 			}
 			clicktimer += 10;
