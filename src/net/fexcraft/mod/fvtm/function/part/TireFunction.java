@@ -25,7 +25,7 @@ import net.fexcraft.mod.uni.world.WorldW;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class TireFunction extends PartFunction {
+public class TireFunction extends PartFunction implements GetWheelPos{
 
 	public static HashMap<Object, TireFunction.MatTireAttr> DEF_MAT_TIRE_ARR = new HashMap<>();
 	private static HashMap<Part, TireAttr> TIRES = new HashMap<>();
@@ -68,12 +68,9 @@ public class TireFunction extends PartFunction {
 		if(inst_on != null) compound.set("wheel_on", inst_on);
 		return compound;
 	}
-	
-	public @Nullable WheelSlot getWheelPos(){
-		return wheel;
-	}
-	
-	public @Nullable WheelSlot getWheelPos(VehicleData vehicle){
+
+	@Override
+	public WheelSlot getWheelPos(VehicleData vehicle){
 		if(wheel != null) return wheel;
 		if(inst_on != null) return wheel = vehicle.getWheelSlots().get(inst_on);
 		return null;
