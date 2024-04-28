@@ -138,6 +138,11 @@ public class PartData extends ContentData<Part, PartData> implements TextureUser
 	public <F> F getFunction(Class<F> clazz, String id){
 		return (F)functions.get(id);
 	}
+
+	public <F> F getFunction(Class<F> clazz, String id, String alt){
+		if(!functions.containsKey(id)) return (F)functions.get(alt);
+		return (F)functions.get(id);
+	}
 	
 	public <F extends PartFunction> F getFunction(IDL idl){
 		return this.getFunction(idl.toString());
