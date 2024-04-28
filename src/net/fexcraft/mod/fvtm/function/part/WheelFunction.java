@@ -17,7 +17,7 @@ import net.fexcraft.mod.uni.world.WorldW;
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class WheelFunction extends PartFunction {
+public class WheelFunction extends PartFunction implements GetWheelPos {
 	
 	private String inst_pos;
 	private WheelSlot wheel;
@@ -38,11 +38,8 @@ public class WheelFunction extends PartFunction {
 		if(inst_pos != null) compound.set("wheel_pos", inst_pos);
 		return compound;
 	}
-	
-	public WheelSlot getWheelPos(){
-		return wheel;
-	}
-	
+
+	@Override
 	public WheelSlot getWheelPos(VehicleData vehicle){
 		if(wheel != null) return wheel;
 		if(inst_pos != null) return wheel = vehicle.getWheelSlots().get(inst_pos);
