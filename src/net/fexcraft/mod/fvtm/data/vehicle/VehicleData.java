@@ -745,8 +745,4 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		return parts.get(origin.split("\\|")[0]);
 	}
 
-	public boolean isBraking(){
-		return false;//TODO
-	}
-
 }
