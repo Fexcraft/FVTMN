@@ -370,4 +370,8 @@ public class VehicleInstance {
 		}
 	}
 
+	public boolean isBraking(){
+		return false;
+	}
+
 }
