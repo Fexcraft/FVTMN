@@ -125,7 +125,7 @@ public class TireInstallationHandler extends PartInstallHandler {
 		public TireData(JsonMap map){
 			this.outer_radius = map.getFloat("OuterRadius", 1f);
 			this.inner_radius = map.getFloat("InnerRadius", 0.75f);
-			this.width = map.getFloat("Width", 4f);
+			this.width = map.getFloat("Width", 0.25f);
 			this.removable = map.getBoolean("Removable", true);
 		}
 
