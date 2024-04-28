@@ -22,6 +22,7 @@ public class ModelRenderData {
 	public Object blockstate;
 	public float partialticks;
 
+	public VehicleInstance vehent;
 	public VehicleData vehicle;
 	public ContainerData container;
 	public BlockData block;
@@ -39,7 +40,8 @@ public class ModelRenderData {
 	public RenderCache cache;
 
 	public ModelRenderData set(VehicleData data, VehicleInstance ent, RenderCache renca, boolean item, float ticks) {
-		entity = ent;
+		entity = ent == null ? null : ent.entity.direct();
+		vehent = ent;
 		vehicle = data;
 		color = data;
 		texture = data;
@@ -57,7 +59,8 @@ public class ModelRenderData {
 	}
 
 	public ModelRenderData set(VehicleData data, VehicleInstance ent, RenderCache renca, PartData partdata, String key, boolean item, float ticks) {
-		entity = ent;
+		entity = ent == null ? null : ent.entity.direct();
+		vehent = ent;
 		vehicle = data;
 		color = data;
 		texture = partdata;
