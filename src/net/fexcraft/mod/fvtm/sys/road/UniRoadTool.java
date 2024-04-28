@@ -182,43 +182,17 @@ public class UniRoadTool {
 		StateWrapper state;
 		int width = layers[0];
 		double angle;
-		double passed = 0;
+		double passed = 0.001;
 		double half = width * 0.5 - 0.5;
 		road = roadfill == null && road_b != null ? new ArrayList<>() : null;
 		roof = rooffill == null && layers[4] > 0 ? new ArrayList<>() : null;
 		line = linefill == null && layers[5] > 0 ? new ArrayList<>() : null;
-		vec = _road.getVectorPosition(0.001, false);
-		angle = Math.atan2(_road.vecpath[0].z - vec.z, _road.vecpath[0].x - vec.x) + Static.rad90;
-		for(double db = -half; db <= half; db += 0.25){
-			if(road != null) road.add(gen(_road.vecpath[0], angle, db, 0));
-			if(ground != null) ground.add(gen(_road.vecpath[0], angle, db, -1));
-			if(line != null) line.add(gen(_road.vecpath[0], angle, db, 1));
-			if(roof != null) roof.add(gen(_road.vecpath[0], angle, db, top_h));
-		}
-		if(roadfill != null){
-			for(int i = 0; i < roadfill.size(); i++){
-				roadfill.get(i).add(gen(_road.vecpath[0], angle, -half + 0.25 + i, 0));
-			}
-		}
-		if(linefill != null){
-			for(int i = 0; i < linefill.size(); i++){
-				linefill.get(i).add(gen(_road.vecpath[0], angle, -half + 0.25 + i, 1));
-			}
-		}
-		if(rooffill != null){
-			for(int i = 0; i < rooffill.size(); i++){
-				rooffill.get(i).add(gen(_road.vecpath[0], angle, -half + 0.25 + i, top_h));
-			}
-		}
-		if(border_l != null) border_l.add(gen(_road.vecpath[0], angle, -half - 1, 0));
-		if(border_r != null) border_r.add(gen(_road.vecpath[0], angle, half + 1, 0));
-		double off;
+		vec = _road.vecpath[0];
+		double off = roadfill == null ? 0 : 0.25;
 		while(passed < _road.length){
-			passed += 0.125;
 			last = vec;
 			vec = _road.getVectorPosition(passed, false);
 			angle = Math.atan2(last.z - vec.z, last.x - vec.x) + Static.rad90;
-			off = roadfill == null ? 0 : 0.25;
 			for(double db = -half; db <= half; db += 0.25){
 				if(road != null) road.add(gen(vec, angle, db, 0));
 				if(ground != null) ground.add(gen(vec, angle, db + off, -1));
@@ -227,7 +201,7 @@ public class UniRoadTool {
 			}
 			if(roadfill != null){
 				for(int i = 0; i < roadfill.size(); i++){
-					roadfill.get(i).add(gen(vec, angle, -half + 0.25 + i, 0));
+					roadfill.get(i).add(gen(vec, angle, -half + off + i, 0));
 				}
 			}
 			if(linefill != null){
@@ -242,6 +216,8 @@ public class UniRoadTool {
 			}
 			if(border_l != null) border_l.add(gen(vec, angle, -half - 1 + off, 0));
 			if(border_r != null) border_r.add(gen(vec, angle, half + 1 + off, 0));
+			if(passed < 0.1) passed = 0;
+			passed += 0.125;
 		}
 		FvtmWorld world = pass.getFvtmWorld();
 		JsonMap map = new JsonMap();
@@ -423,7 +399,7 @@ public class UniRoadTool {
 	}
 
 	public static QV3D gen(V3D vec, double rad, double x, double y){
-		return new QV3D(vec.add(grv(rad, x, y)).sub(0.75, 0, 0.75), 16);
+		return new QV3D(vec.add(grv(rad, x, y)), 16);
 	}
 
 }
