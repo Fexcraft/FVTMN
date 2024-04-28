@@ -65,7 +65,7 @@ public class ConditionalPrograms {
 		
 		@Override
 		public boolean test(ModelGroup list, ModelRenderData data){
-			return data.vehicle.getLightsState() || data.vehicle.getThrottle() < -0.01 || (data.entity != null && data.vehicle.isBraking());//TODO rear+brake lights instead
+			return data.vehicle.getLightsState() || data.vehicle.getThrottle() < -0.01 || (data.vehent != null && data.vehent.isBraking());//TODO rear+brake lights instead
 		}
 		
 	}
@@ -76,7 +76,7 @@ public class ConditionalPrograms {
 		
 		@Override
 		public boolean test(ModelGroup list, ModelRenderData data){
-			return data.vehicle.isBraking();
+			return data.vehent != null && data.vehent.isBraking();
 		}
 		
 	}
