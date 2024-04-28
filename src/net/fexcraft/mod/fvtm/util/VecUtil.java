@@ -51,8 +51,8 @@ public class VecUtil {
 	}
 	
 	public static double[] rotate(double[] vec, double r, double p, double y){
-		rotate(vec, r, 1, 0, 0);
-		rotate(vec, p, 0, 0, 1);
+		rotate(vec, r, 0, 0, 1);
+		rotate(vec, p, 1, 0, 0);
 		rotate(vec, y, 0, 1, 0);
 		return vec;
 	}
