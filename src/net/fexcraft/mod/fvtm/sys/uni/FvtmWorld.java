@@ -3,6 +3,7 @@ package net.fexcraft.mod.fvtm.sys.uni;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.packet.Packet_VehMove;
+import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.StateWrapper;
 import net.fexcraft.mod.uni.world.WorldW;
 
@@ -35,5 +36,7 @@ public abstract class FvtmWorld extends WorldW {
 	public abstract int getRoadHeight(StateWrapper state);
 
 	public abstract StateWrapper getRoadWithHeight(StateWrapper block, int height);
+
+	public abstract void handleBlockEntityPacket(TagCW com, Passenger player);
 
 }
