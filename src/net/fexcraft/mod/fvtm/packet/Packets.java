@@ -47,6 +47,9 @@ public abstract class Packets {
 			VehicleInstance inst = player.getFvtmWorld().getVehicle(com.getInteger("entity"));
 			if(inst != null) inst.packet(com, player);
 		});
+		LIS_SERVER.put("blockentity", (com, player) -> {
+			player.getFvtmWorld().handleBlockEntityPacket(com, player);
+		});
 		if(EnvInfo.CLIENT){
 			LIS_CLIENT.put("attr_toggle", (tag, player) -> {
 				AttrReqHandler.processToggleResponse(player, tag);
@@ -89,6 +92,9 @@ public abstract class Packets {
 				UUID uuid = new UUID(tag.getLong("uuid_m"), tag.getLong("uuid_l"));
 				if(RoadPlacingUtil.CL_CURRENT.id.equals(uuid)) RoadPlacingUtil.CL_CURRENT = null;
 				RoadPlacingUtil.QUEUE.remove(uuid);
+			});
+			LIS_CLIENT.put("blockentity", (tag, player) -> {
+				player.getFvtmWorld().handleBlockEntityPacket(tag, player);
 			});
 		}
 	}
