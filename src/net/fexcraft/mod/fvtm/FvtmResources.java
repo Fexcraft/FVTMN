@@ -543,13 +543,13 @@ public abstract class FvtmResources {
 		return getPartData(TagCW.wrap(com));
 	}
 
-	public VehicleData getVehicleData(TagCW com){
+	public static VehicleData getVehicleData(TagCW com){
 		Vehicle vehicle = VEHICLES.get(com.getString("Vehicle"));
 		if(vehicle == null) return null;
 		return new VehicleData(vehicle).read(com);
 	}
 
-	public VehicleData getVehicleData(Object com){
+	public static VehicleData getVehicleData(Object com){
 		return getVehicleData(TagCW.wrap(com));
 	}
 
