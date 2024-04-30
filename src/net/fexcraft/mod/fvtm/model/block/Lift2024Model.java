@@ -5,22 +5,31 @@ import net.fexcraft.lib.tmt.ModelRendererTurbo;
 import net.fexcraft.mod.fvtm.model.DefaultModel;
 import net.fexcraft.mod.fvtm.model.ModelGroup;
 
-/** This file was exported via the FVTM Exporter v1.6 of<br>
- *  FMT (Fex's Modelling Toolbox) v.3.0.0 &copy; 2024 - fexcraft.net<br>
- *  All rights reserved.
+/**
+ * This file was exported via the FVTM Exporter v1.6 of<br>
+ * FMT (Fex's Modelling Toolbox) v.3.0.0 &copy; 2024 - fexcraft.net<br>
+ * All rights reserved.
  *
  * @author Ferdinand Calo' (FEX___96)
  */
 public class Lift2024Model extends DefaultModel {
 
 	public static final Lift2024Model INSTANCE = new Lift2024Model();
+	public static ModelGroup control;
+	public static ModelGroup struct;
+	public static ModelGroup motor;
+	public static ModelGroup lift;
+	public static ModelGroup arm_s;
+	public static ModelGroup arm_s_e;
+	public static ModelGroup arm_n;
+	public static ModelGroup arm_n_e;
 
 	public Lift2024Model(){
 		super();
 		textureX = 128;
 		textureY = 128;
 		//
-		ModelGroup struct = new ModelGroup("struct");
+		struct = new ModelGroup("struct");
 		struct.add(new ModelRendererTurbo(struct, 48, 61, textureX, textureY)
 			.addShapeBox(0, 0, 0, 2, 62, 5, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 			.setRotationPoint(0, 1, 3).setRotationAngle(0, 0, 0)
@@ -38,9 +47,15 @@ public class Lift2024Model extends DefaultModel {
 		struct.add(new ModelRendererTurbo(struct, 0, 1, textureX, textureY).addBox(0, 0, 0, 8, 1, 16)
 			.setRotationPoint(0, 63, -8).setRotationAngle(0, 0, 0)
 		);
+		struct.add(new ModelRendererTurbo(struct, 68, 64, textureX, textureY).addBox(0, 0, 0, 1, 62, 2)
+			.setRotationPoint(6, 1, -5).setRotationAngle(0, 0, 0)
+		);
+		struct.add(new ModelRendererTurbo(struct, 62, 64, textureX, textureY).addBox(0, 0, 0, 1, 62, 2)
+			.setRotationPoint(6, 1, 3).setRotationAngle(0, 0, 0)
+		);
 		groups.add(struct);
 		//
-		ModelGroup lift = new ModelGroup("lift");
+		lift = new ModelGroup("lift");
 		lift.add(new ModelRendererTurbo(lift, 111, 9, textureX, textureY).addCylinder(0, -0.2f, 0, 2, 4, 12, 1, 1, 4, new net.fexcraft.lib.common.math.Vec3f(0.0, 0.1, 0.0))
 			.setRotationPoint(12, 0, -6).setRotationAngle(0, 0, 0)
 		);
@@ -66,13 +81,7 @@ public class Lift2024Model extends DefaultModel {
 		);
 		groups.add(lift);
 		//
-		ModelGroup control = new ModelGroup("control");
-		control.add(new ModelRendererTurbo(control, 68, 64, textureX, textureY).addBox(0, 0, 0, 1, 62, 2)
-			.setRotationPoint(6, 1, -5).setRotationAngle(0, 0, 0)
-		);
-		control.add(new ModelRendererTurbo(control, 62, 64, textureX, textureY).addBox(0, 0, 0, 1, 62, 2)
-			.setRotationPoint(6, 1, 3).setRotationAngle(0, 0, 0)
-		);
+		control = new ModelGroup("control");
 		control.add(new ModelRendererTurbo(control, 0, 19, textureX, textureY).addBox(0, 0, 0, 8, 14, 16)
 			.setRotationPoint(-8, 0, -8).setRotationAngle(0, 0, 0)
 		);
@@ -90,7 +99,7 @@ public class Lift2024Model extends DefaultModel {
 			.setRotationPoint(-4, 15.5f, -6).setRotationAngle(0, 0, 27)
 		);
 		control.add(new ModelRendererTurbo(control, 9, 11, textureX, textureY)
-			.addShapeBox(-2.5f, -0.5f, -0, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.9f, 0, 0, -0.9f, 0, 0, 0)
+			.addShapeBox(-2.5f, -0.5f, 0, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.9f, 0, 0, -0.9f, 0, 0, 0)
 			.setRotationPoint(-4, 15.5f, -7).setRotationAngle(0, 0, 27)
 		);
 		control.add(new ModelRendererTurbo(control, 33, 12, textureX, textureY).addBox(0, 0, 0, 2, 1, 2)
@@ -105,7 +114,7 @@ public class Lift2024Model extends DefaultModel {
 		);
 		groups.add(control);
 		//
-		ModelGroup motor = new ModelGroup("motor");
+		motor = new ModelGroup("motor");
 		motor.add(new ModelRendererTurbo(motor, 82, 8, textureX, textureY).addBox(0, 0, 5, 5, 2, 1)
 			.setRotationPoint(-3, 35, -3).setRotationAngle(0, 0, 0)
 		);
@@ -132,13 +141,13 @@ public class Lift2024Model extends DefaultModel {
 		);
 		groups.add(motor);
 		//
-		ModelGroup arm_s = new ModelGroup("arm_s");
+		arm_s = new ModelGroup("arm_s");
 		arm_s.add(new ModelRendererTurbo(arm_s, 0, 69, textureX, textureY).addBox(-1.5f, -0.2f, 0, 3, 2, 14)
 			.setRotationPoint(12, 2, 6).setRotationAngle(0, 0, 0)
 		);
 		groups.add(arm_s);
 		//
-		ModelGroup arm_s_e = new ModelGroup("arm_s_e");
+		arm_s_e = new ModelGroup("arm_s_e");
 		arm_s_e.add(new ModelRendererTurbo(arm_s_e, 33, 38, textureX, textureY).addBox(-1.3f, 0, 1, 2.6f, 1.6f, 16)
 			.setRotationPoint(12, 2, 6).setRotationAngle(0, 0, 0)
 		);
@@ -158,13 +167,13 @@ public class Lift2024Model extends DefaultModel {
 		);
 		groups.add(arm_s_e);
 		//
-		ModelGroup arm_n = new ModelGroup("arm_n");
+		arm_n = new ModelGroup("arm_n");
 		arm_n.add(new ModelRendererTurbo(arm_n, 0, 86, textureX, textureY).addBox(-1.5f, -0.2f, -14, 3, 2, 14)
 			.setRotationPoint(12, 2, -6).setRotationAngle(0, 0, 0)
 		);
 		groups.add(arm_n);
 		//
-		ModelGroup arm_n_e = new ModelGroup("arm_n_e");
+		arm_n_e = new ModelGroup("arm_n_e");
 		arm_n_e.add(new ModelRendererTurbo(arm_n_e, 0, 50, textureX, textureY).addBox(-1.3f, 0, -18, 2.6f, 1.6f, 16)
 			.setRotationPoint(12, 2, -5).setRotationAngle(0, 0, 0)
 		);
