@@ -133,4 +133,8 @@ public enum VehicleType {
 		return attrs;
 	}
 
+	public int minWheels(){
+		return 4;
+	}
+
 }
