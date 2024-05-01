@@ -131,7 +131,7 @@ public class SeatInstance {
 				Float val = attr.getKeyValue(key);
 				if(val != null){
 					KeyPress mouse = val == 0 ? KeyPress.RESET : val > 0 ? KeyPress.MOUSE_MAIN : KeyPress.MOUSE_RIGHT;
-					if(bool = InteractionHandler.toggle(attr, root, mouse, val, player)) break;
+					if(InteractionHandler.toggle(attr, root, mouse, val, player)) bool = true;
 				}
 			}
 			attrkeys.get(key)[0] += 5;
