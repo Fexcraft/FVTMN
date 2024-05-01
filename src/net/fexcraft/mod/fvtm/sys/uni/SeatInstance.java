@@ -11,7 +11,9 @@ import net.fexcraft.mod.fvtm.util.Pivot;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.world.EntityW;
 
+import java.security.Key;
 import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -35,12 +37,23 @@ public class SeatInstance {
 	public float pepitch;
 	public byte clicktimer;
 	public byte interacttimer;
+	private ConcurrentHashMap<KeyPress, byte[]> attrkeys = new ConcurrentHashMap<>();
+	private Collection<Attribute> seatattrs;
 
 	public SeatInstance(VehicleInstance veh, int idx){
 		root = veh;
 		index = idx;
 		seat = veh.data.getSeat(index);
 		point = veh.data.getRotationPoint(seat.swivel_point);
+		seatattrs = root.data.getAttributes().values().stream().filter(pr -> (pr.valuetype.isTristate() || pr.valuetype.isNumber()) && pr.access.contains(seat.name)).collect(Collectors.toList());
+		for(KeyPress key : KeyPress.values()){
+			for(Attribute attr : seatattrs){
+				if(attr.getKeyValue(key) != null){
+					attrkeys.put(key, new byte[]{ 0 });
+					break;
+				}
+			}
+		}
 		resetPivots();
 	}
 
@@ -77,6 +90,9 @@ public class SeatInstance {
 	}
 
 	public void update(){
+		if(attrkeys.size() > 0){
+			for(byte[] bt : attrkeys.values()) if(bt[0] > 0) bt[0]--;
+		}
 		if(clicktimer > 0) clicktimer--;
 		if(interacttimer > 0) interacttimer--;
 		if(passenger == null) return;
@@ -108,17 +124,17 @@ public class SeatInstance {
 			return bool;
 		}
 		else if(!seat.driver && root.entity.isOnClient()){
-			if(clicktimer > 0) return false;
-			Collection<Attribute<?>> attributes = root.data.getAttributes().values().stream().filter(pr -> (pr.valuetype.isTristate() || pr.valuetype.isNumber()) && pr.access.contains(seat.name)).collect(Collectors.toList());
+			if(!attrkeys.containsKey(key)) return false;
+			if(attrkeys.get(key)[0] > 0) return false;
 			boolean bool = false;
-			for(Attribute<?> attr : attributes){
+			for(Attribute<?> attr : seatattrs){
 				Float val = attr.getKeyValue(key);
 				if(val != null){
 					KeyPress mouse = val == 0 ? KeyPress.RESET : val > 0 ? KeyPress.MOUSE_MAIN : KeyPress.MOUSE_RIGHT;
 					if(bool = InteractionHandler.toggle(attr, root, mouse, val, player)) break;
 				}
 			}
-			clicktimer += 10;
+			attrkeys.get(key)[0] += 5;
 			return bool;
 		}
 		else if(key.dismount() && root.entity.isOnClient() && passenger != null){
