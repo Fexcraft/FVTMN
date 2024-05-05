@@ -13,11 +13,11 @@ public class WheelSlot {
 	public boolean mirror;
 	public float hubsize;
 	public float max_radius;
-	public float min_wheel_radius = 18;
-	public float min_tire_radius = 16;
+	public float min_wheel_radius = 0.25f;
+	public float min_tire_radius = 0.5f;
 	public float max_width;
-	public float min_wheel_width = 1;
-	public float min_tire_width = 1;
+	public float min_wheel_width = 0.125f;
+	public float min_tire_width = 0.125f;
 	public boolean steering;
 	public boolean required;
 	public boolean relative;
@@ -31,13 +31,13 @@ public class WheelSlot {
 		mirror = map.getBoolean("mirror", false);
 		hubsize = map.getFloat("hubsize", 0f);
 		if(map.has("radius")){
-			float rad = map.getFloat("radius", 16);
+			float rad = map.getFloat("radius", 0.5f);
 			max_radius = rad + 1;
 			min_wheel_radius = (rad / 2);
 			min_tire_radius = rad - 1;
 		}
 		if(map.has("width")){
-			float wid = map.getFloat("width", 4);
+			float wid = map.getFloat("width", 0.5f);
 			max_width = wid + 1;
 			min_wheel_width = wid - 1;
 			min_tire_width = wid - 1;
