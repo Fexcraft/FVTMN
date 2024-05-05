@@ -10,6 +10,7 @@ import net.fexcraft.app.json.JsonHandler;
 import net.fexcraft.app.json.JsonHandler.PrintOption;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
+import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.UniReg;
 
 /**
@@ -84,6 +85,9 @@ public class Config {
 		String catw = "wire";
 
 		//general
+		entries.add(new ConfigEntry(catg, "dev_mode", new JsonValue(EnvInfo.DEV))
+			.info("If the FVTM Dev Mode (generally more logging) should be enabled.")
+			.cons((con, map) -> EnvInfo.DEV = con.getBoolean(map)));
 		entries.add(new ConfigEntry(catg, "vehicle_update_range", new JsonValue(256))
 			.info("Range in which Vehicle Update Packets will be sent.").rang(64, 4096)
 			.cons((con, map) -> VEHICLE_UPDATE_RANGE = con.getInteger(map)));
