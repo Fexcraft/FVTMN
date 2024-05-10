@@ -148,21 +148,21 @@ public class Lift2024Model extends DefaultModel {
 		groups.add(arm_s);
 		//
 		arm_s_e = new ModelGroup("arm_s_e");
-		arm_s_e.add(new ModelRendererTurbo(arm_s_e, 33, 38, textureX, textureY).addBox(-1.3f, 0, 1, 2.6f, 1.6f, 16)
+		arm_s_e.add(new ModelRendererTurbo(arm_s_e, 33, 38, textureX, textureY).addBox(-1.3f, 0, 0.5f, 2.6f, 1.6f, 16)
 			.setRotationPoint(12, 2, 6).setRotationAngle(0, 0, 0)
 		);
 		arm_s_e.add(new ModelRendererTurbo(arm_s_e, 1, 58, textureX, textureY)
-			.addShapeBox(0, 0, 17, 1.3f, 1.6f, 1, 0, 0, 0, 0, 0, 0, 0, -0.8f, -0.5f, 0, 0, -0.5f, 0, 0, 0, 0, 0, 0, 0, -0.8f, 0, 0, 0, 0, 0)
+			.addShapeBox(0, 0, 16.5f, 1.3f, 1.6f, 1, 0, 0, 0, 0, 0, 0, 0, -0.8f, -0.5f, 0, 0, -0.5f, 0, 0, 0, 0, 0, 0, 0, -0.8f, 0, 0, 0, 0, 0)
 			.setRotationPoint(12, 2, 6).setRotationAngle(0, 0, 0)
 		);
 		arm_s_e.add(new ModelRendererTurbo(arm_s_e, 6, 58, textureX, textureY)
-			.addShapeBox(-1.3f, 0, 17, 1.3f, 1.6f, 1, 0, 0, 0, 0, 0, 0, 0, 0, -0.5f, 0, -0.8f, -0.5f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.8f, 0, 0)
+			.addShapeBox(-1.3f, 0, 16.5f, 1.3f, 1.6f, 1, 0, 0, 0, 0, 0, 0, 0, 0, -0.5f, 0, -0.8f, -0.5f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.8f, 0, 0)
 			.setRotationPoint(12, 2, 6).setRotationAngle(0, 0, 0)
 		);
-		arm_s_e.add(new ModelRendererTurbo(arm_s_e, 54, 19, textureX, textureY).addCylinder(0, 0.8f, 16.5f, 2, 1, 12, 1, 1, 4, null)
+		arm_s_e.add(new ModelRendererTurbo(arm_s_e, 54, 19, textureX, textureY).addCylinder(0, 0.8f, 16, 2, 1, 12, 1, 1, 4, null)
 			.setRotationPoint(12, 3, 6).setRotationAngle(0, 0, 0)
 		);
-		arm_s_e.add(new ModelRendererTurbo(arm_s_e, 1, 50, textureX, textureY).addCylinder(0, 0.8f, 16.5f, 1, 1, 8, 1, 1, 4, null)
+		arm_s_e.add(new ModelRendererTurbo(arm_s_e, 1, 50, textureX, textureY).addCylinder(0, 0.8f, 16, 1, 1, 8, 1, 1, 4, null)
 			.setRotationPoint(12, 2, 6).setRotationAngle(0, 0, 0)
 		);
 		groups.add(arm_s_e);
@@ -174,22 +174,22 @@ public class Lift2024Model extends DefaultModel {
 		groups.add(arm_n);
 		//
 		arm_n_e = new ModelGroup("arm_n_e");
-		arm_n_e.add(new ModelRendererTurbo(arm_n_e, 0, 50, textureX, textureY).addBox(-1.3f, 0, -18, 2.6f, 1.6f, 16)
-			.setRotationPoint(12, 2, -5).setRotationAngle(0, 0, 0)
+		arm_n_e.add(new ModelRendererTurbo(arm_n_e, 0, 50, textureX, textureY).addBox(-1.3f, 0, -16.5f, 2.6f, 1.6f, 16)
+			.setRotationPoint(12, 2, -6).setRotationAngle(0, 0, 0)
 		);
 		arm_n_e.add(new ModelRendererTurbo(arm_n_e, 6, 54, textureX, textureY)
-			.addShapeBox(-1.3f, 0, -19, 1.3f, 1.6f, 1, 0, -0.8f, -0.5f, 0, 0, -0.5f, 0, 0, 0, 0, 0, 0, 0, -0.8f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-			.setRotationPoint(12, 2, -5).setRotationAngle(0, 0, 0)
+			.addShapeBox(-1.3f, 0, -17.5f, 1.3f, 1.6f, 1, 0, -0.8f, -0.5f, 0, 0, -0.5f, 0, 0, 0, 0, 0, 0, 0, -0.8f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+			.setRotationPoint(12, 2, -6).setRotationAngle(0, 0, 0)
 		);
 		arm_n_e.add(new ModelRendererTurbo(arm_n_e, 1, 54, textureX, textureY)
-			.addShapeBox(0, 0, -19, 1.3f, 1.6f, 1, 0, 0, -0.5f, 0, -0.8f, -0.5f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.8f, 0, 0, 0, 0, 0, 0, 0, 0)
-			.setRotationPoint(12, 2, -5).setRotationAngle(0, 0, 0)
+			.addShapeBox(0, 0, -17.5f, 1.3f, 1.6f, 1, 0, 0, -0.5f, 0, -0.8f, -0.5f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.8f, 0, 0, 0, 0, 0, 0, 0, 0)
+			.setRotationPoint(12, 2, -6).setRotationAngle(0, 0, 0)
 		);
-		arm_n_e.add(new ModelRendererTurbo(arm_n_e, 54, 9, textureX, textureY).addCylinder(0, 0.8f, -17.5f, 2, 1, 12, 1, 1, 4, null)
-			.setRotationPoint(12, 3, -5).setRotationAngle(0, 0, 0)
+		arm_n_e.add(new ModelRendererTurbo(arm_n_e, 54, 9, textureX, textureY).addCylinder(0, 0.8f, -16, 2, 1, 12, 1, 1, 4, null)
+			.setRotationPoint(12, 3, -6).setRotationAngle(0, 0, 0)
 		);
-		arm_n_e.add(new ModelRendererTurbo(arm_n_e, 122, 0, textureX, textureY).addCylinder(0, 0.8f, -17.5f, 1, 1, 8, 1, 1, 4, null)
-			.setRotationPoint(12, 2, -5).setRotationAngle(0, 0, 0)
+		arm_n_e.add(new ModelRendererTurbo(arm_n_e, 122, 0, textureX, textureY).addCylinder(0, 0.8f, -16, 1, 1, 8, 1, 1, 4, null)
+			.setRotationPoint(12, 2, -6).setRotationAngle(0, 0, 0)
 		);
 		groups.add(arm_n_e);
 	}
