@@ -23,6 +23,7 @@ public class Lift2024Model extends DefaultModel {
 	public static ModelGroup arm_s_e;
 	public static ModelGroup arm_n;
 	public static ModelGroup arm_n_e;
+	public static ModelGroup center;
 
 	public Lift2024Model(){
 		super();
@@ -148,7 +149,7 @@ public class Lift2024Model extends DefaultModel {
 		groups.add(arm_s);
 		//
 		arm_s_e = new ModelGroup("arm_s_e");
-		arm_s_e.add(new ModelRendererTurbo(arm_s_e, 33, 38, textureX, textureY).addBox(-1.3f, 0, 0.5f, 2.6f, 1.6f, 16)
+		arm_s_e.add(new ModelRendererTurbo(arm_s_e, 33, 40, textureX, textureY).addBox(-1.3f, 0, 0.5f, 2.6f, 1.6f, 16)
 			.setRotationPoint(12, 2, 6).setRotationAngle(0, 0, 0)
 		);
 		arm_s_e.add(new ModelRendererTurbo(arm_s_e, 1, 58, textureX, textureY)
@@ -192,6 +193,12 @@ public class Lift2024Model extends DefaultModel {
 			.setRotationPoint(12, 2, -6).setRotationAngle(0, 0, 0)
 		);
 		groups.add(arm_n_e);
+		//
+		center = new ModelGroup("center");
+		center.add(new ModelRendererTurbo(center, 55, 38, textureX, textureY).newCylinderBuilder()
+			.setPosition(0, 0, 0).setRadius(8, 6).setLength(1).setSegments(20, 0).setScale(1, 0.95f).setDirection(4)
+			.setTopOffset(null).setTopRotation(new net.fexcraft.lib.common.math.Vec3f(0.0, 0.0, 0.0)).build());
+		groups.add(center);
 	}
 
 }
