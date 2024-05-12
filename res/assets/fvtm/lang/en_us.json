@@ -94,6 +94,12 @@
 	"interact.fvtm.attribute.decrease_number": "&7Decreasing: &6%s &a> %s",
 	"interact.fvtm.attribute.reset_number": "&7Resetting: &6%s &a> %s",
 
+	"interact.fvtm.vehicle.locked": "Vehicle is locked.",
+	"interact.fvtm.vehicle.remove_locked": "Vehicle is locked. Unlock if you want to remove it.",
+	"interact.fvtm.vehicle.engine_on": "Please turn the engine off first!",
+	"interact.fvtm.vehicle.no_rear_connector": "This vehicle has no rear connector installed.",
+	"interact.fvtm.vehicle.disconnect_trailer": "Please disconnect the currently connected trailer first.",
+
 	"interact.fvtm.road_tool.empty": "Please setup the tool first!",
     "interact.fvtm.road_tool.too_long": "&cRoad vector length exceeds the configured max length.",
     "interact.fvtm.road_tool.complete": "&bRoad placed!",
