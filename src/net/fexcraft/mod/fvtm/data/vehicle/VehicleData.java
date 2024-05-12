@@ -1,7 +1,6 @@
 package net.fexcraft.mod.fvtm.data.vehicle;
 
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.RGB;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fvtm.FvtmLogger;
@@ -46,7 +45,8 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 	//protected ArrayList<VehicleScript> scripts = new ArrayList<>();
 	protected ArrayList<String> inventories = new ArrayList<>();
 	protected ArrayList<Seat> seats = new ArrayList<>();
-	protected V3D front_conn, rear_conn;
+	protected TreeMap<String, V3D> conns = new TreeMap<>();
+	protected TreeMap<String, Boolean> conndir = new TreeMap<>();
 	protected SwivelPoint rootpoint;
 	protected Textureable texture;
 	protected Lockable lock;
@@ -69,8 +69,6 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		for(Entry<String, RGB> entry : type.getDefaultColorChannels().entrySet()){
 			channels.put(entry.getKey(), entry.getValue().copy());
 		}
-		front_conn = type.getDefaultConnectorFront();
-		rear_conn = type.getDefaultConnectorRear();
 		partproviders.put("vehicle", type.getPartSlots());
 		if(type.getInstalled() != null){
 			for(java.util.Map.Entry<String, IDL> entry : type.getInstalled().entrySet()){
@@ -140,8 +138,6 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 			if(!csp.empty()) compound.set("SwivelPoints", csp);
 		}
 		lock.save(compound);
-		if(front_conn != null) compound.set("FrontConnector", front_conn);
-		if(rear_conn != null) compound.set("RearConnector", rear_conn);
 		if(displayname != null) compound.set("DisplayName", displayname);
 		return compound;
 	}
@@ -224,10 +220,6 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		}
 		rotpoints.values().forEach(point -> point.linkToParent(this));
 		lock.load(compound);
-		front_conn = compound.getV3D("FrontConnector");
-		if(front_conn == null) front_conn = type.getDefaultConnectorFront();
-		rear_conn = compound.getV3D("RearConnector");
-		if(rear_conn == null) rear_conn = type.getDefaultConnectorRear();
 		if(compound.has("DisplayName")) displayname = compound.getString("DisplayName");
 		//
 		return this;
@@ -304,6 +296,17 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 			}
 		}
 		sortparts();
+		//
+		conns.clear();
+		for(Entry<String, PartData> entry : parts.entrySet()){
+			if(!entry.getValue().hasFunction("fvtm:connector")) continue;
+			ConnectorFunction func = entry.getValue().getFunction("fvtm:connector");
+			for(String str : func.getTypes()){
+				if(conns.containsKey(str)) continue;
+				conns.put(str, entry.getValue().getInstalledPos()).add(func.getOffset());
+				conndir.put(str, func.isFront());
+			}
+		}
 	}
 
 	public void sortparts(){
@@ -601,21 +604,6 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 	public ArrayList<VehicleScript> getScripts(){
 		return scripts;
 	}*/
-
-	public V3D getFrontConnector(){
-		return front_conn;
-	}
-
-	public V3D getRearConnector(){
-		return rear_conn;
-	}
-	
-	public void setConnector(V3D newcon, boolean front){
-		if(newcon == null)
-			if(front) front_conn = type.getDefaultConnectorFront();
-			else rear_conn = type.getDefaultConnectorRear();
-		else if(front) front_conn = newcon; else rear_conn = newcon;
-	}
 	
 	public List<Attribute<?>> getAttributes(String group){
 		return attributes.values().stream().filter(pre -> pre.group != null && pre.group.equals(group)).collect(Collectors.toList());
@@ -743,6 +731,28 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 	public PartData getAttributeOrigin(String origin){
 		if(origin == null) return null;
 		return parts.get(origin.split("\\|")[0]);
+	}
+
+	public boolean hasCompatibleConnector(List<String> categories, boolean dir){
+		for(String str : categories){
+			if(conndir.containsKey(str) && conndir.get(str) == dir) return true;
+		}
+		return false;
+	}
+
+	public V3D getConnectorFor(List<String> categories){
+		for(String str : categories){
+			if(conns.containsKey(str)) return conns.get(str);
+		}
+		return V3D.NULL;
+	}
+
+	public TreeMap<String, V3D> getConnectors(){
+		return conns;
+	}
+
+	public TreeMap<String, Boolean> getConnectorDirections(){
+		return conndir;
 	}
 
 }
