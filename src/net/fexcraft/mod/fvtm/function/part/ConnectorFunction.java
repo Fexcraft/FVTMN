@@ -18,7 +18,6 @@ public class ConnectorFunction extends StaticFunction {
 
 	private ArrayList<String> types = new ArrayList<>();
 	private V3D offset = V3D.NULL;
-	private boolean front;
 
 	@Override
 	public PartFunction init(Part part, FJson json){
@@ -33,8 +32,6 @@ public class ConnectorFunction extends StaticFunction {
 			else types.add(map.get("type").string_value());
 		}
 		else types.add("car_trailer");
-		front = map.getBoolean("front", false);
-		front = !map.getBoolean("rear", !front);
 		return this;
 	}
 
@@ -45,14 +42,6 @@ public class ConnectorFunction extends StaticFunction {
 
 	public V3D getOffset(){
 		return offset;
-	}
-
-	public boolean isFront(){
-		return front;
-	}
-
-	public boolean isRear(){
-		return !front;
 	}
 
 	public ArrayList<String> getTypes(){
