@@ -22,4 +22,10 @@ public class WheelTireData {
 		pos = V3D.NULL;
 	}
 
+	public void asTrailerFront(WheelTireData rear){
+		pos = new V3D(rear.pos.x, rear.pos.y, 0);
+		axle = rear.axle;
+		function = rear.function;
+	}
+
 }
