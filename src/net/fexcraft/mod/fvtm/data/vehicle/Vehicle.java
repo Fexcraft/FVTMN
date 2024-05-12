@@ -55,6 +55,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 	protected Map<String, SwivelPoint> swivelpoints = new LinkedHashMap<>();
 	protected float coupler_range = 1f;
 	protected Map<String, LiftingPoint> liftingpoints = new HashMap<>();
+	protected Map<String, LiftingPoint[]> gliftingpoints = new HashMap<>();
 	protected List<CatalogPreset> catalog = new ArrayList<>();
 	protected IDL keytype;
 	protected int maxkeys;
@@ -154,6 +155,14 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 		else{
 			liftingpoints.put("ph0", new LiftingPoint("ph0", new V3D(0, 0, -20), null, 0));
 			liftingpoints.put("ph1", new LiftingPoint("ph1", new V3D(0, 0, 20), null, 0));
+		}
+		for(LiftingPoint point : liftingpoints.values()){
+			if(!gliftingpoints.containsKey(point.id) && !gliftingpoints.containsKey(point.second)){
+				LiftingPoint[] arr = new LiftingPoint[point.isSingular() ? 1 : 2];
+				arr[0] = point;
+				if(arr.length > 1) arr[1] = liftingpoints.get(point.second);
+				gliftingpoints.put(point.id, arr);
+			}
 		}
 		partslots = new PartSlots(map.has("PartSlots") && map.get("PartSlots").isMap() ? map.getMap("PartSlots") : new JsonMap());
 		if(EnvInfo.CLIENT){
@@ -286,6 +295,10 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 
 	public Map<String, LiftingPoint> getLiftingPoints(){
 		return liftingpoints;
+	}
+
+	public Map<String, LiftingPoint[]> getGroupedLiftingPoints(){
+		return gliftingpoints;
 	}
 
 	public List<String> getCategories(){
