@@ -47,14 +47,12 @@ import net.fexcraft.mod.fvtm.util.function.InventoryBlockFunction;
 import net.fexcraft.mod.fvtm.util.function.InventoryFunction;
 import net.fexcraft.mod.fvtm.util.function.SetBlockFunction;
 import net.fexcraft.mod.fvtm.util.handler.BogieInstallationHandler;
-import net.fexcraft.mod.fvtm.util.handler.ConnectorInstallationHandler;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.IDLManager;
 import net.fexcraft.mod.uni.item.ItemWrapper;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
-import net.fexcraft.mod.uni.world.EntityW;
 import net.fexcraft.mod.uni.world.WorldW;
 import org.apache.commons.io.FilenameUtils;
 
@@ -180,6 +178,7 @@ public abstract class FvtmResources {
 		PART_FUNCTIONS.put("fvtm:container", ContainerFunction.class);
 		PART_FUNCTIONS.put("fvtm:bogie", BogieFunction.class);
 		PART_FUNCTIONS.put("fvtm:part_slots", PartSlotsFunction.class);
+		PART_FUNCTIONS.put("fvtm:connector", ConnectorFunction.class);
 		PART_FUNCTIONS.put("fvtm:color", ColorFunction.class);
 		PART_FUNCTIONS.put("fvtm:tire", TireFunction.class);
 		PART_FUNCTIONS.put("fvtm:transmission", TransmissionFunction.class);
@@ -197,7 +196,6 @@ public abstract class FvtmResources {
 		PartInstallHandler.HANDLERS.put("wheel", new WheelInstallationHandler());
 		PartInstallHandler.HANDLERS.put("bogie", new BogieInstallationHandler());
 		PartInstallHandler.HANDLERS.put("tire", new TireInstallationHandler());
-		PartInstallHandler.HANDLERS.put("connector", new ConnectorInstallationHandler());
 	}
 
 	public void searchContent(){
