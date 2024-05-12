@@ -12,6 +12,8 @@ public class WheelTireData {
 	public V3D pos;
 	public Axle axle;
 	public TireAttr function;
+	public boolean steering;
+	public boolean mirror;
 
 	public WheelTireData(String key){
 		this.id = key;
@@ -26,6 +28,11 @@ public class WheelTireData {
 		pos = new V3D(rear.pos.x, rear.pos.y, 0);
 		axle = rear.axle;
 		function = rear.function;
+	}
+
+	@Override
+	public String toString(){
+		return "WTD{" + id + " " + pos + "}";
 	}
 
 }
