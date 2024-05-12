@@ -48,8 +48,6 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 	protected SimplePhysData sphdata;
 	protected boolean trailer;
 	protected boolean tracked;
-	protected V3D conn_front;
-	protected V3D conn_rear;
 	protected Map<String, IDL> installed;
 	protected Map<String, Sound> sounds = new LinkedHashMap<>();
 	protected Map<String, SwivelPoint> swivelpoints = new LinkedHashMap<>();
@@ -122,12 +120,6 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 		sphdata = new SimplePhysData(map.getMap("SimplePhysics"));
 		trailer = map.getBoolean("Trailer", false) || map.getBoolean("Wagon", false);
 		tracked = map.getBoolean("Tracked", false) || map.getBoolean("Catenary", false);
-		if(map.has("ConnectorFront")){
-			conn_front = ContentConfigUtil.getVector(map.getArray("ConnectorFront"));
-		}
-		if(map.has("ConnectorRear")){
-			conn_rear = ContentConfigUtil.getVector(map.getArray("ConnectorRear"));
-		}
 		coupler_range = map.getFloat("CouplerRange", coupler_range);
 		if(map.has("InstalledParts")){
 			installed = new LinkedHashMap<>();
@@ -271,14 +263,6 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 
 	public boolean isWagon(){
 		return trailer;
-	}
-
-	public V3D getDefaultConnectorFront(){
-		return conn_front;
-	}
-
-	public V3D getDefaultConnectorRear(){
-		return conn_rear;
 	}
 
 	public Map<String, IDL> getInstalled(){
