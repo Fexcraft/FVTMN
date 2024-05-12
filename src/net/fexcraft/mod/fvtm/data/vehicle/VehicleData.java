@@ -46,7 +46,6 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 	protected ArrayList<String> inventories = new ArrayList<>();
 	protected ArrayList<Seat> seats = new ArrayList<>();
 	protected TreeMap<String, V3D> conns = new TreeMap<>();
-	protected TreeMap<String, Boolean> conndir = new TreeMap<>();
 	protected SwivelPoint rootpoint;
 	protected Textureable texture;
 	protected Lockable lock;
@@ -303,8 +302,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 			ConnectorFunction func = entry.getValue().getFunction("fvtm:connector");
 			for(String str : func.getTypes()){
 				if(conns.containsKey(str)) continue;
-				conns.put(str, entry.getValue().getInstalledPos()).add(func.getOffset());
-				conndir.put(str, func.isFront());
+				conns.put(str, entry.getValue().getInstalledPos().add(func.getOffset()));
 			}
 		}
 	}
@@ -733,9 +731,9 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		return parts.get(origin.split("\\|")[0]);
 	}
 
-	public boolean hasCompatibleConnector(List<String> categories, boolean dir){
+	public boolean hasCompatibleConnector(List<String> categories){
 		for(String str : categories){
-			if(conndir.containsKey(str) && conndir.get(str) == dir) return true;
+			if(conns.containsKey(str)) return true;
 		}
 		return false;
 	}
@@ -749,10 +747,6 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 
 	public TreeMap<String, V3D> getConnectors(){
 		return conns;
-	}
-
-	public TreeMap<String, Boolean> getConnectorDirections(){
-		return conndir;
 	}
 
 }
