@@ -74,17 +74,6 @@
 	"handler.deinstall.fvtm.bogie.check_passed": "Deinstallation check passed.",
 	"handler.deinstall.fvtm.bogie.success": "Part uninstalled and position reset.",
 
-	"handler.install.fvtm.connector.category_occupied": "There is already another part with that category installed.",
-	"handler.install.fvtm.connector.front_occupied": "Front Connector Pos is already set.",
-	"handler.install.fvtm.connector.not_front_part": "This is not a Front Connector Part.",
-	"handler.install.fvtm.connector.rear_occupied": "Rear Connector Pos is already set.",
-	"handler.install.fvtm.connector.not_rear_part": "This is not a Rear Connector Part.",
-	"handler.install.fvtm.connector.check_passed": "Installation check passed.",
-	"handler.install.fvtm.connector.success": "Part installed into selected category.",
-	"handler.deinstall.fvtm.connector.part_not_removable": "Part is marked as non removable.",
-	"handler.deinstall.fvtm.connector.check_passed": "Deinstallation check passed.",
-	"handler.deinstall.fvtm.connector.success": "Part uninstalled and position reset.",
-
 	"item.fvtm:decoration.name": "FVTM Decoration",
 	"item.fvtm:road_tool.name": "FVTM Road Tool",
 
@@ -97,7 +86,7 @@
 	"interact.fvtm.vehicle.locked": "Vehicle is locked.",
 	"interact.fvtm.vehicle.remove_locked": "Vehicle is locked. Unlock if you want to remove it.",
 	"interact.fvtm.vehicle.engine_on": "Please turn the engine off first!",
-	"interact.fvtm.vehicle.no_rear_connector": "This vehicle has no rear connector installed.",
+	"interact.fvtm.vehicle.no_compatible_connector": "This vehicle has no compatible connectors installed.",
 	"interact.fvtm.vehicle.disconnect_trailer": "Please disconnect the currently connected trailer first.",
 
 	"interact.fvtm.road_tool.empty": "Please setup the tool first!",
