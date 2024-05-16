@@ -56,6 +56,12 @@ public class VehicleInstance {
 	//
 	public static final float GRAVITY = 9.81f;
 	public static final float GRAVITY_20th = GRAVITY / 20;
+	//
+	public static final String PKT_UPD_VEHICLEDATA = "vehicledata";
+	public static final String PKT_UPD_LIGHTS = "toggle_lights";
+	public static final String PKT_UPD_LOCK = "lock_state";
+	public static final String PKT_UPD_TOGGLE_ATTR = "toggle_attr";
+	public static final String PKT_UPD_CONNECTOR = "vehicle_front";
 
 	public VehicleInstance(EntityW wrapper, VehicleData vdata){
 		entity = wrapper;
@@ -165,12 +171,12 @@ public class VehicleInstance {
 				else{
 					data.getAttribute("lights").set(true);
 				}
-				sendLightsUpdate();
+				sendUpdate(PKT_UPD_LIGHTS);
 				VehicleInstance trailer = rear;
 				while(trailer != null){
 					trailer.data.getAttribute("lights").set(data.getAttribute("lights").asBoolean());
 					trailer.data.getAttribute("lights_long").set(data.getAttribute("lights_long").asBoolean());
-					trailer.sendLightsUpdate();
+					trailer.sendUpdate(PKT_UPD_LIGHTS);
 					trailer = trailer.rear;
 				}
 				toggable_timer = 10;
@@ -265,33 +271,6 @@ public class VehicleInstance {
 		}
 	}
 
-	public void sendVehicleData(){
-		TagCW com = TagCW.create();
-		data.write(com);
-		com.set("cargo", "vehicledata");
-		Packets.INSTANCE.send(this, com);
-	}
-
-	public void sendLockUpdate(){
-		TagCW com = TagCW.create();
-		com.set("cargo", "lock_state");
-		com.set("state", data.getLock().isLocked());
-		Packets.INSTANCE.send(this, com);
-	}
-
-	public void sendLightsUpdate(){
-		TagCW com = TagCW.create();
-		com.set("cargo", "toggle_lights");
-		com.set("lights", data.getAttribute("lights").asBoolean());
-		com.set("lights_long", data.getAttribute("lights_long").asBoolean());
-		Packets.INSTANCE.send(this, com);
-	}
-
-	public void sendAttrToggle(TagCW com){
-		com.set("cargo", "toggle_attr");
-		Packets.INSTANCE.send(this, com);
-	}
-
 	public void sendAttrToggle(Attribute<?> attr){
 		if(attr == null) return;
 		TagCW packet = TagCW.create();
@@ -333,20 +312,20 @@ public class VehicleInstance {
 	public void packet(TagCW packet, Passenger passenger){
 		String cargo = packet.getString("cargo");
 		switch(cargo){
-			case "lock_state":{
+			case PKT_UPD_LOCK:{
 				data.getLock().setLocked(packet.getBoolean("state"));
 				return;
 			}
-			case "toggle_lights":{
+			case PKT_UPD_LIGHTS:{
 				data.getAttribute("lights").set(packet.getBoolean("lights"));
 				data.getAttribute("lights_long").set(packet.getBoolean("lights_long"));
 				return;
 			}
-			case "toggle_attr":{
+			case PKT_UPD_TOGGLE_ATTR:{
 				if(passenger.isOnClient()) AttributeUtil.processToggleClient(this, packet, passenger);
 				return;
 			}
-			case "vehicledata":{
+			case PKT_UPD_VEHICLEDATA:{
 				data.read(packet);
 				return;
 			}
@@ -366,6 +345,19 @@ public class VehicleInstance {
 				}
 				throttle = 0;
 				//TODO engine running sound loop
+				return;
+			}
+			case PKT_UPD_CONNECTOR:{
+				int id = packet.getInteger("vehid");
+				if(id < 0){
+					if(front != null) front.rear = null;
+					front = null;
+				}
+				VehicleInstance veh = ((FvtmWorld)entity.getWorld()).getVehicle(id);
+				if(veh != null){
+					veh.rear = this;
+					front = veh;
+				}
 				return;
 			}
 			default:{
@@ -408,6 +400,38 @@ public class VehicleInstance {
 			w_front_r.asTrailerFront(w_rear_r);
 			wheeldata.put(w_front_r.id, w_front_r);
 		}
+	}
+
+	public void sendUpdate(String type){
+		sendUpdate(type, null);
+	}
+
+	public void sendUpdate(String type, TagCW com){
+		if(com == null) com = TagCW.create();
+		com.set("cargo", type);
+		switch(type){
+			case PKT_UPD_VEHICLEDATA:{
+				data.write(com);
+				break;
+			}
+			case PKT_UPD_LOCK:{
+				com.set("state", data.getLock().isLocked());
+				break;
+			}
+			case PKT_UPD_LIGHTS:{
+				com.set("lights", data.getAttribute("lights").asBoolean());
+				com.set("lights_long", data.getAttribute("lights_long").asBoolean());
+				break;
+			}
+			case PKT_UPD_TOGGLE_ATTR:{
+				break;
+			}
+			case PKT_UPD_CONNECTOR:{
+				com.set("vehid", front == null ? -1 : front.entity.getId());
+				break;
+			}
+		}
+		Packets.INSTANCE.send(this, com);
 	}
 
 }
