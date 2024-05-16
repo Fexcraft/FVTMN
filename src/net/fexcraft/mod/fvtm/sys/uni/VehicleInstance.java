@@ -382,24 +382,15 @@ public class VehicleInstance {
 	public void assignWheels(){
 		w_front_l = w_front_r = w_rear_l = w_rear_r = new WheelTireData();
 		for(WheelTireData wheel : wheeldata.values()){
-			if(data.getType().isTrailer()){
-				if(wheel.pos.x <= w_rear_l.pos.x){
-					w_rear_l = wheel;
+			if(!data.getType().isTrailer()){
+				if(wheel.pos.x <= w_front_l.pos.x && wheel.pos.z <= w_front_l.pos.z){
+					w_front_l = wheel;
 					continue;
 				}
-				if(wheel.pos.x >= w_rear_r.pos.x){
-					w_rear_r = wheel;
+				if(wheel.pos.x >= w_front_r.pos.x && wheel.pos.z <= w_front_r.pos.z){
+					w_front_r = wheel;
 					continue;
 				}
-				continue;
-			}
-			if(wheel.pos.x <= w_front_l.pos.x && wheel.pos.z <= w_front_l.pos.z){
-				w_front_l = wheel;
-				continue;
-			}
-			if(wheel.pos.x >= w_front_r.pos.x && wheel.pos.z <= w_front_r.pos.z){
-				w_front_r = wheel;
-				continue;
 			}
 			if(wheel.pos.x <= w_rear_l.pos.x && wheel.pos.z >= w_rear_l.pos.z){
 				w_rear_l = wheel;
