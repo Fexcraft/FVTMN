@@ -30,7 +30,7 @@ public class AttributeUtil {
 		Object oldval = attr.value();
 		toggleAttr(from, attr, bool, com, false, null);
 		Object syncval = attr.value();
-		vehicle.sendAttrToggle(com);
+		vehicle.sendUpdate(VehicleInstance.PKT_UPD_TOGGLE_ATTR, com);
 		if(!attr.sync) return;
 		if(vehicle.type.isRailVehicle()){
 			//TODO
@@ -43,7 +43,7 @@ public class AttributeUtil {
 				if(attr != null){
 					com = TagCW.create();
 					toggleAttr(FvtmLogger.NONE, attr, bool, com, true, syncval);
-					trailer.sendAttrToggle(com);
+					trailer.sendUpdate(VehicleInstance.PKT_UPD_TOGGLE_ATTR, com);
 				}
 				trailer = trailer.rear;
 			}
