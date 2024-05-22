@@ -2,7 +2,6 @@ package net.fexcraft.mod.fvtm.sys.road;
 
 import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.lib.common.Static;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.FvtmLogger;
@@ -192,7 +191,7 @@ public class UniRoadTool {
 		while(passed < _road.length){
 			last = vec;
 			vec = _road.getVectorPosition(passed, false);
-			angle = Math.atan2(last.z - vec.z, last.x - vec.x) + Static.rad90;
+			angle = Math.atan2(last.x - vec.x, last.z - vec.z);
 			for(double db = -half; db <= half; db += 0.25){
 				if(road != null) road.add(gen(vec, angle, db, 0));
 				if(ground != null) ground.add(gen(vec, angle, db + off, -1));
