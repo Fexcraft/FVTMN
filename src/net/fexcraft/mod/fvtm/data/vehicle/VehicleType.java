@@ -101,6 +101,7 @@ public enum VehicleType {
 					attrs.add(new AttrFloat("trailer_weight_ratio", 0.2f).limit(0f, 1f));
 				}
 				attrs.add(new AttrString("license_plate", "FVTM").addAccess("external").editable(false).perm("fvtm.attribute.license_plate"));
+				attrs.add(new AttrInteger("lug_size", 0).limit(0, 8));
 				break;
 			}
 			case RAIL:{
