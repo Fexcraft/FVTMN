@@ -15,9 +15,15 @@ public class Material extends Content<Material> implements WithItem, ItemTexture
 	
 	protected byte max_stack;
 	protected short max_health;
-	protected String ore_dict, container, fuelgroup, ctab;
-	protected int burntime, fuel_capacity;
-	protected boolean vehicle_key, fuel_container;
+	protected String ore_dict;
+	protected String container;
+	protected String fuelgroup;
+	protected String ctab;
+	protected boolean vehicle_key;
+	protected boolean fuel_container;
+	protected int fuel_capacity;
+	protected int burntime;
+	protected int impact;
 	protected IDL itemtexloc;
 	protected Fuel fuel;
 	
@@ -28,21 +34,23 @@ public class Material extends Content<Material> implements WithItem, ItemTexture
 		if((pack = ContentConfigUtil.getAddon(map)) == null) return null;
 		if((id = ContentConfigUtil.getID(pack, map)) == null) return null;
 		//
-		this.name = map.getString("Name", "Unnamed Material");
-		this.description = ContentConfigUtil.getStringList(map, "Description");
-		this.max_stack = (byte)map.getInteger("MaxItemStackSize", 64);
-		this.max_health = (short)map.getInteger("MaxItemDamage", 0);
-		this.ore_dict = map.getString("OreDictionary", null);
-		this.container = map.getString("ContainerItem", null);
-		this.burntime = map.getInteger("ItemBurnTime", 0);
-		this.vehicle_key = map.getBoolean("VehicleKey", false);
-		this.fuel_container = map.getBoolean("FuelContainer", false);
-		this.fuel_capacity = map.getInteger("FuelCapacity", fuel_container ? 5000 : 0);
-		this.fuel = map.has("FuelType") ? getFuel(map.get("FuelType", (String)null)) : null;
-		this.fuelgroup = map.getString("FuelGroup", null);
+		name = map.getString("Name", "Unnamed Material");
+		description = ContentConfigUtil.getStringList(map, "Description");
+		max_stack = (byte)map.getInteger("MaxItemStackSize", 64);
+		max_health = (short)map.getInteger("MaxItemDamage", 0);
+		ore_dict = map.getString("OreDictionary", null);
+		container = map.getString("ContainerItem", null);
+		burntime = map.getInteger("ItemBurnTime", 0);
+		vehicle_key = map.getBoolean("VehicleKey", false);
+		fuel_container = map.getBoolean("FuelContainer", false);
+		fuel_capacity = map.getInteger("FuelCapacity", fuel_container ? 5000 : 0);
+		fuel = map.has("FuelType") ? getFuel(map.get("FuelType", (String)null)) : null;
+		fuelgroup = map.getString("FuelGroup", null);
+		impact = map.getInteger("ImpactWrench", -1);
+		if(impact > 8) impact = 8;
 		//
-        this.ctab = map.getString("CreativeTab", "default");
-        this.itemtexloc = ContentConfigUtil.getItemTexture(id, getContentType(), map);
+		ctab = map.getString("CreativeTab", "default");
+		itemtexloc = ContentConfigUtil.getItemTexture(id, getContentType(), map);
 		return this;
 	}
 
