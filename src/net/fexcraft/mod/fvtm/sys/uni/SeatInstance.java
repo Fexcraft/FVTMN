@@ -119,7 +119,7 @@ public class SeatInstance {
 		if(key == null) return false;
 		else if(key.toggable_input() && root.entity.isOnClient()){
 			if(clicktimer > 0) return false;
-			boolean bool = InteractionHandler.handle(key, root, null, player, StackWrapper.EMPTY);
+			boolean bool = InteractionHandler.handle(key, root.data, root.iref(), null, player, StackWrapper.EMPTY);
 			clicktimer += 10;
 			return bool;
 		}
@@ -131,7 +131,7 @@ public class SeatInstance {
 				Float val = attr.getKeyValue(key);
 				if(val != null){
 					KeyPress mouse = val == 0 ? KeyPress.RESET : val > 0 ? KeyPress.MOUSE_MAIN : KeyPress.MOUSE_RIGHT;
-					if(InteractionHandler.toggle(attr, root, mouse, val, player)) bool = true;
+					if(InteractionHandler.toggle(attr, root.data, root.iref(), mouse, val, player)) bool = true;
 				}
 			}
 			attrkeys.get(key)[0] += 5;
