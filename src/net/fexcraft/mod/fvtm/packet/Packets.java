@@ -3,19 +3,25 @@ package net.fexcraft.mod.fvtm.packet;
 import io.netty.buffer.ByteBuf;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
-import net.fexcraft.mod.fvtm.FvtmLogger;
+import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.block.BlockData;
+import net.fexcraft.mod.fvtm.data.part.PartData;
+import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.handler.AttrReqHandler;
+import net.fexcraft.mod.fvtm.handler.DefaultPartInstallHandler;
+import net.fexcraft.mod.fvtm.handler.InteractionHandler.InteractRef;
 import net.fexcraft.mod.fvtm.sys.road.RoadPlacingUtil;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 import net.fexcraft.mod.fvtm.ui.UIKey;
 import net.fexcraft.mod.fvtm.util.QV3D;
 import net.fexcraft.mod.uni.EnvInfo;
+import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.WorldW;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static net.fexcraft.mod.fvtm.Config.VEHICLE_UPDATE_RANGE;
@@ -49,6 +55,28 @@ public abstract class Packets {
 		});
 		LIS_SERVER.put("blockentity", (com, player) -> {
 			player.getFvtmWorld().handleBlockEntityPacket(com, player);
+		});
+		LIS_SERVER.put("install_part", (com, player) -> {
+			StackWrapper wrapper = player.getHeldItem(true);
+			PartData data = wrapper.getContent(ContentType.PART);
+			Map.Entry<VehicleData, InteractRef> ref = player.getFvtmWorld().getInteractRef(com);
+			String category = com.getString("category");
+			if(ref.getKey().getPart(category) != null){
+				PartData oldpart = ref.getKey().getPart(category);
+				boolean valid = oldpart.getType().getInstallHandlerData() instanceof DefaultPartInstallHandler.DPIHData && ((DefaultPartInstallHandler.DPIHData)oldpart.getType().getInstallHandlerData()).swappable;
+				if(valid && ref.getKey().deinstallPart(player, category, true)){
+					player.drop(oldpart.getNewStack(), 0);
+				}
+				else return;
+			}
+			data = ref.getKey().installPart(player, data, com.getString("source") + ":" + category, true);
+			if(data == null){
+				wrapper.count(wrapper.count() - 1);
+				if(ref.getValue().isVehicle()){
+					ref.getValue().vehicle().sendUpdate(VehicleInstance.PKT_UPD_VEHICLEDATA);
+				}
+				//TODO send lift packet
+			}
 		});
 		if(EnvInfo.CLIENT){
 			LIS_CLIENT.put("attr_toggle", (tag, player) -> {
