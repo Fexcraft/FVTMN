@@ -41,4 +41,12 @@ public enum KeyPress {
 		return this == BRAKE;
 	}
 
+	public boolean mouse_right(){
+		return this == MOUSE_RIGHT;
+	}
+
+	public boolean mouse_main(){
+		return this == MOUSE_MAIN;
+	}
+
 }
