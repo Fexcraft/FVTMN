@@ -130,4 +130,8 @@ public class Material extends Content<Material> implements WithItem, ItemTexture
 		return container;
 	}
 
+	public int getImpactLevel(){
+		return impact;
+	}
+
 }
