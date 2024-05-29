@@ -2,6 +2,7 @@ package net.fexcraft.mod.fvtm.handler;
 
 import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.lib.common.math.V3D;
+import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.attribute.AttrBox;
@@ -12,6 +13,7 @@ import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartSlot;
 import net.fexcraft.mod.fvtm.data.part.PartSlots;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
+import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.handler.DefaultPartInstallHandler.DPIHData;
 import net.fexcraft.mod.fvtm.packet.Packet_TagListener;
 import net.fexcraft.mod.fvtm.packet.Packets;
@@ -41,8 +43,8 @@ public class InteractionHandler {
 	private static AABB aabb;
 
 	/** Vehicle Interaction */
-	public static boolean handle(KeyPress key, VehicleInstance vehicle, SeatInstance seat, Passenger pass, StackWrapper stack){
-		if(key.equals(KeyPress.MOUSE_RIGHT) && mountSeat(vehicle, seat, pass, stack)) return true;
+	public static boolean handle(KeyPress key, VehicleData vehdata, InteractRef ref, SeatInstance seat, Passenger pass, StackWrapper stack){
+		if(key.mouse_right() && ref.isVehicle() && mountSeat(ref.vehicle(), seat, pass, stack)) return true;
 		if(Time.getDate() < cooldown) return false;
 		if(!stack.empty()){
 			if(stack.isItemOf(ItemType.PART)){
@@ -50,12 +52,12 @@ public class InteractionHandler {
 				if(!(data.getType().getInstallHandlerData() instanceof DPIHData)) return false;
 				ArrayList<Interactive> list = new ArrayList<>();
 				SwivelPoint point = null;
-				for(Map.Entry<String, PartSlots> entry : vehicle.data.getPartSlotProviders().entrySet()){
-					point = vehicle.data.getRotationPointOfPart(entry.getKey());
+				for(Map.Entry<String, PartSlots> entry : vehdata.getPartSlotProviders().entrySet()){
+					point = vehdata.getRotationPointOfPart(entry.getKey());
 					for(Map.Entry<String, PartSlot> sentry : entry.getValue().entrySet()){
 						String type = sentry.getValue().type;
-						if(vehicle.data.hasPart(type)){
-							Part part = vehicle.data.getPart(type).getType();
+						if(vehdata.hasPart(type)){
+							Part part = vehdata.getPart(type).getType();
 							if(!(part.getInstallHandlerData() instanceof DPIHData) || !((DPIHData)part.getInstallHandlerData()).swappable)
 								continue;
 						}
@@ -65,13 +67,13 @@ public class InteractionHandler {
 						}
 					}
 				}
-				Interactive res = getInteracted(seat == null, vehicle, pass, list);
+				Interactive res = getInteracted(seat == null, vehdata, ref, pass, list);
 				if(res == null) return false;
 				if(res.id().equals(last) && Time.getDate() < cooldown) return true;
 				TagCW com = TagCW.create();
 				com.set("source", res.source);
 				com.set("category", res.category);
-				com.set("entity", vehicle.entity.getId());
+				ref.setPacket(com);
 				Packets.send(Packet_TagListener.class, "install_part", com);
 				last = res.id();
 				cooldown = Time.getDate() + 20;
@@ -79,21 +81,21 @@ public class InteractionHandler {
 			}
 			return false;
 		}
-		List<Attribute<?>> attributes = vehicle.data.getAttributes().values().stream().filter(attr -> attr.hasBoxes() && (attr.valuetype.isTristate() || attr.valuetype.isNumber()) && (seat == null ? attr.external : (seat.seat.driver || attr.access.contains(seat.seat.name)))).collect(Collectors.toList());
+		List<Attribute<?>> attributes = vehdata.getAttributes().values().stream().filter(attr -> attr.hasBoxes() && (attr.valuetype.isTristate() || attr.valuetype.isNumber()) && (seat == null ? attr.external : (seat.seat.driver || attr.access.contains(seat.seat.name)))).collect(Collectors.toList());
 		if(attributes.size() == 0) return false;
 		ArrayList<Interactive> list = new ArrayList<>();
 		attributes.forEach(attr -> list.add(new Interactive(attr)));
-		Interactive inter = getInteracted(seat == null, vehicle, pass, list);
+		Interactive inter = getInteracted(seat == null, vehdata, ref, pass, list);
 		if(inter == null) return false;
 		Attribute<?> attr = inter.attribute;
 		if(attr.id.equals(last) && Time.getDate() < cooldown) return true;
-		return toggle(attr, vehicle, key, null, pass);
+		return toggle(attr, vehdata, ref, key, null, pass);
 	}
 
-	public static boolean toggle(Attribute<?> attr, VehicleInstance vehicle, KeyPress press, Float val, Passenger pass){
+	public static boolean toggle(Attribute<?> attr, VehicleData data, InteractRef ref, KeyPress press, Float val, Passenger pass){
 		TagCW packet = TagCW.create();
 		packet.set("attr", attr.id);
-		packet.set("entity", vehicle.entity.getId());
+		ref.setPacket(packet);
 		switch(press){
 			case MOUSE_MAIN:{
 				if(attr.valuetype.isTristate()){
@@ -168,17 +170,18 @@ public class InteractionHandler {
 	}
 
 	public static boolean handle(KeyPress key, StackWrapper stack){
-		if(!stack.empty() && !(stack.isItemOf(ItemType.PART) || stack.isItemOf(ItemType.LEAD))) return false;
+		if(!stack.empty() && !stack.isItemOfAny(ItemType.PART, ItemType.MATERIAL, ItemType.LEAD)) return false;
 		world = WrapperHolder.getClientWorld();
 		Passenger pass = world.getClientPassenger();
-		ArrayList<VehicleInstance> vehs = world.getVehicles(pass.getPos());
-		for(VehicleInstance veh : vehs){
-			if(handle(key, veh, pass.getSeatOn(), pass, stack)) return true;
+		Map<VehicleData, InteractRef> vehs = world.getVehicleDatas(pass.getPos());
+		for(Map.Entry<VehicleData, InteractRef> veh : vehs.entrySet()){
+			if(handle(key, veh.getKey(), veh.getValue(), pass.getSeatOn(), pass, stack)) return true;
 		}
 		return false;
 	}
 
 	private static boolean mountSeat(VehicleInstance vehicle, SeatInstance seat, Passenger pass, StackWrapper stack){
+		if(vehicle == null) return false;
 		if(last.equals("seat") && Time.getDate() < cooldown) return false;
 		if(!stack.empty() && stack.isItemOf(ItemType.LEAD)) return false;
 		if(seat == null) seat = pass.getSeatOn();
@@ -208,14 +211,14 @@ public class InteractionHandler {
 		return false;
 	}
 
-	private static Interactive getInteracted(boolean external, VehicleInstance vehicle, Passenger pass, ArrayList<Interactive> list){
+	private static Interactive getInteracted(boolean external, VehicleData data, InteractRef ref, Passenger pass, ArrayList<Interactive> list){
 		if(pass.getFvtmWorld().noViewEntity()) return null;
 		V3D evec = pass.getEyeVec();
 		V3D lvec = evec.add(pass.getLookVec().multiply(external ? 3 : 2));
 		V3D vec0;
 		LinkedHashMap<String, AABB> map = new LinkedHashMap<>();
 		for(Interactive inter : list){
-			inter.collect(external, vehicle, pass, map);
+			inter.collect(external, data, ref, pass, map);
 		}
 		for(float f = 0; f < (external ? 3.125f : 2.125f); f += th32){
 			vec0 = evec.distance(lvec, f);
@@ -249,13 +252,13 @@ public class InteractionHandler {
 			return attribute == null ? source + ":" + category : attribute.id;
 		}
 
-		public void collect(boolean external, VehicleInstance vehicle, Passenger player, Map<String, AABB> aabbs){
+		public void collect(boolean external, VehicleData data, InteractRef ref, Passenger player, Map<String, AABB> aabbs){
 			if(attribute == null){
 				V3D pos = slots.get(category).pos.copy();
 				if(!source.equals("vehicle")){
-					pos = pos.add(vehicle.data.getPart(source).getInstalledPos());
+					pos = pos.add(data.getPart(source).getInstalledPos());
 				}
-				pos = point.getRelativeVector(pos).add(vehicle.entity.getPos());
+				pos = point.getRelativeVector(pos).add(ref.pos);
 				double hs = slots.get(category).radius * .5;
 				aabbs.put(id(), AABB.create(pos.x - hs, pos.y - hs, pos.z - hs, pos.x + hs, pos.y + hs, pos.z + hs));
 			}
@@ -263,12 +266,51 @@ public class InteractionHandler {
 				String val = attribute.asString();
 				if(external) val = "external-" + val;
 				AttrBox ab = attribute.getBox(val);
-				PartData part = vehicle.data.getAttributeOrigin(attribute);
+				PartData part = data.getAttributeOrigin(attribute);
 				if(ab == null) return;
-				point = vehicle.data.getRotationPoint(ab.swivel_point);
-				V3D pos = point.getRelativeVector(ab.pos.add(part == null ? V3D.NULL : part.getInstalledPos())).add(vehicle.entity.getPos());
+				point = data.getRotationPoint(ab.swivel_point);
+				V3D pos = point.getRelativeVector(ab.pos.add(part == null ? V3D.NULL : part.getInstalledPos())).add(ref.pos);
 				double hs = ab.size * .5;
 				aabbs.put(attribute.id, AABB.create(pos.x - hs, pos.y - hs, pos.z - hs, pos.x + hs, pos.y + hs, pos.z + hs));
+			}
+		}
+
+	}
+
+	public static class InteractRef {
+
+		protected VehicleInstance inst;
+		protected V3I blkpos;
+		protected V3D pos;
+
+		public InteractRef(V3I vec, V3D vpos){
+			blkpos = vec;
+			pos = vpos;
+		}
+
+		public InteractRef(VehicleInstance vehinst){
+			inst = vehinst;
+			update();
+		}
+
+		public boolean isVehicle(){
+			return inst != null;
+		}
+
+		public VehicleInstance vehicle(){
+			return inst;
+		}
+
+		public void update(){
+			pos = inst.entity.getPos();
+		}
+
+		public void setPacket(TagCW com){
+			if(inst != null){
+				com.set("entity", inst.entity.getId());
+			}
+			else{
+				com.set("lift", blkpos.toIntegerArray());
 			}
 		}
 
