@@ -48,6 +48,7 @@ public class Material extends Content<Material> implements WithItem, ItemTexture
 		fuelgroup = map.getString("FuelGroup", null);
 		impact = map.getInteger("ImpactWrench", -1);
 		if(impact > 8) impact = 8;
+		if(impact > -1) max_stack = 1;
 		//
 		ctab = map.getString("CreativeTab", "default");
 		itemtexloc = ContentConfigUtil.getItemTexture(id, getContentType(), map);
