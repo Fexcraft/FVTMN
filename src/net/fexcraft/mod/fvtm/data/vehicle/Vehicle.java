@@ -15,6 +15,7 @@ import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
+import net.fexcraft.mod.fvtm.data.InteractZone;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
 import net.fexcraft.mod.fvtm.data.part.PartSlots;
 import net.fexcraft.mod.fvtm.data.root.Colorable.ColorHolder;
@@ -54,6 +55,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 	protected float coupler_range = 1f;
 	protected Map<String, LiftingPoint> liftingpoints = new HashMap<>();
 	protected Map<String, LiftingPoint[]> gliftingpoints = new HashMap<>();
+	protected List<InteractZone> interact_zones = new ArrayList<>();
 	protected List<CatalogPreset> catalog = new ArrayList<>();
 	protected IDL keytype;
 	protected int maxkeys;
@@ -173,6 +175,14 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 					FvtmLogger.log(e, "vehicle catalog entry loading of " + id.colon());
 				}
 			}
+		}
+		if(map.has("InteractZones")){
+			for(Entry<String, JsonValue<?>> entry : map.getMap("InteractZones").entries()){
+				interact_zones.add(new InteractZone(entry.getKey(), entry.getValue().asArray()));
+			}
+		}
+		if(interact_zones.isEmpty()){
+			interact_zones.add(new InteractZone("default", V3D.NULL, 4, SwivelPoint.DEFAULT));
 		}
 		return this;
 	}
@@ -311,6 +321,10 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 
 	public List<CatalogPreset> getCatalog(){
 		return catalog;
+	}
+
+	public List<InteractZone> getDefaultInteractZones(){
+		return interact_zones;
 	}
 
 }
