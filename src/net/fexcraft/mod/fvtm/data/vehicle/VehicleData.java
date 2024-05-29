@@ -6,6 +6,7 @@ import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.ContentData;
+import net.fexcraft.mod.fvtm.data.InteractZone;
 import net.fexcraft.mod.fvtm.data.Seat;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
 import net.fexcraft.mod.fvtm.data.part.*;
@@ -42,6 +43,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 	protected TreeMap<String, Sound> sounds = new TreeMap<>();
 	protected TreeMap<String, SwivelPoint> rotpoints = new TreeMap<>();
 	protected TreeMap<String, PartSlots> partproviders = new TreeMap<>();
+	protected TreeMap<String, InteractZone> interact_zones = new TreeMap<>();
 	//protected ArrayList<VehicleScript> scripts = new ArrayList<>();
 	protected ArrayList<String> inventories = new ArrayList<>();
 	protected ArrayList<Seat> seats = new ArrayList<>();
@@ -67,6 +69,9 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		}
 		for(Entry<String, RGB> entry : type.getDefaultColorChannels().entrySet()){
 			channels.put(entry.getKey(), entry.getValue().copy());
+		}
+		for(InteractZone zone : type.getDefaultInteractZones()){
+			interact_zones.put(zone.id, zone.copy());
 		}
 		partproviders.put("vehicle", type.getPartSlots());
 		if(type.getInstalled() != null){
@@ -303,6 +308,27 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 			for(String str : func.getTypes()){
 				if(conns.containsKey(str)) continue;
 				conns.put(str, entry.getValue().getInstalledPos().add(func.getOffset()));
+			}
+		}
+		//
+		interact_zones.clear();
+		for(InteractZone zone : type.getDefaultInteractZones()) interact_zones.put(zone.id, zone.copy());
+		for(PartData data : parts.values()){
+			if(!data.hasFunction("fvtm:interact_zone")) continue;
+			InteractZoneFunction func = data.getFunction(InteractZoneFunction.class, "fvtm:interact_zone");
+			for(InteractZone zone : func.getZones()){
+				if(zone.set != null){
+					if(!interact_zones.containsKey(zone.id)) continue;
+					if(zone.set){
+						interact_zones.get(zone.id).range = zone.range;
+					}
+					else{
+						interact_zones.get(zone.id).range += zone.range;
+					}
+					interact_zones.get(zone.id).validate();
+				}
+				if(interact_zones.containsKey(zone.id)) continue;;
+				interact_zones.put(zone.id, zone.copy());
 			}
 		}
 	}
@@ -747,6 +773,10 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 
 	public TreeMap<String, V3D> getConnectors(){
 		return conns;
+	}
+
+	public TreeMap<String, InteractZone> getInteractZones(){
+		return interact_zones;
 	}
 
 }
