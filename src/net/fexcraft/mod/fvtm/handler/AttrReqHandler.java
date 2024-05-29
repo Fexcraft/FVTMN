@@ -1,12 +1,17 @@
 package net.fexcraft.mod.fvtm.handler;
 
+import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
+import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
+import net.fexcraft.mod.fvtm.handler.InteractionHandler.InteractRef;
 import net.fexcraft.mod.fvtm.packet.Packet_TagListener;
 import net.fexcraft.mod.fvtm.packet.Packets;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 import net.fexcraft.mod.uni.tag.TagCW;
+
+import java.util.Map;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -15,9 +20,9 @@ public class AttrReqHandler {
 
 	public static void processToggleRequest(Passenger pass, TagCW packet){
 		boolean bool = packet.getBoolean("bool");
-		VehicleInstance vehicle = pass.getFvtmWorld().getVehicle(packet.getInteger("entity"));
+		Map.Entry<VehicleData, InteractRef> ref = pass.getFvtmWorld().getInteractRef(packet);
 		String attribute = packet.getString("attr");
-		final Attribute<?> attr = vehicle.data.getAttribute(attribute);
+		final Attribute<?> attr = ref.getKey().getAttribute(attribute);
 		/*if(!attr.editable && !Perms.EDIT_INTERNAL_ATTRIBUTES.has(player) && (attr.hasPerm() ? !PermissionAPI.hasPermission(player, attr.perm) : true)){
 			pass.send("No permission. [ED]");
 			return;
@@ -30,7 +35,7 @@ public class AttrReqHandler {
 		Object syncval = attr.value();
 		Packets.sendToAll(Packet_TagListener.class, "attr_toggle", packet);
 		if(!attr.sync) return;
-		if(vehicle.type.isRailVehicle()){
+		if(ref.getKey().getType().getVehicleType().isRailVehicle()){
 			/*RailVehicle rail = (RailVehicle)vehicle;
 			Compound com = rail.rek.ent().getCompound();
 			if(com.isSingular() || !com.isHead(rail.rek.ent()) && !com.isEnd(rail.rek.ent())) return;
@@ -57,8 +62,8 @@ public class AttrReqHandler {
 			}*///TODO
 		}
 		else{
-			if(vehicle.front != null) return;
-			VehicleInstance trailer = vehicle.rear;
+			if(ref.getValue().vehicle() == null || ref.getValue().vehicle().front != null) return;
+			VehicleInstance trailer = ref.getValue().vehicle().rear;
 			while(trailer != null){
 				Attribute<?> attr0 = trailer.data.getAttribute(attribute);
 				if(attr0 != null){
@@ -108,8 +113,8 @@ public class AttrReqHandler {
 
 	public static void processUpdateRequest(Passenger pass, TagCW packet){
 		boolean reset = packet.has("reset") && packet.getBoolean("reset");
-		VehicleInstance vehicle = pass.getFvtmWorld().getVehicle(packet.getInteger("entity"));
-		Attribute<?> attr = vehicle.data.getAttribute(packet.getString("attr"));
+		Map.Entry<VehicleData, InteractRef> ref = pass.getFvtmWorld().getInteractRef(packet);
+		Attribute<?> attr = ref.getKey().getAttribute(packet.getString("attr"));
 		/*if(!attr.editable && !Perms.EDIT_INTERNAL_ATTRIBUTES.has(pass) && (attr.hasPerm() ? !PermissionAPI.hasPermission(player, attr.perm) : true)){
 			pass.send("No permission. [ED]");
 			return;
@@ -124,22 +129,24 @@ public class AttrReqHandler {
 		else{
 			attr.set(attr.parse(packet.getString("value")));
 		}
-		vehicle.sendAttrToggle(attr);
+		if(ref.getValue().isVehicle()) ref.getValue().vehicle().sendAttrToggle(attr);
+		//TODO send lift packet
 	}
 
 	public static void processToggleResponse(Passenger pass, TagCW packet){
 		boolean bool = packet.getBoolean("bool");
 		String attribute = packet.getString("attr");
 		Attribute<?> attr = null;
-		VehicleInstance vehicle = pass.getFvtmWorld().getVehicle(packet.getInteger("entity"));
-		if(vehicle == null && packet.has("railid")){
+		Map.Entry<VehicleData, InteractRef> ref = pass.getFvtmWorld().getInteractRef(packet);
+		if(ref.getValue().isVehicle() && packet.has("railid")){
 			//RailEntity ent = SystemManager.get(Systems.RAIL, player.world, RailSystem.class).getEntity(packet.getLong("railid"), false);
 			//attr = ent.vehdata.getAttribute(attribute);
 		}
-		else if(vehicle != null){
-			attr = vehicle.data.getAttribute(attribute);
+		else if(ref.getValue().isVehicle()){
+			attr = ref.getKey().getAttribute(attribute);
 		}
 		else{
+			//TODO lift packet handling
 			FvtmLogger.debug("Received packet for entity not found on client side!");
 			return;
 		}
@@ -156,8 +163,8 @@ public class AttrReqHandler {
 	}
 
 	public static void processUpdateResponse(Passenger pass, TagCW packet){
-		VehicleInstance vehicle = pass.getFvtmWorld().getVehicle(packet.getInteger("entity"));
-		Attribute<?> attr = vehicle.data.getAttribute(packet.getString("attr"));
+		Map.Entry<VehicleData, InteractRef> ref = pass.getFvtmWorld().getInteractRef(packet);
+		Attribute<?> attr = ref.getKey().getAttribute(packet.getString("attr"));
 		if(attr.valuetype.isTristate()){
 			if(packet.has("reset") && packet.getBoolean("reset")){
 				attr.set(null);
