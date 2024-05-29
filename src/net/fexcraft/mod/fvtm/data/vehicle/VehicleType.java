@@ -58,7 +58,6 @@ public enum VehicleType {
 		attrs.add(new AttrBoolean("constructor_show", true).editable(true));
 		attrs.add(new AttrFloat("hitbox_width", 1f).limit(0, 16).editable(false));
 		attrs.add(new AttrFloat("hitbox_height", 1f).limit(0, 16).editable(false));
-		attrs.add(new AttrFloat("collision_range", 4f).limit(0, 16).editable(false));
 		attrs.add(new AttrInteger("fuel_capacity", 20000).limit(0, Integer.MAX_VALUE));
 		attrs.add(new AttrString("fuel_primary", ""));
 		attrs.add(new AttrString("fuel_secondary", ""));
