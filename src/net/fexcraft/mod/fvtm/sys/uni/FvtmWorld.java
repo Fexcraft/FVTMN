@@ -1,9 +1,8 @@
 package net.fexcraft.mod.fvtm.sys.uni;
 
 import net.fexcraft.lib.common.math.V3D;
-import net.fexcraft.mod.fvtm.data.InteractData;
-import net.fexcraft.mod.fvtm.data.InteractType;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
+import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.packet.Packet_VehMove;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.StateWrapper;
@@ -27,7 +26,7 @@ public abstract class FvtmWorld extends WorldW {
 
 	public abstract ArrayList<VehicleInstance> getVehicles(V3D pos);
 
-	public abstract ArrayList<InteractData> getInteractables(InteractType type, V3D pos);
+	public abstract ArrayList<VehicleData> getVehicleDatas(V3D pos);
 
 	public abstract Passenger getClientPassenger();
 
