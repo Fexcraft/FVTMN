@@ -16,6 +16,8 @@ import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleType;
 import net.fexcraft.mod.fvtm.function.part.EngineFunction;
+import net.fexcraft.mod.fvtm.handler.InteractionHandler;
+import net.fexcraft.mod.fvtm.handler.InteractionHandler.InteractRef;
 import net.fexcraft.mod.fvtm.packet.Packet_TagListener;
 import net.fexcraft.mod.fvtm.packet.Packet_VehMove;
 import net.fexcraft.mod.fvtm.packet.Packets;
@@ -38,6 +40,7 @@ public class VehicleInstance {
 	private UUID placer;
 	public VehicleInstance front, rear;
 	public SwivelPoint point;
+	private InteractRef ref;
 	//
 	public WheelTireData w_front_l;
 	public WheelTireData w_front_r;
@@ -65,6 +68,7 @@ public class VehicleInstance {
 
 	public VehicleInstance(EntityW wrapper, VehicleData vdata){
 		entity = wrapper;
+		ref = new InteractRef(this);
 		init(vdata);
 	}
 
@@ -432,6 +436,11 @@ public class VehicleInstance {
 			}
 		}
 		Packets.INSTANCE.send(this, com);
+	}
+
+	public InteractRef iref(){
+		ref.update();
+		return ref;
 	}
 
 }
