@@ -129,8 +129,34 @@ public class AttrReqHandler {
 		else{
 			attr.set(attr.parse(packet.getString("value")));
 		}
-		if(ref.getValue().isVehicle()) ref.getValue().vehicle().sendAttrToggle(attr);
-		//TODO send lift packet
+		sendAttrToggle(attr, ref.getValue());
+	}
+
+	public static void sendAttrToggle(Attribute<?> attr, InteractRef ref){
+		if(attr == null) return;
+		TagCW packet = TagCW.create();
+		packet.set("attr", attr.id);
+		ref.setPacket(packet);
+		if(attr.valuetype.isTristate()){
+			if(attr.asTristate() == null){
+				packet.set("value", false);
+				packet.set("reset", true);
+			}
+			else{
+				packet.set("value", attr.asBoolean());
+			}
+		}
+		else if(attr.valuetype.isFloat()){
+			packet.set("value", attr.asFloat());
+		}
+		else if(attr.valuetype.isInteger()){
+			packet.set("value", attr.asInteger());
+		}
+		else if(attr.valuetype.isString()){
+			packet.set("value", attr.asString());
+		}
+		else packet.set("value", attr.asString());
+		Packets.sendToAll(Packet_TagListener.class, "attr_update", packet);
 	}
 
 	public static void processToggleResponse(Passenger pass, TagCW packet){
@@ -138,18 +164,14 @@ public class AttrReqHandler {
 		String attribute = packet.getString("attr");
 		Attribute<?> attr = null;
 		Map.Entry<VehicleData, InteractRef> ref = pass.getFvtmWorld().getInteractRef(packet);
+		if(ref == null){
+			FvtmLogger.debug("Received packet for interact-ref not found on client side!");
+		}
 		if(ref.getValue().isVehicle() && packet.has("railid")){
 			//RailEntity ent = SystemManager.get(Systems.RAIL, player.world, RailSystem.class).getEntity(packet.getLong("railid"), false);
 			//attr = ent.vehdata.getAttribute(attribute);
 		}
-		else if(ref.getValue().isVehicle()){
-			attr = ref.getKey().getAttribute(attribute);
-		}
-		else{
-			//TODO lift packet handling
-			FvtmLogger.debug("Received packet for entity not found on client side!");
-			return;
-		}
+		attr = ref.getKey().getAttribute(attribute);
 		if(attr.valuetype.isTristate()){
 			if(attr.valuetype.isBoolean() || !packet.has("reset")) attr.set(bool);
 			else attr.set(null);
