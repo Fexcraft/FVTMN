@@ -1,8 +1,11 @@
 package net.fexcraft.mod.fvtm.sys.uni;
 
 import net.fexcraft.lib.common.math.V3D;
+import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
+import net.fexcraft.mod.fvtm.handler.InteractionHandler;
+import net.fexcraft.mod.fvtm.handler.InteractionHandler.InteractRef;
 import net.fexcraft.mod.fvtm.packet.Packet_VehMove;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.StateWrapper;
@@ -24,11 +27,13 @@ public abstract class FvtmWorld extends WorldW {
 
 	public abstract VehicleInstance getVehicle(int entid);
 
+	public abstract Map.Entry<VehicleData, InteractRef> getInteractRef(TagCW packet);
+
 	public abstract boolean noViewEntity();
 
 	public abstract ArrayList<VehicleInstance> getVehicles(V3D pos);
 
-	public abstract Map<VehicleData, Object> getVehicleDatas(V3D pos);
+	public abstract Map<VehicleData, InteractRef> getVehicleDatas(V3D pos);
 
 	public abstract Passenger getClientPassenger();
 
@@ -43,5 +48,4 @@ public abstract class FvtmWorld extends WorldW {
 	public abstract StateWrapper getRoadWithHeight(StateWrapper block, int height);
 
 	public abstract void handleBlockEntityPacket(TagCW com, Passenger player);
-
 }
