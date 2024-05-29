@@ -183,6 +183,7 @@ public abstract class FvtmResources {
 		PART_FUNCTIONS.put("fvtm:tire", TireFunction.class);
 		PART_FUNCTIONS.put("fvtm:transmission", TransmissionFunction.class);
 		PART_FUNCTIONS.put("fvtm:particle_emitter", ParticleEmitterFunction.class);
+		PART_FUNCTIONS.put("fvtm:interact_zone", InteractZoneFunction.class);
 		//
 		BLOCK_FUNCTIONS.put("fvtm:seat", SeatBlockFunction.class);
 		BLOCK_FUNCTIONS.put("fvtm:set_block", SetBlockFunction.class);
