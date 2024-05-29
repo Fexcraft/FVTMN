@@ -275,33 +275,6 @@ public class VehicleInstance {
 		}
 	}
 
-	public void sendAttrToggle(Attribute<?> attr){
-		if(attr == null) return;
-		TagCW packet = TagCW.create();
-		packet.set("attr", attr.id);
-		packet.set("entity", entity.getId());
-		if(attr.valuetype.isTristate()){
-			if(attr.asTristate() == null){
-				packet.set("value", false);
-				packet.set("reset", true);
-			}
-			else{
-				packet.set("value", attr.asBoolean());
-			}
-		}
-		else if(attr.valuetype.isFloat()){
-			packet.set("value", attr.asFloat());
-		}
-		else if(attr.valuetype.isInteger()){
-			packet.set("value", attr.asInteger());
-		}
-		else if(attr.valuetype.isString()){
-			packet.set("value", attr.asString());
-		}
-		else packet.set("value", attr.asString());
-		Packets.sendToAll(Packet_TagListener.class, "attr_update", packet);
-	}
-
 	public SeatInstance getSeatOf(Object passenger){
 		for(SeatInstance seat : seats){
 			if(seat.passenger_direct() == passenger) return seat;
