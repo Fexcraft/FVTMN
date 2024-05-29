@@ -75,7 +75,13 @@ public abstract class Packets {
 				if(ref.getValue().isVehicle()){
 					ref.getValue().vehicle().sendUpdate(VehicleInstance.PKT_UPD_VEHICLEDATA);
 				}
-				//TODO send lift packet
+				else{
+					TagCW pkt = TagCW.create();
+					pkt.set("task", "update");
+					pkt.set("data", ref.getKey().write(null));
+					pkt.set("pos", ref.getValue().longpos());
+					Packets.sendToAll(Packet_TagListener.class, "blockentity", pkt);
+				}
 			}
 		});
 		if(EnvInfo.CLIENT){
