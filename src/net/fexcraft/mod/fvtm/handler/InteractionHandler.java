@@ -281,12 +281,10 @@ public class InteractionHandler {
 
 		protected VehicleInstance inst;
 		protected V3I blkpos;
+		protected long lpos;
 		protected V3D pos;
 
-		public InteractRef(V3I vec, V3D vpos){
-			blkpos = vec;
-			pos = vpos;
-		}
+		public InteractRef(){}
 
 		public InteractRef(VehicleInstance vehinst){
 			inst = vehinst;
@@ -312,6 +310,17 @@ public class InteractionHandler {
 			else{
 				com.set("lift", blkpos.toIntegerArray());
 			}
+		}
+
+		public InteractRef set(V3I vec, long gpos, V3D vpos){
+			blkpos = vec;
+			lpos = gpos;
+			pos = vpos;
+			return this;
+		}
+
+		public long longpos(){
+			return lpos;
 		}
 
 	}
