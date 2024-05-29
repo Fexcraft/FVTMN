@@ -9,6 +9,8 @@ import net.fexcraft.mod.uni.world.StateWrapper;
 import net.fexcraft.mod.uni.world.WorldW;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class FvtmWorld extends WorldW {
 
@@ -26,7 +28,7 @@ public abstract class FvtmWorld extends WorldW {
 
 	public abstract ArrayList<VehicleInstance> getVehicles(V3D pos);
 
-	public abstract ArrayList<VehicleData> getVehicleDatas(V3D pos);
+	public abstract Map<VehicleData, Object> getVehicleDatas(V3D pos);
 
 	public abstract Passenger getClientPassenger();
 
