@@ -32,15 +32,15 @@ public class WheelSlot {
 		hubsize = map.getFloat("hubsize", 0f);
 		if(map.has("radius")){
 			float rad = map.getFloat("radius", 0.5f);
-			max_radius = rad + 1;
+			max_radius = rad + 0.0125f;
 			min_wheel_radius = (rad / 2);
-			min_tire_radius = rad - 1;
+			min_tire_radius = rad - 0.0125f;
 		}
 		if(map.has("width")){
 			float wid = map.getFloat("width", 0.5f);
-			max_width = wid + 1;
-			min_wheel_width = wid - 1;
-			min_tire_width = wid - 1;
+			max_width = wid + 0.0125f;
+			min_wheel_width = wid - 0.0125f;
+			min_tire_width = wid - 0.0125f;
 		}
 		max_radius = map.getFloat("max_radius", max_radius);
 		min_wheel_radius = map.getFloat("min_wheel_radius", min_wheel_width);
