@@ -59,6 +59,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 	protected List<CatalogPreset> catalog = new ArrayList<>();
 	protected IDL keytype;
 	protected int maxkeys;
+	protected int impactlevel;
 	protected PartSlots partslots;
 	protected IDL itemtexloc;
 	protected boolean no3ditem;
@@ -94,6 +95,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 			else categories.add(cat);
 		}
 		maxkeys = map.getInteger("MaxKeys", 5);
+		impactlevel = map.getInteger("ImpactWrench", 0);
 		keytype = map.has("KeyType") ? IDLManager.getIDLCached(map.getString("KeyType", null)) : null;
 		if(map.has("Attributes") && map.get("Attributes").isMap()){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("Attributes").entries()){
@@ -325,6 +327,10 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 
 	public List<InteractZone> getDefaultInteractZones(){
 		return interact_zones;
+	}
+
+	public int getImpactWrenchLevel(){
+		return impactlevel;
 	}
 
 }
