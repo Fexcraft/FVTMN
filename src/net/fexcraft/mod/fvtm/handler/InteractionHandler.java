@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 /**
@@ -53,15 +54,9 @@ public class InteractionHandler {
 		if(!stack.empty()){
 			if(stack.isItemOf(ItemType.PART)){
 				PartData data = stack.getContent(ContentType.PART);
-				if(data.getType().getInstallHandlerData() instanceof DPIHData){
-					if(tryInstall(vehdata, ref, data, seat, pass)) return true;
-				}
-				if(data.getType().getInstallHandlerData() instanceof WheelData){
-
-				}
-				if(data.getType().getInstallHandlerData() instanceof TireData){
-
-				}
+				if(data.getType().getInstallHandlerData() instanceof DPIHData && tryInstall(vehdata, ref, data, seat, pass)) return true;
+				if(data.getType().getInstallHandlerData() instanceof TireData && tryWTInstall(vehdata, ref, data, seat, pass)) return true;
+				if(data.getType().getInstallHandlerData() instanceof WheelData && tryWTInstall(vehdata, ref, data, seat, pass)) return true;
 				return true;
 			}
 			if(stack.isItemOf(ItemType.MATERIAL)){
@@ -84,14 +79,13 @@ public class InteractionHandler {
 	private static boolean tryInstall(VehicleData vehdata, InteractRef ref, PartData data, SeatInstance seat, Passenger pass){
 		ArrayList<Interactive> list = new ArrayList<>();
 		SwivelPoint point = null;
-		for(Map.Entry<String, PartSlots> entry : vehdata.getPartSlotProviders().entrySet()){
+		for(Entry<String, PartSlots> entry : vehdata.getPartSlotProviders().entrySet()){
 			point = vehdata.getRotationPointOfPart(entry.getKey());
-			for(Map.Entry<String, PartSlot> sentry : entry.getValue().entrySet()){
+			for(Entry<String, PartSlot> sentry : entry.getValue().entrySet()){
 				String type = sentry.getValue().type;
 				if(vehdata.hasPart(type)){
 					Part part = vehdata.getPart(type).getType();
-					if(!(part.getInstallHandlerData() instanceof DPIHData) || !((DPIHData)part.getInstallHandlerData()).swappable)
-						continue;
+					if(!(part.getInstallHandlerData() instanceof DPIHData) || !((DPIHData)part.getInstallHandlerData()).swappable) continue;
 				}
 				for(String sub : data.getType().getCategories()){
 					if(!sub.equals(type)) continue;
@@ -112,10 +106,45 @@ public class InteractionHandler {
 		return true;
 	}
 
+	private static boolean tryWTInstall(VehicleData vehdata, InteractRef ref, PartData data, SeatInstance seat, Passenger pass){
+		ArrayList<Interactive> list = new ArrayList<>();
+		SwivelPoint point = null;
+		boolean tire = data.getType().getInstallHandlerData() instanceof TireData;
+		if(tire){
+			for(Entry<String, WheelSlot> entry : vehdata.getWheelSlots().entrySet()){
+				if(!vehdata.hasPart(entry.getKey())) continue;
+				PartData part = vehdata.getPart(entry.getKey());
+				WheelData wd = part.getType().getInstallHandlerData();
+				if(wd.hasTire()) continue;
+				list.add(new WheelInteractive(entry.getKey(), entry.getValue()));
+			}
+		}
+		else{
+			for(Entry<String, WheelSlot> entry : vehdata.getWheelSlots().entrySet()){
+				if(vehdata.hasPart(entry.getKey())){
+					PartData part = vehdata.getPart(entry.getKey());
+					WheelData wd = part.getType().getInstallHandlerData();
+					if(!wd.removable) continue;
+				}
+				list.add(new WheelInteractive(entry.getKey(), entry.getValue()));
+			}
+		}
+		WheelInteractive res = getInteracted(seat == null, vehdata, ref, pass, list);
+		if(res == null) return false;
+		if(res.id().equals(last) && Time.getDate() < cooldown) return true;
+		TagCW com = TagCW.create();
+		com.set("category", res.category);
+		ref.setPacket(com);
+		Packets.send(Packet_TagListener.class, "install_wheel", com);
+		last = res.id();
+		cooldown = Time.getDate() + 20;
+		return true;
+	}
+
 	private static boolean tryWheelRemoval(VehicleData data, InteractRef ref, StackWrapper stack, Material mat, Passenger pass){
 		if(data.getType().getImpactWrenchLevel() > mat.getImpactLevel()) return false;
 		ArrayList<Interactive> list = new ArrayList<>();
-		for(Map.Entry<String, WheelSlot> entry : data.getWheelSlots().entrySet()){
+		for(Entry<String, WheelSlot> entry : data.getWheelSlots().entrySet()){
 			if(data.hasPart(entry.getKey())){
 				list.add(new WheelInteractive(entry.getKey(), entry.getValue()));
 			}
@@ -214,7 +243,7 @@ public class InteractionHandler {
 		world = WrapperHolder.getClientWorld();
 		Passenger pass = world.getClientPassenger();
 		Map<VehicleData, InteractRef> vehs = world.getVehicleDatas(pass.getPos());
-		for(Map.Entry<VehicleData, InteractRef> veh : vehs.entrySet()){
+		for(Entry<VehicleData, InteractRef> veh : vehs.entrySet()){
 			if(handle(key, veh.getKey(), veh.getValue(), pass.getSeatOn(), pass, stack)) return true;
 		}
 		return false;
