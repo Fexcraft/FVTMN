@@ -110,7 +110,8 @@ public class WheelInstallationHandler extends PartInstallHandler {
 	public static class WheelData {
 
 		private float radius, width, hubsize;
-		private boolean removable, has_tire;
+		protected boolean removable;
+		private boolean has_tire;
 
 		public WheelData(JsonMap map){
 			this.radius = map.getFloat("Radius", 1f);
