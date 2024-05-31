@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.data.ContentType;
+import net.fexcraft.mod.fvtm.data.Material;
 import net.fexcraft.mod.fvtm.data.block.BlockData;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
@@ -82,6 +83,39 @@ public abstract class Packets {
 					pkt.set("pos", ref.getValue().longpos());
 					Packets.sendToAll(Packet_TagListener.class, "blockentity", pkt);
 				}
+			}
+		});
+		LIS_SERVER.put("remove_wheel", (com, player) -> {
+			StackWrapper wrapper = player.getHeldItem(true);
+			Material mat = wrapper.getContent(ContentType.MATERIAL);
+			Map.Entry<VehicleData, InteractRef> ref = player.getFvtmWorld().getInteractRef(com);
+			if(ref == null || mat.getImpactLevel() < ref.getKey().getType().getImpactWrenchLevel()) return;
+			String category = com.getString("category");
+			if(ref.getKey().hasPart(category + ":tire")){
+				PartData data = ref.getKey().getPart(category + ":tire");
+				if(!data.getType().getInstallHandler().validUninstall(player, data, category, ref.getKey(), false)) return;
+			}
+			if(ref.getKey().hasPart(category)){
+				PartData data = ref.getKey().getPart(category);
+				if(!data.getType().getInstallHandler().validUninstall(player, data, category, ref.getKey(), false)) return;
+			}
+			PartData tire = ref.getKey().getPart(category + ":tire");
+			if(tire != null && tire.getType().getInstallHandler().processUninstall(player, tire, category + ":tire", ref.getKey())){
+				player.drop(tire.getNewStack(), 0);
+			}
+			PartData wheel = ref.getKey().getPart(category);
+			if(wheel != null && wheel.getType().getInstallHandler().processUninstall(player, wheel, category, ref.getKey())){
+				player.drop(wheel.getNewStack(), 0);
+			}
+			if(ref.getValue().isVehicle()){
+				ref.getValue().vehicle().sendUpdate(VehicleInstance.PKT_UPD_VEHICLEDATA);
+			}
+			else{
+				TagCW pkt = TagCW.create();
+				pkt.set("task", "update");
+				pkt.set("data", ref.getKey().write(null));
+				pkt.set("pos", ref.getValue().longpos());
+				Packets.sendToAll(Packet_TagListener.class, "blockentity", pkt);
 			}
 		});
 		if(EnvInfo.CLIENT){
