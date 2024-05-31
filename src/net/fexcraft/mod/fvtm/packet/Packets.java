@@ -11,6 +11,8 @@ import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.handler.AttrReqHandler;
 import net.fexcraft.mod.fvtm.handler.DefaultPartInstallHandler;
 import net.fexcraft.mod.fvtm.handler.InteractionHandler.InteractRef;
+import net.fexcraft.mod.fvtm.handler.TireInstallationHandler;
+import net.fexcraft.mod.fvtm.handler.TireInstallationHandler.TireData;
 import net.fexcraft.mod.fvtm.sys.road.RoadPlacingUtil;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
@@ -85,26 +87,65 @@ public abstract class Packets {
 				}
 			}
 		});
+		LIS_SERVER.put("install_wheel", (com, player) -> {
+			StackWrapper wrapper = player.getHeldItem(true);
+			PartData data = wrapper.getContent(ContentType.PART);
+			Map.Entry<VehicleData, InteractRef> ref = player.getFvtmWorld().getInteractRef(com);
+			if(ref.getValue().isVehicle()){
+
+				return;
+			}
+			String category = com.getString("category");
+			boolean tire = data.getType().getInstallHandlerData() instanceof TireData;
+			if(ref.getKey().hasPart(category + ":tire")){
+				PartData oldpart = ref.getKey().getPart(category + ":tire");
+				if(ref.getKey().deinstallPart(player, category + ":tire", true)){
+					player.drop(oldpart.getNewStack(), 0);
+				}
+				else return;
+			}
+			if(tire) data = ref.getKey().installPart(player, data, category + ":tire", true);
+			else {
+				boolean val = true;
+				if(ref.getKey().hasPart(category)){
+					PartData oldpart = ref.getKey().getPart(category);
+					if(val = ref.getKey().deinstallPart(player, category, true)){
+						player.drop(oldpart.getNewStack(), 0);
+					}
+				}
+				if(val) data = ref.getKey().installPart(player, data, category, true);
+			}
+			if(data == null) wrapper.count(wrapper.count() - 1);
+			if(ref.getValue().isVehicle()){
+				ref.getValue().vehicle().sendUpdate(VehicleInstance.PKT_UPD_VEHICLEDATA);
+			}
+			else{
+				TagCW pkt = TagCW.create();
+				pkt.set("task", "update");
+				pkt.set("data", ref.getKey().write(null));
+				pkt.set("pos", ref.getValue().longpos());
+				Packets.sendToAll(Packet_TagListener.class, "blockentity", pkt);
+			}
+		});
 		LIS_SERVER.put("remove_wheel", (com, player) -> {
 			StackWrapper wrapper = player.getHeldItem(true);
 			Material mat = wrapper.getContent(ContentType.MATERIAL);
 			Map.Entry<VehicleData, InteractRef> ref = player.getFvtmWorld().getInteractRef(com);
+			if(ref.getValue().isVehicle()){
+
+				return;
+			}
 			if(ref == null || mat.getImpactLevel() < ref.getKey().getType().getImpactWrenchLevel()) return;
 			String category = com.getString("category");
-			if(ref.getKey().hasPart(category + ":tire")){
-				PartData data = ref.getKey().getPart(category + ":tire");
-				if(!data.getType().getInstallHandler().validUninstall(player, data, category, ref.getKey(), false)) return;
-			}
-			if(ref.getKey().hasPart(category)){
-				PartData data = ref.getKey().getPart(category);
-				if(!data.getType().getInstallHandler().validUninstall(player, data, category, ref.getKey(), false)) return;
-			}
 			PartData tire = ref.getKey().getPart(category + ":tire");
-			if(tire != null && tire.getType().getInstallHandler().processUninstall(player, tire, category + ":tire", ref.getKey())){
-				player.drop(tire.getNewStack(), 0);
+			if(tire != null){
+				if(ref.getKey().deinstallPart(player, category + ":tire", false)){
+					player.drop(tire.getNewStack(), 0);
+				}
+				else return;
 			}
 			PartData wheel = ref.getKey().getPart(category);
-			if(wheel != null && wheel.getType().getInstallHandler().processUninstall(player, wheel, category, ref.getKey())){
+			if(wheel != null && ref.getKey().deinstallPart(player, category, false)){
 				player.drop(wheel.getNewStack(), 0);
 			}
 			if(ref.getValue().isVehicle()){
