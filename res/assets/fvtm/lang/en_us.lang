@@ -142,6 +142,7 @@ handler.install.fvtm.default.success=Part installed into selected spot.
 handler.deinstall.fvtm.default.part_not_removable=Part is marked as non removable.
 handler.deinstall.fvtm.default.check_passed=Deinstallation check passed.
 handler.deinstall.fvtm.default.remove_linked_wheels=Please remove all linked wheels first.
+handler.deinstall.fvtm.default.remove_sub_parts=Please remove parts installed on this part first.
 handler.deinstall.fvtm.default.success=Part uninstalled and position reset.
 //
 handler.install.fvtm.wheel.rail_vehicle=Not compatible with rail vehicles.
