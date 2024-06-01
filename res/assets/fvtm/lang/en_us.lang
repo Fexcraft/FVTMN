@@ -40,6 +40,8 @@ interact.fvtm.vehicle.remove_locked=Vehicle is locked. Unlock if you want to rem
 interact.fvtm.vehicle.engine_on=Please turn the engine off first!
 interact.fvtm.vehicle.no_compatible_connector=This vehicle has no compatible connectors installed.
 interact.fvtm.vehicle.disconnect_trailer=Please disconnect the currently connected trailer first.
+interact.fvtm.vehicle.wheel_install=Wheels/Tires can only by installed on lifted vehicles.
+interact.fvtm.vehicle.wheel_remove=Wheels/Tires can only be removed from lifted vehicles.
 //
 interact.fvtm.vehicle.attribute.not_found=&eAttribute '%s' not found.
 interact.fvtm.vehicle.attribute.not_editable=&eAttribute is not editable.
