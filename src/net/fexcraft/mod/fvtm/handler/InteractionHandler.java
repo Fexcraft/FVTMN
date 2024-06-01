@@ -108,10 +108,10 @@ public class InteractionHandler {
 
 	private static boolean tryWTInstall(VehicleData vehdata, InteractRef ref, PartData data, SeatInstance seat, Passenger pass){
 		ArrayList<Interactive> list = new ArrayList<>();
-		SwivelPoint point = null;
 		boolean tire = data.getType().getInstallHandlerData() instanceof TireData;
 		if(tire){
 			for(Entry<String, WheelSlot> entry : vehdata.getWheelSlots().entrySet()){
+				if(vehdata.hasPart(entry.getKey() + ":tire")) continue;
 				if(!vehdata.hasPart(entry.getKey())) continue;
 				PartData part = vehdata.getPart(entry.getKey());
 				WheelData wd = part.getType().getInstallHandlerData();
@@ -121,11 +121,7 @@ public class InteractionHandler {
 		}
 		else{
 			for(Entry<String, WheelSlot> entry : vehdata.getWheelSlots().entrySet()){
-				if(vehdata.hasPart(entry.getKey())){
-					PartData part = vehdata.getPart(entry.getKey());
-					WheelData wd = part.getType().getInstallHandlerData();
-					if(!wd.removable) continue;
-				}
+				if(vehdata.hasPart(entry.getKey())) continue;
 				list.add(new WheelInteractive(entry.getKey(), entry.getValue()));
 			}
 		}
