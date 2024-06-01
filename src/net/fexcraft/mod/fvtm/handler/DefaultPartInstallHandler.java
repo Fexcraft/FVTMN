@@ -15,6 +15,7 @@ import net.fexcraft.mod.fvtm.data.part.PartSlots;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.data.vehicle.Vehicle;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
+import net.fexcraft.mod.fvtm.function.part.PartSlotsFunction;
 import net.fexcraft.mod.fvtm.function.part.WheelPositionsFunction;
 import net.fexcraft.mod.fvtm.util.Rot;
 import net.fexcraft.mod.uni.world.MessageSender;
@@ -120,6 +121,7 @@ public class DefaultPartInstallHandler extends PartInstallHandler {
 		}
 		//Function Check
 		if(!checkWheelSlotsInUse(sender, part, from)) return false;
+		if(!checkPartSlotsInUse(sender, part, from)) return false;
 		sender.send("handler.deinstall.fvtm.default.check_passed");
 		return true;
 	}
@@ -132,6 +134,18 @@ public class DefaultPartInstallHandler extends PartInstallHandler {
 					sender.send("handler.deinstall.fvtm.default.remove_linked_wheels");
 					return false;
 				}
+			}
+		}
+		return true;
+	}
+
+	public static boolean checkPartSlotsInUse(MessageSender sender, PartData part, VehicleData from){
+		if(!part.hasFunction("fvtm:part_slots")) return true;
+		PartSlotsFunction func = part.getFunction(PartSlotsFunction.class, "fvtm:part_slots");
+		for(Entry<String, PartSlot> slot : func.getPartSlotss().entrySet()){
+			if(from.hasPart(slot.getKey())){
+				sender.send("handler.deinstall.fvtm.default.remove_sub_parts");
+				return false;
 			}
 		}
 		return true;
