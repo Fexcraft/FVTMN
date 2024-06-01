@@ -19,6 +19,7 @@ import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 import net.fexcraft.mod.fvtm.ui.UIKey;
 import net.fexcraft.mod.fvtm.util.QV3D;
 import net.fexcraft.mod.uni.EnvInfo;
+import net.fexcraft.mod.uni.item.ItemType;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.WorldW;
@@ -130,6 +131,27 @@ public abstract class Packets {
 			PartData wheel = ref.getKey().getPart(category);
 			if(wheel != null && ref.getKey().deinstallPart(player, category, false)){
 				player.drop(wheel.getNewStack(), 0);
+			}
+			if(ref.getValue().isVehicle()){
+				ref.getValue().vehicle().sendUpdate(VehicleInstance.PKT_UPD_VEHICLEDATA);
+			}
+			else{
+				TagCW pkt = TagCW.create();
+				pkt.set("task", "update");
+				pkt.set("data", ref.getKey().write(null));
+				pkt.set("pos", ref.getValue().longpos());
+				Packets.sendToAll(Packet_TagListener.class, "blockentity", pkt);
+			}
+		});
+		LIS_SERVER.put("remove_part", (com, player) -> {
+			StackWrapper wrapper = player.getHeldItem(true);
+			if(!wrapper.isItemOf(ItemType.FVTM_TOOLBOX)) return;
+			Map.Entry<VehicleData, InteractRef> ref = player.getFvtmWorld().getInteractRef(com);
+			if(ref == null) return;
+			String category = com.getString("category");
+			PartData part = ref.getKey().getPart(category);
+			if(part != null && ref.getKey().deinstallPart(player, category, false)){
+				player.drop(part.getNewStack(), 0);
 			}
 			if(ref.getValue().isVehicle()){
 				ref.getValue().vehicle().sendUpdate(VehicleInstance.PKT_UPD_VEHICLEDATA);
