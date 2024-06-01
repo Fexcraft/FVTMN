@@ -92,29 +92,12 @@ public abstract class Packets {
 			PartData data = wrapper.getContent(ContentType.PART);
 			Map.Entry<VehicleData, InteractRef> ref = player.getFvtmWorld().getInteractRef(com);
 			if(ref.getValue().isVehicle()){
-
+				player.send("interact.fvtm.vehicle.wheel_install");
 				return;
 			}
 			String category = com.getString("category");
 			boolean tire = data.getType().getInstallHandlerData() instanceof TireData;
-			if(ref.getKey().hasPart(category + ":tire")){
-				PartData oldpart = ref.getKey().getPart(category + ":tire");
-				if(ref.getKey().deinstallPart(player, category + ":tire", true)){
-					player.drop(oldpart.getNewStack(), 0);
-				}
-				else return;
-			}
-			if(tire) data = ref.getKey().installPart(player, data, category + ":tire", true);
-			else {
-				boolean val = true;
-				if(ref.getKey().hasPart(category)){
-					PartData oldpart = ref.getKey().getPart(category);
-					if(val = ref.getKey().deinstallPart(player, category, true)){
-						player.drop(oldpart.getNewStack(), 0);
-					}
-				}
-				if(val) data = ref.getKey().installPart(player, data, category, true);
-			}
+			data = ref.getKey().installPart(player, data, tire ? category + ":tire" : category, true);
 			if(data == null) wrapper.count(wrapper.count() - 1);
 			if(ref.getValue().isVehicle()){
 				ref.getValue().vehicle().sendUpdate(VehicleInstance.PKT_UPD_VEHICLEDATA);
@@ -132,7 +115,7 @@ public abstract class Packets {
 			Material mat = wrapper.getContent(ContentType.MATERIAL);
 			Map.Entry<VehicleData, InteractRef> ref = player.getFvtmWorld().getInteractRef(com);
 			if(ref.getValue().isVehicle()){
-
+				player.send("interact.fvtm.vehicle.wheel_remove");
 				return;
 			}
 			if(ref == null || mat.getImpactLevel() < ref.getKey().getType().getImpactWrenchLevel()) return;
