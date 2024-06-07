@@ -31,6 +31,7 @@ import static net.fexcraft.mod.fvtm.Config.MAX_ROAD_LENGTH;
 public class UniRoadTool {
 
 	public static final Object[] NA = new Object[0];
+	public static final V3D HCENTER = new V3D(0.5, 0, 0.5);
 
 	public static void addTooltip(TagCW com, List<String> list, BiFunction<String, Object[], String> translator){
 		list.add(format(translator.apply("tooltip.fvtm.road_tool.toolbox", NA)));
@@ -253,7 +254,7 @@ public class UniRoadTool {
 				state = world.getStateAt(pos);
 				if(!world.isFvtmRoad(state) && !CompatUtil.isValidFurenikus(state.getIDL())){
 					insert(map, pos, state);
-					world.setBlockState(pos, StateWrapper.from(bot, new StateWrapper.PlacingContext(world, pos, V3D.NULL, null, pass, true)));
+					world.setBlockState(pos, StateWrapper.from(bot, new StateWrapper.PlacingContext(world, pos, HCENTER, null, pass, true)));
 				}
 			}
 		}
@@ -261,7 +262,7 @@ public class UniRoadTool {
 			for(QV3D v : line){
 				pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
 				insert(map, pos, world.getStateAt(pos));
-				world.setBlockState(pos, StateWrapper.from(line_b, new StateWrapper.PlacingContext(world, pos, V3D.NULL, null, pass, true)));
+				world.setBlockState(pos, StateWrapper.from(line_b, new StateWrapper.PlacingContext(world, pos, HCENTER, null, pass, true)));
 			}
 		}
 		if(roof != null){
@@ -269,7 +270,7 @@ public class UniRoadTool {
 				pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
 				try{
 					insert(map, pos, world.getStateAt(pos));
-					world.setBlockState(pos, StateWrapper.from(top, new StateWrapper.PlacingContext(world, pos, V3D.NULL, null, pass, true)));
+					world.setBlockState(pos, StateWrapper.from(top, new StateWrapper.PlacingContext(world, pos, HCENTER, null, pass, true)));
 				}
 				catch(Exception e){
 					FvtmLogger.log(e, "road top/ceiling creation");
@@ -309,7 +310,7 @@ public class UniRoadTool {
 			height = vec.y;
 			pos.set(vec.pos.x, vec.pos.y + (vec.y > 0 ? 1 : 0), vec.pos.z);
 			state = world.getStateAt(pos);
-			block = StateWrapper.from(stack, new StateWrapper.PlacingContext(world, pos, V3D.NULL, null, pass, true));
+			block = StateWrapper.from(stack, new StateWrapper.PlacingContext(world, pos, HCENTER, null, pass, true));
 			if(!isRoad(world, state, block) || isLower(world, state, height)){
 				if(isRoad(world, world.getStateAt(pos.add(0, 1, 0)))) height = 0;
 				insert(map, pos, state);
@@ -334,7 +335,7 @@ public class UniRoadTool {
 		StateWrapper block;
 		for(QV3D v : vecs){
 			pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
-			block = StateWrapper.from(stack, new StateWrapper.PlacingContext(world, pos, V3D.NULL, null, pass, true));
+			block = StateWrapper.from(stack, new StateWrapper.PlacingContext(world, pos, HCENTER, null, pass, true));
 			state = world.getStateAt(pos);
 			if(state.getBlock() != block.getBlock()){
 				insert(map, pos, state);
@@ -349,7 +350,7 @@ public class UniRoadTool {
 			for(int i = -1; i < top; i++){
 				V3I vp = pos.add(0, i, 0);
 				insert(map, vp, world.getStateAt(vp));
-				world.setBlockState(vp, StateWrapper.from(stack, new StateWrapper.PlacingContext(world, pos, V3D.NULL, null, pass, true)));
+				world.setBlockState(vp, StateWrapper.from(stack, new StateWrapper.PlacingContext(world, pos, HCENTER, null, pass, true)));
 			}
 		}
 	}
