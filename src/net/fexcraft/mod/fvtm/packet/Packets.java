@@ -11,7 +11,6 @@ import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.handler.AttrReqHandler;
 import net.fexcraft.mod.fvtm.handler.DefaultPartInstallHandler;
 import net.fexcraft.mod.fvtm.handler.InteractionHandler.InteractRef;
-import net.fexcraft.mod.fvtm.handler.TireInstallationHandler;
 import net.fexcraft.mod.fvtm.handler.TireInstallationHandler.TireData;
 import net.fexcraft.mod.fvtm.sys.road.RoadPlacingUtil;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
@@ -80,6 +79,7 @@ public abstract class Packets {
 					ref.getValue().vehicle().sendUpdate(VehicleInstance.PKT_UPD_VEHICLEDATA);
 				}
 				else{
+					ref.getValue().holder().markChanged();
 					TagCW pkt = TagCW.create();
 					pkt.set("task", "update");
 					pkt.set("data", ref.getKey().write(null));
@@ -104,6 +104,7 @@ public abstract class Packets {
 				ref.getValue().vehicle().sendUpdate(VehicleInstance.PKT_UPD_VEHICLEDATA);
 			}
 			else{
+				ref.getValue().holder().markChanged();
 				TagCW pkt = TagCW.create();
 				pkt.set("task", "update");
 				pkt.set("data", ref.getKey().write(null));
@@ -136,6 +137,7 @@ public abstract class Packets {
 				ref.getValue().vehicle().sendUpdate(VehicleInstance.PKT_UPD_VEHICLEDATA);
 			}
 			else{
+				ref.getValue().holder().markChanged();
 				TagCW pkt = TagCW.create();
 				pkt.set("task", "update");
 				pkt.set("data", ref.getKey().write(null));
@@ -157,6 +159,7 @@ public abstract class Packets {
 				ref.getValue().vehicle().sendUpdate(VehicleInstance.PKT_UPD_VEHICLEDATA);
 			}
 			else{
+				ref.getValue().holder().markChanged();
 				TagCW pkt = TagCW.create();
 				pkt.set("task", "update");
 				pkt.set("data", ref.getKey().write(null));
