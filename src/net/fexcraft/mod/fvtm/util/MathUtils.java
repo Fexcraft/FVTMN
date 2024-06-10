@@ -32,7 +32,7 @@ public class MathUtils {
 	}
 
 	public static double calcSpeed(double x, double y, double z, double ox, double oy, double oz){
-		return Math.sqrt((x -= ox) * x + (y -= oy) * y + (z -= oz) * z);
+		return Math.sqrt((x -= ox) * x + /*(y -= oy) * y +*/ (z -= oz) * z);
 	}
 
 }
