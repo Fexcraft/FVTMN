@@ -445,11 +445,16 @@ public class InteractionHandler {
 	public static class InteractRef {
 
 		protected VehicleInstance inst;
+		protected InteractRefHolder holder;
 		protected V3I blkpos;
 		protected long lpos;
 		protected V3D pos;
 
 		public InteractRef(){}
+
+		public InteractRef(InteractRefHolder irholder){
+			holder = irholder;
+		}
 
 		public InteractRef(VehicleInstance vehinst){
 			inst = vehinst;
@@ -488,6 +493,14 @@ public class InteractionHandler {
 			return lpos;
 		}
 
+		public InteractRefHolder holder(){
+			return holder;
+		}
+	}
+
+	public static interface InteractRefHolder {
+
+		public void markChanged();
 	}
 
 }
