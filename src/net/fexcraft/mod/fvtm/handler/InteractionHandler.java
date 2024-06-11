@@ -450,8 +450,6 @@ public class InteractionHandler {
 		protected long lpos;
 		protected V3D pos;
 
-		public InteractRef(){}
-
 		public InteractRef(InteractRefHolder irholder){
 			holder = irholder;
 		}
