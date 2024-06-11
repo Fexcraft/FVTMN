@@ -58,7 +58,7 @@ public class InteractionHandler {
 				if(data.getType().getInstallHandlerData() instanceof DPIHData && tryInstall(vehdata, ref, data, seat, pass)) return true;
 				if(data.getType().getInstallHandlerData() instanceof TireData && tryWTInstall(vehdata, ref, data, seat, pass)) return true;
 				if(data.getType().getInstallHandlerData() instanceof WheelData && tryWTInstall(vehdata, ref, data, seat, pass)) return true;
-				return true;
+				return false;
 			}
 			if(stack.isItemOf(ItemType.MATERIAL)){
 				Material mat = stack.getContent(ContentType.MATERIAL);
