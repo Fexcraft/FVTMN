@@ -598,11 +598,11 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 	}
 
 	public boolean getTurnLightLeft(){
-		return getAttribute("turn_lights").asTristate() == false;
+		return getAttribute("turn_lights").asTristate() == Boolean.FALSE;
 	}
 
 	public boolean getTurnLightRight(){
-		return getAttribute("turn_lights").asTristate() == true;
+		return getAttribute("turn_lights").asTristate() == Boolean.TRUE;
 	}
 
 	public boolean getWarningLights(){
