@@ -85,4 +85,8 @@ public class AttrTristate extends Attribute<Boolean> {
 		return value != null && value;
 	}
 
+	public Boolean asTristate(){
+		return value;
+	}
+
 }
