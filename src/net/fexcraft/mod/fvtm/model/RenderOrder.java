@@ -5,6 +5,9 @@ package net.fexcraft.mod.fvtm.model;
  */
 public enum RenderOrder {
 
-	NORMAL, BLENDED, LAST, SEPARATE
+	NORMAL,
+	BLENDED,
+	LAST,
+	SEPARATE
 
 }
