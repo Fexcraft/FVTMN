@@ -10,6 +10,7 @@ import net.fexcraft.app.json.JsonArray;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.math.V3D;
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.ContentType;
@@ -72,13 +73,18 @@ public class ContentConfigUtil {
 		}
 		else{
 			IDL idl = IDLManager.getIDLCached(id.space() + ":textures/item/" + id.path() + ".png");
-			if(EnvInfo.CLIENT && FvtmResources.INSTANCE.getAssetInputStream(idl, true) == null){
-				switch(contype){
-					case VEHICLE: return ITL_VEHICLE;
-					case PART: return ITL_PART;
-					case MULTIBLOCK: return ITL_MBLOCK;
-					default: return ITL_GENERAL;
+			try{
+				if(EnvInfo.CLIENT && FvtmResources.INSTANCE.getAssetInputStream(idl, true) == null){
+					switch(contype){
+						case VEHICLE: return ITL_VEHICLE;
+						case PART: return ITL_PART;
+						case MULTIBLOCK: return ITL_MBLOCK;
+						default: return ITL_GENERAL;
+					}
 				}
+			}
+			catch(Throwable e){
+				FvtmLogger.log(e, "checking icon presence of " + contype + "/" + id );
 			}
 			return idl;
 		}
