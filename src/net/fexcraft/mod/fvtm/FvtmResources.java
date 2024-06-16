@@ -55,6 +55,7 @@ import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.WorldW;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -506,6 +507,11 @@ public abstract class FvtmResources {
 						if(entry == null) break;
 						if(entry.getName().equals(filename)){
 							stream = zip.getInputStream(entry);
+							ByteArrayOutputStream out = new ByteArrayOutputStream();
+							byte[] buffer = new byte[1024];
+							int read;
+							while((read = stream.read(buffer)) != -1) out.write(buffer, 0, read);
+							stream = new ByteArrayInputStream(out.toByteArray());
 							break;
 						}
 					}
