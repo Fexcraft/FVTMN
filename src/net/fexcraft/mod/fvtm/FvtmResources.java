@@ -426,7 +426,7 @@ public abstract class FvtmResources {
 				return model;
 			}
 			catch(Throwable e){
-				e.printStackTrace();
+				FvtmLogger.log(e, "new model instance of " + clazz);
 				Static.stop();
 				return getEmptyModelForClass(clazz);
 			}
@@ -450,7 +450,7 @@ public abstract class FvtmResources {
 			MODELS.put(location, model.getGroups().copyWithoutPrograms());
 			model.parse(data).lock();
 		}
-		catch(Exception e){
+		catch(Throwable e){
 			FvtmLogger.log(e, "model load of " + location);
 		}
 		return model;
