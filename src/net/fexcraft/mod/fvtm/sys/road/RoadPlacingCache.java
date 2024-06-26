@@ -17,6 +17,7 @@ import static net.fexcraft.mod.fvtm.Config.ROAD_UNDO_CACHE_SIZE;
 public class RoadPlacingCache {
 	
 	private static final ConcurrentHashMap<UUID, HashMap<String, JsonArray>> UNDOCACHE = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<UUID, Timer> TIMERCACHE = new ConcurrentHashMap<>();
 
 	public static void onLogIn(UUID uuid){
 		if(ROAD_UNDO_CACHE_SIZE == 0) return;
@@ -27,7 +28,9 @@ public class RoadPlacingCache {
 		if(ROAD_UNDO_CACHE_SIZE == 0) return;
 		if(ROAD_UNDO_CACHE_CLEARTIME == 0) UNDOCACHE.remove(uuid);
 		else {
-			new Timer().schedule(new TimerTask(){
+			if(TIMERCACHE.containsKey(uuid)) TIMERCACHE.get(uuid).cancel();
+			Timer timer = new Timer("RoadPlacingCache/" + uuid + "/Timer");
+			timer.schedule(new TimerTask(){
 				@Override
 				public void run(){
 					List<UUID> uuids = WrapperHolder.getOnlinePlayerIDs();
@@ -35,8 +38,11 @@ public class RoadPlacingCache {
 						if(id.equals(uuid)) return;
 					}
 					UNDOCACHE.remove(uuid);
+					timer.cancel();
+					TIMERCACHE.remove(uuid);
 				}
 			}, new Date(Time.getDate() + (ROAD_UNDO_CACHE_CLEARTIME * 60000L)));
+			TIMERCACHE.put(uuid, timer);
 		}
 	}
 
