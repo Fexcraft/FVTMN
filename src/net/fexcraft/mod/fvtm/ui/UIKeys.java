@@ -1,13 +1,12 @@
 package net.fexcraft.mod.fvtm.ui;
 
-import java.util.ArrayList;
+import net.fexcraft.mod.uni.ui.UIKey;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
-public class UIKey {
+public class UIKeys {
 
-	public static final ArrayList<UIKey> ALLKEYS = new ArrayList<>();
 	public static final int ID12_TOOLBOX_COLORS = 600;
 	public static final int ID12_VEHICLE_CATALOG = 610;
 	public static final int ID12_ROAD_TOOL = 702;
@@ -54,28 +53,5 @@ public class UIKey {
 	public static final UIKey MULTIBLOCK_INVENTORY_ITEM = new UIKey(ID12_MULTIBLOCK_INVENTORY_ITEM, "fvtm:mb_inventory_item");
 	public static final UIKey MULTIBLOCK_INVENTORY_FLUID = new UIKey(ID12_MULTIBLOCK_INVENTORY_FLUID, "fvtm:mb_inventory_fluid");
 	public static final UIKey MULTIBLOCK_INVENTORY_VAR = new UIKey(ID12_MULTIBLOCK_INVENTORY_VAR, "fvtm:mb_inventory_var");
-
-	public final int id;
-	public final String key;
-
-	public UIKey(int id12, String id20){
-		id = id12;
-		key = id20;
-		ALLKEYS.add(this);
-	}
-
-	public static int get(String id){
-		for(UIKey key : ALLKEYS){
-			if(key.key.equals(id)) return key.id;
-		}
-		return 0;
-	}
-
-	public static UIKey byId(int ui){
-		for(UIKey key : ALLKEYS){
-			if(key.id == ui) return key;
-		}
-		return null;
-	}
 
 }
