@@ -29,7 +29,7 @@ public class VehicleAttributes extends UserInterface {
 	public VehicleAttributes(JsonMap map, ContainerInterface con) throws Exception{
 		super(map, con);
 		veh = (VehicleInstance)container.get("vehicle");
-		seat = veh.getSeatOf(con.player.direct());
+		seat = veh.getSeatOf(con.player.entity.direct());
 		veh.data.getAttributes().values().forEach(attr -> {
 			if(seat == null){
 				if(attr.external) attributes.add(attr);
