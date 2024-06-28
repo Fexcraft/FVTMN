@@ -4,6 +4,7 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.ui.UIKey;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.world.EntityW;
@@ -13,7 +14,7 @@ import net.fexcraft.mod.uni.world.EntityW;
  */
 public class VehicleMainCon extends ContainerInterface {
 
-	public VehicleMainCon(JsonMap map, EntityW player, V3I pos){
+	public VehicleMainCon(JsonMap map, UniEntity player, V3I pos){
 		super(map, player, pos);
 	}
 
