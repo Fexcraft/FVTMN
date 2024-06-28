@@ -3,12 +3,11 @@ package net.fexcraft.mod.fvtm.ui.road;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
-import net.fexcraft.mod.fvtm.ui.UIKey;
+import net.fexcraft.mod.fvtm.ui.UIKeys;
 import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.InventoryInterface;
-import net.fexcraft.mod.uni.world.EntityW;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -52,7 +51,7 @@ public abstract class RoadToolCon extends InventoryInterface {
 				break;
 			}
 			case "custom":{
-				((Passenger)player).openUI(UIKey.ROAD_TOOL_CUSTOM, new V3I(com.getInteger("layer"), 0, 0));
+				((Passenger)player).openUI(UIKeys.ROAD_TOOL_CUSTOM, new V3I(com.getInteger("layer"), 0, 0));
 				break;
 			}
 			case "remove":{
