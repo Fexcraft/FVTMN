@@ -10,7 +10,7 @@ import net.fexcraft.mod.fvtm.sys.uni.FvtmWorld;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.Path;
 import net.fexcraft.mod.fvtm.sys.uni.PathType;
-import net.fexcraft.mod.fvtm.ui.UIKey;
+import net.fexcraft.mod.fvtm.ui.UIKeys;
 import net.fexcraft.mod.fvtm.util.CompatUtil;
 import net.fexcraft.mod.fvtm.util.QV3D;
 import net.fexcraft.mod.uni.EnvInfo;
@@ -94,7 +94,7 @@ public class UniRoadTool {
 			return 1;
 		}
 		if(pass.isShiftDown() && main){
-			pass.openUI(UIKey.ROAD_TOOL, V3I.NULL);
+			pass.openUI(UIKeys.ROAD_TOOL, V3I.NULL);
 			return 2;
 		}
 		return 3;
