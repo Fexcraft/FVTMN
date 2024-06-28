@@ -6,6 +6,7 @@ import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 import net.fexcraft.mod.fvtm.ui.UIKey;
 import net.fexcraft.mod.fvtm.util.function.InventoryFunction;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 import net.fexcraft.mod.uni.world.EntityW;
@@ -17,7 +18,7 @@ public class VehicleInventoriesCon extends ContainerInterface {
 
 	protected VehicleInstance vehicle;
 
-	public VehicleInventoriesCon(JsonMap map, EntityW player, V3I pos){
+	public VehicleInventoriesCon(JsonMap map, UniEntity player, V3I pos){
 		super(map, player, pos);
 		vehicle = ((Passenger)player).getFvtmWorld().getVehicle(pos.x);
 	}
