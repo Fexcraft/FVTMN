@@ -28,7 +28,7 @@ public class VehicleInventories extends UserInterface {
 	public VehicleInventories(JsonMap map, ContainerInterface con) throws Exception{
 		super(map, con);
 		vehicle = (VehicleInstance)container.get("vehicle");
-		SeatInstance seat = vehicle.getSeatOf(con.player.direct());
+		SeatInstance seat = vehicle.getSeatOf(con.player.entity.direct());
 		for(Map.Entry<String, PartData> entry : vehicle.data.getParts().entrySet()){
 			InventoryFunction inv = entry.getValue().getFunction("fvtm:inventory");
 			if(inv == null || inv.inventory().type.isContainer()) continue;
