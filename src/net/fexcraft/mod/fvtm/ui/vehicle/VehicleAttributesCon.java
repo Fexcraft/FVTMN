@@ -1,20 +1,14 @@
 package net.fexcraft.mod.fvtm.ui.vehicle;
 
 import net.fexcraft.app.json.JsonMap;
-import net.fexcraft.lib.common.math.Time;
 import net.fexcraft.lib.common.math.V3I;
-import net.fexcraft.mod.fvtm.data.Fuel;
-import net.fexcraft.mod.fvtm.data.attribute.Attribute;
 import net.fexcraft.mod.fvtm.data.attribute.AttributeUtil;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
-import net.fexcraft.mod.fvtm.ui.UIKey;
+import net.fexcraft.mod.fvtm.ui.UIKeys;
 import net.fexcraft.mod.uni.UniEntity;
-import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
-import net.fexcraft.mod.uni.ui.InventoryInterface;
-import net.fexcraft.mod.uni.world.EntityW;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -43,7 +37,7 @@ public class VehicleAttributesCon extends ContainerInterface {
 		else if(com.getString("cargo").equals("editor")){
 			int idx = vehicle.data.getAttributeIndex(vehicle.data.getAttribute(com.getString("attr")));
 			if(idx < 0) return;
-			((Passenger)player).openUI(UIKey.VEHICLE_ATTR_EDITOR, pos.add(0, idx, 0));
+			((Passenger)player).openUI(UIKeys.VEHICLE_ATTR_EDITOR, pos.add(0, idx, 0));
 		}
 	}
 
