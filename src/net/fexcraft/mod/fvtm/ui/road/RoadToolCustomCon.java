@@ -2,6 +2,7 @@ package net.fexcraft.mod.fvtm.ui.road;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.InventoryInterface;
@@ -18,9 +19,9 @@ public abstract class RoadToolCustomCon extends InventoryInterface {
 	protected int offset;
 	protected int scroll;
 
-	public RoadToolCustomCon(JsonMap map, EntityW player, V3I pos){
+	public RoadToolCustomCon(JsonMap map, UniEntity player, V3I pos){
 		super(map, player, pos);
-		stack = player.getHeldItem(true);
+		stack = player.entity.getHeldItem(true);
 		stack.createTagIfMissing();
 		if(!stack.getTag().has("RoadLayers")){
 			stack.getTag().set("RoadLayers", size);
