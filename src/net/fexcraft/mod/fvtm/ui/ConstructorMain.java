@@ -70,7 +70,7 @@ public class ConstructorMain extends UserInterface {
 
 	@Override
 	public void predraw(float ticks, int mx, int my){
-		texts.get("title").translate(container.player.getName());
+		texts.get("title").translate(container.player.entity.getName());
 	}
 
 	@Override
