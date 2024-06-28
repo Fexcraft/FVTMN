@@ -9,6 +9,7 @@ import net.fexcraft.mod.fvtm.data.attribute.AttributeUtil;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 import net.fexcraft.mod.fvtm.ui.UIKey;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
@@ -22,7 +23,7 @@ public class VehicleAttributesCon extends ContainerInterface {
 
 	protected VehicleInstance vehicle;
 
-	public VehicleAttributesCon(JsonMap map, EntityW player, V3I pos){
+	public VehicleAttributesCon(JsonMap map, UniEntity player, V3I pos){
 		super(map, player, pos);
 		vehicle = ((Passenger)player).getFvtmWorld().getVehicle(pos.x);
 	}
