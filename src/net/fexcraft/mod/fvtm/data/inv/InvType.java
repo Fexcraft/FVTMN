@@ -1,7 +1,7 @@
 package net.fexcraft.mod.fvtm.data.inv;
 
 import net.fexcraft.lib.common.math.RGB;
-import net.fexcraft.mod.fvtm.ui.UIKey;
+import net.fexcraft.mod.fvtm.ui.UIKeys;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -68,9 +68,9 @@ public class InvType {
 	}
 
 	public int guiId(){
-		if(isItem()) return UIKey.MULTIBLOCK_INVENTORY_ITEM.id;
-		if(isFluid()) return UIKey.MULTIBLOCK_INVENTORY_FLUID.id;
-		if(isVariable()) return UIKey.MULTIBLOCK_INVENTORY_VAR.id;
+		if(isItem()) return UIKeys.MULTIBLOCK_INVENTORY_ITEM.id;
+		if(isFluid()) return UIKeys.MULTIBLOCK_INVENTORY_FLUID.id;
+		if(isVariable()) return UIKeys.MULTIBLOCK_INVENTORY_VAR.id;
 		return 0;
 	}
 
