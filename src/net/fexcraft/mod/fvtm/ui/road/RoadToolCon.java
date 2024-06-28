@@ -4,6 +4,7 @@ import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.ui.UIKey;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.InventoryInterface;
@@ -20,9 +21,9 @@ public abstract class RoadToolCon extends InventoryInterface {
 	protected boolean custom_top;
 	protected boolean custom_lines;
 
-	public RoadToolCon(JsonMap map, EntityW player, V3I pos){
+	public RoadToolCon(JsonMap map, UniEntity player, V3I pos){
 		super(map, player, pos);
-		stack = player.getHeldItem(true);
+		stack = player.entity.getHeldItem(true);
 		stack.createTagIfMissing();
 		custom_road = stack.getTag().has("CustomRoadFill");
 		custom_top = stack.getTag().has("CustomTopFill");
