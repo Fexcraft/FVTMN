@@ -7,6 +7,7 @@ import net.fexcraft.mod.fvtm.data.Fuel;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
+import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.InventoryInterface;
@@ -20,7 +21,7 @@ public abstract class VehicleFuelCon extends InventoryInterface {
 	protected VehicleInstance vehicle;
 	protected long date;
 
-	public VehicleFuelCon(JsonMap map, EntityW player, V3I pos){
+	public VehicleFuelCon(JsonMap map, UniEntity player, V3I pos){
 		super(map, player, pos);
 		vehicle = ((Passenger)player).getFvtmWorld().getVehicle(pos.x);
 	}
@@ -115,7 +116,7 @@ public abstract class VehicleFuelCon extends InventoryInterface {
 				}
 			}
 		}
-		if(!player.isOnClient() && changes){
+		if(!player.entity.isOnClient() && changes){
 			TagCW com = TagCW.create();
 			com.set("cargo", "update_fuel_tank");
 			com.set("state", vehicle.data.getAttributeInteger("fuel_stored", 0));
