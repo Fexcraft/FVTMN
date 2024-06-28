@@ -2,7 +2,7 @@ package net.fexcraft.mod.fvtm.sys.uni;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
-import net.fexcraft.mod.fvtm.ui.UIKey;
+import net.fexcraft.mod.fvtm.ui.UIKeys;
 import net.fexcraft.mod.uni.world.EntityW;
 
 /**
@@ -15,8 +15,6 @@ public interface Passenger extends EntityW {
 	public default FvtmWorld getFvtmWorld(){
 		return (FvtmWorld)getWorld();
 	}
-
-	public void openUI(UIKey key, V3I pos);
 
 	public void set(int veh, int seatid);
 
