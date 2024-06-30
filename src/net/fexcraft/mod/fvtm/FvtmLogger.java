@@ -74,6 +74,11 @@ public abstract class FvtmLogger {
 			//
 		}
 
+		@Override
+		public String getName(){
+			return "LOG";
+		}
+
 	};
 	public static final MessageSender DEVLOG = new MessageSender(){
 
@@ -102,6 +107,11 @@ public abstract class FvtmLogger {
 			//
 		}
 
+		@Override
+		public String getName(){
+			return "DEVLOG";
+		}
+
 	};
 	public static final MessageSender NONE = new MessageSender(){
 
@@ -128,6 +138,11 @@ public abstract class FvtmLogger {
 		@Override
 		public void dismount(){
 			//
+		}
+
+		@Override
+		public String getName(){
+			return "NONE";
 		}
 
 	};
