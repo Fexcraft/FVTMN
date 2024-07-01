@@ -233,7 +233,7 @@ public class RoadToolUI extends UserInterface {
 	public void getTooltip(int mx, int my, List<String> list){
 		if(rtc.isInventoryEmpty(0) && slots.get("road").hovered(gLeft, gTop, mx, my)){
 			for(int i = 0; i < 6; i++){
-				list.add(Formatter.format(container.TRANSLATOR.apply("ui.fvtm.road_tool.road_slot_info" + i)));
+				list.add(container.TRANSLATOR.apply("ui.fvtm.road_tool.road_slot_info" + i));
 			}
 		}
 	}
