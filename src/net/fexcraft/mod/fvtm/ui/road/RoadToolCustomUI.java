@@ -123,7 +123,7 @@ public class RoadToolCustomUI extends UserInterface {
 		if(rtc.size[0] < 9) return;
 		if(tabs.get("scroll").hovered(gLeft, gTop, mx, my)){
 			Object[] objs = new Object[]{ rtc.scroll + 1, rtc.scroll + 9, rtc.size[0] };
-			list.add(Formatter.format(container.TRANSFORMAT.apply("ui.fvtm.road_tool_custom.scroll_status", objs)));
+			list.add(container.TRANSFORMAT.apply("ui.fvtm.road_tool_custom.scroll_status", objs));
 		}
 	}
 
