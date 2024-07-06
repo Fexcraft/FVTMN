@@ -211,7 +211,7 @@ public class Config extends ConfigBase {
 	@Override
 	protected void onReload(JsonMap map){
 		PACK_FOLDERS.clear();
-		if(map.has("pack_folders")) return;
+		if(!map.has("pack_folders")) return;
 		map.getArray("pack_folders").value.forEach(val -> PACK_FOLDERS.add(new File(val.string_value())));
 	}
 
