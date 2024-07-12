@@ -5,6 +5,10 @@
 	"gui.fvtm.decoration_editor.texture": "Texture",
 	"gui.fvtm.decoration_editor.no_color_channels": "No Color Channels",
 
+
+	"ui.fvtm.toolbox.painter.info": "Here you can edit your vehicle/block/container's color.",
+	"ui.fvtm.toolbox.texture.info": "Here you can select your vehicle/block/container's texture.",
+
 	"ui.fvtm.vehicle_fuel.accepts": "Accepts:",
 	"ui.fvtm.vehicle_attributes.toggle": "Toggle Attribute Value",
 	"ui.fvtm.vehicle_attributes.edit": "Edit Attribute",
