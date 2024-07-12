@@ -8,6 +8,7 @@ import net.fexcraft.mod.uni.ui.UIKey;
 public class UIKeys {
 
 	public static final int ID12_TOOLBOX_COLORS = 600;
+	public static final int ID12_TOOLBOX_TEXTURE = 601;
 	public static final int ID12_VEHICLE_CATALOG = 610;
 	public static final int ID12_ROAD_TOOL = 702;
 	public static final int ID12_ROAD_TOOL_CUSTOM = 703;
@@ -31,6 +32,7 @@ public class UIKeys {
 	public static final int ID12_MULTIBLOCK_INVENTORY_FLUID = 9512;
 	public static final int ID12_MULTIBLOCK_INVENTORY_VAR = 9513;
 	public static final UIKey TOOLBOX_COLORS = new UIKey(ID12_TOOLBOX_COLORS, "fvtm:toolbox_colors");
+	public static final UIKey TOOLBOX_TEXTURE = new UIKey(ID12_TOOLBOX_TEXTURE, "fvtm:toolbox_texture");
 	public static final UIKey ROAD_TOOL = new UIKey(ID12_ROAD_TOOL, "fvtm:road_tool");
 	public static final UIKey ROAD_TOOL_CUSTOM = new UIKey(ID12_ROAD_TOOL_CUSTOM, "fvtm:road_tool_custom");
 	public static final UIKey CONSTRUCTOR = new UIKey(ID12_CONSTRUCTOR, "fvtm:constructor");
