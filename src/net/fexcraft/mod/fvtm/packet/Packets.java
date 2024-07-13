@@ -182,6 +182,12 @@ public abstract class Packets {
 				VehicleInstance inst = player.getFvtmWorld().getVehicle(tag.getInteger("entity"));
 				if(inst != null) inst.packet(tag, player);
 			});
+			LIS_CLIENT.put("vehicle_color", (tag, player) -> {
+				VehicleInstance inst = player.getFvtmWorld().getVehicle(tag.getInteger("vehicle"));
+				if(inst != null){
+					inst.data.getColorChannel(tag.getString("channel")).packed = tag.getInteger("color");
+				}
+			});
 			LIS_CLIENT.put("road_tool_new", (tag, player) -> {
 				UUID uuid = new UUID(tag.getLong("uuid_m"), tag.getLong("uuid_l"));
 				RoadPlacingUtil.CL_CURRENT = new RoadPlacingUtil.NewRoad(uuid, new QV3D(tag, "vector"), tag.getInteger("width"));
