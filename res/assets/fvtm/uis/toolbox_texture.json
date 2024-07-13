@@ -5,7 +5,7 @@
 	"tabs": {
 		"main": {
 			"texture": "fvtm:textures/gui/toolbox_texture.png",
-			"size": [ 141, 85 ],
+			"size": [ 141, 86 ],
 			"pos": [ 0, 0 ],
 			"absolute": true,
 			"buttons": [
