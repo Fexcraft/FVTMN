@@ -83,13 +83,15 @@
 			"absolute": true,
 			"size": [ 117, 8 ],
 			"pos": [ 4, 43 ],
-			"background": false
+			"background": false,
+			"max-length": 512
 		},
 		"url": {
 			"absolute": true,
 			"size": [ 117, 8 ],
 			"pos": [ 4, 65 ],
-			"background": false
+			"background": false,
+			"max-length": 512
 		}
 	}
 }
