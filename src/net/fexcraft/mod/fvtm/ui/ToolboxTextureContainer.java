@@ -2,6 +2,7 @@ package net.fexcraft.mod.fvtm.ui;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.root.Colorable;
 import net.fexcraft.mod.fvtm.data.root.Textureable;
 import net.fexcraft.mod.fvtm.packet.Packet_TagListener;
@@ -26,6 +27,14 @@ public class ToolboxTextureContainer extends ContainerInterface {
 	public ToolboxTextureContainer(JsonMap map, UniEntity player, V3I vec){
 		super(map, player, vec);
 		vehicle = ((FvtmWorld)player.entity.getWorld()).getVehicle(vec.x);
+		if(vec.z > 0){
+			PartData data = vehicle.data.getIndexPart(vec.y);
+			if(data != null){
+				textureable = data.getTexture();
+				texroot = data.getTexHolder();
+				return;
+			}
+		}
 		textureable = vehicle.data.getTexture();
 		texroot = vehicle.data.getTexHolder();
 	}
