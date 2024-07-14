@@ -779,4 +779,22 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		return interact_zones;
 	}
 
+	public int getPartIndex(PartData part){
+		int idx = 0;
+		for(PartData data : parts.values()){
+			if(data.equals(part)) return idx;
+			idx++;
+		}
+		return -1;
+	}
+
+	public PartData getIndexPart(int idx){
+		int lidx = 0;
+		for(PartData data : parts.values()){
+			if(lidx == idx) return data;
+			lidx++;
+		}
+		return null;
+	}
+
 }
