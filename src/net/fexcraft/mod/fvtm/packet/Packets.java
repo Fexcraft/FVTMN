@@ -15,6 +15,7 @@ import net.fexcraft.mod.fvtm.handler.TireInstallationHandler.TireData;
 import net.fexcraft.mod.fvtm.sys.road.RoadPlacingUtil;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
+import net.fexcraft.mod.fvtm.ui.UIKeys;
 import net.fexcraft.mod.fvtm.util.QV3D;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.item.ItemType;
@@ -165,6 +166,17 @@ public abstract class Packets {
 				pkt.set("data", ref.getKey().write(null));
 				pkt.set("pos", ref.getValue().longpos());
 				Packets.sendToAll(Packet_TagListener.class, "blockentity", pkt);
+			}
+		});
+		LIS_SERVER.put("texture_part", (com, player) -> {
+			StackWrapper wrapper = player.getHeldItem(true);
+			if(!wrapper.isItemOf(ItemType.FVTM_TOOLBOX)) return;
+			Map.Entry<VehicleData, InteractRef> ref = player.getFvtmWorld().getInteractRef(com);
+			if(ref == null || !ref.getValue().isVehicle()) return;
+			String category = com.getString("category");
+			PartData part = ref.getKey().getPart(category);
+			if(part != null){
+				player.openUI(UIKeys.TOOLBOX_TEXTURE, new V3I(ref.getValue().vehicle().entity.getId(), ref.getKey().getPartIndex(part), 1));
 			}
 		});
 		if(EnvInfo.CLIENT){
