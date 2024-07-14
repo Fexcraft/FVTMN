@@ -12,18 +12,22 @@ import net.fexcraft.mod.uni.UniEntity;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.ui.ContainerInterface;
 
+import static net.fexcraft.mod.fvtm.sys.uni.VehicleInstance.PKT_UPD_VEHICLEDATA;
+
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
 public class ToolboxTextureContainer extends ContainerInterface {
 
 	protected Textureable textureable;
+	protected Textureable.TextureHolder texroot;
 	protected VehicleInstance vehicle;
 
 	public ToolboxTextureContainer(JsonMap map, UniEntity player, V3I vec){
 		super(map, player, vec);
 		vehicle = ((FvtmWorld)player.entity.getWorld()).getVehicle(vec.x);
 		textureable = vehicle.data.getTexture();
+		texroot = vehicle.data.getTexHolder();
 	}
 
 	@Override
@@ -44,10 +48,17 @@ public class ToolboxTextureContainer extends ContainerInterface {
 		String task = com.getString("task");
 		switch(task){
 			case "select":{
-				//
+				textureable.setSelectedTexture(com.getInteger("sel"), com.getString("tex"), com.getBoolean("ext"));
+				if(client){
+					((ToolboxTexture)ui).updateStatus();
+					break;
+				}
+				vehicle.sendUpdate(PKT_UPD_VEHICLEDATA);
+				SEND_TO_CLIENT.accept(com, player);
 				break;
 			}
 		}
+
 	}
 
 }
