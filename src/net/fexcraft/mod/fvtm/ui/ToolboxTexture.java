@@ -27,12 +27,12 @@ public class ToolboxTexture extends UserInterface {
 			texts.get("selected").value(menu.texroot.getDefaultTextures().get(menu.textureable.getSelected()).name());
 		}
 		if(menu.textureable.isExternal()){
-			fields.get("pack").text("...");
+			fields.get("pack").text("");
 			fields.get("url").text(menu.textureable.getCustom());
 		}
 		else{
 			fields.get("pack").text(menu.textureable.getCustom());
-			fields.get("url").text("...");
+			fields.get("url").text("");
 		}
 	}
 
