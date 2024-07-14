@@ -66,7 +66,9 @@ public class InteractionHandler {
 			}
 			if(stack.isItemOf(ItemType.FVTM_TOOLBOX)){
 				boolean prt = EnvInfo.is112() ? stack.damage() == 0 : stack.getID().endsWith("_0");
-				if(prt && tryRemoval(vehdata, ref, seat, pass)) return true;
+				boolean tex = EnvInfo.is112() ? stack.damage() == 1 : stack.getID().endsWith("_1");
+				if(prt && tryRemTex(vehdata, ref, seat, pass, false)) return true;
+				if(tex && tryRemTex(vehdata, ref, seat, pass, true)) return true;
 			}
 			return false;
 		}
@@ -162,7 +164,7 @@ public class InteractionHandler {
 		return true;
 	}
 
-	private static boolean tryRemoval(VehicleData vehdata, InteractRef ref, SeatInstance seat, Passenger pass){
+	private static boolean tryRemTex(VehicleData vehdata, InteractRef ref, SeatInstance seat, Passenger pass, boolean tex){
 		ArrayList<Interactive> list = new ArrayList<>();
 		SwivelPoint point;
 		for(Entry<String, PartData> entry : vehdata.getParts().entrySet()){
@@ -177,7 +179,7 @@ public class InteractionHandler {
 		TagCW com = TagCW.create();
 		com.set("category", res.category);
 		ref.setPacket(com);
-		Packets.send(Packet_TagListener.class, "remove_part", com);
+		Packets.send(Packet_TagListener.class, tex ? "texture_part" : "remove_part", com);
 		last = res.id();
 		cooldown = Time.getDate() + 20;
 		return true;
