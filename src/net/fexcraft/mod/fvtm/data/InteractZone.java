@@ -56,13 +56,17 @@ public class InteractZone {
 	}
 
 	public boolean inRange(VehicleInstance inst, V3D pos){
-		V3D loc = def ?  V3D.NULL : inst.data.getRotationPoint(point).getRelativeVector(pos);
+		V3D loc = def ?  V3D.NULL : inst.data.getRotationPoint(point).getRelativeVector(this.pos);
 		return loc.add(inst.entity.getPos()).dis(pos) < range + 1;
 	}
 
 	public boolean inRange(VehicleData data, V3D lift, V3D pos){
-		V3D loc = def ? V3D.NULL : data.getRotationPoint(point).getRelativeVector(pos);
+		V3D loc = def ? V3D.NULL : data.getRotationPoint(point).getRelativeVector(this.pos);
 		return loc.add(lift).dis(pos) < range + 1;
+	}
+
+	public V3D pos(VehicleInstance inst){
+		return def ? V3D.NULL : inst.data.getRotationPoint(point).getRelativeVector(pos);
 	}
 
 }
