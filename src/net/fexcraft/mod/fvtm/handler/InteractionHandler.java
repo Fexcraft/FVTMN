@@ -278,7 +278,7 @@ public class InteractionHandler {
 	private static boolean mountSeat(VehicleInstance vehicle, SeatInstance seat, Passenger pass, StackWrapper stack){
 		if(vehicle == null) return false;
 		if(last.equals("seat") && Time.getDate() < cooldown) return false;
-		if(!stack.empty() && stack.isItemOf(ItemType.LEAD)) return false;
+		if(!stack.empty() && stack.isItemOfAny(ItemType.LEAD, ItemType.FVTM_TOOLBOX)) return false;
 		if(seat == null) seat = pass.getSeatOn();
 		V3D evec = pass.getEyeVec();
 		V3D lvec = evec.add(pass.getLookVec().multiply(3));
