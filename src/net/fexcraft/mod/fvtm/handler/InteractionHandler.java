@@ -169,8 +169,10 @@ public class InteractionHandler {
 		SwivelPoint point;
 		for(Entry<String, PartData> entry : vehdata.getParts().entrySet()){
 			point = vehdata.getRotationPointOfPart(entry.getKey());
-			if(!(entry.getValue().getType().getInstallHandlerData() instanceof DPIHData)) continue;
-			if(!((DPIHData)entry.getValue().getType().getInstallHandlerData()).removable) continue;
+			if(!tex){
+				if(!(entry.getValue().getType().getInstallHandlerData() instanceof DPIHData)) continue;
+				if(!((DPIHData)entry.getValue().getType().getInstallHandlerData()).removable) continue;
+			}
 			list.add(new InstPartInteractive(point, entry));
 		}
 		InstPartInteractive res = getInteracted(seat == null, vehdata, ref, pass, list);
