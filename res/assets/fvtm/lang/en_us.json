@@ -5,6 +5,9 @@
 	"gui.fvtm.decoration_editor.texture": "Texture",
 	"gui.fvtm.decoration_editor.no_color_channels": "No Color Channels",
 
+	"item.fvtm.toolbox_0": "FVTM Maintenance Toolbox",
+	"item.fvtm.toolbox_1": "FVTM Livery Toolbox",
+	"item.fvtm.toolbox_2": "FVTM Painting Toolbox",
 
 	"ui.fvtm.toolbox.painter.info": "Here you can edit your vehicle/block/container's color.",
 	"ui.fvtm.toolbox.texture.info": "Here you can select your vehicle/block/container's texture.",
