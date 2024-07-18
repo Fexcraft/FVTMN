@@ -91,7 +91,7 @@ public class Textureable implements Saveable {
 	public void save(TagCW compound){
 		compound.set("SelectedTexture", selected);
 		compound.set("ExternalTexture", external);
-		compound.set("CurrentTexture", external ? current.path() : current.toString());
+		compound.set("CurrentTexture", external ? custom : current.toString());
 	}
 
 	@Override
