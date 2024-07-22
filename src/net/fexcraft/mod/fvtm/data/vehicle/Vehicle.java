@@ -72,7 +72,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 		if((pack = ContentConfigUtil.getAddon(map)) == null) return null;
 		if((id = ContentConfigUtil.getID(pack, map)) == null) return null;
 		//
-		name = map.getString("Name", "Unnamed Material");
+		name = map.getString("Name", "Unnamed Vehicle");
 		description = ContentConfigUtil.getStringList(map, "Description");
 		type = VehicleType.valueOf(map.getString("VehicleType", "LAND").toUpperCase());
 		textures = ContentConfigUtil.getTextures(map);
