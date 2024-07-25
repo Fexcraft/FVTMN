@@ -145,7 +145,8 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 		}
 		if(map.has("LiftingPoints")){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("LiftingPoints").entries()){
-				liftingpoints.put(entry.getKey(), new LiftingPoint(entry.getKey(), entry.getValue().asArray()));
+				if(entry.getValue().isArray()) liftingpoints.put(entry.getKey(), new LiftingPoint(entry.getKey(), entry.getValue().asArray()));
+				else liftingpoints.put(entry.getKey(), new LiftingPoint(entry.getKey(), entry.getValue().asMap()));
 			}
 		}
 		else{
