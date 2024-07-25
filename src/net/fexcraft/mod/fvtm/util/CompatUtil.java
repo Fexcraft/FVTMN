@@ -25,7 +25,7 @@ public class CompatUtil {
 
 	public static int getRoadHeight(int height, boolean flenix){
 		if(!flenix) return height;
-		return height == 0 ? 15 : height - 1;
+		return height <= 0 ? 15 : height - 1;
 	}
 
 }
