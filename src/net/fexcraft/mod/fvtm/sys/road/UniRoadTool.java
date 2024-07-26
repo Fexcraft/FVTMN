@@ -390,12 +390,12 @@ public class UniRoadTool {
 	}
 
 	public static V3D grv(double rad, V3D vec){
-		double co = Math.cos(rad), si = Math.sin(rad);
+		double co = -Math.cos(rad), si = Math.sin(rad);
 		return new V3D(co * vec.x, vec.y, si * vec.x);
 	}
 
 	public static V3D grv(double rad, double x, double y){
-		return new V3D(Math.cos(rad) * x, y, Math.sin(rad) * x);
+		return new V3D(-Math.cos(rad) * x, y, Math.sin(rad) * x);
 	}
 
 	public static QV3D gen(V3D vec, double rad, double x, double y){
