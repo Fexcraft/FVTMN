@@ -178,7 +178,7 @@ public class RoadPlacingUtil {
 			for(float pass = 0; pass < road.length + 0.125f; pass += 0.125f){
 				last = vec;
 				vec = road.getVectorPosition0(pass == 0 ? 0.001f : pass, false);
-				angle = (float)Math.atan2(last.z - vec.z, last.x - vec.x) + Static.rad90;
+				angle = (float)Math.atan2(last.x - vec.x, last.z - vec.z);
 				for(int w = 0; w < width + 1; w++){
 					preview.get(w).add(vec.add(UniRoadTool.grv(angle, new V3D(-half + w, 0, 0))));
 				}
