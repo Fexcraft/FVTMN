@@ -181,7 +181,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 		}
 		if(map.has("InteractZones")){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("InteractZones").entries()){
-				interact_zones.add(new InteractZone(entry.getKey(), entry.getValue().asArray()));
+				interact_zones.add(new InteractZone(entry.getKey(), entry.getValue()));
 			}
 		}
 		if(interact_zones.isEmpty()){
