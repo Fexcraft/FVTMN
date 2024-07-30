@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
@@ -71,6 +72,7 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
     protected int maxstacksize;
     protected int burntime;
     protected IDL itemtexloc;
+    public Supplier block20;
     protected Object block;
 
     @Override
@@ -179,12 +181,16 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
         itemtexloc = ContentConfigUtil.getItemTexture(id, getContentType(), map);
         no3ditem = map.getBoolean("Disable3DItemModel", false);
         //
-        try{
-            block = BlockType.BLOCK_IMPL.get(blocktype, hastile || relaydata != null, plain_model).getConstructor(Block.class).newInstance(this);
-        }
-        catch(Throwable e){
-            e.printStackTrace();
-        }
+        block20 = () -> {
+            try{
+                return BlockType.BLOCK_IMPL.get(blocktype, hastile || relaydata != null, plain_model).getConstructor(Block.class).newInstance(this);
+            }
+            catch(Throwable e){
+                FvtmLogger.log(e, "block class creation");
+                return null;
+            }
+        };
+        if(EnvInfo.is112()) genBlock();
         return this;
     }
 
@@ -413,6 +419,10 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
         return (BLK)block;
     }
 
+    public <BLK> BLK genBlock(){
+        return (BLK)(block = block20.get());
+    }
+
     public boolean isRandomRot(){
         return randomrot;
     }
@@ -424,5 +434,4 @@ public class Block extends Content<Block> implements TextureHolder, ColorHolder,
     public Boolean getPassable(){
         return passable;
     }
-
 }
