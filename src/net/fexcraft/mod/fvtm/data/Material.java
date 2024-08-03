@@ -44,7 +44,7 @@ public class Material extends Content<Material> implements WithItem, ItemTexture
 		vehicle_key = map.getBoolean("VehicleKey", false);
 		fuel_container = map.getBoolean("FuelContainer", false);
 		fuel_capacity = map.getInteger("FuelCapacity", fuel_container ? 5000 : 0);
-		fuel = map.has("FuelType") ? getFuel(map.get("FuelType", (String)null)) : null;
+		fuel = map.has("FuelType") ? getFuel(map.getString("FuelType", null)) : null;
 		fuelgroup = map.getString("FuelGroup", null);
 		impact = map.getInteger("ImpactWrench", -1);
 		if(impact > 8) impact = 8;
