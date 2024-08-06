@@ -37,7 +37,7 @@ public class TireFunction extends PartFunction implements GetWheelPos{
 		JsonMap map = json.isMap() ? json.asMap() : new JsonMap();
 		TireAttr attr = new TireAttr();
 		attr.general_grip = map.getFloat("general_grip", 1f);
-		attr.brake_grip = map.getFloat("break_grip", 0.7f);
+		attr.brake_grip = map.getFloat("brake_grip", 0.7f);
 		attr.corner_stiffness = map.getFloat("stiffness", 5.2f);
 		attr.corner_stiffness_steering = map.getFloat("steering_stiffness", 5f);
 		attr.step_height = map.getFloat("step_height", 1f);
