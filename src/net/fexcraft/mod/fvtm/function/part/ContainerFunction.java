@@ -25,16 +25,16 @@ public class ContainerFunction extends StaticFunction {
 	@Override
 	public PartFunction init(Part part, FJson json){
 		JsonMap map = json.asMap();
-		if(map.has("Type")){
+		if(map.has("type")){
 			onlytype = ContainerType.valueOf(map.getString("type", "MEDIUM"));
 			length = onlytype.length();
 		}
-		position = ContentConfigUtil.getVector(map);
+		position = map.has("pos") ? ContentConfigUtil.getVector(map.getArray("pos")) : V3D.NULL;
 		rotation = map.getInteger("rot", 0);
 		length = map.getInteger("length", 6);
 		if(length < 1) length = 6;
 		//name = map.getString("name", "unnamed");
-		rotpoint = map.getString("rot_point", null);
+		rotpoint = map.getString("point", null);
 		return this;
 	}
 
