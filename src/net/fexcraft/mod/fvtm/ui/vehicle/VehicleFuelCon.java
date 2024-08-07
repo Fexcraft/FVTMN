@@ -23,7 +23,7 @@ public abstract class VehicleFuelCon extends InventoryInterface {
 
 	public VehicleFuelCon(JsonMap map, UniEntity player, V3I pos){
 		super(map, player, pos);
-		vehicle = ((Passenger)player).getFvtmWorld().getVehicle(pos.x);
+		vehicle = ((Passenger)player.entity).getFvtmWorld().getVehicle(pos.x);
 	}
 
 	@Override
