@@ -2,6 +2,7 @@ package net.fexcraft.mod.fvtm.ui.vehicle;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.ui.UIKeys;
 import net.fexcraft.mod.uni.UniEntity;
@@ -26,17 +27,28 @@ public class VehicleMainCon extends ContainerInterface {
 	@Override
 	public void packet(TagCW com, boolean client){
 		if(client) return;
-		UIKey ui = null;
 		switch(com.getString("open")){
-			case "info": ui  = UIKeys.VEHICLE_INFO; break;
-			case "fuel": ui  = UIKeys.VEHICLE_FUEL; break;
-			case "attributes": ui  = UIKeys.VEHICLE_ATTRIBUTES; break;
-			case "inventories": ui  = UIKeys.VEHICLE_INVENTORIES; break;
-			case "containers": ui  = UIKeys.VEHICLE_CONTAINERS; break;
-			case "connectors": ui  = UIKeys.VEHICLE_CONNECTORS; break;
-			default: return;
+			case "info":
+				player.entity.openUI(UIKeys.VEHICLE_INFO, pos);
+				return;
+			case "fuel":
+				player.entity.openUI(UIKeys.VEHICLE_FUEL, pos);
+				return;
+			case "attributes":
+				player.entity.openUI(UIKeys.VEHICLE_ATTRIBUTES, pos);
+				return;
+			case "inventories":
+				player.entity.openUI(UIKeys.VEHICLE_INVENTORIES, pos);
+				return;
+			case "containers":
+				player.entity.openUI(UIKeys.VEHICLE_CONTAINERS, pos);
+				return;
+			case "connectors":
+				player.entity.openUI(UIKeys.VEHICLE_CONNECTORS, pos);
+				return;
+			default:
+				return;
 		}
-		if(ui != null) ((Passenger)player).openUI(ui, pos);
 	}
 
 }
