@@ -20,7 +20,7 @@ public class VehicleInventoriesCon extends ContainerInterface {
 
 	public VehicleInventoriesCon(JsonMap map, UniEntity player, V3I pos){
 		super(map, player, pos);
-		vehicle = ((Passenger)player).getFvtmWorld().getVehicle(pos.x);
+		vehicle = ((Passenger)player.entity).getFvtmWorld().getVehicle(pos.x);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class VehicleInventoriesCon extends ContainerInterface {
 		if(client || !com.has("open")) return;
 		InventoryFunction func = vehicle.data.getFunctionInPart(com.getString("open"), "fvtm:inventory");
 		UIKey ui = func.inventory().type.isItem() ? UIKeys.VEHICLE_INVENTORY_ITEM : UIKeys.VEHICLE_INVENTORY_FLUID;
-		((Passenger)player).openUI(ui, pos.add(0, vehicle.data.getInventories().indexOf(com.getString("open")), 0));
+		player.entity.openUI(ui, pos.add(0, vehicle.data.getInventories().indexOf(com.getString("open")), 0));
 	}
 
 }
