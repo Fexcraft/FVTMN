@@ -19,7 +19,7 @@ public class VehicleAttributesCon extends ContainerInterface {
 
 	public VehicleAttributesCon(JsonMap map, UniEntity player, V3I pos){
 		super(map, player, pos);
-		vehicle = ((Passenger)player).getFvtmWorld().getVehicle(pos.x);
+		vehicle = ((Passenger)player.entity).getFvtmWorld().getVehicle(pos.x);
 	}
 
 	@Override
@@ -32,12 +32,12 @@ public class VehicleAttributesCon extends ContainerInterface {
 	public void packet(TagCW com, boolean client){
 		if(client) return;
 		if(com.getString("cargo").equals("toggle")){
-			AttributeUtil.processToggle(vehicle, com, (Passenger)player);
+			AttributeUtil.processToggle(vehicle, com, (Passenger)player.entity);
 		}
 		else if(com.getString("cargo").equals("editor")){
 			int idx = vehicle.data.getAttributeIndex(vehicle.data.getAttribute(com.getString("attr")));
 			if(idx < 0) return;
-			((Passenger)player).openUI(UIKeys.VEHICLE_ATTR_EDITOR, pos.add(0, idx, 0));
+			player.entity.openUI(UIKeys.VEHICLE_ATTR_EDITOR, pos.add(0, idx, 0));
 		}
 	}
 
