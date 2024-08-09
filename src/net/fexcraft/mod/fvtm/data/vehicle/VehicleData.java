@@ -14,6 +14,7 @@ import net.fexcraft.mod.fvtm.data.root.*;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureHolder;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureUser;
 import net.fexcraft.mod.fvtm.function.part.*;
+import net.fexcraft.mod.fvtm.sys.event.EventHolder;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
 import net.fexcraft.mod.uni.item.StackWrapper;
@@ -51,11 +52,14 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 	protected SwivelPoint rootpoint;
 	protected Textureable texture;
 	protected Lockable lock;
+	protected EventHolder holder;
 	protected String displayname;
 
 	public VehicleData(Vehicle type){
 		super(type);
 		texture = new Textureable(type);
+		holder = new EventHolder();
+		holder.integrate(type.holder);
 		rotpoints.put("vehicle", rootpoint = new SwivelPoint("vehicle", (String)null));
 		for(SwivelPoint point : type.getDefaultSwivelPoints().values()){
 			rotpoints.put(point.id, point.clone(null));
@@ -407,6 +411,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		if(data.getType().getInstallHandler().processInstall(engineer, data, category, this)){
 			this.insertSwivelPointsFromPart(data, category);
 			this.insertAttributesFromPart(data, category);
+			holder.integrate(data.getType().getEvents());
 			//
 			if(!swap){
 				this.resetAttributes();
@@ -427,6 +432,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		if(part.getType().getInstallHandler().processUninstall(sender, part, category, this)){
 			this.removeSwivelPointsFromPart(part, category);
 			this.removeAttributesFromPart(part, category);
+			holder.deintegrate(part.getType().getEvents());
 			//
 			if(!swap){
 				this.resetAttributes();
