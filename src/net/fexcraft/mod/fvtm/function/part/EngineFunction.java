@@ -12,6 +12,7 @@ import net.fexcraft.lib.common.utils.Formatter;
 import net.fexcraft.mod.fvtm.data.part.Part;
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
+import net.fexcraft.mod.fvtm.sys.condition.CondMode;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.WorldW;
@@ -167,7 +168,7 @@ public class EngineFunction extends PartFunction {
 	}
 	
 	@Override
-	public boolean onCondition(String[] targets, String mode, String condi){
+	public boolean onCondition(String[] targets, CondMode mode, String condi){
 		if(mode.equals("on")) return ison;
 		else if(mode.equals("off")) return !ison;
 		else return ison = Boolean.parseBoolean(condi);
