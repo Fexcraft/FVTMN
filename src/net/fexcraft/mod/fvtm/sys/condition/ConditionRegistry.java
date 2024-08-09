@@ -23,7 +23,7 @@ public class ConditionRegistry {
 	public static Conditional get(String id){
 		if(!CONDITIONALS.containsKey(id)){
 			Condition con = CONDITIONS.get(id);
-			if(con == null) return null;
+			if(con == null) return COND_FALSE;
 			CONDITIONALS.put(con.id, BUILDER.apply(con));
 		}
 		return CONDITIONALS.get(id);
