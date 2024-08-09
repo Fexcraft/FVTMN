@@ -9,7 +9,8 @@ import net.fexcraft.app.json.JsonMap;
 public class Condition {
 
 	public final String id;
-	public String type, target, condi, mode;
+	public String type, target, condi;
+	public CondMode mode;
 	public String[] targets;
 	
 	public Condition(String id){
@@ -38,7 +39,7 @@ public class Condition {
 			targets = new String[]{ target };
 		}
 		condi = map.has("con") ? map.getString("con", "null") : map.getString("condition", "null");
-		mode = map.getString("mode", "equal");
+		mode = CondMode.parse(map.getString("mode", "=="));
 	}
 	
 	public Condition(String id, JsonArray array){
@@ -56,7 +57,7 @@ public class Condition {
 			target = array.get(1).string_value();
 			targets = new String[]{ target };
 		}
-		mode = array.size() > 2 ? array.get(2).string_value() : "null";
+		mode = CondMode.parse(array.size() > 2 ? array.get(2).string_value() : "null");
 		condi = array.size() > 3 ? array.get(3).string_value() : "null";
 	}
 	
