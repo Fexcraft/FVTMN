@@ -3,6 +3,7 @@ package net.fexcraft.mod.fvtm.data.part;
 import java.util.List;
 
 import net.fexcraft.app.json.FJson;
+import net.fexcraft.mod.fvtm.sys.condition.CondMode;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.WorldW;
@@ -46,7 +47,7 @@ public abstract class PartFunction {
 
     public void addInformation(StackWrapper stack, WorldW world, PartData data, List<String> list, boolean extended){}
 
-	public boolean onCondition(String[] targets, String mode, String condi){
+	public boolean onCondition(String[] targets, CondMode mode, String condi){
 		return false;
 	}
 
