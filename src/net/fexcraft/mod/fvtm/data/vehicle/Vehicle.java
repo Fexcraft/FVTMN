@@ -27,6 +27,8 @@ import net.fexcraft.mod.fvtm.data.root.WithItem;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
 import net.fexcraft.mod.fvtm.model.content.VehicleModel;
+import net.fexcraft.mod.fvtm.sys.event.EventHolder;
+import net.fexcraft.mod.fvtm.sys.event.EventListener;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
@@ -57,6 +59,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 	protected Map<String, LiftingPoint[]> gliftingpoints = new HashMap<>();
 	protected List<InteractZone> interact_zones = new ArrayList<>();
 	protected List<CatalogPreset> catalog = new ArrayList<>();
+	protected EventHolder holder = new EventHolder();
 	protected IDL keytype;
 	protected int maxkeys;
 	protected int impactlevel;
@@ -186,6 +189,18 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 		}
 		if(interact_zones.isEmpty()){
 			interact_zones.add(new InteractZone("default", V3D.NULL, 4, SwivelPoint.DEFAULT));
+		}
+		if(map.has("Events")){
+			for(JsonValue<?> val : map.getArray("Events").value){
+				EventListener lis = null;
+				try{
+					lis = EventListener.parse(val);
+				}
+				catch(Exception e){
+					FvtmLogger.log(e, "vehicle event parsing");
+				}
+				if(lis != null) holder.insert(lis);
+			}
 		}
 		return this;
 	}
@@ -332,6 +347,10 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 
 	public int getImpactWrenchLevel(){
 		return impactlevel;
+	}
+
+	public EventHolder getEvents(){
+		return holder;
 	}
 
 }
