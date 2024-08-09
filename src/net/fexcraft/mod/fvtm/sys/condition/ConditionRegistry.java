@@ -13,6 +13,8 @@ public class ConditionRegistry {
 	public static HashMap<String, Condition> CONDITIONS = new HashMap<>();
 	private static HashMap<String, Conditional> CONDITIONALS = new HashMap<>();
 	public static Function<Condition, Conditional> BUILDER = CondBuilder.run();
+	public static final Conditional COND_FALSE = data -> false;
+	public static final Conditional COND_TRUE = data -> true;
 	
 	public static void register(Condition con){
 		CONDITIONS.put(con.id, con);
