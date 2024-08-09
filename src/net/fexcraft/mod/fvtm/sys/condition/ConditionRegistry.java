@@ -1,5 +1,7 @@
 package net.fexcraft.mod.fvtm.sys.condition;
 
+import net.fexcraft.mod.fvtm.sys.impl.CondBuilder;
+
 import java.util.HashMap;
 import java.util.function.Function;
 
@@ -10,7 +12,7 @@ public class ConditionRegistry {
 	
 	public static HashMap<String, Condition> CONDITIONS = new HashMap<>();
 	private static HashMap<String, Conditional> CONDITIONALS = new HashMap<>();
-	public static Function<Condition, Conditional> BUILDER;
+	public static Function<Condition, Conditional> BUILDER = CondBuilder.run();
 	
 	public static void register(Condition con){
 		CONDITIONS.put(con.id, con);
