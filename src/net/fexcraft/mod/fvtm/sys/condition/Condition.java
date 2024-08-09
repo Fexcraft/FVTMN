@@ -9,7 +9,9 @@ import net.fexcraft.app.json.JsonMap;
 public class Condition {
 
 	public final String id;
-	public String type, target, condi;
+	public CondType type;
+	public String target;
+	public String condi;
 	public CondMode mode;
 	public String[] targets;
 	
@@ -19,32 +21,26 @@ public class Condition {
 	
 	public Condition(String id, JsonMap map){
 		this(id);
-		type = map.getString("type", "null");
-		if(map.has("target")){
-			if(map.get("target").isArray()){
-				JsonArray arr = map.getArray("target");
-				targets = new String[arr.size()];
-				for(int i = 0; i < targets.length; i++){
-					targets[i] = arr.get(i).string_value();
-				}
-				target = targets[0];
+		type = CondType.parse(map.getString("type", CondType.CUSTOM.key));
+		if(map.get("target").isArray()){
+			JsonArray arr = map.getArray("target");
+			targets = new String[arr.size()];
+			for(int i = 0; i < targets.length; i++){
+				targets[i] = arr.get(i).string_value();
 			}
-			else{
-				target = map.getString("target", "null");
-				targets = new String[]{ target };
-			}
+			target = targets[0];
 		}
 		else{
-			target = "null";
+			target = map.getString("target", "null");
 			targets = new String[]{ target };
 		}
 		condi = map.has("con") ? map.getString("con", "null") : map.getString("condition", "null");
-		mode = CondMode.parse(map.getString("mode", "=="));
+		mode = CondMode.parse(map.getString("mode", CondMode.EQUAL.key));
 	}
 	
 	public Condition(String id, JsonArray array){
 		this(id);
-		type = array.get(0).string_value();
+		type = CondType.parse(array.get(0).string_value());
 		if(array.get(1).isArray()){
 			JsonArray arr = array.getArray(1);
 			targets = new String[arr.size()];
