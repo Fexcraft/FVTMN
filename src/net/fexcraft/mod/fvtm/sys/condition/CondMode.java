@@ -15,6 +15,8 @@ public enum CondMode {
 	NUMB_NEQUAL("n!"),
 	BOOL_EQUAL("b="),
 	BOOL_NEQUAL("b!"),
+	AND("&&"),
+	OR("||"),
 	;
 
 	public final String key;
