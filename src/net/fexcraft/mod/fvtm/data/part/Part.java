@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
+import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
@@ -22,6 +23,8 @@ import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.model.DefaultModel;
 import net.fexcraft.mod.fvtm.model.Model;
 import net.fexcraft.mod.fvtm.model.ModelData;
+import net.fexcraft.mod.fvtm.sys.event.EventHolder;
+import net.fexcraft.mod.fvtm.sys.event.EventListener;
 import net.fexcraft.mod.fvtm.util.ContentConfigUtil;
 import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.IDL;
@@ -39,6 +42,7 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 	protected Map<String, SwivelPoint> swivelpoints = new LinkedHashMap<>();
 	protected Map<String, String> attr_mods = new LinkedHashMap<>();
 	protected Map<String, Sound> sounds = new LinkedHashMap<>();
+	protected EventHolder holder = new EventHolder();
 	protected PartInstallHandler installhandler;
 	protected Object installhandler_data;
 	protected Model model;
@@ -109,6 +113,18 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 					sounds.put(entry.getKey(), new Sound(IDLManager.getIDLCached(entry.getValue().string_value()), 1f, 1f));
 				}
 
+			}
+		}
+		if(map.has("Events")){
+			for(JsonValue<?> val : map.getArray("Events").value){
+				EventListener lis = null;
+				try{
+					lis = EventListener.parse(val);
+				}
+				catch(Exception e){
+					FvtmLogger.log(e, "vehicle event parsing");
+				}
+				if(lis != null) holder.insert(lis);
 			}
 		}
 		//TODO load scripts
@@ -201,6 +217,10 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 	@Override
 	public Model getModel(){
 		return model;
+	}
+
+	public EventHolder getEvents(){
+		return holder;
 	}
 
 }
