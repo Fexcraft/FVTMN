@@ -15,6 +15,9 @@ public class ConditionRegistry {
 	public static Function<Condition, Conditional> BUILDER = CondBuilder.run();
 	public static final Conditional COND_FALSE = data -> false;
 	public static final Conditional COND_TRUE = data -> true;
+	static {
+		CONDITIONALS.put("fvtm:true", COND_TRUE);
+	}
 	
 	public static void register(Condition con){
 		CONDITIONS.put(con.id, con);
