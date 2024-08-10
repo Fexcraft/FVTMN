@@ -22,7 +22,10 @@ public class Condition {
 	public Condition(String id, JsonMap map){
 		this(id);
 		type = CondType.parse(map.getString("type", CondType.CUSTOM.key));
-		if(map.get("target").isArray()){
+		if(!map.has("target")){
+			targets = new String[]{ target = "null" };
+		}
+		else if(map.get("target").isArray()){
 			JsonArray arr = map.getArray("target");
 			targets = new String[arr.size()];
 			for(int i = 0; i < targets.length; i++){
