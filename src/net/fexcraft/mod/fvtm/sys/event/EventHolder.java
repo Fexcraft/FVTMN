@@ -1,5 +1,8 @@
 package net.fexcraft.mod.fvtm.sys.event;
 
+import net.fexcraft.mod.fvtm.sys.uni.Passenger;
+import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +33,14 @@ public class EventHolder {
 
 	public void insert(EventListener lis){
 		if(!listeners.containsKey(lis.type)) listeners.put(lis.type, new ArrayList<>());
+		listeners.get(lis.type).add(lis);
+	}
+
+	public void run(EventType event, VehicleInstance inst, Passenger pass, Object... args){
+		if(!listeners.containsKey(event)) return;
+		for(EventListener lis : listeners.get(event)){
+			lis.action.run(EventAction.DATA.set(inst, pass), lis);
+		}
 	}
 
 }
