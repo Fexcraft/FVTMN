@@ -803,4 +803,8 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		return null;
 	}
 
+	public EventHolder getEventHolder(){
+		return holder;
+	}
+
 }
