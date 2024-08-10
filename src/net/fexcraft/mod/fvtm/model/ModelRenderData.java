@@ -9,21 +9,20 @@ import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.root.Colorable;
 import net.fexcraft.mod.fvtm.data.root.Textureable.TextureUser;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
+import net.fexcraft.mod.fvtm.sys.event.EventData;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 
 /**
  * @author Ferdinand Calo' (FEX___96)
  * Reusable object for rendering.
  */
-public class ModelRenderData {
+public class ModelRenderData extends EventData {
 
 	public Object entity;
 	public Object tile;
 	public Object blockstate;
 	public float partialticks;
 
-	public VehicleInstance vehent;
-	public VehicleData vehicle;
 	public ContainerData container;
 	public BlockData block;
 	public Colorable color;
