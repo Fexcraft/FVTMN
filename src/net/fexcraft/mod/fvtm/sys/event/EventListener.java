@@ -6,6 +6,8 @@ import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.mod.fvtm.sys.condition.ConditionRegistry;
 import net.fexcraft.mod.fvtm.sys.condition.Conditional;
 
+import java.util.Arrays;
+
 /**
  * @author Ferdinand Calo' (FEX___96)
  */
@@ -40,13 +42,20 @@ public class EventListener {
 		else args = new String[0];
 	}
 
+	public EventListener(String[] strs){
+		type = EventType.parse(strs[0]);
+		cond = ConditionRegistry.get(strs[1]);
+		action = EventAction.parse(strs[2]);
+		if(strs.length > 3){
+			args = Arrays.copyOfRange(strs, 3, strs.length);
+		}
+		else args = new String[0];
+	}
+
 	public static EventListener parse(JsonValue val){
 		if(val.isArray()) return new EventListener(val.asArray());
 		else if(val.isMap()) return new EventListener(val.asMap());
-		else{
-			String[] str = val.string_value().split(" ");
-			return parse(new JsonArray(str));
-		}
+		else return new EventListener(val.string_value().split(" "));
 	}
 
 }
