@@ -7,6 +7,8 @@ import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
 import net.fexcraft.mod.fvtm.handler.InteractionHandler.InteractRef;
 import net.fexcraft.mod.fvtm.packet.Packet_TagListener;
 import net.fexcraft.mod.fvtm.packet.Packets;
+import net.fexcraft.mod.fvtm.sys.event.EventHolder;
+import net.fexcraft.mod.fvtm.sys.event.EventType;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -34,6 +36,9 @@ public class AttrReqHandler {
 		toggleAttr(attr, bool, packet, false, null);
 		Object syncval = attr.value();
 		Packets.sendToAll(Packet_TagListener.class, "attr_toggle", packet);
+		if(ref.getValue().isVehicle()){
+			ref.getKey().getEventHolder().run(EventType.ATTRIBUTE_UPDATE, ref.getValue().vehicle(), pass, attr);
+		}
 		if(!attr.sync) return;
 		if(ref.getKey().getType().getVehicleType().isRailVehicle()){
 			/*RailVehicle rail = (RailVehicle)vehicle;
@@ -130,6 +135,9 @@ public class AttrReqHandler {
 			attr.set(attr.parse(packet.getString("value")));
 		}
 		sendAttrToggle(attr, ref.getValue());
+		if(ref.getValue().isVehicle()){
+			ref.getKey().getEventHolder().run(EventType.ATTRIBUTE_UPDATE, ref.getValue().vehicle(), pass, attr);
+		}
 	}
 
 	public static void sendAttrToggle(Attribute<?> attr, InteractRef ref){
