@@ -1,6 +1,7 @@
 package net.fexcraft.mod.fvtm.data.attribute;
 
 import net.fexcraft.mod.fvtm.FvtmLogger;
+import net.fexcraft.mod.fvtm.sys.event.EventType;
 import net.fexcraft.mod.fvtm.sys.uni.Passenger;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 import net.fexcraft.mod.uni.tag.TagCW;
@@ -31,6 +32,7 @@ public class AttributeUtil {
 		toggleAttr(from, attr, bool, com, false, null);
 		Object syncval = attr.value();
 		vehicle.sendUpdate(VehicleInstance.PKT_UPD_TOGGLE_ATTR, com);
+		vehicle.data.getEventHolder().run(EventType.ATTRIBUTE_UPDATE, vehicle, from, attr);
 		if(!attr.sync) return;
 		if(vehicle.type.isRailVehicle()){
 			//TODO
