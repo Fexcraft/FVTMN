@@ -59,7 +59,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 	protected Map<String, LiftingPoint[]> gliftingpoints = new HashMap<>();
 	protected List<InteractZone> interact_zones = new ArrayList<>();
 	protected List<CatalogPreset> catalog = new ArrayList<>();
-	protected EventHolder holder = new EventHolder();
+	protected EventHolder holder = new EventHolder(this);
 	protected IDL keytype;
 	protected int maxkeys;
 	protected int impactlevel;
@@ -142,8 +142,13 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 		}
 		if(map.has("Sounds")){
 			for(Entry<String, JsonValue<?>> entry : map.getMap("Sounds").entries()){
-				JsonMap val = entry.getValue().asMap();
-				sounds.put(entry.getKey(), new Sound(IDLManager.getIDLCached(entry.getKey()), val.getFloat("volume", 1f), val.getFloat("pitch", 1f)));
+				if(entry.getValue().isMap()){
+					JsonMap val = entry.getValue().asMap();
+					sounds.put(entry.getKey(), new Sound(IDLManager.getIDLCached(val.getString("sound", "minecraft:block.lever.click")), val.getFloat("volume", 1f), val.getFloat("pitch", 1f)));
+				}
+				else{
+					sounds.put(entry.getKey(), new Sound(IDLManager.getIDLCached(entry.getValue().string_value()), 1f, 1f));
+				}
 			}
 		}
 		if(map.has("LiftingPoints")){
