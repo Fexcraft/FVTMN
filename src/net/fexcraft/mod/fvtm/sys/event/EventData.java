@@ -12,11 +12,15 @@ public class EventData {
 	public VehicleData vehicle;
 	public VehicleInstance vehent;
 	public Passenger pass;
+	public EventHolder rootholder;
+	public EventHolder holder;
 
-	public EventData set(VehicleInstance inst, Passenger passenger){
+	public EventData set(VehicleInstance inst, Passenger passenger, EventHolder root, EventHolder hol){
 		vehent = inst;
 		vehicle = inst.data;
 		pass = passenger;
+		rootholder = root;
+		holder = hol;
 		return this;
 	}
 
