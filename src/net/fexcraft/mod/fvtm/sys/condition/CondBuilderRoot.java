@@ -2,6 +2,7 @@ package net.fexcraft.mod.fvtm.sys.condition;
 
 import net.fexcraft.mod.fvtm.data.part.PartData;
 import net.fexcraft.mod.fvtm.data.part.PartFunction;
+import net.fexcraft.mod.fvtm.model.ModelRenderData;
 
 import java.util.function.Function;
 
@@ -79,7 +80,8 @@ public class CondBuilderRoot {
 					break;
 				}
 				case PART_FUNC:{
-					return mrdata -> {
+					return edat -> {
+						ModelRenderData mrdata = (ModelRenderData)edat;
 						PartData data = mrdata.part_category.equals(cond.target) ? mrdata.part : mrdata.vehicle.getPart(cond.target);
 						PartFunction func = data == null ? null : data.getFunction(cond.targets[1]);
 						return func == null ? false : func.onCondition(cond.targets, cond.mode, cond.condi);
