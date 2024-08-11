@@ -2,13 +2,17 @@ package net.fexcraft.mod.fvtm.sys.uni;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.UUID;
 
 import net.fexcraft.lib.common.math.V3D;
 import net.fexcraft.lib.common.math.V3I;
+import net.fexcraft.lib.mc.utils.Print;
 import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.data.Seat;
 import net.fexcraft.mod.fvtm.data.attribute.AttributeUtil;
+import net.fexcraft.mod.fvtm.data.root.LoopedSound;
+import net.fexcraft.mod.fvtm.data.root.Sound;
 import net.fexcraft.mod.fvtm.data.vehicle.SimplePhysData;
 import net.fexcraft.mod.fvtm.data.vehicle.SwivelPoint;
 import net.fexcraft.mod.fvtm.data.vehicle.VehicleData;
@@ -18,10 +22,13 @@ import net.fexcraft.mod.fvtm.handler.InteractionHandler.InteractRef;
 import net.fexcraft.mod.fvtm.packet.Packet_VehMove;
 import net.fexcraft.mod.fvtm.packet.Packets;
 import net.fexcraft.mod.fvtm.ui.UIKeys;
+import net.fexcraft.mod.fvtm.util.LoopSound;
 import net.fexcraft.mod.fvtm.util.Pivot;
 import net.fexcraft.mod.fvtm.packet.Packet_VehKeyPress;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.EntityW;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 
 import static net.fexcraft.mod.fvtm.Config.VEHICLE_UPDATE_RANGE;
 
@@ -52,6 +59,7 @@ public class VehicleInstance {
 	public double max_steering_yaw;
 	public int fuel_accumulator;
 	public int fuel_consumed;
+	public HashMap<String, LoopedSound> activesounds = new LinkedHashMap<>();
 	//
 	public static final float GRAVITY = 9.81f;
 	public static final float GRAVITY_20th = GRAVITY / 20;
@@ -317,7 +325,13 @@ public class VehicleInstance {
 					//TODO sounds
 				}
 				throttle = 0;
-				//TODO engine running sound loop
+				Sound sound = data.getSound("engine_running");
+				if(sound != null && sound.event != null){
+					if(data.getPart("engine").getFunction(EngineFunction.class, "fvtm:engine").isOn()){
+						if(!isSoundActive("engine_running")) startSound("engine_running", null, sound);
+					}
+					else stopSound("engine_running");
+				}
 				return;
 			}
 			case PKT_UPD_CONNECTOR:{
@@ -410,6 +424,25 @@ public class VehicleInstance {
 	public InteractRef iref(){
 		ref.update();
 		return ref;
+	}
+
+	private boolean isSoundActive(String key){
+		return activesounds.containsKey(key) && activesounds.get(key).active;
+	}
+
+	public void startSound(String key, String part, Sound sound){
+		if(!activesounds.containsKey(key)){
+			activesounds.put(key, new LoopedSound(this, part, sound));
+		}
+		startSound(key);
+	}
+
+	public void startSound(String key){
+		activesounds.get(key).start();
+	}
+
+	public void stopSound(String key){
+		if(activesounds.containsKey(key)) activesounds.get(key).stop();
 	}
 
 }
