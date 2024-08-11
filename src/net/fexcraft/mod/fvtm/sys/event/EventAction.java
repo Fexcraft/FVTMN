@@ -3,6 +3,8 @@ package net.fexcraft.mod.fvtm.sys.event;
 import net.fexcraft.mod.fvtm.FvtmLogger;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
 import net.fexcraft.mod.fvtm.data.attribute.AttributeUtil;
+import net.fexcraft.mod.fvtm.data.part.PartData;
+import net.fexcraft.mod.fvtm.data.root.Sound;
 import net.fexcraft.mod.fvtm.model.ModelRenderData;
 import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -47,7 +49,22 @@ public class EventAction {
 			if(data.vehent != null) data.vehent.sendUpdate(VehicleInstance.PKT_UPD_VEHICLEDATA);//TODO packet to update only attribute
 		}
 	});
-	public static EventAction PLAY_SOUND = new EventAction("play_sound");
+	public static EventAction PLAY_SOUND = new EventAction("play_sound").set((data, lis, args) -> {
+		String ori = lis.args[0];
+		String sound = lis.args[1];
+		Sound s = null;
+		if(ori.equals("vehicle")){
+			s = data.rootholder.sounds.getSounds().get(sound);
+		}
+		else if(ori.startsWith("part:")){
+			PartData part = data.vehicle.getPart(ori.substring(5));
+			if(part != null) s = part.getType().getSounds().get(sound);
+		}
+		else{
+			s = data.holder.sounds.getSounds().get(sound);
+		}
+		if(s != null) data.vehent.entity.playSound(s.event, s.volume, s.pitch);
+	});
 
 	public final String key;
 	private TriConsumer<EventData, EventListener, Object[]> consumer;
