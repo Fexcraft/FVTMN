@@ -18,8 +18,6 @@ import net.fexcraft.mod.fvtm.sys.uni.VehicleInstance;
  */
 public class ModelRenderData extends EventData {
 
-	public Object entity;
-	public Object tile;
 	public Object blockstate;
 	public float partialticks;
 
