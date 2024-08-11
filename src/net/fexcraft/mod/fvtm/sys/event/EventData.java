@@ -14,6 +14,9 @@ public class EventData {
 	public Passenger pass;
 	public EventHolder rootholder;
 	public EventHolder holder;
+	//
+	public Object entity;
+	public Object tile;
 
 	public EventData set(VehicleInstance inst, Passenger passenger, EventHolder root, EventHolder hol){
 		vehent = inst;
