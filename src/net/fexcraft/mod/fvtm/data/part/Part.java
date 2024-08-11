@@ -42,7 +42,7 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 	protected Map<String, SwivelPoint> swivelpoints = new LinkedHashMap<>();
 	protected Map<String, String> attr_mods = new LinkedHashMap<>();
 	protected Map<String, Sound> sounds = new LinkedHashMap<>();
-	protected EventHolder holder = new EventHolder();
+	protected EventHolder holder = new EventHolder(this);
 	protected PartInstallHandler installhandler;
 	protected Object installhandler_data;
 	protected Model model;
@@ -112,7 +112,6 @@ public class Part extends Content<Part> implements TextureHolder, SoundHolder, W
 				else{
 					sounds.put(entry.getKey(), new Sound(IDLManager.getIDLCached(entry.getValue().string_value()), 1f, 1f));
 				}
-
 			}
 		}
 		if(map.has("Events")){
