@@ -58,8 +58,8 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 	public VehicleData(Vehicle type){
 		super(type);
 		texture = new Textureable(type);
-		holder = new EventHolder();
-		holder.integrate(type.holder);
+		holder = new EventHolder(type);
+		holder.integrate(type.holder, null);
 		rotpoints.put("vehicle", rootpoint = new SwivelPoint("vehicle", (String)null));
 		for(SwivelPoint point : type.getDefaultSwivelPoints().values()){
 			rotpoints.put(point.id, point.clone(null));
@@ -411,7 +411,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		if(data.getType().getInstallHandler().processInstall(engineer, data, category, this)){
 			this.insertSwivelPointsFromPart(data, category);
 			this.insertAttributesFromPart(data, category);
-			holder.integrate(data.getType().getEvents());
+			holder.integrate(data.getType().getEvents(), category);
 			//
 			if(!swap){
 				this.resetAttributes();
@@ -432,7 +432,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		if(part.getType().getInstallHandler().processUninstall(sender, part, category, this)){
 			this.removeSwivelPointsFromPart(part, category);
 			this.removeAttributesFromPart(part, category);
-			holder.deintegrate(part.getType().getEvents());
+			holder.deintegrate(part.getType().getEvents(), category);
 			//
 			if(!swap){
 				this.resetAttributes();
@@ -666,7 +666,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 	public void playSound(EntityW at, String event){
 		Sound sound = getSound(event);
 		if(sound == null) return;
-		//TODO at.playSound((SoundEvent)sound.event, sound.volume, sound.pitch);
+		at.playSound(sound.event, sound.volume, sound.pitch);
 	}
 	
 	public TreeMap<String, SwivelPoint> getRotationPoints(){
