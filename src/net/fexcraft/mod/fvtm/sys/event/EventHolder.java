@@ -58,13 +58,17 @@ public class EventHolder {
 	public void run(EventType event, VehicleInstance inst, Passenger pass, Object... args){
 		if(listeners.containsKey(event)){
 			for(EventListener lis : listeners.get(event)){
-				lis.action.run(EventAction.DATA.set(inst, pass, this, this), lis, args);
+				if(lis.cond.isMet(EventAction.DATA.set(inst, pass, this, this))){
+					lis.action.run(EventAction.DATA, lis, args);
+				}
 			}
 		}
 		for(EventHolder hol : subholders.values()){
 			if(!hol.listeners.containsKey(event)) continue;
 			for(EventListener lis : hol.listeners.get(event)){
-				lis.action.run(EventAction.DATA.set(inst, pass, this, hol), lis, args);
+				if(lis.cond.isMet(EventAction.DATA.set(inst, pass, this, hol))){
+					lis.action.run(EventAction.DATA, lis, args);
+				}
 			}
 		}
 	}
