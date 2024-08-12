@@ -30,8 +30,8 @@ public class EventAction {
 		String str = lis.args[0];
 		if(lis.args.length > 1) for(int i = 1; i < lis.args.length; i++) str += " " + lis.args[i];
 		if(lis.type.equals(EventType.ATTRIBUTE_UPDATE)){
-			str = str.replace("{attr}", ((Attribute)args[0]).asString());
-			str = str.replace("{attr_id}", ((Attribute)args[0]).id);
+			str = str.replace("{attr}", ((Attribute)args[0]).id);
+			str = str.replace("{value}", ((Attribute)args[0]).asString());
 		}
 		data.pass.send(str);
 	});
@@ -50,20 +50,29 @@ public class EventAction {
 		}
 	});
 	public static EventAction PLAY_SOUND = new EventAction("play_sound").set((data, lis, args) -> {
-		String ori = lis.args[0];
-		String sound = lis.args[1];
+		String ori = lis.args.length > 1 ? lis.args[1] : null;
+		String sound = lis.args[0];
 		Sound s = null;
-		if(ori.equals("vehicle")){
-			s = data.rootholder.sounds.getSounds().get(sound);
-		}
-		else if(ori.startsWith("part:")){
-			PartData part = data.vehicle.getPart(ori.substring(5));
+		if(ori != null){
+			PartData part = data.vehicle.getPart(ori);
 			if(part != null) s = part.getType().getSounds().get(sound);
 		}
-		else{
-			s = data.holder.sounds.getSounds().get(sound);
-		}
+		if(s == null) s = data.holder.sounds.getSounds().get(sound);
 		if(s != null) data.vehent.entity.playSound(s.event, s.volume, s.pitch);
+	});
+	public static EventAction START_SOUND = new EventAction("start_sound").set((data, lis, args) -> {
+		String ori = lis.args.length > 1 ? lis.args[1] : null;
+		String sound = lis.args[0];
+		Sound s = null;
+		if(ori != null){
+			PartData part = data.vehicle.getPart(ori);
+			if(part != null) s = part.getType().getSounds().get(sound);
+		}
+		if(s == null) s = data.holder.sounds.getSounds().get(sound);
+		if(s != null) data.vehent.startSound(sound, ori, s);
+	});
+	public static EventAction STOP_SOUND = new EventAction("stop_sound").set((data, lis, args) -> {
+		data.vehent.stopSound(lis.args[0]);
 	});
 
 	public final String key;
