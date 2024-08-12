@@ -24,7 +24,7 @@ public class LoopedSound {
 	}
 
 	public void start(){
-		ACTIVATE.accept(this);
+		if(!active) ACTIVATE.accept(this);
 		active = true;
 	}
 
