@@ -235,8 +235,7 @@ public abstract class FvtmResources {
 						if(EnvInfo.CLIENT) checkForCustomModel(addon.getLocation(), contype, content);
 					}
 					catch(Exception e){
-						if(EnvInfo.DEV) e.printStackTrace();
-						LOGGER.log("Errors while loading config file: " + file); //Static.stop();
+						FvtmLogger.log(e, "while loading config file: " + file);
 					}
 				}
 			}
