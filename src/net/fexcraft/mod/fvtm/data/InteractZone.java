@@ -53,8 +53,11 @@ public class InteractZone {
 			range = map.getFloat("range", 4);
 			point = map.getString("point", SwivelPoint.DEFAULT);
 			String ex = map.getString("mode", null);
-			if(ex.equals("expand")) set = false;
-			else if(ex.equals("set")) set = true;
+			if(ex != null){
+				if(ex.equals("expand")) set = false;
+				else if(ex.equals("set")) set = true;
+				else set = null;
+			}
 			else set = null;
 		}
 		validate();
