@@ -61,15 +61,9 @@ public class EventAction {
 		if(s != null) data.vehent.entity.playSound(s.event, s.volume, s.pitch);
 	});
 	public static EventAction START_SOUND = new EventAction("start_sound").set((data, lis, args) -> {
-		String ori = lis.args.length > 1 ? lis.args[1] : null;
 		String sound = lis.args[0];
-		Sound s = null;
-		if(ori != null){
-			PartData part = data.vehicle.getPart(ori);
-			if(part != null) s = part.getType().getSounds().get(sound);
-		}
-		if(s == null) s = data.holder.sounds.getSounds().get(sound);
-		if(s != null) data.vehent.startSound(sound, ori, s);
+		Sound s = data.holder.sounds.getSounds().get(sound);
+		if(s != null) data.vehent.startSound(sound);
 	});
 	public static EventAction STOP_SOUND = new EventAction("stop_sound").set((data, lis, args) -> {
 		data.vehent.stopSound(lis.args[0]);
