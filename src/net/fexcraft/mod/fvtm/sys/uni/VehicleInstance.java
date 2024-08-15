@@ -65,6 +65,8 @@ public class VehicleInstance {
 	public static final String PKT_UPD_LOCK = "lock_state";
 	public static final String PKT_UPD_TOGGLE_ATTR = "toggle_attr";
 	public static final String PKT_UPD_CONNECTOR = "vehicle_front";
+	public static final String PKT_UPD_START_SOUND = "start_sound";
+	public static final String PKT_UPD_STOP_SOUND = "stop_sound";
 
 	public VehicleInstance(EntityW wrapper, VehicleData vdata){
 		entity = wrapper;
@@ -324,7 +326,7 @@ public class VehicleInstance {
 				Sound sound = data.getSound("engine_running");
 				if(sound != null && sound.event != null){
 					if(data.getPart("engine").getFunction(EngineFunction.class, "fvtm:engine").isOn()){
-						if(!isSoundActive("engine_running")) startSound("engine_running", null, sound);
+						if(!isSoundActive("engine_running")) startSound("engine_running");
 					}
 					else stopSound("engine_running");
 				}
@@ -341,6 +343,14 @@ public class VehicleInstance {
 					veh.rear = this;
 					front = veh;
 				}
+				return;
+			}
+			case PKT_UPD_START_SOUND:{
+				if(passenger.isOnClient()) startSound(packet.getString("sound"));
+				return;
+			}
+			case PKT_UPD_STOP_SOUND:{
+				if(passenger.isOnClient()) stopSound(packet.getString("sound"));
 				return;
 			}
 			default:{
@@ -426,18 +436,26 @@ public class VehicleInstance {
 		return activesounds.containsKey(key) && activesounds.get(key).active;
 	}
 
-	public void startSound(String key, String part, Sound sound){
-		if(!activesounds.containsKey(key)){
-			activesounds.put(key, new LoopedSound(this, part, sound));
-		}
-		startSound(key);
-	}
-
 	public void startSound(String key){
+		if(!entity.isOnClient()){
+			TagCW com = TagCW.create();
+			com.set("sound", key);
+			sendUpdate(PKT_UPD_START_SOUND, com);
+			return;
+		}
+		if(!activesounds.containsKey(key)){
+			activesounds.put(key, new LoopedSound(this, data.getSound(key)));
+		}
 		activesounds.get(key).start();
 	}
 
 	public void stopSound(String key){
+		if(!entity.isOnClient()){
+			TagCW com = TagCW.create();
+			com.set("sound", key);
+			sendUpdate(PKT_UPD_STOP_SOUND, com);
+			return;
+		}
 		if(activesounds.containsKey(key)) activesounds.get(key).stop();
 	}
 
