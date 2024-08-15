@@ -14,12 +14,10 @@ public class LoopedSound {
 	public Sound sound;
 	public VehicleInstance vehicle;
 	public Object localsound;
-	public String part;
 	public boolean active;
 
-	public LoopedSound(VehicleInstance inst, String org, Sound snd){
+	public LoopedSound(VehicleInstance inst, Sound snd){
 		vehicle = inst;
-		part = org;
 		sound = snd;
 	}
 
