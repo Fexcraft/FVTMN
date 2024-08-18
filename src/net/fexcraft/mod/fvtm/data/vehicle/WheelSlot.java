@@ -12,10 +12,10 @@ public class WheelSlot {
 	public V3D position;
 	public boolean mirror;
 	public float hubsize;
-	public float max_radius;
+	public float max_radius = 0.75f;
 	public float min_wheel_radius = 0.25f;
 	public float min_tire_radius = 0.5f;
-	public float max_width;
+	public float max_width = 0.75f;
 	public float min_wheel_width = 0.125f;
 	public float min_tire_width = 0.125f;
 	public boolean steering;
