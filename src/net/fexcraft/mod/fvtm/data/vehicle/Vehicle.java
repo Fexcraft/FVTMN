@@ -16,6 +16,7 @@ import net.fexcraft.mod.fvtm.FvtmResources;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
 import net.fexcraft.mod.fvtm.data.InteractZone;
+import net.fexcraft.mod.fvtm.data.Seat;
 import net.fexcraft.mod.fvtm.data.attribute.Attribute;
 import net.fexcraft.mod.fvtm.data.part.PartSlots;
 import net.fexcraft.mod.fvtm.data.root.Colorable.ColorHolder;
@@ -59,6 +60,7 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 	protected Map<String, LiftingPoint[]> gliftingpoints = new HashMap<>();
 	protected List<InteractZone> interact_zones = new ArrayList<>();
 	protected List<CatalogPreset> catalog = new ArrayList<>();
+	protected List<Seat> defseats = new ArrayList<>();
 	protected EventHolder holder = new EventHolder(this);
 	protected IDL keytype;
 	protected int maxkeys;
@@ -205,6 +207,11 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 					FvtmLogger.log(e, "vehicle event parsing");
 				}
 				if(lis != null) holder.insert(lis);
+			}
+		}
+		if(map.has("DefaultSeats")){
+			for(Entry<String, JsonValue<?>> entry : map.getMap("DefaultSeats").entries()){
+				defseats.add(new Seat(entry.getKey(), entry.getValue().asMap()));
 			}
 		}
 		return this;
@@ -356,6 +363,10 @@ public class Vehicle extends Content<Vehicle> implements TextureHolder, ColorHol
 
 	public EventHolder getEvents(){
 		return holder;
+	}
+
+	public List<Seat> getDefaultSeats(){
+		return defseats;
 	}
 
 }
