@@ -244,6 +244,7 @@ public class VehicleData extends ContentData<Vehicle, VehicleData> implements Co
 		}
 		//
 		seats.clear();
+		for(Seat seat : type.getDefaultSeats()) seats.add(seat);
 		for(PartData part : parts.values()){
 			if(!part.hasFunction("fvtm:seats")) continue;
 			for(Seat seat : part.getFunction(SeatsFunction.class, "fvtm:seats").getSeats()){
