@@ -17,6 +17,7 @@ import net.fexcraft.mod.uni.EnvInfo;
 import net.fexcraft.mod.uni.item.StackWrapper;
 import net.fexcraft.mod.uni.tag.TagCW;
 import net.fexcraft.mod.uni.world.StateWrapper;
+import net.fexcraft.mod.uni.world.WorldW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -219,7 +220,7 @@ public class UniRoadTool {
 			if(passed < 0.1) passed = 0;
 			passed += 0.125;
 		}
-		FvtmWorld world = pass.getFvtmWorld();
+		WorldW world = pass.getWorld();
 		JsonMap map = new JsonMap();
 		if(road != null){
 			roadFill(world, pass, road, pos, road_b, top_h, flnk, map);
@@ -252,7 +253,7 @@ public class UniRoadTool {
 			for(QV3D v : ground){
 				pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
 				state = world.getStateAt(pos);
-				if(!world.isFvtmRoad(state) && !CompatUtil.isValidFurenikus(state.getIDL())){
+				if(!((FvtmWorld)world).isFvtmRoad(state) && !CompatUtil.isValidFurenikus(state.getIDL())){
 					insert(map, pos, state);
 					world.setBlockState(pos, StateWrapper.from(bot, new StateWrapper.PlacingContext(world, pos, HCENTER, null, pass, true)));
 				}
@@ -302,7 +303,7 @@ public class UniRoadTool {
 		}
 	}
 
-	private static void roadFill(FvtmWorld world, Passenger pass, ArrayList<QV3D> road, V3I pos, StackWrapper stack, int th, boolean flnk, JsonMap map){
+	private static void roadFill(WorldW world, Passenger pass, ArrayList<QV3D> road, V3I pos, StackWrapper stack, int th, boolean flnk, JsonMap map){
 		int height;
 		StateWrapper state;
 		StateWrapper block;
@@ -314,12 +315,12 @@ public class UniRoadTool {
 			if(!isRoad(world, state, block) || isLower(world, state, height)){
 				if(isRoad(world, world.getStateAt(pos.add(0, 1, 0)))) height = 0;
 				insert(map, pos, state);
-				world.setBlockState(pos, world.getRoadWithHeight(block, CompatUtil.getRoadHeight(height, flnk)));
+				world.setBlockState(pos, ((FvtmWorld)world).getRoadWithHeight(block, CompatUtil.getRoadHeight(height, flnk)));
 			}
 			if((height < 9 && height != 0) || isRoad(world, world.getStateAt(pos.add(0, -1, 0)))){
 				V3I down = pos.add(0, -1, 0);
 				insert(map, down, world.getStateAt(down));
-				world.setBlockState(down, world.getRoadWithHeight(block, CompatUtil.getRoadHeight(0, flnk)));
+				world.setBlockState(down, ((FvtmWorld)world).getRoadWithHeight(block, CompatUtil.getRoadHeight(0, flnk)));
 			}
 			int c = th < 4 ? 4 : th;
 			for(int i = 1; i < c; i++){
@@ -330,7 +331,7 @@ public class UniRoadTool {
 		}
 	}
 
-	private static void basicFill(FvtmWorld world, Passenger pass, ArrayList<QV3D> vecs, V3I pos, StackWrapper stack, JsonMap map){
+	private static void basicFill(WorldW world, Passenger pass, ArrayList<QV3D> vecs, V3I pos, StackWrapper stack, JsonMap map){
 		StateWrapper state;
 		StateWrapper block;
 		for(QV3D v : vecs){
@@ -344,7 +345,7 @@ public class UniRoadTool {
 		}
 	}
 
-	private static void borderFill(FvtmWorld world, Passenger pass, ArrayList<QV3D> vecs, V3I pos, StackWrapper stack, int top, JsonMap map){
+	private static void borderFill(WorldW world, Passenger pass, ArrayList<QV3D> vecs, V3I pos, StackWrapper stack, int top, JsonMap map){
 		for(QV3D v : vecs){
 			pos.set(v.pos.x, v.pos.y + (v.y > 0 ? 1 : 0), v.pos.z);
 			for(int i = -1; i < top; i++){
@@ -355,16 +356,16 @@ public class UniRoadTool {
 		}
 	}
 
-	private static boolean isRoad(FvtmWorld world, StateWrapper state, StateWrapper block){
+	private static boolean isRoad(WorldW world, StateWrapper state, StateWrapper block){
 		return isRoad(world, state) && state.getBlock() == block.getBlock();
 	}
 
-	private static boolean isRoad(FvtmWorld world, StateWrapper state){
-		return world.isFvtmRoad(state) || CompatUtil.isValidFurenikus(state.getIDL());
+	private static boolean isRoad(WorldW world, StateWrapper state){
+		return ((FvtmWorld)world).isFvtmRoad(state) || CompatUtil.isValidFurenikus(state.getIDL());
 	}
 
-	private static boolean isLower(FvtmWorld world, StateWrapper state, int height){
-		return world.getRoadHeight(state) < height;
+	private static boolean isLower(WorldW world, StateWrapper state, int height){
+		return ((FvtmWorld)world).getRoadHeight(state) < height;
 	}
 
 	public static class Road extends Path {
