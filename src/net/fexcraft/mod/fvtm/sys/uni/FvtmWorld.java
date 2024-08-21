@@ -15,37 +15,38 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class FvtmWorld extends WorldW {
+public interface FvtmWorld {
 
-	public abstract SeatInstance getSeat(int entid, int seatid);
+	public SeatInstance getSeat(int entid, int seatid);
 
-	public abstract SwivelPoint getSwivelPoint(int entid, String pointid);
+	public SwivelPoint getSwivelPoint(int entid, String pointid);
 
-	public abstract Passenger getPassenger(int source);
+	public Passenger getPassenger(int source);
 
-	public abstract void onVehicleMove(Packet_VehMove packet);
+	public void onVehicleMove(Packet_VehMove packet);
 
-	public abstract VehicleInstance getVehicle(int entid);
+	public VehicleInstance getVehicle(int entid);
 
-	public abstract Map.Entry<VehicleData, InteractRef> getInteractRef(TagCW packet);
+	public Map.Entry<VehicleData, InteractRef> getInteractRef(TagCW packet);
 
-	public abstract boolean noViewEntity();
+	public boolean noViewEntity();
 
-	public abstract ArrayList<VehicleInstance> getVehicles(V3D pos);
+	public ArrayList<VehicleInstance> getVehicles(V3D pos);
 
-	public abstract Map<VehicleData, InteractRef> getVehicleDatas(V3D pos);
+	public Map<VehicleData, InteractRef> getVehicleDatas(V3D pos);
 
-	public abstract Passenger getClientPassenger();
+	public Passenger getClientPassenger();
 
-	public abstract boolean isFvtmRoad(StateWrapper state);
+	public boolean isFvtmRoad(StateWrapper state);
 
-	public boolean isFvtmRoad(Object state){
+	public default boolean isFvtmRoad(Object state){
 		return isFvtmRoad(StateWrapper.of(state));
 	}
 
-	public abstract int getRoadHeight(StateWrapper state);
+	public int getRoadHeight(StateWrapper state);
 
-	public abstract StateWrapper getRoadWithHeight(StateWrapper block, int height);
+	public StateWrapper getRoadWithHeight(StateWrapper block, int height);
 
-	public abstract void handleBlockEntityPacket(TagCW com, Passenger player);
+	public void handleBlockEntityPacket(TagCW com, Passenger player);
+
 }
