@@ -27,7 +27,7 @@ public class Consumable extends Content<Consumable> implements WithItem, ItemTex
 		if((pack = ContentConfigUtil.getAddon(map)) == null)return null;
 		if((id = ContentConfigUtil.getID(pack, map)) == null) return null;
 		//
-		name = map.getString("Name", "Unnamed Material");
+		name = map.getString("Name", "Unnamed Consumable");
 		description = ContentConfigUtil.getStringList(map, "Description");
 		max_stack = (byte)map.getInteger("MaxItemStackSize", 64);
 		ore_dict = map.getString("OreDictionary", null);
