@@ -1,7 +1,5 @@
 package net.fexcraft.mod.fvtm.data.addon;
 
-import static net.fexcraft.mod.fvtm.FvtmRegistry.DECORATIONS;
-import static net.fexcraft.mod.fvtm.FvtmRegistry.DECORATION_CATEGORIES;
 import static net.fexcraft.mod.uni.IDL.conid;
 
 import java.io.File;
@@ -15,10 +13,8 @@ import java.util.Map.Entry;
 import com.google.common.collect.ImmutableList;
 import net.fexcraft.app.json.JsonMap;
 import net.fexcraft.app.json.JsonValue;
-import net.fexcraft.mod.fvtm.FvtmRegistry;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
-import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.fvtm.data.TextureSupply;
 import net.fexcraft.mod.fvtm.sys.condition.Condition;
 import net.fexcraft.mod.fvtm.sys.condition.ConditionRegistry;
@@ -135,19 +131,6 @@ public class Addon extends Content<Addon> {
 			}
 			TrafficSignLibrary.LIBRARIES.put(lib.id, lib);
 			lib.load();*/
-		}
-		if(map.has("Decorations")){
-			for(Entry<String, JsonValue<?>> entry : map.getMap("Decorations").entries()){
-				String cat = entry.getKey();
-				JsonMap decos = entry.getValue().asMap();
-				decos.entries().forEach(deco -> {
-					String key = conid(id, deco.getKey());
-					DECORATIONS.put(key, new DecorationData(key, cat, deco.getValue()));
-				});
-				if(decos.size() > 0 && !DECORATION_CATEGORIES.contains(cat)){
-					DECORATION_CATEGORIES.add(cat);
-				}
-			}
 		}
 		return this;
 	}
