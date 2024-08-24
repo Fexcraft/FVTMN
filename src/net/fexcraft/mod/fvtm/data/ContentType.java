@@ -28,9 +28,18 @@ public enum ContentType {
 	DECORATION(".deco", "decos", Decoration.class)
 	;
 
+	static{
+		VEHICLE.customitemmodel = true;
+		CONTAINER.customitemmodel = true;
+		PART.customitemmodel = true;
+		BLOCK.customitemmodel = true;
+		DECORATION.customitemmodel = true;
+	}
+
 	public String suffix;
 	public String folder;
 	public Class<? extends Content<?>> impl;
+	private boolean customitemmodel = false;
 
 	ContentType(String suffix, String folder){
 		this.suffix = suffix;
@@ -56,13 +65,14 @@ public enum ContentType {
 			case CLOTH: CLOTHES.register(content); return;
 			case WIRE: WIRES.register(content); return;
 			case WIREDECO: WIREDECOS.register(content); return;
+			case DECORATION: DECORATIONS.register(content); return;
 			default: return;
 		}
 	}
 
 	@Deprecated
 	public boolean usesCustomItemModel(){
-		return this == VEHICLE || this == CONTAINER || this == PART || this == BLOCK;
+		return customitemmodel;
 	}
 
 }
