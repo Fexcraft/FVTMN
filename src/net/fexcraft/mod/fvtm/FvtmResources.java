@@ -7,6 +7,7 @@ import net.fexcraft.app.json.JsonValue;
 import net.fexcraft.lib.common.Static;
 import net.fexcraft.mod.fvtm.data.Content;
 import net.fexcraft.mod.fvtm.data.ContentType;
+import net.fexcraft.mod.fvtm.data.Decoration;
 import net.fexcraft.mod.fvtm.data.DecorationData;
 import net.fexcraft.mod.fvtm.data.addon.Addon;
 import net.fexcraft.mod.fvtm.data.addon.AddonLocation;
@@ -208,6 +209,7 @@ public abstract class FvtmResources {
 		FvtmResources.INSTANCE.searchInPacksFor(ContentType.RAILGAUGE);
 		FvtmResources.INSTANCE.searchInPacksFor(ContentType.WIRE);
 		FvtmResources.INSTANCE.searchInPacksFor(ContentType.WIREDECO);
+		FvtmResources.INSTANCE.searchInPacksFor(ContentType.DECORATION);
 		FvtmResources.INSTANCE.searchInPacksFor(ContentType.CONTAINER);
 		FvtmResources.INSTANCE.searchInPacksFor(ContentType.BLOCK);
 		FvtmResources.INSTANCE.searchInPacksFor(ContentType.MULTIBLOCK);
@@ -382,13 +384,7 @@ public abstract class FvtmResources {
 		WIREDECOS.forEach(deco -> deco.loadModel());
 		CONTAINERS.forEach(con -> con.loadModel());
 		RAILGAUGES.forEach(rail -> rail.loadModel());
-		//other data types
-		for(DecorationData deco : DECORATIONS.values()){
-			Model model = getModel(deco.modelid, deco.modeldata, DefaultModel.class);
-			if(model != null && model != DefaultModel.EMPTY){
-				deco.model = model;
-			}
-		}
+		DECORATIONS.forEach(deco -> deco.loadModel());
 	}
 
 	public void initModelsClear(){
@@ -554,6 +550,16 @@ public abstract class FvtmResources {
 	}
 
 	public static VehicleData getVehicleData(Object com){
+		return getVehicleData(TagCW.wrap(com));
+	}
+
+	public static DecorationData getDecorationData(TagCW com){
+		Decoration deco = DECORATIONS.get(com.getString("Decoration"));
+		if(deco == null) return null;
+		return new DecorationData(deco).read(com);
+	}
+
+	public static VehicleData getDecorationData(Object com){
 		return getVehicleData(TagCW.wrap(com));
 	}
 
