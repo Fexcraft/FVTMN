@@ -24,7 +24,8 @@ public enum ContentType {
 	RAILGAUGE(".gauge", "railgauges", RailGauge.class),
 	CLOTH(".cloth", "clothes", Cloth.class),
 	WIRE(".wire", "wires", WireType.class),
-	WIREDECO(".deco", "wires", WireDeco.class)
+	WIREDECO(".wiredeco", "wires", WireDeco.class),
+	DECORATION(".deco", "decos", Decoration.class)
 	;
 
 	public String suffix;
