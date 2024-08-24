@@ -61,10 +61,9 @@ public class FvtmRegistry {
 	public static final Registry<Container> CONTAINERS = new Registry<>();
 	public static final Registry<RailGauge> RAILGAUGES = new Registry<>();
 	public static final Registry<MultiBlock> MULTIBLOCKS = new Registry<>();
+	public static final Registry<Decoration> DECORATIONS = new Registry<>();
 	public static TreeMap<String, TreeMap<String, ArrayList<Fuel>>> SORTED_FUELS = new TreeMap<>();
 	public static final HashMap<String, Particle> PARTICLES = new HashMap<>();
-	public static final HashMap<String, DecorationData> DECORATIONS = new HashMap<>();
-	public static final ArrayList<String> DECORATION_CATEGORIES = new ArrayList<>();
 	//
 	public static final LinkedHashMap<String, Class<? extends Attribute<?>>> ATTRIBUTES = new LinkedHashMap<>();
 	public static final LinkedHashMap<String, Class<? extends PartFunction>> PART_FUNCTIONS = new LinkedHashMap<>();
