@@ -1,8 +1,5 @@
 package net.fexcraft.mod.fvtm.ui;
 
-import static net.fexcraft.mod.fvtm.FvtmRegistry.DECORATIONS;
-import static net.fexcraft.mod.fvtm.FvtmRegistry.DECORATION_CATEGORIES;
-
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -43,13 +40,13 @@ public class DecoEditor extends UserInterface {
 		switch(id){
 			case "cat_prev":{
 				category--;
-				if(category < 0) category = DECORATION_CATEGORIES.size() - 1;
+				if(category < 0) category = 0;//DECORATION_CATEGORIES.size() - 1;
 				updateCategorySearch();
 				break;
 			}
 			case "cat_next":{
 				category++;
-				if(category >= DECORATION_CATEGORIES.size()) category = 0;
+				if(category >= /*DECORATION_CATEGORIES.size()*/0) category = 0;
 				updateCategorySearch();
 				break;
 			}
@@ -88,7 +85,7 @@ public class DecoEditor extends UserInterface {
 				com.set("task", "tex");
 				com.set("idx", selected);
 				DecorationData data = (DecorationData)container.get("decos.at", selected);
-				com.set("sel", data.seltex - 1 < 0 ? data.textures.size() - 1 : data.seltex - 1);
+				com.set("sel", data.getTexture().getSelected() - 1 < 0 ? data.getType().getDefaultTextures().size() - 1 : data.getTexture().getSelected() - 1);
 				container.SEND_TO_SERVER.accept(com);
 				break;
 			}
@@ -98,7 +95,7 @@ public class DecoEditor extends UserInterface {
 				com.set("task", "tex");
 				com.set("idx", selected);
 				DecorationData data = (DecorationData)container.get("decos.at", selected);
-				com.set("sel", data.seltex + 1 < data.textures.size() ? data.seltex + 1 : 0);
+				com.set("sel", data.getTexture().getSelected() + 1 < data.getType().getDefaultTextures().size() ? data.getTexture().getSelected() + 1 : 0);
 				container.SEND_TO_SERVER.accept(com);
 				break;
 			}
@@ -187,11 +184,11 @@ public class DecoEditor extends UserInterface {
 				return true;
 			}
 			else if(id.startsWith("add_")){
-				int idx = Integer.parseInt(id.substring(4));
+				/*int idx = Integer.parseInt(id.substring(4));
 				TagCW com = TagCW.create();
 				com.set("task", "add");
 				com.set("key", results.get(scroll1 + idx).key());
-				container.SEND_TO_SERVER.accept(com);
+				container.SEND_TO_SERVER.accept(com);*///TODO
 				return true;
 			}
 			else if(id.startsWith("rem_")){
@@ -276,7 +273,7 @@ public class DecoEditor extends UserInterface {
 			fields.get("rot" + i).text(miss ? "0" : (i == 0 ? data.rotx : i == 1 ? data.roty : data.rotz) + "");
 			fields.get("scl" + i).text(miss ? "0" : (i == 0 ? data.sclx : i == 1 ? data.scly : data.sclz) + "");
 		}
-		texts.get("texc").value(miss ? "" : data.textures.get(data.seltex).name());
+		texts.get("texc").value(miss ? "" : data.getCurrentTexture().name());
 		selcol = colidx;
 		if(!miss) colors.addAll(data.getColorChannels().keySet());
 		if(selcol >= colors.size() || selcol < 0) selcol = 0;
@@ -289,7 +286,7 @@ public class DecoEditor extends UserInterface {
 	}
 
 	protected void updateCategorySearch(){
-		texts.get("cat").value(DECORATION_CATEGORIES.get(category));
+		texts.get("cat").value("category");
 		texts.get("cat").visible(!search);
 		fields.get("search").visible(search);
 		updateResults();
@@ -297,7 +294,7 @@ public class DecoEditor extends UserInterface {
 
 	protected void updateResults(){
 		results.clear();
-		if(search){
+		/*if(search){
 			for(DecorationData deco : DECORATIONS.values()){
 				if(deco.key().contains(searchstr) || ("fvtm.decoration." + deco.key()).contains(searchstr)) results.add(deco);
 			}
@@ -307,7 +304,7 @@ public class DecoEditor extends UserInterface {
 			for(DecorationData deco : DECORATIONS.values()){
 				if(deco.category().equals(cat)) results.add(deco);
 			}
-		}
+		}*///TODO
 		updateEntries();
 	}
 
@@ -329,7 +326,7 @@ public class DecoEditor extends UserInterface {
 			for(int i = 0; i < rows; i++){
 				j = scroll1 + i;
 				over = j >= results.size();
-				buttons.get("entry_" + i).text.value(over ? "" : "fvtm.decoration." + results.get(j).key());
+				buttons.get("entry_" + i).text.value(over ? "" : "fvtm.decoration." + results.get(j).getType().getIDS());
 				buttons.get("entry_" + i).text.translate();
 				buttons.get("rem_" + i).visible(false);
 				buttons.get("add_" + i).visible(true);
