@@ -559,8 +559,8 @@ public abstract class FvtmResources {
 		return new DecorationData(deco).read(com);
 	}
 
-	public static VehicleData getDecorationData(Object com){
-		return getVehicleData(TagCW.wrap(com));
+	public static DecorationData getDecorationData(Object com){
+		return getDecorationData(TagCW.wrap(com));
 	}
 
 	public static BlockData getBlockData(TagCW com){
