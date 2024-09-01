@@ -30,6 +30,10 @@ public class DecoEditor extends UserInterface {
 
 	public DecoEditor(JsonMap map, ContainerInterface con) throws Exception {
 		super(map, con);
+	}
+
+	@Override
+	public void init(){
 		updateCategorySearch();
 		select(-1, -1);
 	}
