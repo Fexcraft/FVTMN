@@ -16,6 +16,10 @@ public class ToolboxTexture extends UserInterface {
 	public ToolboxTexture(JsonMap map, ContainerInterface con) throws Exception{
 		super(map, con);
 		menu = (ToolboxTextureContainer)con;
+	}
+
+	@Override
+	public void init(){
 		updateStatus();
 	}
 
