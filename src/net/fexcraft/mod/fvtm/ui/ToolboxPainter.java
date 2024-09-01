@@ -30,7 +30,11 @@ public class ToolboxPainter extends UserInterface {
 
 	public ToolboxPainter(JsonMap map, ContainerInterface con) throws Exception {
 		super(map, con);
-		channels.addAll((Collection<? extends String>)con.get("channel_keys"));
+	}
+
+	@Override
+	public void init(){
+		channels.addAll((Collection<? extends String>)container.get("channel_keys"));
 		selchan = channels.get(0);
 		setupSpectrum();
 		setupShadePalette();
