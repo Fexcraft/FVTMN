@@ -13,3 +13,6 @@ Neutral minecraft-independent part of FVTM
 ## License
 [Fexcraft Common License for Mods](https://fexcraft.net/license?id=mods)    
 TL;DR: no distribution (modpacks are ``OK``), no commercial use
+
+## Status
+Merged back into [FVTM](https://github.com/Fexcraft/FVTM)
